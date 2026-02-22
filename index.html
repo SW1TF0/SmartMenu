@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Digital Menus | Изработка на QR Менюта</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* --- ОСНОВНИ НАСТРОЙКИ --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+        body { background-color: #f4f7f6; color: #333; line-height: 1.6; overflow-x: hidden; }
+        a { text-decoration: none; color: inherit; }
+
+        /* --- ЦВЕТОВА ПАЛИТРА --- */
+        :root {
+            --primary: #2563eb; 
+            --primary-dark: #1e40af;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --accent: #10b981; 
+            --gray: #64748b;
+        }
+
+        /* --- НАВИГАЦИЯ --- */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo { font-size: 24px; font-weight: 800; color: var(--dark); letter-spacing: -1px; z-index: 1001; }
+        .logo span { color: var(--primary); }
+        
+        /* Стилизиране на бургер иконката */
+        .menu-toggle {
+            display: none;
+            font-size: 28px;
+            color: var(--dark);
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .nav-links { display: flex; align-items: center; }
+        .nav-links a { margin-left: 30px; font-weight: 600; color: var(--gray); transition: 0.3s; }
+        .nav-links a:hover { color: var(--primary); }
+        .btn-nav {
+            background: var(--primary); color: white !important; padding: 10px 20px; 
+            border-radius: 8px; margin-left: 30px; transition: 0.3s;
+        }
+        .btn-nav:hover { background: var(--primary-dark); transform: translateY(-2px); }
+
+        /* --- БУТОН ЗА ЕЗИК --- */
+        .lang-btn {
+            background: transparent; border: 2px solid var(--primary); color: var(--primary);
+            padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold;
+            margin-left: 30px; transition: 0.3s; display: flex; align-items: center; gap: 5px;
+        }
+        .lang-btn:hover { background: var(--primary); color: white; }
+
+        /* --- HERO СЕКЦИЯ --- */
+        .hero {
+            padding: 160px 5% 100px; background: var(--dark); color: white;
+            text-align: center; display: flex; flex-direction: column; align-items: center;
+            clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+        }
+        .hero h1 { font-size: 48px; font-weight: 800; max-width: 800px; margin-bottom: 20px; line-height: 1.2; }
+        .hero h1 span { color: #3b82f6; }
+        .hero p { font-size: 18px; color: #cbd5e1; max-width: 600px; margin-bottom: 40px; }
+        .hero-btns { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; width: 100%; }
+        
+        .btn-main, .btn-outline {
+            padding: 15px 30px; border-radius: 8px; font-size: 18px; font-weight: bold; transition: 0.3s; display: inline-block;
+        }
+        .btn-main { background: var(--primary); color: white; border: 2px solid var(--primary); }
+        .btn-main:hover { background: var(--primary-dark); border-color: var(--primary-dark); transform: translateY(-3px); box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3); }
+        
+        .btn-outline { background: transparent; color: white; border: 2px solid rgba(255,255,255,0.3); }
+        .btn-outline:hover { background: rgba(255,255,255,0.1); border-color: white; transform: translateY(-3px); }
+
+        /* --- СЕКЦИИ: ОБЩИ --- */
+        .section-padding { padding: 100px 5%; max-width: 1200px; margin: 0 auto; }
+        .section-header { text-align: center; margin-bottom: 60px; }
+        .section-header h2 { font-size: 36px; color: var(--dark); margin-bottom: 15px; }
+        .section-header p { color: var(--gray); font-size: 18px; }
+
+        /* --- ЗАЩО ДИГИТАЛНО МЕНЮ? --- */
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; }
+        .feature-card {
+            background: white; padding: 40px 30px; border-radius: 16px; text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03); transition: 0.3s; border: 1px solid #f1f5f9;
+        }
+        .feature-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.08); border-color: var(--primary); }
+        .feature-icon {
+            width: 70px; height: 70px; background: #eff6ff; color: var(--primary); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; font-size: 30px; margin: 0 auto 20px;
+        }
+        .feature-card h3 { margin-bottom: 15px; color: var(--dark); font-size: 20px; }
+        .feature-card p { color: var(--gray); font-size: 15px; }
+
+        /* --- КАК РАБОТИ --- */
+        .steps { background: white; padding: 100px 5%; }
+        .steps-container { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; text-align: center; }
+        .step { position: relative; }
+        .step-number { font-size: 60px; font-weight: 900; color: #f1f5f9; position: absolute; top: -30px; left: 50%; transform: translateX(-50%); z-index: 1; }
+        .step-content { position: relative; z-index: 2; padding-top: 20px; }
+        .step h4 { font-size: 18px; color: var(--dark); margin-bottom: 10px; }
+        .step p { font-size: 14px; color: var(--gray); }
+
+        /* --- КОНТАКТИ --- */
+        .cta-section { background: var(--primary); padding: 80px 5%; text-align: center; color: white; border-radius: 20px; max-width: 1100px; margin: 0 auto 80px; }
+        .cta-section h2 { font-size: 32px; margin-bottom: 20px; }
+        .cta-section p { font-size: 18px; margin-bottom: 30px; opacity: 0.9; }
+        .contact-btn {
+            display: inline-flex; align-items: center; gap: 10px; background: white; color: var(--primary);
+            padding: 15px 30px; border-radius: 8px; font-weight: bold; font-size: 18px; transition: 0.3s;
+            margin-bottom: 10px; margin-left: 10px; margin-right: 10px;
+        }
+        .contact-btn.dark-btn { background: var(--dark); color: white; border: none; }
+        .contact-btn:hover { transform: scale(1.05); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+
+        /* --- FOOTER --- */
+        footer { background: var(--dark); color: #94a3b8; padding: 40px 5%; text-align: center; }
+        footer p { margin-top: 10px; font-size: 14px; }
+
+        /* =========================================================
+           RESPONSIVE МЕДИЙНИ ЗАПИТВАНИЯ (Таблети и Телефони)
+           ========================================================= */
+        
+        /* Таблети и по-малки екрани (под 992px) */
+        @media (max-width: 992px) {
+            .menu-toggle { display: block; } /* Показваме бургер менюто */
+            
+            /* Стилизиране на падащото меню */
+            .nav-links {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: white;
+                flex-direction: column;
+                align-items: center;
+                padding: 20px 0;
+                box-shadow: 0 10px 10px rgba(0,0,0,0.1);
+                clip-path: polygon(0 0, 100% 0, 100% 0, 0 0); /* Скрито по подразбиране */
+                transition: clip-path 0.4s ease-in-out;
+            }
+            
+            /* Клас, който се добавя от JavaScript за показване на менюто */
+            .nav-links.active {
+                clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+            }
+
+            .nav-links a, .nav-links .btn-nav, .nav-links .lang-btn {
+                margin: 15px 0;
+                width: 80%;
+                text-align: center;
+                justify-content: center;
+            }
+
+            .hero h1 { font-size: 38px; }
+            .section-header h2 { font-size: 30px; }
+            .hero { clip-path: polygon(0 0, 100% 0, 100% 95%, 0 100%); }
+        }
+
+        /* Мобилни телефони (под 576px) */
+        @media (max-width: 576px) {
+            .hero { padding: 120px 5% 80px; }
+            .hero h1 { font-size: 30px; }
+            .hero p { font-size: 16px; }
+            
+            .hero-btns { flex-direction: column; }
+            .btn-main, .btn-outline { width: 100%; text-align: center; }
+
+            .section-padding, .steps { padding: 60px 5%; }
+            .cta-section { padding: 40px 5%; border-radius: 10px; }
+            .cta-section h2 { font-size: 26px; }
+            .contact-btn { width: 100%; margin-left: 0; margin-right: 0; justify-content: center; }
+            
+            .features-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="#" class="logo">Smart<span>Menu</span></a>
+        
+        <div class="menu-toggle" id="mobile-menu">
+            <i class="fas fa-bars"></i>
+        </div>
+
+        <nav class="nav-links" id="nav-links">
+            <a href="#features" data-i18n="nav_features">Предимства</a>
+            <a href="#how-it-works" data-i18n="nav_how">Как работи</a>
+            <a href="mobile.html" class="btn-nav"><i class="fas fa-mobile-alt"></i> <span data-i18n="nav_demo">Виж Демо</span></a>
+            
+            <button id="langToggle" class="lang-btn">
+                <i class="fas fa-globe"></i> <span id="langText">EN</span>
+            </button>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1 data-i18n="hero_title">Край на скъпите хартиени менюта. <span>Премини към дигитално.</span></h1>
+        <p data-i18n="hero_desc">Създаваме изключително бързи, красиви и функционални QR менюта за твоето заведение. Увеличи продажбите и улесни клиентите си.</p>
+        <div class="hero-btns">
+            <a href="#contact" class="btn-main" data-i18n="btn_order"><i class="fas fa-rocket"></i> Заяви меню сега</a>
+            <a href="mobile.html" target="_blank" class="btn-outline" data-i18n="btn_explore"><i class="fas fa-eye"></i> Разгледай демо</a>
+        </div>
+    </section>
+
+    <section id="features" class="section-padding">
+        <div class="section-header">
+            <h2 data-i18n="feat_title">Защо да избереш SmartMenu?</h2>
+            <p data-i18n="feat_subtitle">Дигиталните менюта не са просто мода, те са бизнес необходимост.</p>
+        </div>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-piggy-bank"></i></div>
+                <h3 data-i18n="card1_title">Край на разходите за печат</h3>
+                <p data-i18n="card1_desc">Променяш цени, добавяш нови ястия или премахваш изчерпани продукти на секундата, без да плащаш за нов тираж менюта.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-search"></i></div>
+                <h3 data-i18n="card2_title">Бързо търсене и филтри</h3>
+                <p data-i18n="card2_desc">Клиентите намират любимата си храна мигновено. Вградена търсачка и бързи категории (ScrollSpy) за перфектно потребителско изживяване.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-globe"></i></div>
+                <h3 data-i18n="card3_title">Многоезичност</h3>
+                <p data-i18n="card3_desc">Обслужвай чуждестранни туристи без бариери. Менюто поддържа лесно превключване между Български и Английски език с един клик.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-mobile-screen"></i></div>
+                <h3 data-i18n="card4_title">Мобилен премиум дизайн</h3>
+                <p data-i18n="card4_desc">Менюто изглежда и се усеща като скъпа мобилна апликация, но без нужда от сваляне и инсталиране от клиентите.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-qrcode"></i></div>
+                <h3 data-i18n="card5_title">Бърз достъп с QR Код</h3>
+                <p data-i18n="card5_desc">Клиентът сяда на масата, сканира QR кода с камерата на телефона си и разглежда менюто веднага.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-palette"></i></div>
+                <h3 data-i18n="card6_title">Индивидуален дизайн</h3>
+                <p data-i18n="card6_desc">Сайтът се брандира с твоето лого, твоите корпоративни цветове и снимки, за да отговаря напълно на стила на заведението.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="how-it-works" class="steps">
+        <div class="section-header">
+            <h2 data-i18n="steps_title">Лесно като 1-2-3</h2>
+            <p data-i18n="steps_subtitle">Процесът по интеграция е бърз и не изисква технически познания от твоя страна.</p>
+        </div>
+        <div class="steps-container">
+            <div class="step">
+                <div class="step-number">01</div>
+                <div class="step-content">
+                    <h4 data-i18n="step1_title">Изпращаш ни менюто</h4>
+                    <p data-i18n="step1_desc">Даваш ни снимки на ястията, логото на заведението и ценоразписа (Word, PDF или линк).</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">02</div>
+                <div class="step-content">
+                    <h4 data-i18n="step2_title">Ние създаваме магията</h4>
+                    <p data-i18n="step2_desc">Изработваме, програмираме и качваме менюто ти на бърз сървър в рамките на няколко дни.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">03</div>
+                <div class="step-content">
+                    <h4 data-i18n="step3_title">Получаваш QR кодове</h4>
+                    <p data-i18n="step3_desc">Генерираме ти красиви QR кодове, които да поставиш на масите. Готов си за работа!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" style="padding: 0 5%;">
+        <div class="cta-section">
+            <h2 data-i18n="cta_title">Готов ли си да модернизираш заведението си?</h2>
+            <p data-i18n="cta_subtitle">Свържи се с нас за безплатна консултация и индивидуална оферта.</p>
+            
+            <a href="tel:+359885348666" class="contact-btn" data-i18n="cta_phone">
+                <i class="fas fa-phone"></i> Обади се: 0885 348 666
+            </a>
+            
+            <a href="mailto:epicswitfo@gmail.com" class="contact-btn dark-btn">
+                <i class="fas fa-envelope"></i> epicswitfo@gmail.com
+            </a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="logo" style="color: white;">Smart<span style="color: var(--primary);">Menu</span></div>
+        <p data-i18n="footer_text">© 2026 Всички права запазени. Изработка на премиум дигитални решения за бизнеса.</p>
+    </footer>
+
+    <script>
+        /* --- 1. ЛОГИКА ЗА МОБИЛНОТО МЕНЮ --- */
+        const mobileMenuBtn = document.getElementById('mobile-menu');
+        const navLinksMenu = document.getElementById('nav-links');
+        const menuIcon = mobileMenuBtn.querySelector('i');
+
+        // Отваряне/затваряне на менюто при клик на иконката
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinksMenu.classList.toggle('active');
+            
+            // Смяна на иконката от бургер на хиксче (X)
+            if (navLinksMenu.classList.contains('active')) {
+                menuIcon.classList.remove('fa-bars');
+                menuIcon.classList.add('fa-times');
+            } else {
+                menuIcon.classList.remove('fa-times');
+                menuIcon.classList.add('fa-bars');
+            }
+        });
+
+        // Затваряне на менюто при клик върху линк
+        const navLinksItems = document.querySelectorAll('.nav-links a');
+        navLinksItems.forEach(link => {
+            link.addEventListener('click', () => {
+                navLinksMenu.classList.remove('active');
+                menuIcon.classList.remove('fa-times');
+                menuIcon.classList.add('fa-bars');
+            });
+        });
+
+        /* --- 2. ЛОГИКА ЗА СМЯНА НА ЕЗИКА --- */
+        const translations = {
+            bg: {
+                nav_features: "Предимства",
+                nav_how: "Как работи",
+                nav_demo: "Виж Демо",
+                hero_title: "Край на скъпите хартиени менюта. <span>Премини към дигитално.</span>",
+                hero_desc: "Създаваме изключително бързи, красиви и функционални QR менюта за твоето заведение. Увеличи продажбите и улесни клиентите си.",
+                btn_order: '<i class="fas fa-rocket"></i> Заяви меню сега',
+                btn_explore: '<i class="fas fa-eye"></i> Разгледай демо',
+                feat_title: "Защо да избереш SmartMenu?",
+                feat_subtitle: "Дигиталните менюта не са просто мода, те са бизнес необходимост.",
+                card1_title: "Край на разходите за печат",
+                card1_desc: "Променяш цени, добавяш нови ястия или премахваш изчерпани продукти на секундата, без да плащаш за нов тираж менюта.",
+                card2_title: "Бързо търсене и филтри",
+                card2_desc: "Клиентите намират любимата си храна мигновено. Вградена търсачка и бързи категории (ScrollSpy) за перфектно потребителско изживяване.",
+                card3_title: "Многоезичност",
+                card3_desc: "Обслужвай чуждестранни туристи без бариери. Менюто поддържа лесно превключване между Български и Английски език с един клик.",
+                card4_title: "Мобилен премиум дизайн",
+                card4_desc: "Менюто изглежда и се усеща като скъпа мобилна апликация, но без нужда от сваляне и инсталиране от клиентите.",
+                card5_title: "Бърз достъп с QR Код",
+                card5_desc: "Клиентът сяда на масата, сканира QR кода с камерата на телефона си и разглежда менюто веднага.",
+                card6_title: "Индивидуален дизайн",
+                card6_desc: "Сайтът се брандира с твоето лого, твоите корпоративни цветове и снимки, за да отговаря напълно на стила на заведението.",
+                steps_title: "Лесно като 1-2-3",
+                steps_subtitle: "Процесът по интеграция е бърз и не изисква технически познания от твоя страна.",
+                step1_title: "Изпращаш ни менюто",
+                step1_desc: "Даваш ни снимки на ястията, логото на заведението и ценоразписа (Word, PDF или линк).",
+                step2_title: "Ние създаваме магията",
+                step2_desc: "Изработваме, програмираме и качваме менюто ти на бърз сървър в рамките на няколко дни.",
+                step3_title: "Получаваш QR кодове",
+                step3_desc: "Генерираме ти красиви QR кодове, които да поставиш на масите. Готов си за работа!",
+                cta_title: "Готов ли си да модернизираш заведението си?",
+                cta_subtitle: "Свържи се с нас за безплатна консултация и индивидуална оферта.",
+                cta_phone: '<i class="fas fa-phone"></i> Обади се: 0885 348 666',
+                footer_text: "© 2026 Всички права запазени. Изработка на премиум дигитални решения за бизнеса."
+            },
+            en: {
+                nav_features: "Features",
+                nav_how: "How it works",
+                nav_demo: "View Demo",
+                hero_title: "End expensive paper menus. <span>Switch to digital.</span>",
+                hero_desc: "We create ultra-fast, beautiful, and functional QR menus for your restaurant. Increase sales and make it easier for your customers.",
+                btn_order: '<i class="fas fa-rocket"></i> Order your menu now',
+                btn_explore: '<i class="fas fa-eye"></i> Explore demo',
+                feat_title: "Why choose SmartMenu?",
+                feat_subtitle: "Digital menus are not just a trend, they are a business necessity.",
+                card1_title: "No more printing costs",
+                card1_desc: "Change prices, add new dishes or remove out-of-stock products instantly, without paying for a new menu print run.",
+                card2_title: "Fast search & filters",
+                card2_desc: "Customers find their favorite food instantly. Built-in search and quick categories for a perfect user experience.",
+                card3_title: "Multilingual",
+                card3_desc: "Serve foreign tourists without barriers. The menu supports easy switching between multiple languages with one click.",
+                card4_title: "Premium mobile design",
+                card4_desc: "The menu looks and feels like an expensive mobile app, without the need for customers to download and install anything.",
+                card5_title: "Quick QR Code access",
+                card5_desc: "The customer sits at the table, scans the QR code with their phone camera, and browses the menu immediately.",
+                card6_title: "Custom design",
+                card6_desc: "The site is branded with your logo, your corporate colors, and photos to fully match the style of your restaurant.",
+                steps_title: "As easy as 1-2-3",
+                steps_subtitle: "The integration process is fast and requires no technical knowledge on your part.",
+                step1_title: "Send us your menu",
+                step1_desc: "Provide us with photos of the dishes, the restaurant logo, and the price list (Word, PDF, or link).",
+                step2_title: "We create the magic",
+                step2_desc: "We develop, program, and upload your menu to a fast server within a few days.",
+                step3_title: "Receive your QR codes",
+                step3_desc: "We generate beautiful QR codes for you to place on the tables. You are ready to go!",
+                cta_title: "Ready to modernize your restaurant?",
+                cta_subtitle: "Contact us for a free consultation and a custom quote.",
+                cta_phone: '<i class="fas fa-phone"></i> Call: +359 885 348 666',
+                footer_text: "© 2026 All rights reserved. Premium digital solutions for business."
+            }
+        };
+
+        let currentLang = localStorage.getItem("preferredLang") || "bg";
+        const langToggleBtn = document.getElementById("langToggle");
+        const langTextSpan = document.getElementById("langText");
+
+        function setLanguage(lang) {
+            const elements = document.querySelectorAll("[data-i18n]");
+            elements.forEach(el => {
+                const key = el.getAttribute("data-i18n");
+                if (translations[lang][key]) {
+                    el.innerHTML = translations[lang][key];
+                }
+            });
+
+            if (lang === "bg") {
+                langTextSpan.textContent = "EN";
+                document.documentElement.lang = "bg";
+            } else {
+                langTextSpan.textContent = "BG";
+                document.documentElement.lang = "en";
+            }
+            localStorage.setItem("preferredLang", lang);
+            currentLang = lang;
+        }
+
+        langToggleBtn.addEventListener("click", () => {
+            const newLang = currentLang === "bg" ? "en" : "bg";
+            setLanguage(newLang);
+            
+            // Ако сме на мобилно устройство, затваряме менюто след смяна на езика
+            if(window.innerWidth <= 992) {
+                navLinksMenu.classList.remove('active');
+                menuIcon.classList.remove('fa-times');
+                menuIcon.classList.add('fa-bars');
+            }
+        });
+
+        setLanguage(currentLang);
+    </script>
+
+</body>
+</html>

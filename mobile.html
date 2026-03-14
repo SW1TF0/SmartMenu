@@ -1210,8 +1210,30 @@
         }
 
         function callWaiter() {
-            const isEnglish = document.body.classList.contains('english-mode');
-            alert(isEnglish ? 'The waiter has been called!' : 'Сервитьорът е извикан!');
+            // Взимаме масата от линка (ако липсва, ще пише "Неизвестна")
+            const urlParams = new URLSearchParams(window.location.search);
+            let currentTable = urlParams.get('table') || "Неизвестна";
+
+            // Данните за бота и групата
+            const botToken = '8419693328:AAEkzgyvg6L4LgEkep4kv-wMwckLJ0aGlOU';
+            const chatId = '-5174289409'; 
+            const message = `🔔 Внимание: Маса ${currentTable} извика сервитьор!`;
+
+            // Изпращаме заявката
+            fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_id: chatId, text: message })
+            })
+            .then(response => {
+                if(response.ok) {
+                    const isEnglish = document.body.classList.contains('english-mode');
+                    alert(isEnglish ? `Success! A waiter has been called to table ${currentTable}.` : `Успешно извикахте сервитьор за маса ${currentTable}!`);
+                } else {
+                    alert("Грешка при свързване със сървъра. / Error connecting to server.");
+                }
+            })
+            .catch(error => alert("Възникна грешка при повикването. / Error calling waiter."));
         }
 
         function mobFilter() {
@@ -1263,5 +1285,4 @@
     </script>
 
 </body>
-
 </html>

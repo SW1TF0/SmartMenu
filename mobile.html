@@ -260,7 +260,7 @@
             color: white;
             font-size: 22px;
             box-shadow: 0 5px 20px rgba(211, 47, 47, 0.4);
-            z-index: 2000;
+            z-index: 2001; /* По-високо от overlay */
             animation: pulse 2s infinite;
             cursor: pointer;
             transition: 0.3s;
@@ -271,6 +271,84 @@
             0% { box-shadow: 0 0 0 0 rgba(211, 47, 47, 0.7); }
             70% { box-shadow: 0 0 0 15px rgba(211, 47, 47, 0); }
             100% { box-shadow: 0 0 0 0 rgba(211, 47, 47, 0); }
+        }
+
+        /* --- 6. ACTION MENU (ИЗСКАЧАЩО МЕНЮ ЗА ЗВЪНЧЕТО) --- */
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.3);
+            z-index: 1998;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.3s;
+        }
+        .menu-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .action-menu {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.15);
+            width: 200px;
+            overflow: hidden;
+            z-index: 2000;
+            transform: scale(0);
+            transform-origin: bottom right;
+            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .action-menu.active {
+            transform: scale(1);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .action-menu button {
+            width: 100%;
+            background: none;
+            border: none;
+            padding: 15px;
+            text-align: left;
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            cursor: pointer;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: background 0.2s;
+            font-family: inherit;
+        }
+
+        .action-menu button:last-child {
+            border-bottom: none;
+        }
+
+        .action-menu button:hover {
+            background: #f8f9fa;
+        }
+
+        .action-menu button i {
+            color: #d32f2f;
+            width: 20px;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .action-menu .back-btn i {
+            color: #666;
         }
 
         .wifi-box {
@@ -372,7 +450,52 @@
         </nav>
     </div>
 
-    <div class="fab" onclick="callWaiter()" title="Call Waiter">
+    <div id="menuOverlay" class="menu-overlay" onclick="closeActionMenu()"></div>
+
+    <div id="actionMenu" class="action-menu">
+        <div id="mainActions">
+            <button onclick="handleAction('waiter')">
+                <i class="fas fa-concierge-bell"></i>
+                <div>
+                    <span class="lang-bg">Извикай сервитьор</span>
+                    <span class="lang-en">Call Waiter</span>
+                </div>
+            </button>
+            <button onclick="showBillOptions()">
+                <i class="fas fa-file-invoice-dollar"></i>
+                <div>
+                    <span class="lang-bg">Поискай сметката</span>
+                    <span class="lang-en">Ask for Bill</span>
+                </div>
+            </button>
+        </div>
+        
+        <div id="billActions" style="display: none;">
+            <button onclick="handleAction('bill', 'cash')">
+                <i class="fas fa-money-bill-wave"></i>
+                <div>
+                    <span class="lang-bg">В брой</span>
+                    <span class="lang-en">Cash</span>
+                </div>
+            </button>
+            <button onclick="handleAction('bill', 'card')">
+                <i class="fas fa-credit-card"></i>
+                <div>
+                    <span class="lang-bg">С карта</span>
+                    <span class="lang-en">Card</span>
+                </div>
+            </button>
+            <button onclick="showMainActions()" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+                <div>
+                    <span class="lang-bg">Назад</span>
+                    <span class="lang-en">Back</span>
+                </div>
+            </button>
+        </div>
+    </div>
+
+    <div class="fab" onclick="toggleActionMenu()" title="Actions">
         <i class="fas fa-bell"></i>
     </div>
 
@@ -1209,17 +1332,63 @@
             }
         }
 
-        function callWaiter() {
-            // Взимаме масата от линка (ако липсва, ще пише "Неизвестна")
+        // Логика за менюто с действия
+        function toggleActionMenu() {
+            const menu = document.getElementById('actionMenu');
+            const overlay = document.getElementById('menuOverlay');
+            
+            const isActive = menu.classList.contains('active');
+            
+            if (!isActive) {
+                menu.classList.add('active');
+                overlay.classList.add('active');
+                showMainActions();
+            } else {
+                closeActionMenu();
+            }
+        }
+
+        function closeActionMenu() {
+            const menu = document.getElementById('actionMenu');
+            const overlay = document.getElementById('menuOverlay');
+            
+            menu.classList.remove('active');
+            overlay.classList.remove('active');
+        }
+
+        function showBillOptions() {
+            document.getElementById('mainActions').style.display = 'none';
+            document.getElementById('billActions').style.display = 'block';
+        }
+
+        function showMainActions() {
+            document.getElementById('mainActions').style.display = 'block';
+            document.getElementById('billActions').style.display = 'none';
+        }
+
+        function handleAction(actionType, paymentMethod = '') {
             const urlParams = new URLSearchParams(window.location.search);
             let currentTable = urlParams.get('table') || "Неизвестна";
+            
+            let message = "";
+            let successAlertBg = "";
+            let successAlertEn = "";
 
-            // Данните за бота и групата
+            if (actionType === 'waiter') {
+                message = `🔔 Внимание: Маса ${currentTable} извика сервитьор!`;
+                successAlertBg = `Успешно извикахте сервитьор за маса ${currentTable}!`;
+                successAlertEn = `Success! A waiter has been called to table ${currentTable}.`;
+            } else if (actionType === 'bill') {
+                const methodTextBg = paymentMethod === 'cash' ? 'В БРОЙ' : 'С КАРТА';
+                const methodTextEn = paymentMethod === 'cash' ? 'CASH' : 'CARD';
+                message = `💰 Маса ${currentTable} поиска сметката: ${methodTextBg}`;
+                successAlertBg = `Успешно поискахте сметката (${methodTextBg.toLowerCase()}) за маса ${currentTable}!`;
+                successAlertEn = `Success! Bill requested (${methodTextEn}) for table ${currentTable}.`;
+            }
+
             const botToken = '8419693328:AAEkzgyvg6L4LgEkep4kv-wMwckLJ0aGlOU';
             const chatId = '-5174289409'; 
-            const message = `🔔 Внимание: Маса ${currentTable} извика сервитьор!`;
 
-            // Изпращаме заявката
             fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -1228,12 +1397,13 @@
             .then(response => {
                 if(response.ok) {
                     const isEnglish = document.body.classList.contains('english-mode');
-                    alert(isEnglish ? `Success! A waiter has been called to table ${currentTable}.` : `Успешно извикахте сервитьор за маса ${currentTable}!`);
+                    alert(isEnglish ? successAlertEn : successAlertBg);
+                    closeActionMenu();
                 } else {
                     alert("Грешка при свързване със сървъра. / Error connecting to server.");
                 }
             })
-            .catch(error => alert("Възникна грешка при повикването. / Error calling waiter."));
+            .catch(error => alert("Възникна грешка при повикването. / Error processing request."));
         }
 
         function mobFilter() {

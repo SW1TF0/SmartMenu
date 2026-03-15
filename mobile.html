@@ -3,451 +3,318 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Caesar - Premium Mobile Menu</title>
+    <title>MENU</title>
+    <link rel="icon" type="image/png" href="logo.png">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..700;1,400..700&family=Plus+Jakarta+Sans:wght@200;300;400;500;600&display=swap" rel="stylesheet">
     
     <style>
-        /* --- 1. ОСНОВНИ НАСТРОЙКИ --- */
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        /* --- 1. ЦВЕТОВА ПАЛИТРА "ТИХ ЛУКС" --- */
+        :root {
+            --bg-main: #0a0c0d;      
+            --bg-card: #111416;      
+            --text-main: #e8e8e8;    
+            --text-muted: #949a9e;   
+            --accent: #c5a059;       
+            --accent-muted: rgba(197, 160, 89, 0.1);
+            --hairline: rgba(255, 255, 255, 0.04); 
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
         
         html { 
             scroll-behavior: smooth; 
-            scroll-padding-top: 140px; 
+            scroll-padding-top: 180px; 
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
         }
 
         body {
-            margin: 0;
-            padding: 0;
-            background-color: #f8f9fa;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            color: #333;
-            padding-bottom: 80px;
+            margin: 0; padding: 0;
+            background-color: var(--bg-main);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: var(--text-main);
+            padding-bottom: 120px;
+            font-weight: 200; 
         }
 
-        /* Ограничител за големи екрани */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
+        h1, h2, h3, h4, .item-name { 
+            font-family: 'Playfair Display', serif; 
+            font-weight: 400; 
+            color: white;
+            letter-spacing: 0.5px;
         }
 
-        /* --- LOGIC FOR LANGUAGES --- */
+        ::selection { background: var(--accent); color: #000; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
         .lang-en { display: none; }
         body.english-mode .lang-bg { display: none !important; }
         body.english-mode .lang-en { display: inline; }
 
-        /* --- 2. HEADER & PROMO --- */
         .promo-banner {
-            background: linear-gradient(45deg, #d32f2f, #b71c1c);
-            color: white;
-            text-align: center;
-            padding: 8px;
-            font-size: 11px;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            background: #000;
+            color: var(--accent);
+            text-align: center; padding: 12px;
+            font-size: 10px; font-weight: 500;
+            text-transform: uppercase; letter-spacing: 3px; 
+            border-bottom: 1px solid var(--hairline);
+        }
+
+        /* --- 2. ОБЕДИНЕН STICKY КОНТЕЙНЕР (ФИКС ЗА ПРОЛУКАТА) --- */
+        .sticky-master {
+            position: sticky; top: 0; z-index: 1001;
+            background: rgba(10, 12, 13, 0.98);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--hairline);
         }
 
         .mobile-header {
-            background: white;
-            padding: 15px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-
-        .header-inner {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 5%;
         }
 
         .back-btn-header {
-            position: absolute;
-            left: 15px;
-            color: #333;
-            text-decoration: none;
-            font-size: 20px;
+            color: var(--text-muted); font-size: 18px; transition: 0.3s;
+        }
+        .back-btn-header:hover { color: var(--accent); }
+
+        .logo-wrapper { display: flex; justify-content: center; align-items: center; }
+        .logo-img {
+            max-height: 45px; width: auto;
+            filter: invert(1) sepia(1) saturate(5) hue-rotate(10deg) brightness(1.1);
+            display: block;
         }
 
         .lang-btn {
-            position: absolute;
-            right: 15px;
-            background: #f1f3f5;
-            border: 1px solid #ddd;
-            color: #333;
-            font-weight: bold;
-            padding: 5px 10px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 12px;
-            transition: 0.3s;
+            background: transparent; border: 1px solid var(--hairline);
+            color: var(--text-muted); font-weight: 400; font-family: 'Plus Jakarta Sans', sans-serif;
+            padding: 7px 14px; border-radius: 2px; cursor: pointer;
+            font-size: 11px; text-transform: uppercase; letter-spacing: 2px; transition: 0.3s;
         }
-        .lang-btn:hover { background: #e9ecef; }
+        .lang-btn:hover { border-color: var(--accent); color: var(--accent); background: rgba(197, 160, 89, 0.05); }
 
-        .logo-img { max-height: 45px; width: auto; }
-
-        /* --- 3. SEARCH & STICKY NAV --- */
-        .sticky-wrapper {
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            background: white;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-        }
+        .sticky-wrapper { padding-top: 10px; }
 
         .search-container {
-            padding: 10px 15px;
-            background: #fff;
-            position: relative;
-            max-width: 600px; /* Ограничение за десктоп */
-            margin: 0 auto;
+            padding: 0 5%; position: relative; max-width: 500px; margin: 0 auto 15px;
         }
         .search-input {
-            width: 100%;
-            padding: 10px 15px 10px 40px;
-            border-radius: 10px;
-            border: 1px solid #eee;
-            background: #f1f3f5;
-            font-size: 14px;
-            outline: none;
-            transition: 0.3s;
+            width: 100%; padding: 12px 15px 12px 45px;
+            border-radius: 0; border: none; border-bottom: 1px solid var(--hairline);
+            background: transparent; color: white;
+            font-family: 'Plus Jakarta Sans', sans-serif; font-size: 14px; outline: none; transition: 0.4s;
+            font-weight: 300;
         }
-        .search-input:focus { border-color: #d32f2f; background: white; }
-        .search-icon { position: absolute; left: 28px; top: 22px; color: #aaa; font-size: 14px; }
+        .search-input::placeholder { color: rgba(255,255,255,0.2); font-weight: 200; letter-spacing: 1px;}
+        .search-input:focus { border-bottom-color: var(--accent); background: rgba(255,255,255,0.01); }
+        .search-icon { position: absolute; left: 7%; top: 14px; color: rgba(255,255,255,0.2); font-size: 14px; transition: 0.4s; }
+        .search-input:focus + .search-icon { color: var(--accent); }
 
         .sticky-nav {
-            display: flex;
-            overflow-x: auto;
-            padding: 5px 15px 12px 15px;
-            white-space: nowrap;
-            -webkit-overflow-scrolling: touch;
+            display: flex; overflow-x: auto; padding: 0 5% 15px;
+            white-space: nowrap; -webkit-overflow-scrolling: touch; gap: 25px; 
         }
         .sticky-nav::-webkit-scrollbar { display: none; }
 
         .nav-item {
-            margin: 0 5px;
-            padding: 8px 18px;
-            background: #f1f3f5;
-            color: #666;
-            text-decoration: none;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 700;
-            transition: 0.3s;
+            padding: 10px 0; color: var(--text-muted); text-decoration: none;
+            font-size: 11px; text-transform: uppercase; letter-spacing: 3px; 
+            transition: 0.4s ease; position: relative; font-weight: 400;
         }
-        .nav-item:hover { background: #e0e0e0; }
-        .nav-item.active { background: #d32f2f; color: white; }
+        .nav-item::after {
+            content: ''; position: absolute; width: 0; height: 1px; bottom: 0; left: 0;
+            background-color: var(--accent); transition: width 0.4s ease;
+        }
+        .nav-item:hover, .nav-item.active { color: white; }
+        .nav-item:hover::after, .nav-item.active::after { width: 100%; }
 
-        /* --- 4. КАРТИ НА ПРОДУКТИ (МРЕЖА) --- */
-        .menu-section { 
-            padding: 20px 15px 0 15px; 
-            max-width: 1200px;
-            margin: 0 auto;
+        /* --- 3. ХОРИЗОНТАЛНИ КАРТИ НА ПРОДУКТИ --- */
+        .menu-section { padding: 40px 0 20px; max-width: 1200px; margin: 0 auto; position: relative;}
+        .menu-section::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 10% 10%, rgba(255,255,255,0.01) 0%, transparent 50%);
+            pointer-events: none;
         }
         
         .section-title {
-            font-size: 22px;
-            font-weight: 800;
-            margin-bottom: 20px;
-            color: #1a1a1a;
-            border-left: 4px solid #d32f2f;
-            padding-left: 10px;
-            /* За да заема целия ред в Grid: */
-            grid-column: 1 / -1; 
+            font-size: 32px; color: white; margin-bottom: 40px;
+            grid-column: 1 / -1; text-align: center; letter-spacing: 2px;
+            position: relative; display: inline-block; left: 50%; transform: translateX(-50%);
+            font-weight: 300;
+        }
+        .section-title::after {
+            content: ''; position: absolute; width: 40px; height: 1px; background: var(--accent);
+            bottom: -10px; left: 50%; transform: translateX(-50%);
         }
 
         .mobile-card {
-            background: white;
-            border-radius: 15px;
-            margin-bottom: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.06);
-            border: 1px solid #f0f0f0;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column; /* Важно за изравняване на височините */
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background: var(--bg-card); margin: 0 5% 20px; 
+            border-bottom: 1px solid var(--hairline); 
+            overflow: hidden; display: flex; flex-direction: row; 
+            transition: 0.4s ease; padding: 15px 0; 
         }
         
-        /* Desktop Hover ефект */
-        @media (hover: hover) {
-            .mobile-card:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 12px 25px rgba(0,0,0,0.12);
-            }
-        }
+        @media (hover: hover) { .mobile-card:hover { background: rgba(255,255,255,0.01); } }
 
         .card-img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            display: block;
-            background-color: #eee;
+            width: 110px; height: 110px; object-fit: cover; display: block;
+            border-radius: 2px; filter: brightness(0.85) contrast(1.1); transition: 0.5s ease;
+            margin-right: 20px; 
         }
+        .mobile-card:hover .card-img { filter: brightness(1) contrast(1.1); transform: scale(1.02);}
 
         .card-body { 
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1; /* Разпъва тялото, за да избута footer-а надолу */
+            padding: 0; display: flex; flex-direction: column; flex-grow: 1; justify-content: center; 
         }
 
-        .card-top { display: flex; justify-content: space-between; align-items: flex-start; }
-        .item-name { font-size: 18px; font-weight: 700; color: #2d3436; margin: 0; flex: 1; }
+        .card-top { display: flex; flex-direction: column; gap: 5px; margin-bottom: 10px; }
+        .item-name { font-size: 19px; color: white; margin: 0; line-height: 1.2; font-weight: 400;}
         
         .item-price { 
-            font-size: 15px; 
-            font-weight: 800; 
-            color: #d32f2f; 
-            margin-left: 8px; 
-            text-align: right;
-            white-space: nowrap;
+            font-family: 'Plus Jakarta Sans', sans-serif; font-size: 14px; font-weight: 400; color: var(--accent); 
+            margin-top: 2px; letter-spacing: 1px;
         }
 
-        .item-desc { font-size: 13px; color: #636e72; margin: 8px 0; line-height: 1.5; font-style: italic; }
+        .item-desc { font-size: 12px; color: var(--text-muted); margin: 0 0 12px 0; line-height: 1.6; font-style: italic; font-weight: 200;}
         
         .item-footer { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            margin-top: auto; /* Винаги стои най-отдолу на картата */
-            padding-top: 10px; 
-            border-top: 1px solid #f9f9f9; 
+            display: flex; justify-content: space-between; align-items: center; 
+            margin-top: auto; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.02); 
         }
         
-        .item-weight { font-size: 11px; color: #b2bec3; font-weight: 600; background: #f5f5f5; padding: 3px 8px; border-radius: 4px; }
+        .item-weight { font-size: 10px; color: rgba(255,255,255,0.2); text-transform: uppercase; letter-spacing: 2px; font-weight: 400;}
 
-        .badge { font-size: 10px; padding: 2px 6px; border-radius: 5px; font-weight: bold; margin-left: 5px; vertical-align: middle; }
-        .badge-veg { background: #e8f5e9; color: #2e7d32; }
-        .badge-new { background: #fff3e0; color: #e67e22; }
-        .badge-spicy { background: #ffebee; color: #c62828; }
+        .badge { font-size: 8px; padding: 2px 5px; border-radius: 0; margin-left: 8px; vertical-align: middle; text-transform: uppercase; letter-spacing: 2px; border: 1px solid; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 500; background: transparent !important;}
+        .badge-new { border-color: var(--accent); color: var(--accent); }
+        .badge-veg { border-color: #566b60; color: #566b60; }
+        .badge-spicy { border-color: #822; color: #822; }
 
-        /* --- STYLES FOR ALLERGENS --- */
-        .allergen-row {
-            margin-top: 8px;
-            margin-bottom: 10px;
-            font-size: 10px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 4px;
-            align-items: center;
-        }
-        .allergen-title { color: #999; font-weight: bold; margin-right: 2px; }
-        .allergen-tag {
-            background: #fff8e1;
-            color: #f57c00;
-            padding: 2px 6px;
-            border-radius: 4px;
-            display: inline-flex;
-            align-items: center;
-            gap: 3px;
-            border: 1px solid #ffe0b2;
-        }
-        .allergen-tag i { font-size: 9px; }
+        .allergen-row { margin-bottom: 12px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+        .allergen-title { color: rgba(255,255,255,0.1); font-size: 9px; text-transform: uppercase; letter-spacing: 2px; font-weight: 400;}
+        .allergen-tag { color: var(--text-muted); font-size: 10px; display: inline-flex; align-items: center; gap: 6px; font-weight: 300;}
+        .allergen-tag i { font-size: 9px; color: rgba(197, 160, 89, 0.5); }
 
-        /* --- 5. FAB & WIFI & NO RESULTS --- */
+        /* --- 4. FAB & ACTION MENU --- */
         .fab {
-            position: fixed;
-            bottom: 25px;
-            right: 20px;
-            width: 55px;
-            height: 55px;
-            background: #d32f2f;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 22px;
-            box-shadow: 0 5px 20px rgba(211, 47, 47, 0.4);
-            z-index: 2001; /* По-високо от overlay */
-            animation: pulse 2s infinite;
-            cursor: pointer;
-            transition: 0.3s;
+            position: fixed; bottom: 30px; right: 5%; width: 50px; height: 50px; 
+            background: #000; border: 1px solid var(--accent); border-radius: 50%; 
+            display: flex; align-items: center; justify-content: center; color: var(--accent); 
+            font-size: 18px; cursor: pointer; box-shadow: 0 10px 40px rgba(0,0,0,0.8); 
+            z-index: 2001; transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .fab:hover { transform: scale(1.1); }
+        .fab:hover { background: var(--accent); color: #000; transform: scale(1.05) rotate(5deg); }
 
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(211, 47, 47, 0.7); }
-            70% { box-shadow: 0 0 0 15px rgba(211, 47, 47, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(211, 47, 47, 0); }
-        }
-
-        /* --- 6. ACTION MENU (ИЗСКАЧАЩО МЕНЮ ЗА ЗВЪНЧЕТО) --- */
         .menu-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.3);
-            z-index: 1998;
-            opacity: 0;
-            pointer-events: none;
-            transition: 0.3s;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
+            z-index: 1998; opacity: 0; pointer-events: none; transition: 0.5s;
         }
-        .menu-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
+        .menu-overlay.active { opacity: 1; pointer-events: auto; }
 
         .action-menu {
-            position: fixed;
-            bottom: 90px;
-            right: 20px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 5px 25px rgba(0,0,0,0.15);
-            width: 200px;
-            overflow: hidden;
-            z-index: 2000;
-            transform: scale(0);
-            transform-origin: bottom right;
-            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            opacity: 0;
-            pointer-events: none;
+            position: fixed; bottom: 95px; right: 5%;
+            background: var(--bg-card); border: 1px solid var(--hairline);
+            border-radius: 4px; width: 230px; overflow: hidden;
+            z-index: 2000; opacity: 0; pointer-events: none;
+            transform: translateY(15px); transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.9);
         }
-
-        .action-menu.active {
-            transform: scale(1);
-            opacity: 1;
-            pointer-events: auto;
-        }
+        .action-menu.active { transform: translateY(0); opacity: 1; pointer-events: auto; }
 
         .action-menu button {
-            width: 100%;
-            background: none;
-            border: none;
-            padding: 15px;
-            text-align: left;
-            font-size: 14px;
-            font-weight: 600;
-            color: #333;
-            cursor: pointer;
-            border-bottom: 1px solid #f0f0f0;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            transition: background 0.2s;
-            font-family: inherit;
+            width: 100%; background: none; border: none; border-bottom: 1px solid var(--hairline);
+            padding: 20px; text-align: left; font-size: 11px; font-weight: 500;
+            color: var(--text-main); cursor: pointer; display: flex; align-items: center; gap: 15px;
+            text-transform: uppercase; letter-spacing: 2px; transition: 0.3s;
+            font-family: 'Plus Jakarta Sans', sans-serif;
         }
+        .action-menu button:last-child { border-bottom: none; }
+        .action-menu button:hover { background: rgba(255,255,255,0.02); color: var(--accent); }
+        .action-menu button i { color: var(--accent); font-size: 15px; width: 20px; text-align: center; }
 
-        .action-menu button:last-child {
-            border-bottom: none;
-        }
-
-        .action-menu button:hover {
-            background: #f8f9fa;
-        }
-
-        .action-menu button i {
-            color: #d32f2f;
-            width: 20px;
-            text-align: center;
-            font-size: 16px;
-        }
-
-        .action-menu .back-btn i {
-            color: #666;
-        }
+        .back-btn-action i, .back-btn-action span { color: var(--text-muted) !important; }
+        .back-btn-action:hover i, .back-btn-action:hover span { color: var(--accent) !important; }
 
         .wifi-box {
-            margin: 40px auto;
-            max-width: 400px;
-            background: #2d3436;
-            color: white;
-            padding: 20px;
-            border-radius: 15px;
-            text-align: center;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            margin: 80px 5% 40px; background: var(--bg-card); border: 1px solid var(--hairline);
+            color: var(--text-muted); padding: 40px 20px; border-radius: 2px; text-align: center; position: relative;
         }
+        .wifi-box::before { content: ''; position: absolute; top:0; left:50%; transform:translateX(-50%); width: 30px; height: 1px; background: var(--accent);}
+        .wifi-box i { color: var(--accent); font-size: 22px; margin-bottom: 20px; display: block; opacity: 0.7;}
+        .wifi-box span { font-size: 12px; text-transform: uppercase; letter-spacing: 2px; display: block; margin-bottom: 5px;}
+        .wifi-box strong { color: white; letter-spacing: 2px; font-family: 'Playfair Display', serif; font-size: 19px; display: block; font-weight: 400; }
 
-        .no-results {
-            display: none;
-            text-align: center;
-            padding: 40px 20px;
-            color: #888;
-        }
-        .no-results i { font-size: 40px; color: #d32f2f; margin-bottom: 15px; opacity: 0.5; }
-        .no-results p { font-size: 16px; font-weight: 500; }
+        .no-results { display: none; text-align: center; padding: 80px 20px; color: rgba(255,255,255,0.1); }
+        .no-results i { font-size: 28px; margin-bottom: 20px; display: block; }
+        .no-results p { font-size: 13px; text-transform: uppercase; letter-spacing: 3px; font-weight: 300;}
 
-        /* ======================================================
-           MEDIA QUERIES ЗА RESPONSIVE ДИЗАЙН (ТАБЛЕТИ И ДЕСКТОП)
-           ====================================================== */
-
-        /* Таблети (над 768px) */
         @media (min-width: 768px) {
-            .menu-section {
-                display: grid;
-                grid-template-columns: repeat(2, 1fr);
-                gap: 20px;
-            }
-            .mobile-card {
-                margin-bottom: 0; /* Отстоянието вече се управлява от gap: 20px */
-            }
-            .sticky-nav {
-                justify-content: center; /* Центриране на менюто */
-            }
+            .menu-section { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px 40px; padding: 60px 5%; }
+            .mobile-card { margin: 0 0 20px 0; border: 1px solid var(--hairline); padding: 20px; border-radius: 4px;}
+            .section-title { transform: none; left: auto; text-align: left; margin-left: 0; }
+            .section-title::after { left: 0; transform: none;}
+            .sticky-nav { justify-content: center; gap: 40px;}
+            .search-container { max-width: 450px; }
+            .card-img { width: 130px; height: 130px;}
         }
-
-        /* Десктоп и лаптопи (над 1024px) */
         @media (min-width: 1024px) {
-            .menu-section {
-                grid-template-columns: repeat(3, 1fr); /* 3 колони на голям екран */
-                gap: 30px;
-            }
-            .card-img {
-                height: 220px; /* Малко по-големи снимки на голям екран */
-            }
+            .menu-section { grid-template-columns: repeat(3, 1fr); }
         }
     </style>
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-5R0EZ7E8PC"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-5R0EZ7E8PC');
-</script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-5R0EZ7E8PC"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-5R0EZ7E8PC');
+    </script>
 </head>
 <body>
 
     <div class="promo-banner">
-        <span class="lang-bg">Обедно меню до 16:00ч - Всеки делник!</span>
-        <span class="lang-en">Lunch Menu until 16:00 - Weekdays only!</span>
+        <span class="lang-bg">Обедно меню до 16:00ч &bull; Всеки делник</span>
+        <span class="lang-en">Lunch Menu until 16:00 &bull; Weekdays</span>
     </div>
 
-    <header class="mobile-header">
-        <div class="header-inner">
+    <div class="sticky-master">
+        <header class="mobile-header">
             <a href="index.html" class="back-btn-header"><i class="fas fa-arrow-left"></i></a>
-            <img src="logo.png" alt="Caesar" class="logo-img">
+            
+            <div class="logo-wrapper">
+                <img src="logo.png" alt="Caesar Logo" class="logo-img">
+            </div>
+            
             <button class="lang-btn" onclick="toggleLanguage()">EN</button>
-        </div>
-    </header>
+        </header>
 
-    <div class="sticky-wrapper">
-        <div class="search-container">
-            <i class="fas fa-search search-icon"></i>
-            <input type="text" id="mobSearch" class="search-input" 
-                   data-ph-bg="Търси в менюто..." 
-                   data-ph-en="Search menu..." 
-                   placeholder="Търси в менюто..." 
-                   onkeyup="mobFilter()">
+        <div class="sticky-wrapper">
+            <div class="search-container">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" id="mobSearch" class="search-input" 
+                       data-ph-bg="Търсене в менюто..." 
+                       data-ph-en="Search the menu..." 
+                       placeholder="Търсене в менюто..." 
+                       onkeyup="mobFilter()">
+            </div>
+            <nav class="sticky-nav">
+                <a href="#salads" class="nav-item">
+                    <span class="lang-bg">Салати</span><span class="lang-en">Salads</span>
+                </a>
+                <a href="#starters" class="nav-item">
+                    <span class="lang-bg">Предястия</span><span class="lang-en">Starters</span>
+                </a>
+                <a href="#mains" class="nav-item">
+                    <span class="lang-bg">Основни</span><span class="lang-en">Mains</span>
+                </a>
+                <a href="#drinks" class="nav-item">
+                    <span class="lang-bg">Напитки</span><span class="lang-en">Drinks</span>
+                </a>
+            </nav>
         </div>
-        <nav class="sticky-nav">
-            <a href="#salads" class="nav-item">
-                <span class="lang-bg">Салати</span><span class="lang-en">Salads</span>
-            </a>
-            <a href="#starters" class="nav-item">
-                <span class="lang-bg">Предястия</span><span class="lang-en">Starters</span>
-            </a>
-            <a href="#mains" class="nav-item">
-                <span class="lang-bg">Основни</span><span class="lang-en">Main Courses</span>
-            </a>
-            <a href="#drinks" class="nav-item">
-                <span class="lang-bg">Напитки</span><span class="lang-en">Drinks</span>
-            </a>
-        </nav>
     </div>
 
     <div id="menuOverlay" class="menu-overlay" onclick="closeActionMenu()"></div>
@@ -462,10 +329,10 @@
                 </div>
             </button>
             <button onclick="showBillOptions()">
-                <i class="fas fa-file-invoice-dollar"></i>
+                <i class="fas fa-file-invoice"></i>
                 <div>
                     <span class="lang-bg">Поискай сметката</span>
-                    <span class="lang-en">Ask for Bill</span>
+                    <span class="lang-en">Request Bill</span>
                 </div>
             </button>
         </div>
@@ -485,7 +352,7 @@
                     <span class="lang-en">Card</span>
                 </div>
             </button>
-            <button onclick="showMainActions()" class="back-btn">
+            <button onclick="showMainActions()" class="back-btn-action">
                 <i class="fas fa-arrow-left"></i>
                 <div>
                     <span class="lang-bg">Назад</span>
@@ -495,7 +362,7 @@
         </div>
     </div>
 
-    <div class="fab" onclick="toggleActionMenu()" title="Actions">
+    <div class="fab" onclick="toggleActionMenu()">
         <i class="fas fa-bell"></i>
     </div>
 
@@ -512,7 +379,7 @@
                             <span class="lang-bg">Салата Цезар</span><span class="lang-en">Caesar Salad</span>
                             <span class="badge badge-new"><span class="lang-bg">Ново</span><span class="lang-en">New</span></span>
                         </h3>
-                        <span class="item-price">14.90 лв. / 7.62 €</span>
+                        <span class="item-price">7.60 €</span>
                     </div>
                     <p class="item-desc">
                         <span class="lang-bg">Айсберг, пилешко филе, пармезан, крутони, сос Цезар.</span>
@@ -534,9 +401,9 @@
                     <div class="card-top">
                         <h3 class="item-name">
                             <span class="lang-bg">Шопска салата</span><span class="lang-en">Shopska Salad</span>
-                            <span class="badge badge-veg">🌿</span>
+                            <span class="badge badge-veg">Veg</span>
                         </h3>
-                        <span class="item-price">9.50 лв. / 4.86 €</span>
+                        <span class="item-price">4.90 €</span>
                     </div>
                     <p class="item-desc">
                         <span class="lang-bg">Домати, краставици, пресен пипер, сирене, магданоз.</span>
@@ -557,7 +424,7 @@
                         <h3 class="item-name">
                             <span class="lang-bg">Овчарска салата</span><span class="lang-en">Shepherd's Salad</span>
                         </h3>
-                        <span class="item-price">10.90 лв. / 5.57 €</span>
+                        <span class="item-price">5.60 €</span>
                     </div>
                     <p class="item-desc">
                         <span class="lang-bg">Шопска салата с добавка на гъби, яйце и шунка.</span>
@@ -579,7 +446,7 @@
                         <h3 class="item-name">
                             <span class="lang-bg">Гръцка салата</span><span class="lang-en">Greek Salad</span>
                         </h3>
-                        <span class="item-price">11.50 лв. / 5.88 €</span>
+                        <span class="item-price">5.90 €</span>
                     </div>
                     <p class="item-desc">
                         <span class="lang-bg">Домати, краставици, маслини, лук, риган, сирене Фета.</span>
@@ -600,7 +467,7 @@
                         <h3 class="item-name">
                             <span class="lang-bg">Капрезе</span><span class="lang-en">Caprese</span>
                         </h3>
-                        <span class="item-price">13.20 лв. / 6.75 €</span>
+                        <span class="item-price">6.80 €</span>
                     </div>
                     <p class="item-desc">
                         <span class="lang-bg">Белени домати, моцарела, босилеково песто.</span>
@@ -622,7 +489,7 @@
                         <h3 class="item-name">
                             <span class="lang-bg">Витамина</span><span class="lang-en">Vitamina Salad</span>
                         </h3>
-                        <span class="item-price">8.90 лв. / 4.55 €</span>
+                        <span class="item-price">4.60 €</span>
                     </div>
                     <p class="item-desc">
                         <span class="lang-bg">Моркови, цвекло, ябълка, дресинг от лимон и мед.</span>
@@ -639,7 +506,7 @@
                         <h3 class="item-name">
                             <span class="lang-bg">Зелена с риба тон</span><span class="lang-en">Tuna Salad</span>
                         </h3>
-                        <span class="item-price">12.50 лв. / 6.39 €</span>
+                        <span class="item-price">6.40 €</span>
                     </div>
                     <p class="item-desc">
                         <span class="lang-bg">Маруля, краставици, царевица, риба тон, лимон.</span>
@@ -660,7 +527,7 @@
                         <h3 class="item-name">
                             <span class="lang-bg">Спаначена салата</span><span class="lang-en">Spinach Salad</span>
                         </h3>
-                        <span class="item-price">13.90 лв. / 7.11 €</span>
+                        <span class="item-price">7.10 €</span>
                     </div>
                     <p class="item-desc">
                         <span class="lang-bg">Бейби спанак, киноа, сушени домати, синьо сирене.</span>
@@ -681,7 +548,7 @@
                         <h3 class="item-name">
                             <span class="lang-bg">Розови домати</span><span class="lang-en">Pink Tomatoes</span>
                         </h3>
-                        <span class="item-price">15.50 лв. / 7.93 €</span>
+                        <span class="item-price">7.90 €</span>
                     </div>
                     <p class="item-desc">
                         <span class="lang-bg">Селски розови домати, биволско сирене, печен пипер.</span>
@@ -702,7 +569,7 @@
                         <h3 class="item-name">
                             <span class="lang-bg">Снежанка</span><span class="lang-en">Snow White Salad</span>
                         </h3>
-                        <span class="item-price">8.50 лв. / 4.35 €</span>
+                        <span class="item-price">4.40 €</span>
                     </div>
                     <p class="item-desc">
                         <span class="lang-bg">Цедено кисело мляко, кисели краставички, копър, орехи.</span>
@@ -714,6 +581,28 @@
                         <span class="allergen-tag"><i class="fas fa-leaf"></i> <span class="lang-bg">Ядки</span><span class="lang-en">Nuts</span></span>
                     </div>
                     <div class="item-footer"><span class="item-weight">250 <span class="lang-bg">гр.</span><span class="lang-en">g</span></span></div>
+                </div>
+            </div>
+
+            <div class="mobile-card">
+                <img src="images/caprese.jpg" class="card-img" alt="Салата Бурата">
+                <div class="card-body">
+                    <div class="card-top">
+                        <h3 class="item-name">
+                            <span class="lang-bg">Салата Бурата</span><span class="lang-en">Burrata Salad</span>
+                            <span class="badge badge-new">New</span>
+                        </h3>
+                        <span class="item-price">9.20 €</span>
+                    </div>
+                    <p class="item-desc">
+                        <span class="lang-bg">Свежа Бурата, чери домати, рукола, балсамова редукция.</span>
+                        <span class="lang-en">Fresh Burrata, cherry tomatoes, rucola, balsamic reduction.</span>
+                    </p>
+                    <div class="allergen-row">
+                        <span class="allergen-title"><span class="lang-bg">Алергени:</span><span class="lang-en">Allergens:</span></span>
+                        <span class="allergen-tag"><i class="fas fa-cheese"></i> <span class="lang-bg">Мляко</span><span class="lang-en">Milk</span></span>
+                    </div>
+                    <div class="item-footer"><span class="item-weight">320 <span class="lang-bg">гр.</span><span class="lang-en">g</span></span></div>
                 </div>
             </div>
         </section>
@@ -728,7 +617,7 @@
                         <h3 class="item-name">
                             <span class="lang-bg">Кашкавал пане</span><span class="lang-en">Breaded Yellow Cheese</span>
                         </h3>
-                        <span class="item-price">10.90 лв. / 5.57 €</span>
+                        <span class="item-price">5.60 €</span>
                     </div>
                     <p class="item-desc">
                         <span class="lang-bg">Класически кашкавал с хрупкава панировка.</span>
@@ -751,7 +640,7 @@
                         <h3 class="item-name">
                             <span class="lang-bg">Сирене по шопски</span><span class="lang-en">Shopski Style Cheese</span>
                         </h3>
-                        <span class="item-price">9.90 лв. / 5.06 €</span>
+                        <span class="item-price">5.10 €</span>
                     </div>
                     <p class="item-desc">
                         <span class="lang-bg">Сирене, домати, яйце и люта чушка в гювече.</span>
@@ -773,7 +662,7 @@
                         <h3 class="item-name">
                             <span class="lang-bg">Пилешки хапки</span><span class="lang-en">Chicken Nuggets</span>
                         </h3>
-                        <span class="item-price">12.50 лв. / 6.39 €</span>
+                        <span class="item-price">6.40 €</span>
                     </div>
                     <p class="item-desc">
                         <span class="lang-bg">Със сусам и чеснов сос.</span>
@@ -796,7 +685,7 @@
                         <h3 class="item-name">
                             <span class="lang-bg">Хрупкави тиквички</span><span class="lang-en">Crispy Zucchini</span>
                         </h3>
-                        <span class="item-price">10.50 лв. / 5.37 €</span>
+                        <span class="item-price">5.40 €</span>
                     </div>
                     <p class="item-desc">
                         <span class="lang-bg">Тънко нарязани тиквички по гръцки с млечен сос.</span>
@@ -818,7 +707,7 @@
                         <h3 class="item-name">
                             <span class="lang-bg">Гъби в масло</span><span class="lang-en">Mushrooms in Butter</span>
                         </h3>
-                        <span class="item-price">9.20 лв. / 4.70 €</span>
+                        <span class="item-price">4.70 €</span>
                     </div>
                     <p class="item-desc">
                         <span class="lang-bg">Пресни печурки, масло, копър и чесън.</span>
@@ -839,7 +728,7 @@
                         <h3 class="item-name">
                             <span class="lang-bg">Топени сиренца</span><span class="lang-en">Melted Cheese Bites</span>
                         </h3>
-                        <span class="item-price">11.90 лв. / 6.08 €</span>
+                        <span class="item-price">6.10 €</span>
                     </div>
                     <p class="item-desc">
                         <span class="lang-bg">Панирани топени сирена със сладко от боровинки.</span>
@@ -863,7 +752,7 @@
                             <span class="lang-bg">Пикантни крилца</span><span class="lang-en">Spicy Wings</span>
                             <span class="badge badge-spicy">🌶️</span>
                         </h3>
-                        <span class="item-price">11.50 лв. / 5.88 €</span>
+                        <span class="item-price">5.90 €</span>
                     </div>
                     <p class="item-desc">
                         <span class="lang-bg">Пикантни крилца с барбекю глазура.</span>
@@ -880,7 +769,7 @@
                         <h3 class="item-name">
                             <span class="lang-bg">Телешки език в масло</span><span class="lang-en">Beef Tongue in Butter</span>
                         </h3>
-                        <span class="item-price">14.90 лв. / 7.62 €</span>
+                        <span class="item-price">7.60 €</span>
                     </div>
                     <p class="item-desc">
                         <span class="lang-bg">Крехък телешки език, задушен в масло.</span>
@@ -901,7 +790,7 @@
                         <h3 class="item-name">
                             <span class="lang-bg">Тарама хайвер</span><span class="lang-en">Tarama Fish Roe</span>
                         </h3>
-                        <span class="item-price">8.50 лв. / 4.35 €</span>
+                        <span class="item-price">4.40 €</span>
                     </div>
                     <p class="item-desc">
                         <span class="lang-bg">Домашен разбит хайвер с препечени филийки.</span>
@@ -923,7 +812,7 @@
                         <h3 class="item-name">
                             <span class="lang-bg">Плато сирена</span><span class="lang-en">Cheese Platter</span>
                         </h3>
-                        <span class="item-price">24.00 лв. / 12.27 €</span>
+                        <span class="item-price">12.30 €</span>
                     </div>
                     <p class="item-desc">
                         <span class="lang-bg">Синьо сирене, бри, камембер, ементал, орехи.</span>
@@ -949,7 +838,7 @@
                         <h3 class="item-name">
                             <span class="lang-bg">Свински ребърца</span><span class="lang-en">Pork Ribs</span>
                         </h3>
-                        <span class="item-price">22.90 лв. / 11.71 €</span>
+                        <span class="item-price">11.70 €</span>
                     </div>
                     <p class="item-desc">
                         <span class="lang-bg">С BBQ сос и домашни пържени картофи.</span>
@@ -966,7 +855,7 @@
                         <h3 class="item-name">
                             <span class="lang-bg">Пилешка пържола</span><span class="lang-en">Chicken Steak</span>
                         </h3>
-                        <span class="item-price">14.50 лв. / 7.41 €</span>
+                        <span class="item-price">7.40 €</span>
                     </div>
                     <p class="item-desc">
                         <span class="lang-bg">Пилешко филе на скара с гриловани зеленчуци.</span>
@@ -983,7 +872,7 @@
                         <h3 class="item-name">
                             <span class="lang-bg">Свински врат на скара</span><span class="lang-en">Grilled Pork Neck</span>
                         </h3>
-                        <span class="item-price">16.90 лв. / 8.64 €</span>
+                        <span class="item-price">8.60 €</span>
                     </div>
                     <p class="item-desc">
                         <span class="lang-bg">Сочен свински врат на скара с гъбен сос.</span>
@@ -1004,7 +893,7 @@
                         <h3 class="item-name">
                             <span class="lang-bg">Ризото с манатарки</span><span class="lang-en">Boletus Risotto</span>
                         </h3>
-                        <span class="item-price">15.90 лв. / 8.13 €</span>
+                        <span class="item-price">8.10 €</span>
                     </div>
                     <p class="item-desc">
                         <span class="lang-bg">Ориз Арборио, диви манатарки, пармезан, бяло вино.</span>
@@ -1025,7 +914,7 @@
                         <h3 class="item-name">
                             <span class="lang-bg">Спагети Карбонара</span><span class="lang-en">Spaghetti Carbonara</span>
                         </h3>
-                        <span class="item-price">14.90 лв. / 7.62 €</span>
+                        <span class="item-price">7.60 €</span>
                     </div>
                     <p class="item-desc">
                         <span class="lang-bg">Оригинална рецепта с гуанчале, яйце и пекорино.</span>
@@ -1048,7 +937,7 @@
                         <h3 class="item-name">
                             <span class="lang-bg">Телешки бургер</span><span class="lang-en">Beef Burger</span>
                         </h3>
-                        <span class="item-price">18.50 лв. / 9.46 €</span>
+                        <span class="item-price">9.50 €</span>
                     </div>
                     <p class="item-desc">
                         <span class="lang-bg">100% телешко, чедър, карамелизиран лук.</span>
@@ -1070,7 +959,7 @@
                         <h3 class="item-name">
                             <span class="lang-bg">Сьомга на плоча</span><span class="lang-en">Grilled Salmon</span>
                         </h3>
-                        <span class="item-price">26.00 лв. / 13.29 €</span>
+                        <span class="item-price">13.30 €</span>
                     </div>
                     <p class="item-desc">
                         <span class="lang-bg">Филе от сьомга с гарнитура аспержи и лимонов сос.</span>
@@ -1091,7 +980,7 @@
                         <h3 class="item-name">
                             <span class="lang-bg">Пиле с четири сирена</span><span class="lang-en">Chicken 4 Cheeses</span>
                         </h3>
-                        <span class="item-price">17.50 лв. / 8.95 €</span>
+                        <span class="item-price">9.00 €</span>
                     </div>
                     <p class="item-desc">
                         <span class="lang-bg">Пилешко филе в богат сос от четири вида сирена.</span>
@@ -1112,7 +1001,7 @@
                         <h3 class="item-name">
                             <span class="lang-bg">Саче "Родопи"</span><span class="lang-en">Sache "Rodopi"</span>
                         </h3>
-                        <span class="item-price">28.90 лв. / 14.78 €</span>
+                        <span class="item-price">14.80 €</span>
                     </div>
                     <p class="item-desc">
                         <span class="lang-bg">Свинско, пилешко, наденица и зеленчуци на чугунена плоча.</span>
@@ -1129,7 +1018,7 @@
                         <h3 class="item-name">
                             <span class="lang-bg">Ципура на скара</span><span class="lang-en">Grilled Sea Bream</span>
                         </h3>
-                        <span class="item-price">22.50 лв. / 11.50 €</span>
+                        <span class="item-price">11.50 €</span>
                     </div>
                     <p class="item-desc">
                         <span class="lang-bg">Цяла риба с гарнитура варени картофи.</span>
@@ -1154,7 +1043,7 @@
                         <h3 class="item-name">
                             <span class="lang-bg">Кока Кола / Фанта</span><span class="lang-en">Coca Cola / Fanta</span>
                         </h3>
-                        <span class="item-price">3.50 лв. / 1.79 €</span>
+                        <span class="item-price">1.80 €</span>
                     </div>
                     <div class="item-footer"><span class="item-weight">250 <span class="lang-bg">мл.</span><span class="lang-en">ml.</span></span></div>
                 </div>
@@ -1167,7 +1056,7 @@
                         <h3 class="item-name">
                             <span class="lang-bg">Минерална вода</span><span class="lang-en">Mineral Water</span>
                         </h3>
-                        <span class="item-price">2.50 лв. / 1.28 €</span>
+                        <span class="item-price">1.30 €</span>
                     </div>
                     <p class="item-desc">
                         <span class="lang-bg">Банкя / Девин.</span><span class="lang-en">Bankia / Devin.</span>
@@ -1183,7 +1072,7 @@
                         <h3 class="item-name">
                             <span class="lang-bg">Домашна лимонада</span><span class="lang-en">Homemade Lemonade</span>
                         </h3>
-                        <span class="item-price">5.90 лв. / 3.02 €</span>
+                        <span class="item-price">3.00 €</span>
                     </div>
                     <p class="item-desc">
                         <span class="lang-bg">Лимон, мента, мед и джинджифил.</span>
@@ -1200,7 +1089,7 @@
                         <h3 class="item-name">
                             <span class="lang-bg">Свеж айрян</span><span class="lang-en">Ayran</span>
                         </h3>
-                        <span class="item-price">2.80 лв. / 1.43 €</span>
+                        <span class="item-price">1.40 €</span>
                     </div>
                     <div class="allergen-row">
                         <span class="allergen-title"><span class="lang-bg">Алергени:</span><span class="lang-en">Allergens:</span></span>
@@ -1217,7 +1106,7 @@
                         <h3 class="item-name">
                             <span class="lang-bg">Еспресо Лаваца</span><span class="lang-en">Espresso Lavazza</span>
                         </h3>
-                        <span class="item-price">3.00 лв. / 1.53 €</span>
+                        <span class="item-price">1.50 €</span>
                     </div>
                     <div class="item-footer"><span class="item-weight">60 <span class="lang-bg">мл.</span><span class="lang-en">ml.</span></span></div>
                 </div>
@@ -1230,7 +1119,7 @@
                         <h3 class="item-name">
                             <span class="lang-bg">Бира наливна 500мл</span><span class="lang-en">Draft Beer 500ml</span>
                         </h3>
-                        <span class="item-price">4.50 лв. / 2.30 €</span>
+                        <span class="item-price">2.30 €</span>
                     </div>
                     <div class="item-footer"><span class="item-weight">500 <span class="lang-bg">мл.</span><span class="lang-en">ml.</span></span></div>
                 </div>
@@ -1243,7 +1132,7 @@
                         <h3 class="item-name">
                             <span class="lang-bg">Хайнекен бутилка</span><span class="lang-en">Heineken Bottle</span>
                         </h3>
-                        <span class="item-price">5.50 лв. / 2.81 €</span>
+                        <span class="item-price">2.80 €</span>
                     </div>
                     <div class="item-footer"><span class="item-weight">330 <span class="lang-bg">мл.</span><span class="lang-en">ml.</span></span></div>
                 </div>
@@ -1256,7 +1145,7 @@
                         <h3 class="item-name">
                             <span class="lang-bg">Чаша наливно вино</span><span class="lang-en">Glass of Wine</span>
                         </h3>
-                        <span class="item-price">7.00 лв. / 3.58 €</span>
+                        <span class="item-price">3.60 €</span>
                     </div>
                     <p class="item-desc">
                         <span class="lang-bg">Бяло, Червено или Розе (изба Катаржина).</span>
@@ -1273,7 +1162,7 @@
                         <h3 class="item-name">
                             <span class="lang-bg">Ракия Бургас 63</span><span class="lang-en">Rakia Burgas 63</span>
                         </h3>
-                        <span class="item-price">6.50 лв. / 3.32 €</span>
+                        <span class="item-price">3.30 €</span>
                     </div>
                     <p class="item-desc">
                         <span class="lang-bg">Специална селекция.</span>
@@ -1290,7 +1179,7 @@
                         <h3 class="item-name">
                             <span class="lang-bg">Уиски Jameson 50мл</span><span class="lang-en">Jameson Whiskey 50ml</span>
                         </h3>
-                        <span class="item-price">7.50 лв. / 3.83 €</span>
+                        <span class="item-price">3.80 €</span>
                     </div>
                     <div class="item-footer"><span class="item-weight">50 <span class="lang-bg">мл.</span><span class="lang-en">ml.</span></span></div>
                 </div>
@@ -1298,24 +1187,24 @@
         </section>
 
         <div id="noResults" class="no-results">
-            <i class="fas fa-search-minus"></i>
+            <i class="fas fa-search"></i>
             <p>
-                <span class="lang-bg">Няма намерени резултати</span>
-                <span class="lang-en">No results found</span>
+                <span class="lang-bg">Извън нашето меню</span>
+                <span class="lang-en">Outside our menu</span>
             </p>
         </div>
 
         <div class="wifi-box">
-            <i class="fas fa-wifi" style="font-size: 24px; margin-bottom: 8px; color: #f1c40f;"></i>
+            <i class="fas fa-wifi"></i>
             <div>
-                <span class="lang-bg">Wi-Fi Парола:</span>
-                <span class="lang-en">Wi-Fi Password:</span> 
+                <span>Password:</span>
                 <strong>caesar2025</strong>
             </div>
         </div>
     </main>
 
     <script>
+        // ЛОГИКА ЗА СМЯНА НА ЕЗИКА
         function toggleLanguage() {
             const body = document.body;
             const btn = document.querySelector('.lang-btn');
@@ -1332,14 +1221,12 @@
             }
         }
 
-        // Логика за менюто с действия
+        // ЛОГИКА ЗА ИЗСКАЧАЩОТО МЕНЮ (FAB)
         function toggleActionMenu() {
             const menu = document.getElementById('actionMenu');
             const overlay = document.getElementById('menuOverlay');
             
-            const isActive = menu.classList.contains('active');
-            
-            if (!isActive) {
+            if (!menu.classList.contains('active')) {
                 menu.classList.add('active');
                 overlay.classList.add('active');
                 showMainActions();
@@ -1349,11 +1236,8 @@
         }
 
         function closeActionMenu() {
-            const menu = document.getElementById('actionMenu');
-            const overlay = document.getElementById('menuOverlay');
-            
-            menu.classList.remove('active');
-            overlay.classList.remove('active');
+            document.getElementById('actionMenu').classList.remove('active');
+            document.getElementById('menuOverlay').classList.remove('active');
         }
 
         function showBillOptions() {
@@ -1366,24 +1250,32 @@
             document.getElementById('billActions').style.display = 'none';
         }
 
+        // ИЗПРАЩАНЕ НА СЪОБЩЕНИЯ КЪМ TELEGRAM (ФИКСИРАНО НА БЪЛГАРСКИ)
         function handleAction(actionType, paymentMethod = '') {
             const urlParams = new URLSearchParams(window.location.search);
             let currentTable = urlParams.get('table') || "Неизвестна";
             
-            let message = "";
-            let successAlertBg = "";
-            let successAlertEn = "";
+            let messageToTelegram = ""; // Това лети към сървъра (Винаги BG)
+            let successAlertBg = "";    // Това излиза на екрана ако е на BG
+            let successAlertEn = "";    // Това излиза на екрана ако е на EN
 
             if (actionType === 'waiter') {
-                message = `🔔 Внимание: Маса ${currentTable} извика сервитьор!`;
-                successAlertBg = `Успешно извикахте сервитьор за маса ${currentTable}!`;
-                successAlertEn = `Success! A waiter has been called to table ${currentTable}.`;
+                // Телеграм съобщение за сервитьора:
+                messageToTelegram = `🔔 Внимание: Маса ${currentTable} извика сервитьор!`;
+                
+                // Alert за клиента:
+                successAlertBg = `Вашата заявка за сервитьор (маса ${currentTable}) е изпратена.`;
+                successAlertEn = `Your request for a waiter (table ${currentTable}) has been sent.`;
             } else if (actionType === 'bill') {
                 const methodTextBg = paymentMethod === 'cash' ? 'В БРОЙ' : 'С КАРТА';
                 const methodTextEn = paymentMethod === 'cash' ? 'CASH' : 'CARD';
-                message = `💰 Маса ${currentTable} поиска сметката: ${methodTextBg}`;
-                successAlertBg = `Успешно поискахте сметката (${methodTextBg.toLowerCase()}) за маса ${currentTable}!`;
-                successAlertEn = `Success! Bill requested (${methodTextEn}) for table ${currentTable}.`;
+                
+                // Телеграм съобщение за сервитьора:
+                messageToTelegram = `💰 Маса ${currentTable} поиска сметката: ${methodTextBg}`;
+                
+                // Alert за клиента:
+                successAlertBg = `Заявката за сметка (${methodTextBg.toLowerCase()}, маса ${currentTable}) е изпратена.`;
+                successAlertEn = `Bill request (${methodTextEn}, table ${currentTable}) has been sent.`;
             }
 
             const botToken = '8419693328:AAEkzgyvg6L4LgEkep4kv-wMwckLJ0aGlOU';
@@ -1392,25 +1284,26 @@
             fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ chat_id: chatId, text: message })
+                body: JSON.stringify({ chat_id: chatId, text: messageToTelegram }) // Пращаме BG текста
             })
             .then(response => {
                 if(response.ok) {
                     const isEnglish = document.body.classList.contains('english-mode');
+                    // Показваме правилния език на клиента:
                     alert(isEnglish ? successAlertEn : successAlertBg);
                     closeActionMenu();
                 } else {
-                    alert("Грешка при свързване със сървъра. / Error connecting to server.");
+                    alert("Системна грешка. Моля, опитайте отново. / System error. Please try again.");
                 }
             })
-            .catch(error => alert("Възникна грешка при повикването. / Error processing request."));
+            .catch(error => alert("Грешка при връзката. / Connection error."));
         }
 
+        // ФИЛТЪР ЗА ТЪРСЕНЕ
         function mobFilter() {
             let input = document.getElementById('mobSearch').value.toUpperCase();
             let sections = document.getElementsByClassName('menu-section');
             let noResultsDiv = document.getElementById('noResults');
-            
             let totalVisibleSections = 0;
 
             for (let i = 0; i < sections.length; i++) {
@@ -1423,14 +1316,12 @@
                     let h3 = card.getElementsByTagName('h3')[0];
                     if (h3) {
                         let txtValue = h3.textContent || h3.innerText;
-                        
-                        // Търсим и в алергените
                         let allergens = card.getElementsByClassName('allergen-row')[0];
                         let allergenText = allergens ? (allergens.textContent || allergens.innerText) : "";
                         let fullText = txtValue + " " + allergenText;
 
                         if (fullText.toUpperCase().indexOf(input) > -1) {
-                            card.style.display = ""; 
+                            card.style.display = "flex"; 
                             hasVisibleCards = true;
                         } else {
                             card.style.display = "none"; 
@@ -1439,7 +1330,7 @@
                 }
 
                 if (hasVisibleCards) {
-                    section.style.display = ""; // Възстановяваме grid layout-а
+                    section.style.display = ""; 
                     totalVisibleSections++;
                 } else {
                     section.style.display = "none";
@@ -1453,6 +1344,5 @@
             }
         }
     </script>
-
 </body>
 </html>

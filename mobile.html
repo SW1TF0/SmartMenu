@@ -208,6 +208,15 @@
         }
         .fab:hover { background: var(--accent); color: #000; transform: scale(1.05) rotate(5deg); }
 
+        .cart-badge {
+            position: absolute; top: -5px; right: -5px;
+            background: #e74c3c; color: white; font-size: 10px;
+            width: 20px; height: 20px; border-radius: 50%;
+            display: none; align-items: center; justify-content: center;
+            font-family: 'Plus Jakarta Sans', sans-serif; font-weight: bold; border: 2px solid #000;
+        }
+        .fab.has-items .cart-badge { display: flex; }
+
         .menu-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
@@ -218,7 +227,7 @@
         .action-menu {
             position: fixed; bottom: 95px; right: 5%;
             background: var(--bg-card); border: 1px solid var(--hairline);
-            border-radius: 4px; width: 230px; overflow: hidden;
+            border-radius: 4px; width: 260px; overflow: hidden;
             z-index: 2000; opacity: 0; pointer-events: none;
             transform: translateY(15px); transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1);
             box-shadow: 0 20px 50px rgba(0,0,0,0.9);
@@ -238,6 +247,62 @@
 
         .back-btn-action i, .back-btn-action span { color: var(--text-muted) !important; }
         .back-btn-action:hover i, .back-btn-action:hover span { color: var(--accent) !important; }
+
+        /* --- 5. КОЛИЧКА СТИЛОВЕ --- */
+        /* Подобрен бутон Добави */
+        .add-to-cart-btn {
+            background: rgba(197, 160, 89, 0.05); 
+            border: 1px solid rgba(197, 160, 89, 0.4);
+            color: var(--accent); 
+            padding: 8px 16px; 
+            border-radius: 20px; 
+            font-size: 11px; cursor: pointer; text-transform: uppercase; letter-spacing: 1.5px;
+            font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 600;
+            transition: all 0.3s ease; display: flex; align-items: center; gap: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .add-to-cart-btn:hover { 
+            background: var(--accent); 
+            color: #000; 
+            border-color: var(--accent); 
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(197, 160, 89, 0.3);
+        }
+        .add-to-cart-btn:active {
+            transform: translateY(0);
+        }
+        .add-to-cart-btn i { font-size: 12px; }
+
+        /* Бадж вътре в менюто срещу "Количка" */
+        .menu-inner-badge {
+            background: #e74c3c;
+            color: white;
+            font-size: 10px;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-weight: bold;
+            display: none; /* Скрит по подразбиране */
+            margin-left: auto; /* Избутва го вдясно */
+        }
+
+        #cartItemsContainer { max-height: 250px; overflow-y: auto; padding: 0 15px; }
+        .cart-item-row { 
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 11px; padding: 12px 0; border-bottom: 1px dashed var(--hairline); 
+            color: var(--text-main); letter-spacing: 1px;
+        }
+        .cart-item-info { flex-grow: 1; padding-right: 10px; line-height: 1.4; }
+        .cart-item-qty { color: var(--text-muted); font-size: 10px; }
+        .cart-item-price { color: var(--accent); margin-right: 10px; font-weight: 500; }
+        .cart-item-remove { color: #822; cursor: pointer; font-size: 14px; padding: 5px; transition: 0.3s;}
+        .cart-item-remove:hover { color: #e74c3c; }
+        
+        .cart-total-row { 
+            display: flex; justify-content: space-between; padding: 15px; 
+            font-family: 'Playfair Display', serif; font-size: 16px; color: white; border-top: 1px solid var(--hairline);
+        }
+
+        .cart-empty-msg { text-align: center; padding: 20px; color: var(--text-muted); font-size: 11px; text-transform: uppercase; letter-spacing: 2px; font-style: italic;}
 
         .wifi-box {
             margin: 80px 5% 40px; background: var(--bg-card); border: 1px solid var(--hairline);
@@ -321,6 +386,16 @@
 
     <div id="actionMenu" class="action-menu">
         <div id="mainActions">
+            <button onclick="showCartOptions()" style="display: flex; width: 100%; align-items: center;">
+                <i class="fas fa-shopping-cart"></i>
+                <div style="flex-grow: 1; display: flex; align-items: center;">
+                    <div>
+                        <span class="lang-bg">Количка</span>
+                        <span class="lang-en">View Cart</span>
+                    </div>
+                    <span class="menu-inner-badge" id="innerCartBadge">0</span>
+                </div>
+            </button>
             <button onclick="handleAction('waiter')">
                 <i class="fas fa-concierge-bell"></i>
                 <div>
@@ -360,14 +435,39 @@
                 </div>
             </button>
         </div>
+
+        <div id="cartActions" style="display: none;">
+            <div id="cartItemsContainer">
+                </div>
+            
+            <div class="cart-total-row">
+                <span><span class="lang-bg">Общо:</span><span class="lang-en">Total:</span></span>
+                <span id="cartTotalPrice">0.00 €</span>
+            </div>
+
+            <button onclick="sendOrder()" style="background: rgba(197, 160, 89, 0.1);">
+                <i class="fas fa-paper-plane"></i>
+                <div>
+                    <span class="lang-bg">Поръчай</span>
+                    <span class="lang-en">Send Order</span>
+                </div>
+            </button>
+            <button onclick="showMainActions()" class="back-btn-action">
+                <i class="fas fa-arrow-left"></i>
+                <div>
+                    <span class="lang-bg">Назад</span>
+                    <span class="lang-en">Back</span>
+                </div>
+            </button>
+        </div>
     </div>
 
     <div class="fab" onclick="toggleActionMenu()">
         <i class="fas fa-bell"></i>
+        <div class="cart-badge" id="cartBadge">0</div>
     </div>
 
     <main id="menuList">
-        
         <section id="salads" class="menu-section">
             <h2 class="section-title"><span class="lang-bg">Салати</span><span class="lang-en">Salads</span></h2>
             
@@ -1204,7 +1304,108 @@
     </main>
 
     <script>
-        // ЛОГИКА ЗА СМЯНА НА ЕЗИКА
+        // --- ЛОГИКА ЗА КОЛИЧКА ---
+        let cart = [];
+
+        // Автоматично инжектиране на бутоните "Добави" към всеки продукт
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.mobile-card').forEach(card => {
+                let nameBgEl = card.querySelector('.item-name .lang-bg');
+                let nameEnEl = card.querySelector('.item-name .lang-en');
+                let priceEl = card.querySelector('.item-price');
+                
+                if (nameBgEl && nameEnEl && priceEl) {
+                    let nameBg = nameBgEl.textContent.trim();
+                    let nameEn = nameEnEl.textContent.trim();
+                    let price = parseFloat(priceEl.textContent.replace('€', '').trim());
+
+                    let footer = card.querySelector('.item-footer');
+                    let addBtn = document.createElement('button');
+                    addBtn.className = 'add-to-cart-btn';
+                    addBtn.innerHTML = `
+                        <i class="fas fa-plus"></i> 
+                        <span class="lang-bg">Добави</span><span class="lang-en">Add</span>
+                    `;
+                    addBtn.onclick = () => addToCart(nameBg, nameEn, price);
+                    footer.appendChild(addBtn);
+                }
+            });
+        });
+
+        function addToCart(nameBg, nameEn, price) {
+            let existingItem = cart.find(item => item.nameBg === nameBg);
+            if (existingItem) {
+                existingItem.qty++;
+            } else {
+                cart.push({ nameBg, nameEn, price, qty: 1 });
+            }
+            updateCartBadge();
+            
+            // Лека анимация на камбанката при добавяне
+            const fab = document.querySelector('.fab');
+            fab.style.transform = 'scale(1.15) rotate(-10deg)';
+            setTimeout(() => fab.style.transform = '', 200);
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartBadge();
+            renderCartItems();
+        }
+
+        function updateCartBadge() {
+            const badge = document.getElementById('cartBadge');
+            const innerBadge = document.getElementById('innerCartBadge');
+            const fab = document.querySelector('.fab');
+            let totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+            
+            // Обновяваме текста на двата баджа
+            badge.innerText = totalItems;
+            innerBadge.innerText = totalItems;
+            
+            if (totalItems > 0) {
+                fab.classList.add('has-items');
+                innerBadge.style.display = 'inline-block'; // Показваме го в менюто
+            } else {
+                fab.classList.remove('has-items');
+                innerBadge.style.display = 'none'; // Скриваме го, ако е 0
+            }
+        }
+
+        function renderCartItems() {
+            let container = document.getElementById('cartItemsContainer');
+            let totalEl = document.getElementById('cartTotalPrice');
+            container.innerHTML = '';
+            
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="cart-empty-msg">
+                        <span class="lang-bg">Количката е празна</span>
+                        <span class="lang-en">Cart is empty</span>
+                    </div>`;
+                totalEl.innerText = "0.00 €";
+                return;
+            }
+
+            let total = 0;
+            cart.forEach((item, index) => {
+                total += item.price * item.qty;
+                container.innerHTML += `
+                    <div class="cart-item-row">
+                        <div class="cart-item-info">
+                            <span class="lang-bg">${item.nameBg}</span>
+                            <span class="lang-en">${item.nameEn}</span>
+                            <div class="cart-item-qty">x${item.qty}</div>
+                        </div>
+                        <div class="cart-item-price">${(item.price * item.qty).toFixed(2)} €</div>
+                        <i class="fas fa-times cart-item-remove" onclick="removeFromCart(${index})"></i>
+                    </div>
+                `;
+            });
+            totalEl.innerText = `${total.toFixed(2)} €`;
+        }
+
+        // --- ЛОГИКА ЗА СМЯНА НА ЕЗИКА ---
         function toggleLanguage() {
             const body = document.body;
             const btn = document.querySelector('.lang-btn');
@@ -1221,7 +1422,7 @@
             }
         }
 
-        // ЛОГИКА ЗА ИЗСКАЧАЩОТО МЕНЮ (FAB)
+        // --- ЛОГИКА ЗА ИЗСКАЧАЩОТО МЕНЮ (FAB) ---
         function toggleActionMenu() {
             const menu = document.getElementById('actionMenu');
             const overlay = document.getElementById('menuOverlay');
@@ -1242,55 +1443,96 @@
 
         function showBillOptions() {
             document.getElementById('mainActions').style.display = 'none';
+            document.getElementById('cartActions').style.display = 'none';
             document.getElementById('billActions').style.display = 'block';
         }
 
-        function showMainActions() {
-            document.getElementById('mainActions').style.display = 'block';
+        function showCartOptions() {
+            document.getElementById('mainActions').style.display = 'none';
             document.getElementById('billActions').style.display = 'none';
+            document.getElementById('cartActions').style.display = 'block';
+            renderCartItems();
         }
 
-        // ИЗПРАЩАНЕ НА СЪОБЩЕНИЯ КЪМ TELEGRAM (ФИКСИРАНО НА БЪЛГАРСКИ)
+        function showMainActions() {
+            document.getElementById('cartActions').style.display = 'none';
+            document.getElementById('billActions').style.display = 'none';
+            document.getElementById('mainActions').style.display = 'block';
+        }
+
+        // --- ИЗПРАЩАНЕ КЪМ TELEGRAM ---
+        const botToken = '8419693328:AAEkzgyvg6L4LgEkep4kv-wMwckLJ0aGlOU';
+        const chatId = '-5174289409'; 
+
+        function sendOrder() {
+            if (cart.length === 0) {
+                const isEnglish = document.body.classList.contains('english-mode');
+                alert(isEnglish ? "Your cart is empty!" : "Количката ви е празна!");
+                return;
+            }
+
+            const urlParams = new URLSearchParams(window.location.search);
+            let currentTable = urlParams.get('table') || "Неизвестна";
+            
+            let messageToTelegram = `🛒 *Нова поръчка от Маса ${currentTable}*\n\n`;
+            let total = 0;
+            
+            cart.forEach(item => {
+                messageToTelegram += `🔸 ${item.qty}x ${item.nameBg} - ${(item.price * item.qty).toFixed(2)} €\n`;
+                total += (item.price * item.qty);
+            });
+            
+            messageToTelegram += `\n💶 *Общо:* ${total.toFixed(2)} €`;
+
+            let successAlertBg = `Вашата поръчка за маса ${currentTable} е изпратена успешно!`;
+            let successAlertEn = `Your order for table ${currentTable} has been sent successfully!`;
+
+            sendToTelegramAPI(messageToTelegram, successAlertBg, successAlertEn, true);
+        }
+
         function handleAction(actionType, paymentMethod = '') {
             const urlParams = new URLSearchParams(window.location.search);
             let currentTable = urlParams.get('table') || "Неизвестна";
             
-            let messageToTelegram = ""; // Това лети към сървъра (Винаги BG)
-            let successAlertBg = "";    // Това излиза на екрана ако е на BG
-            let successAlertEn = "";    // Това излиза на екрана ако е на EN
+            let messageToTelegram = ""; 
+            let successAlertBg = "";    
+            let successAlertEn = "";    
 
             if (actionType === 'waiter') {
-                // Телеграм съобщение за сервитьора:
                 messageToTelegram = `🔔 Внимание: Маса ${currentTable} извика сервитьор!`;
-                
-                // Alert за клиента:
                 successAlertBg = `Вашата заявка за сервитьор (маса ${currentTable}) е изпратена.`;
                 successAlertEn = `Your request for a waiter (table ${currentTable}) has been sent.`;
             } else if (actionType === 'bill') {
                 const methodTextBg = paymentMethod === 'cash' ? 'В БРОЙ' : 'С КАРТА';
                 const methodTextEn = paymentMethod === 'cash' ? 'CASH' : 'CARD';
                 
-                // Телеграм съобщение за сервитьора:
                 messageToTelegram = `💰 Маса ${currentTable} поиска сметката: ${methodTextBg}`;
-                
-                // Alert за клиента:
                 successAlertBg = `Заявката за сметка (${methodTextBg.toLowerCase()}, маса ${currentTable}) е изпратена.`;
                 successAlertEn = `Bill request (${methodTextEn}, table ${currentTable}) has been sent.`;
             }
 
-            const botToken = '8419693328:AAEkzgyvg6L4LgEkep4kv-wMwckLJ0aGlOU';
-            const chatId = '-5174289409'; 
+            sendToTelegramAPI(messageToTelegram, successAlertBg, successAlertEn, false);
+        }
 
+        function sendToTelegramAPI(message, successAlertBg, successAlertEn, isOrder) {
             fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ chat_id: chatId, text: messageToTelegram }) // Пращаме BG текста
+                body: JSON.stringify({ 
+                    chat_id: chatId, 
+                    text: message,
+                    parse_mode: 'Markdown'
+                }) 
             })
             .then(response => {
                 if(response.ok) {
                     const isEnglish = document.body.classList.contains('english-mode');
-                    // Показваме правилния език на клиента:
                     alert(isEnglish ? successAlertEn : successAlertBg);
+                    
+                    if (isOrder) {
+                        cart = []; // Изчистваме количката след успешна поръчка
+                        updateCartBadge();
+                    }
                     closeActionMenu();
                 } else {
                     alert("Системна грешка. Моля, опитайте отново. / System error. Please try again.");
@@ -1299,7 +1541,7 @@
             .catch(error => alert("Грешка при връзката. / Connection error."));
         }
 
-        // ФИЛТЪР ЗА ТЪРСЕНЕ
+        // --- ФИЛТЪР ЗА ТЪРСЕНЕ ---
         function mobFilter() {
             let input = document.getElementById('mobSearch').value.toUpperCase();
             let sections = document.getElementsByClassName('menu-section');

@@ -64,7 +64,7 @@
             border-bottom: 1px solid var(--hairline);
         }
 
-        /* --- 2. ОБЕДИНЕН STICKY КОНТЕЙНЕР (ФИКС ЗА ПРОЛУКАТА) --- */
+        /* --- 2. ОБЕДИНЕН STICKY КОНТЕЙНЕР --- */
         .sticky-master {
             position: sticky; top: 0; z-index: 1001;
             background: rgba(10, 12, 13, 0.98);
@@ -227,7 +227,7 @@
         .action-menu {
             position: fixed; bottom: 95px; right: 5%;
             background: var(--bg-card); border: 1px solid var(--hairline);
-            border-radius: 4px; width: 260px; overflow: hidden;
+            border-radius: 4px; width: 270px; overflow: hidden;
             z-index: 2000; opacity: 0; pointer-events: none;
             transform: translateY(15px); transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1);
             box-shadow: 0 20px 50px rgba(0,0,0,0.9);
@@ -249,29 +249,27 @@
         .back-btn-action:hover i, .back-btn-action:hover span { color: var(--accent) !important; }
 
         /* --- 5. КОЛИЧКА СТИЛОВЕ --- */
-        /* Подобрен бутон Добави */
+        
+        /* Изчистен, фин бутон Добави */
         .add-to-cart-btn {
-            background: rgba(197, 160, 89, 0.05); 
-            border: 1px solid rgba(197, 160, 89, 0.4);
+            background: transparent; 
+            border: 1px solid rgba(197, 160, 89, 0.3);
             color: var(--accent); 
-            padding: 8px 16px; 
-            border-radius: 20px; 
-            font-size: 11px; cursor: pointer; text-transform: uppercase; letter-spacing: 1.5px;
-            font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 600;
-            transition: all 0.3s ease; display: flex; align-items: center; gap: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            padding: 5px 10px; 
+            border-radius: 2px; 
+            font-size: 10px; 
+            cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
+            font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 500;
+            transition: 0.3s ease; display: flex; align-items: center; gap: 6px;
         }
         .add-to-cart-btn:hover { 
-            background: var(--accent); 
-            color: #000; 
+            background: rgba(197, 160, 89, 0.08); 
             border-color: var(--accent); 
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(197, 160, 89, 0.3);
         }
         .add-to-cart-btn:active {
-            transform: translateY(0);
+            transform: scale(0.96);
         }
-        .add-to-cart-btn i { font-size: 12px; }
+        .add-to-cart-btn i { font-size: 10px; }
 
         /* Бадж вътре в менюто срещу "Количка" */
         .menu-inner-badge {
@@ -281,20 +279,38 @@
             padding: 3px 8px;
             border-radius: 12px;
             font-weight: bold;
-            display: none; /* Скрит по подразбиране */
-            margin-left: auto; /* Избутва го вдясно */
+            display: none;
+            margin-left: auto;
         }
 
-        #cartItemsContainer { max-height: 250px; overflow-y: auto; padding: 0 15px; }
+        #cartItemsContainer { max-height: 280px; overflow-y: auto; padding: 0 15px; }
         .cart-item-row { 
-            display: flex; justify-content: space-between; align-items: center;
+            display: flex; flex-direction: column; gap: 8px;
             font-size: 11px; padding: 12px 0; border-bottom: 1px dashed var(--hairline); 
             color: var(--text-main); letter-spacing: 1px;
         }
-        .cart-item-info { flex-grow: 1; padding-right: 10px; line-height: 1.4; }
-        .cart-item-qty { color: var(--text-muted); font-size: 10px; }
-        .cart-item-price { color: var(--accent); margin-right: 10px; font-weight: 500; }
-        .cart-item-remove { color: #822; cursor: pointer; font-size: 14px; padding: 5px; transition: 0.3s;}
+        .cart-item-info { width: 100%; display: flex; justify-content: space-between; }
+        .cart-item-title { line-height: 1.4; color: white; }
+        
+        /* Бутони за + и - в количката */
+        .cart-controls-wrapper {
+            display: flex; align-items: center; justify-content: space-between; width: 100%;
+        }
+        .qty-controls {
+            display: flex; align-items: center; gap: 6px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 2px;
+            padding: 2px 4px;
+        }
+        .qty-btn {
+            color: var(--text-muted); cursor: pointer; font-size: 10px; padding: 4px; transition: 0.2s;
+        }
+        .qty-btn:hover { color: var(--accent); }
+        .qty-text { font-size: 11px; color: white; font-weight: 500; min-width: 14px; text-align: center; }
+        
+        .cart-item-price { color: var(--accent); font-weight: 500; font-size: 12px;}
+        .cart-item-remove { color: #822; cursor: pointer; font-size: 14px; padding: 4px; transition: 0.3s; margin-left: auto;}
         .cart-item-remove:hover { color: #e74c3c; }
         
         .cart-total-row { 
@@ -1347,6 +1363,23 @@
             setTimeout(() => fab.style.transform = '', 200);
         }
 
+        // Нови функции за контрол на бройката
+        function increaseQty(index) {
+            cart[index].qty++;
+            updateCartBadge();
+            renderCartItems();
+        }
+
+        function decreaseQty(index) {
+            if (cart[index].qty > 1) {
+                cart[index].qty--;
+            } else {
+                removeFromCart(index);
+            }
+            updateCartBadge();
+            renderCartItems();
+        }
+
         function removeFromCart(index) {
             cart.splice(index, 1);
             updateCartBadge();
@@ -1393,12 +1426,20 @@
                 container.innerHTML += `
                     <div class="cart-item-row">
                         <div class="cart-item-info">
-                            <span class="lang-bg">${item.nameBg}</span>
-                            <span class="lang-en">${item.nameEn}</span>
-                            <div class="cart-item-qty">x${item.qty}</div>
+                            <div class="cart-item-title">
+                                <span class="lang-bg">${item.nameBg}</span>
+                                <span class="lang-en">${item.nameEn}</span>
+                            </div>
+                            <div class="cart-item-price">${(item.price * item.qty).toFixed(2)} €</div>
                         </div>
-                        <div class="cart-item-price">${(item.price * item.qty).toFixed(2)} €</div>
-                        <i class="fas fa-times cart-item-remove" onclick="removeFromCart(${index})"></i>
+                        <div class="cart-controls-wrapper">
+                            <div class="qty-controls">
+                                <i class="fas fa-minus qty-btn" onclick="decreaseQty(${index})"></i>
+                                <span class="qty-text">${item.qty}</span>
+                                <i class="fas fa-plus qty-btn" onclick="increaseQty(${index})"></i>
+                            </div>
+                            <i class="fas fa-times cart-item-remove" onclick="removeFromCart(${index})"></i>
+                        </div>
                     </div>
                 `;
             });

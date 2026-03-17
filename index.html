@@ -176,6 +176,33 @@
         .step h4 { font-size: 26px; margin-bottom: 15px; position: relative; z-index: 2; }
         .step p { font-size: 15px; opacity: 0.7; max-width: 95%; position: relative; z-index: 2; }
 
+        /* --- ПАРТНЬОРИ / СПОНСОРИ --- */
+        .sponsors-section {
+            padding: 100px 5%;
+            background: var(--bg-alt);
+            border-top: 1px solid var(--hairline);
+        }
+        .sponsors-grid {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 80px;
+            flex-wrap: wrap;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .sponsor-logo {
+            max-height: 90px;
+            max-width: 200px;
+            object-fit: contain;
+            filter: grayscale(100%) opacity(0.4);
+            transition: all 0.5s ease;
+        }
+        .sponsor-logo:hover {
+            filter: grayscale(0%) opacity(1);
+            transform: scale(1.05);
+        }
+
         /* --- КОНТАКТИ --- */
         .cta-section { 
             padding: 120px 5%; text-align: center; 
@@ -203,7 +230,7 @@
         footer p { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; opacity: 0.4; }
 
         /* =========================================================
-           RESPONSIVE ЗА ТАБЛЕТИ И МОБИЛНИ (ИЗЦЯЛО ПРЕРАБОТЕНО)
+           RESPONSIVE ЗА ТАБЛЕТИ И МОБИЛНИ
            ========================================================= */
         @media (max-width: 1024px) {
             .features-grid { grid-template-columns: repeat(2, 1fr); }
@@ -238,13 +265,15 @@
                 padding-top: 30px; 
                 padding-left: 0;
             }
-            /* Намаляване и позициониране на числото, за да не пречи */
             .step::before { 
                 font-size: 70px; 
                 top: -30px; 
                 left: 0; 
                 opacity: 0.8;
             }
+
+            .sponsors-grid { gap: 40px; }
+            .sponsor-logo { max-height: 70px; }
         }
 
         @media (max-width: 480px) {
@@ -253,24 +282,20 @@
             .hero h1 { font-size: 38px; margin-bottom: 20px; line-height: 1.2; }
             .hero p { font-size: 15px; margin-bottom: 40px; }
             
-            /* Бутоните в Hero на мобилен */
             .hero-btns { flex-direction: column; gap: 15px; width: 100%; }
             .btn-main, .btn-outline { width: 100%; padding: 16px 20px; }
 
-            /* Намаляване на празните пространства */
-            .section-padding, .steps { padding: 80px 5%; }
+            .section-padding, .steps, .sponsors-section { padding: 80px 5%; }
             .section-header { margin-bottom: 50px; }
             .section-header h2 { font-size: 32px; }
             
             .feature-icon { margin-bottom: 20px; }
             .feature-card h3 { font-size: 22px; }
             
-            /* Контакти */
             .cta-section { padding: 80px 5%; margin-bottom: 0; border-bottom: 1px solid var(--hairline); }
             .cta-section h2 { font-size: 32px; margin-bottom: 15px; }
             .cta-section p { font-size: 15px; margin-bottom: 40px; }
             
-            /* Фикс за бутоните за контакт (Визитка) */
             .cta-buttons-wrapper { flex-direction: column; gap: 12px; }
             .contact-btn { 
                 width: 100%; min-width: 100%; margin: 0;
@@ -386,6 +411,17 @@
         </div>
     </section>
 
+    <section id="sponsors" class="sponsors-section">
+        <div class="section-header reveal">
+            <p data-i18n="sponsors_subtitle">С доверието на</p>
+            <h2 data-i18n="sponsors_title">Нашите партньори.</h2>
+        </div>
+        <div class="sponsors-grid reveal delay-1">
+            <img src="technolux.png" alt="TechnoLux" class="sponsor-logo">
+            <img src="Globalnet.png" alt="Global Net" class="sponsor-logo">
+        </div>
+    </section>
+
     <section id="contact">
         <div class="cta-section reveal">
             <h2 data-i18n="cta_title">Време е за следващото ниво.</h2>
@@ -472,6 +508,7 @@
                 step1_title: "Концепция", step1_desc: "Предоставяш ни своето меню, визуална идентичност и насоки. Ние поемаме оттам.",
                 step2_title: "Проектиране", step2_desc: "Дизайнерите ни създават дигитална среда, базирана на най-високите стандарти за скорост и типография.",
                 step3_title: "Реализация", step3_desc: "Получаваш своите уникални QR кодове, готови да посрещнат първите ти гости.",
+                sponsors_title: "Нашите партньори.", sponsors_subtitle: "С доверието на",
                 cta_title: "Време е за следващото ниво.", cta_subtitle: "Запази час за персонална консултация с нашия екип.",
                 cta_phone: "Контакт: 0885 348 666", footer_text: "© 2026. Изработка на дигитални решения от най-висок клас."
             },
@@ -492,6 +529,7 @@
                 step1_title: "Concept", step1_desc: "You provide us with your menu, visual identity, and guidelines. We take it from there.",
                 step2_title: "Design", step2_desc: "Our designers create a digital environment based on the highest standards of speed and typography.",
                 step3_title: "Realisation", step3_desc: "You receive your unique QR codes, ready to welcome your first guests.",
+                sponsors_title: "Our Partners.", sponsors_subtitle: "Trusted by",
                 cta_title: "Time for the next level.", cta_subtitle: "Book a personal consultation with our team.",
                 cta_phone: "Contact: +359 885 348 666", footer_text: "© 2026. Crafting high-end digital solutions."
             }

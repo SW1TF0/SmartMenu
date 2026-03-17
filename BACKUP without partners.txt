@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMART MENU</title>
+    <link rel="icon" type="image/png" href="logo2.png">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- ЦВЕТОВА ПАЛИТРА --- */
+        :root {
+            --lightest: #d2d8ce;     
+            --accent: #9fb39d;       
+            --primary: #688275;      
+            --primary-dark: #3d5453; 
+            
+            --dark: #0f1314;       
+            --bg-color: #161c1d;   
+            --bg-alt: #1a2223;     
+            --hairline: rgba(255, 255, 255, 0.06); 
+            
+            --default-text: rgba(255, 255, 255, 0.75); 
+            --heading-text: #ffffff;
+        }
+
+        /* --- ОСНОВНИ НАСТРОЙКИ --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { 
+            scroll-behavior: smooth; 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        body { background-color: var(--bg-color); color: var(--default-text); line-height: 1.8; overflow-x: hidden; font-weight: 300; }
+        a { text-decoration: none; color: inherit; }
+        
+        h1, h2, h3, h4, .logo { font-family: 'Playfair Display', serif; font-weight: 400; color: var(--heading-text); }
+
+        ::selection { background: var(--primary); color: #fff; }
+
+        /* --- АНИМАЦИИ --- */
+        .reveal {
+            opacity: 0; transform: translateY(30px);
+            transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+
+        /* --- НАВИГАЦИЯ --- */
+        header {
+            background: transparent;
+            position: fixed; width: 100%; top: 0; z-index: 1000;
+            padding: 25px 5%; display: flex; justify-content: space-between; align-items: center;
+            transition: all 0.5s ease;
+        }
+        header.scrolled { 
+            padding: 15px 5%; 
+            background: rgba(22, 28, 29, 0.98); 
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--hairline);
+        }
+        
+        .logo { font-size: 24px; font-weight: 500; letter-spacing: 0.5px; z-index: 1001; }
+        .logo span { color: var(--accent); font-style: italic; }
+        
+        .menu-toggle { display: none; font-size: 24px; color: var(--heading-text); cursor: pointer; z-index: 1001; }
+
+        .nav-links { display: flex; align-items: center; }
+        .nav-links a { 
+            margin-left: 40px; font-weight: 400; font-size: 13px; color: rgba(255,255,255,0.8); 
+            text-transform: uppercase; letter-spacing: 2px; position: relative; transition: 0.4s; 
+        }
+        .nav-links a::after {
+            content: ''; position: absolute; width: 0; height: 1px; bottom: -4px; left: 0;
+            background-color: currentColor; transition: width 0.4s ease;
+        }
+        .nav-links a:hover::after { width: 100%; }
+        .nav-links a:hover { color: white; }
+        
+        .btn-nav {
+            margin-left: 40px; border: 1px solid rgba(255,255,255,0.3); padding: 10px 24px;
+            color: white !important; font-size: 12px; transition: all 0.4s ease;
+        }
+        .btn-nav:hover { background: white; color: var(--dark) !important; border-color: white; }
+
+        .lang-btn {
+            background: transparent; border: none; color: white;
+            padding: 10px; cursor: pointer; font-family: inherit;
+            margin-left: 20px; transition: 0.3s; font-size: 13px; text-transform: uppercase; letter-spacing: 2px;
+        }
+
+        /* --- HERO СЕКЦИЯ --- */
+        .hero {
+            min-height: 100vh; padding: 0 5%; 
+            background: var(--dark); color: white;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
+            position: relative; overflow: hidden;
+        }
+        .hero::before {
+            content: ''; position: absolute; width: 80vw; height: 80vw; top: -40vw; left: -20vw;
+            background: radial-gradient(circle, rgba(104, 130, 117, 0.12) 0%, transparent 60%);
+            pointer-events: none; filter: blur(60px);
+        }
+        .hero::after {
+            content: ''; position: absolute; width: 60vw; height: 60vw; bottom: -30vw; right: -10vw;
+            background: radial-gradient(circle, rgba(159, 179, 157, 0.08) 0%, transparent 60%);
+            pointer-events: none; filter: blur(60px);
+        }
+        
+        .hero-content { position: relative; z-index: 1; max-width: 900px; margin-top: 50px; }
+        .hero-subtitle {
+            display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 4px;
+            color: var(--accent); margin-bottom: 25px; font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .hero h1 { font-size: 72px; line-height: 1.1; letter-spacing: -1px; margin-bottom: 30px; }
+        .hero h1 span { font-style: italic; color: var(--lightest); font-weight: 300; }
+        .hero p { font-size: 18px; color: rgba(255,255,255,0.65); max-width: 550px; margin: 0 auto 50px; line-height: 1.8; }
+        
+        .hero-btns { display: flex; gap: 20px; justify-content: center; align-items: center; }
+        
+        .btn-main, .btn-outline {
+            font-size: 12px; text-transform: uppercase; letter-spacing: 2px; transition: all 0.4s ease; 
+            padding: 16px 40px; display: inline-block; font-weight: 500; cursor: pointer; text-align: center;
+        }
+        .btn-main { background: white; color: var(--dark); border: 1px solid white; }
+        .btn-main:hover { background: transparent; color: white; }
+        
+        .btn-outline { background: transparent; color: white; border: 1px solid rgba(255,255,255,0.2); }
+        .btn-outline:hover { background: white; color: var(--dark); border-color: white; }
+
+        /* --- СЕКЦИИ: ОБЩИ --- */
+        .section-padding { padding: 150px 5%; max-width: 1400px; margin: 0 auto; }
+        .section-header { text-align: center; margin-bottom: 100px; }
+        .section-header p { font-size: 11px; text-transform: uppercase; letter-spacing: 4px; color: var(--primary); margin-bottom: 15px; font-weight: 500; }
+        .section-header h2 { font-size: 46px; letter-spacing: -1px; }
+
+        /* --- ПРЕДИМСТВА --- */
+        .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border-top: 1px solid var(--hairline); border-left: 1px solid var(--hairline); }
+        .feature-card {
+            padding: 60px 40px; border-right: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline);
+            transition: all 0.4s ease; background: var(--bg-alt);
+        }
+        .feature-card:hover { background: rgba(255, 255, 255, 0.02); }
+        .feature-icon {
+            color: var(--primary); font-size: 24px; margin-bottom: 30px; opacity: 0.8;
+            transition: all 0.5s ease;
+        }
+        .feature-card:hover .feature-icon { transform: translateY(-5px); opacity: 1; color: var(--heading-text); }
+        .feature-card h3 { margin-bottom: 15px; font-size: 24px; font-weight: 400; line-height: 1.3; }
+        .feature-card p { font-size: 15px; opacity: 0.7; }
+
+        /* --- ПРОЦЕС --- */
+        .steps { padding: 150px 5%; background: var(--bg-color); border-top: 1px solid var(--hairline); }
+        .steps-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; gap: 40px; }
+        .step { flex: 1; position: relative; padding-top: 50px; border-top: 1px solid var(--hairline); }
+        
+        .step::before {
+            content: attr(data-step); 
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 100px; font-weight: 800; 
+            position: absolute; top: -40px; left: -10px; z-index: 1;
+            -webkit-text-stroke: 1px rgba(255,255,255,0.06); 
+            color: transparent;
+            line-height: 1;
+        }
+        
+        .step h4 { font-size: 26px; margin-bottom: 15px; position: relative; z-index: 2; }
+        .step p { font-size: 15px; opacity: 0.7; max-width: 95%; position: relative; z-index: 2; }
+
+        /* --- КОНТАКТИ --- */
+        .cta-section { 
+            padding: 120px 5%; text-align: center; 
+            max-width: 900px; margin: 0 auto; border-top: 1px solid var(--hairline);
+        }
+        .cta-section h2 { font-size: 48px; margin-bottom: 20px; letter-spacing: -1px; }
+        .cta-section p { font-size: 16px; margin-bottom: 60px; color: var(--default-text); opacity: 0.8; }
+        
+        .cta-buttons-wrapper { display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: wrap; width: 100%; }
+
+        .contact-btn {
+            display: flex; align-items: center; justify-content: center; gap: 10px; 
+            background: white; color: var(--dark);
+            padding: 18px 40px; font-size: 13px; text-transform: uppercase; letter-spacing: 2px; transition: all 0.4s ease;
+            min-width: 280px; border: 1px solid white;
+        }
+        .contact-btn.light-btn { background: transparent; color: white; border: 1px solid rgba(255,255,255,0.2); }
+        
+        .contact-btn:hover { background: var(--accent); border-color: var(--accent); color: var(--dark); }
+        .contact-btn.light-btn:hover { background: white; color: var(--dark); border-color: white; }
+
+        /* --- FOOTER --- */
+        footer { padding: 60px 5% 40px; text-align: center; border-top: 1px solid var(--hairline); background: var(--bg-alt); }
+        footer .logo { font-size: 20px; margin-bottom: 15px; display: inline-block; }
+        footer p { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; opacity: 0.4; }
+
+        /* =========================================================
+           RESPONSIVE ЗА ТАБЛЕТИ И МОБИЛНИ (ИЗЦЯЛО ПРЕРАБОТЕНО)
+           ========================================================= */
+        @media (max-width: 1024px) {
+            .features-grid { grid-template-columns: repeat(2, 1fr); }
+            .hero h1 { font-size: 56px; }
+            .section-padding, .steps { padding: 100px 5%; }
+        }
+
+        @media (max-width: 768px) {
+            header { padding: 20px 5%; background: rgba(22, 28, 29, 0.98); border-bottom: 1px solid var(--hairline); }
+            .menu-toggle { display: block; } 
+            
+            /* Мобилно меню */
+            .nav-links {
+                position: absolute; top: 100%; left: 0; width: 100%; background: #161c1d;
+                flex-direction: column; align-items: flex-start; padding: 30px 5%; border-bottom: 1px solid var(--hairline);
+                clip-path: polygon(0 0, 100% 0, 100% 0, 0 0); transition: clip-path 0.5s ease;
+            }
+            .nav-links.active { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+            .nav-links a { margin: 15px 0; color: white; font-size: 16px; font-family: 'Playfair Display', serif; text-transform: none; letter-spacing: 0; }
+            .nav-links a::after { display: none; }
+            .btn-nav { margin: 20px 0 0 0; width: 100%; text-align: center; }
+            .lang-btn { margin: 20px 0 0 0; padding: 0; }
+
+            .hero h1 { font-size: 46px; }
+            .features-grid { grid-template-columns: 1fr; border-left: none; border-top: none; }
+            .feature-card { border-right: none; padding: 40px 0; border-bottom: 1px solid var(--hairline); background: transparent; }
+            
+            /* Фикс за Процеса на мобилни */
+            .steps-container { flex-direction: column; gap: 50px; }
+            .step { 
+                border-top: 1px solid var(--hairline); 
+                padding-top: 30px; 
+                padding-left: 0;
+            }
+            /* Намаляване и позициониране на числото, за да не пречи */
+            .step::before { 
+                font-size: 70px; 
+                top: -30px; 
+                left: 0; 
+                opacity: 0.8;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero { padding: 100px 5% 60px; }
+            .hero-subtitle { margin-bottom: 15px; }
+            .hero h1 { font-size: 38px; margin-bottom: 20px; line-height: 1.2; }
+            .hero p { font-size: 15px; margin-bottom: 40px; }
+            
+            /* Бутоните в Hero на мобилен */
+            .hero-btns { flex-direction: column; gap: 15px; width: 100%; }
+            .btn-main, .btn-outline { width: 100%; padding: 16px 20px; }
+
+            /* Намаляване на празните пространства */
+            .section-padding, .steps { padding: 80px 5%; }
+            .section-header { margin-bottom: 50px; }
+            .section-header h2 { font-size: 32px; }
+            
+            .feature-icon { margin-bottom: 20px; }
+            .feature-card h3 { font-size: 22px; }
+            
+            /* Контакти */
+            .cta-section { padding: 80px 5%; margin-bottom: 0; border-bottom: 1px solid var(--hairline); }
+            .cta-section h2 { font-size: 32px; margin-bottom: 15px; }
+            .cta-section p { font-size: 15px; margin-bottom: 40px; }
+            
+            /* Фикс за бутоните за контакт (Визитка) */
+            .cta-buttons-wrapper { flex-direction: column; gap: 12px; }
+            .contact-btn { 
+                width: 100%; min-width: 100%; margin: 0;
+                padding: 16px; font-size: 12px;
+                letter-spacing: 1px;
+                white-space: normal; word-wrap: break-word; overflow-wrap: break-word;
+            }
+        }
+    </style>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-5R0EZ7E8PC"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-5R0EZ7E8PC');
+    </script>
+</head>
+<body>
+
+    <header id="header">
+        <a href="#" class="logo">Smart<span>Menu</span></a>
+        
+        <div class="menu-toggle" id="mobile-menu">
+            <i class="fas fa-bars"></i>
+        </div>
+
+        <nav class="nav-links" id="nav-links">
+            <a href="#features" data-i18n="nav_features">Естетика</a>
+            <a href="#how-it-works" data-i18n="nav_how">Процес</a>
+            <a href="mobile.html" class="btn-nav"><span data-i18n="nav_demo">Виж Демо</span></a>
+            
+            <button id="langToggle" class="lang-btn">
+                <span id="langText">EN</span>
+            </button>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content reveal">
+            <span class="hero-subtitle" data-i18n="hero_subtitle">Новият стандарт в готварството</span>
+            <h1 data-i18n="hero_title">Изкуството на <span>дигиталното</span> представяне.</h1>
+            <p data-i18n="hero_desc">Безкомпромисен стил и светкавична скорост. Замени остарелите стандарти с QR изживяване, достойно за най-взискателните клиенти.</p>
+            <div class="hero-btns">
+                <a href="#contact" class="btn-main" data-i18n="btn_order">Заяви меню</a>
+                <a href="mobile.html" target="_blank" class="btn-outline" data-i18n="btn_explore">Към демо версията</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="features" class="section-padding">
+        <div class="section-header reveal">
+            <p data-i18n="feat_subtitle">Философия на детайла</p>
+            <h2 data-i18n="feat_title">Безкомпромисно качество.</h2>
+        </div>
+        
+        <div class="features-grid">
+            <div class="feature-card reveal delay-1">
+                <div class="feature-icon"><i class="fas fa-leaf"></i></div>
+                <h3 data-i18n="card1_title">Устойчивост</h3>
+                <p data-i18n="card1_desc">Актуализирай цени и добавяй нови шедьоври на секундата, без излишни разходи за хартия и печат.</p>
+            </div>
+            
+            <div class="feature-card reveal delay-2">
+                <div class="feature-icon"><i class="fas fa-sliders-h"></i></div>
+                <h3 data-i18n="card2_title">Интуитивност</h3>
+                <p data-i18n="card2_desc">Кристално чист интерфейс. Мигновено търсене и елегантни категории за безупречно изживяване.</p>
+            </div>
+            
+            <div class="feature-card reveal delay-3">
+                <div class="feature-icon"><i class="fas fa-globe-europe"></i></div>
+                <h3 data-i18n="card3_title">Глобалност</h3>
+                <p data-i18n="card3_desc">Елиминирай бариерите. Плавно превключване между езиците с изяществото на един допир.</p>
+            </div>
+
+            <div class="feature-card reveal delay-1">
+                <div class="feature-icon"><i class="fas fa-mobile-alt"></i></div>
+                <h3 data-i18n="card4_title">Естетика</h3>
+                <p data-i18n="card4_desc">Менюто ти се усеща като нативно приложение от най-висок клас, проектирано специално за теб.</p>
+            </div>
+
+            <div class="feature-card reveal delay-2">
+                <div class="feature-icon"><i class="fas fa-qrcode"></i></div>
+                <h3 data-i18n="card5_title">Достъпност</h3>
+                <p data-i18n="card5_desc">Едно сканиране дели твоите гости от пълното потапяне в кулинарната ти вселена.</p>
+            </div>
+
+            <div class="feature-card reveal delay-3">
+                <div class="feature-icon"><i class="fas fa-pencil-ruler"></i></div>
+                <h3 data-i18n="card6_title">Идентичност</h3>
+                <p data-i18n="card6_desc">Всяка линия и цвят са съобразени с твоя бранд, за да отразят точно характера на заведението.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="how-it-works" class="steps">
+        <div class="section-header reveal">
+            <p data-i18n="steps_subtitle">Интеграция</p>
+            <h2 data-i18n="steps_title">Съвършенството изисква три стъпки.</h2>
+        </div>
+        <div class="steps-container">
+            <div class="step reveal delay-1" data-step="01">
+                <h4 data-i18n="step1_title">Концепция</h4>
+                <p data-i18n="step1_desc">Предоставяш ни своето меню, визуална идентичност и насоки. Ние поемаме оттам.</p>
+            </div>
+            <div class="step reveal delay-2" data-step="02">
+                <h4 data-i18n="step2_title">Проектиране</h4>
+                <p data-i18n="step2_desc">Дизайнерите ни създават дигитална среда, базирана на най-високите стандарти за скорост и типография.</p>
+            </div>
+            <div class="step reveal delay-3" data-step="03">
+                <h4 data-i18n="step3_title">Реализация</h4>
+                <p data-i18n="step3_desc">Получаваш своите уникални QR кодове, готови да посрещнат първите ти гости.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <div class="cta-section reveal">
+            <h2 data-i18n="cta_title">Време е за следващото ниво.</h2>
+            <p data-i18n="cta_subtitle">Запази час за персонална консултация с нашия екип.</p>
+            
+            <div class="cta-buttons-wrapper">
+                <a href="tel:+359885348666" class="contact-btn" data-i18n="cta_phone">
+                    Контакт: 0885 348 666
+                </a>
+                
+                <a href="mailto:epicswitfo@gmail.com" class="contact-btn light-btn">
+                    epicswitfo@gmail.com
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="logo">Smart<span>Menu</span></div>
+        <p data-i18n="footer_text">© 2026. Изработка на дигитални решения от най-висок клас.</p>
+    </footer>
+
+    <script>
+        /* --- КИНЕМАТОГРАФИЧЕН СКРОЛ ЕФЕКТ --- */
+        const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+        document.querySelectorAll('.reveal').forEach((el) => { observer.observe(el); });
+
+        /* --- ХЕДЪР --- */
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) { header.classList.add('scrolled'); } 
+            else { header.classList.remove('scrolled'); }
+        });
+
+        /* --- МОБИЛНО МЕНЮ --- */
+        const mobileMenuBtn = document.getElementById('mobile-menu');
+        const navLinksMenu = document.getElementById('nav-links');
+        const menuIcon = mobileMenuBtn.querySelector('i');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinksMenu.classList.toggle('active');
+            if (navLinksMenu.classList.contains('active')) {
+                menuIcon.classList.remove('fa-bars');
+                menuIcon.classList.add('fa-times');
+            } else {
+                menuIcon.classList.remove('fa-times');
+                menuIcon.classList.add('fa-bars');
+            }
+        });
+
+        const navLinksItems = document.querySelectorAll('.nav-links a, .nav-links .btn-nav');
+        navLinksItems.forEach(link => {
+            link.addEventListener('click', () => {
+                navLinksMenu.classList.remove('active');
+                menuIcon.classList.remove('fa-times');
+                menuIcon.classList.add('fa-bars');
+            });
+        });
+
+        /* --- МНОГОЕЗИЧНОСТ --- */
+        const translations = {
+            bg: {
+                nav_features: "Естетика", nav_how: "Процес", nav_demo: "Виж Демо",
+                hero_subtitle: "Новият стандарт в готварството",
+                hero_title: "Изкуството на <span>дигиталното</span> представяне.",
+                hero_desc: "Безкомпромисен стил и светкавична скорост. Замени остарелите стандарти с QR изживяване, достойно за най-взискателните клиенти.",
+                btn_order: "Заяви меню", btn_explore: "Към демо версията",
+                feat_title: "Безкомпромисно качество.", feat_subtitle: "Философия на детайла",
+                card1_title: "Устойчивост", card1_desc: "Актуализирай цени и добавяй нови шедьоври на секундата, без излишни разходи за хартия и печат.",
+                card2_title: "Интуитивност", card2_desc: "Кристално чист интерфейс. Мигновено търсене и елегантни категории за безупречно изживяване.",
+                card3_title: "Глобалност", card3_desc: "Елиминирай бариерите. Плавно превключване между езиците с изяществото на един допир.",
+                card4_title: "Естетика", card4_desc: "Менюто ти се усеща като нативно приложение от най-висок клас, проектирано специално за теб.",
+                card5_title: "Достъпност", card5_desc: "Едно сканиране дели твоите гости от пълното потапяне в кулинарната ти вселена.",
+                card6_title: "Идентичност", card6_desc: "Всяка линия и цвят са съобразени с твоя бранд, за да отразят точно характера на заведението.",
+                steps_title: "Съвършенството изисква три стъпки.", steps_subtitle: "Интеграция",
+                step1_title: "Концепция", step1_desc: "Предоставяш ни своето меню, визуална идентичност и насоки. Ние поемаме оттам.",
+                step2_title: "Проектиране", step2_desc: "Дизайнерите ни създават дигитална среда, базирана на най-високите стандарти за скорост и типография.",
+                step3_title: "Реализация", step3_desc: "Получаваш своите уникални QR кодове, готови да посрещнат първите ти гости.",
+                cta_title: "Време е за следващото ниво.", cta_subtitle: "Запази час за персонална консултация с нашия екип.",
+                cta_phone: "Контакт: 0885 348 666", footer_text: "© 2026. Изработка на дигитални решения от най-висок клас."
+            },
+            en: {
+                nav_features: "Aesthetics", nav_how: "Process", nav_demo: "View Demo",
+                hero_subtitle: "The new standard in hospitality",
+                hero_title: "The art of <span>digital</span> presentation.",
+                hero_desc: "Uncompromising style and lightning speed. Replace outdated standards with a QR experience worthy of the most demanding clientele.",
+                btn_order: "Order Menu", btn_explore: "Explore the demo",
+                feat_title: "Uncompromising quality.", feat_subtitle: "Philosophy of detail",
+                card1_title: "Sustainability", card1_desc: "Update prices and add new culinary masterpieces instantly, without unnecessary paper and printing costs.",
+                card2_title: "Intuitiveness", card2_desc: "Crystal clear interface. Instant search and elegant categories for a flawless experience.",
+                card3_title: "Global Reach", card3_desc: "Eliminate barriers. Smooth switching between languages with the elegance of a single touch.",
+                card4_title: "Aesthetics", card4_desc: "Your menu feels like a high-end native application, designed specifically for you.",
+                card5_title: "Accessibility", card5_desc: "A single scan separates your guests from full immersion in your culinary universe.",
+                card6_title: "Identity", card6_desc: "Every line and colour is tailored to your brand to accurately reflect the character of your establishment.",
+                steps_title: "Perfection requires three steps.", steps_subtitle: "Integration",
+                step1_title: "Concept", step1_desc: "You provide us with your menu, visual identity, and guidelines. We take it from there.",
+                step2_title: "Design", step2_desc: "Our designers create a digital environment based on the highest standards of speed and typography.",
+                step3_title: "Realisation", step3_desc: "You receive your unique QR codes, ready to welcome your first guests.",
+                cta_title: "Time for the next level.", cta_subtitle: "Book a personal consultation with our team.",
+                cta_phone: "Contact: +359 885 348 666", footer_text: "© 2026. Crafting high-end digital solutions."
+            }
+        };
+
+        let currentLang = localStorage.getItem("preferredLang") || "bg";
+        const langToggleBtn = document.getElementById("langToggle");
+        const langTextSpan = document.getElementById("langText");
+
+        function setLanguage(lang) {
+            const elements = document.querySelectorAll("[data-i18n]");
+            elements.forEach(el => {
+                const key = el.getAttribute("data-i18n");
+                if (translations[lang][key]) { el.innerHTML = translations[lang][key]; }
+            });
+            if (lang === "bg") {
+                langTextSpan.textContent = "EN"; document.documentElement.lang = "bg";
+            } else {
+                langTextSpan.textContent = "BG"; document.documentElement.lang = "en";
+            }
+            localStorage.setItem("preferredLang", lang); currentLang = lang;
+        }
+
+        langToggleBtn.addEventListener("click", () => {
+            const newLang = currentLang === "bg" ? "en" : "bg";
+            setLanguage(newLang);
+            if(window.innerWidth <= 768) {
+                navLinksMenu.classList.remove('active');
+                menuIcon.classList.remove('fa-times');
+                menuIcon.classList.add('fa-bars');
+            }
+        });
+
+        setLanguage(currentLang);
+    </script>
+</body>
+</html>

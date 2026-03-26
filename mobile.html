@@ -353,6 +353,8 @@
       gtag('js', new Date());
       gtag('config', 'G-5R0EZ7E8PC');
     </script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 </head>
 <body>
 
@@ -1502,9 +1504,34 @@
         }
 
         // --- ИЗПРАЩАНЕ КЪМ TELEGRAM ---
+// --- CONFIGURATION ---
+// --- 1. КОНФИГУРАЦИЯ ---
         const botToken = '8419693328:AAEkzgyvg6L4LgEkep4kv-wMwckLJ0aGlOU';
         const chatId = '-5174289409'; 
 
+        const firebaseConfig = {
+            apiKey: "AIzaSyAdfNQ-Y72qkqPSgBqZYFm-d1PmM0Wpd_M",
+            authDomain: "smartmenukj.firebaseapp.com",
+            databaseURL: "https://smartmenukj-default-rtdb.firebaseio.com",
+            projectId: "smartmenukj",
+            storageBucket: "smartmenukj.firebasestorage.app",
+            messagingSenderId: "465512343655",
+            appId: "1:465512343655:web:7c187c5c0b0e0cdbda4cc2"
+        };
+
+        // Инициализация на Firebase
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const db = firebase.database();
+
+        // --- 2. ПОМОЩНИ ФУНКЦИИ ---
+        function getTableNumber() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('table') || "Неизвестна";
+        }
+
+        // --- 3. ЛОГИКА ЗА ПОРЪЧКИ (FIREBASE + TELEGRAM) ---
         function sendOrder() {
             if (cart.length === 0) {
                 const isEnglish = document.body.classList.contains('english-mode');
@@ -1512,29 +1539,46 @@
                 return;
             }
 
-            const urlParams = new URLSearchParams(window.location.search);
-            let currentTable = urlParams.get('table') || "Неизвестна";
-            
+            const currentTable = getTableNumber();
+            if (currentTable === "Неизвестна") {
+                alert("Грешка: Не е избран номер на маса (липсва ?table=X в линка).");
+                return;
+            }
+
+            // Подготовка на съобщение за Telegram
             let messageToTelegram = `🛒 *Нова поръчка от Маса ${currentTable}*\n\n`;
             let total = 0;
-            
             cart.forEach(item => {
                 messageToTelegram += `🔸 ${item.qty}x ${item.nameBg} - ${(item.price * item.qty).toFixed(2)} €\n`;
                 total += (item.price * item.qty);
             });
-            
             messageToTelegram += `\n💶 *Общо:* ${total.toFixed(2)} €`;
 
-            let successAlertBg = `Вашата поръчка за маса ${currentTable} е изпратена успешно!`;
-            let successAlertEn = `Your order for table ${currentTable} has been sent successfully!`;
+            // Данни за Firebase
+            const orderData = {
+                timestamp: Date.now(),
+                items: cart,
+                total: total.toFixed(2)
+            };
 
-            sendToTelegramAPI(messageToTelegram, successAlertBg, successAlertEn, true);
+            // ЗАПИС ВЪВ FIREBASE (за админския таб)
+            db.ref('tables/' + currentTable).update({
+                status: 'occupied'
+            }).then(() => {
+                return db.ref('tables/' + currentTable + '/orders').push(orderData);
+            }).then(() => {
+                // ИЗПРАЩАНЕ КЪМ TELEGRAM
+                let successAlertBg = `Вашата поръчка за маса ${currentTable} е приета!`;
+                let successAlertEn = `Your order for table ${currentTable} has been received!`;
+                sendToTelegramAPI(messageToTelegram, successAlertBg, successAlertEn, true);
+            }).catch(error => {
+                console.error("Firebase Error:", error);
+                alert("Грешка при връзката с кухнята: " + error.message);
+            });
         }
 
         function handleAction(actionType, paymentMethod = '') {
-            const urlParams = new URLSearchParams(window.location.search);
-            let currentTable = urlParams.get('table') || "Неизвестна";
-            
+            let currentTable = getTableNumber();
             let messageToTelegram = ""; 
             let successAlertBg = "";    
             let successAlertEn = "";    
@@ -1569,20 +1613,19 @@
                 if(response.ok) {
                     const isEnglish = document.body.classList.contains('english-mode');
                     alert(isEnglish ? successAlertEn : successAlertBg);
-                    
                     if (isOrder) {
-                        cart = []; // Изчистваме количката след успешна поръчка
+                        cart = []; // Изчистваме количката само при поръчка
                         updateCartBadge();
                     }
                     closeActionMenu();
                 } else {
-                    alert("Системна грешка. Моля, опитайте отново. / System error. Please try again.");
+                    alert("Проблем с изпращането към Telegram.");
                 }
             })
-            .catch(error => alert("Грешка при връзката. / Connection error."));
+            .catch(error => console.error("Telegram Error:", error));
         }
 
-        // --- ФИЛТЪР ЗА ТЪРСЕНЕ ---
+        // --- 4. ФИЛТЪР ЗА ТЪРСЕНЕ ---
         function mobFilter() {
             let input = document.getElementById('mobSearch').value.toUpperCase();
             let sections = document.getElementsByClassName('menu-section');
@@ -1620,11 +1663,7 @@
                 }
             }
 
-            if (totalVisibleSections === 0) {
-                noResultsDiv.style.display = "block";
-            } else {
-                noResultsDiv.style.display = "none";
-            }
+            noResultsDiv.style.display = (totalVisibleSections === 0) ? "block" : "none";
         }
     </script>
 </body>

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chef Dashboard - Caesar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    
+    <style>
+        :root {
+            --bg: #0a0c0d;
+            --card: #111416;
+            --accent: #c5a059;
+            --free: #2ecc71;
+            --occupied: #e74c3c;
+            --text: #e8e8e8;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: none; 
+        }
+
+        h1 { text-align: center; color: var(--accent); font-weight: 300; letter-spacing: 2px; text-transform: uppercase; }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 25px;
+            max-width: 1100px;
+            margin: 40px auto;
+        }
+
+        .table-container { text-align: center; }
+
+        .table-circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+            margin: 0 auto 10px;
+            font-size: 14px;
+        }
+
+        .free { background: rgba(46, 204, 113, 0.15); border-color: var(--free); color: var(--free); }
+        .occupied { 
+            background: rgba(231, 76, 60, 0.25); 
+            border-color: var(--occupied); 
+            color: var(--occupied); 
+            box-shadow: 0 0 20px rgba(231, 76, 60, 0.4);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+        .modal-content {
+            background: var(--card);
+            padding: 30px;
+            border: 1px solid var(--accent);
+            width: 90%;
+            max-width: 450px;
+            border-radius: 4px;
+        }
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 14px;
+        }
+        .total-price {
+            font-size: 22px;
+            color: var(--accent);
+            margin: 25px 0;
+            text-align: right;
+            font-weight: bold;
+            border-top: 1px solid var(--accent);
+            padding-top: 15px;
+        }
+        .btn-reset {
+            background: var(--accent);
+            color: black;
+            border: none;
+            padding: 15px;
+            width: 100%;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .close-modal { float: right; cursor: pointer; color: var(--accent); font-size: 20px; }
+    </style>
+</head>
+<body>
+
+    <h1>ШЕФСКИ ДАШБОРД - CAESAR</h1>
+
+    <div class="dashboard" id="tableGrid"></div>
+
+    <div id="orderModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()"><i class="fas fa-times"></i></span>
+            <h2 id="modalTitle" style="color:white; font-weight: 300;">Маса</h2>
+            <div id="orderList" style="max-height: 300px; overflow-y: auto; margin-top: 20px;"></div>
+            <div class="total-price" id="modalTotal">0.00 €</div>
+            <button class="btn-reset" onclick="resetTable()">ПРИКЛЮЧИ СМЕТКА & ОСВОБОДИ</button>
+        </div>
+    </div>
+
+    <script>
+        // ЛОГИН ПРОВЕРКА
+        const user = prompt("Потребителско име:");
+        const pass = prompt("Парола:");
+        if (user === "root" && pass === "admin") {
+            document.body.style.display = "block";
+        } else {
+            alert("Грешни данни!");
+            window.location.href = "about:blank";
+        }
+
+        // ТВОЯТА FIREBASE КОНФИГУРАЦИЯ
+        const firebaseConfig = {
+            apiKey: "AIzaSyAdfNQ-Y72qkqPSgBqZYFm-d1PmM0Wpd_M",
+            authDomain: "smartmenukj.firebaseapp.com",
+            databaseURL: "https://smartmenukj-default-rtdb.firebaseio.com",
+            projectId: "smartmenukj",
+            storageBucket: "smartmenukj.firebasestorage.app",
+            messagingSenderId: "465512343655",
+            appId: "1:465512343655:web:7c187c5c0b0e0cdbda4cc2"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        let currentActiveTable = null;
+
+        const grid = document.getElementById('tableGrid');
+        for (let i = 1; i <= 20; i++) {
+            grid.innerHTML += `
+                <div class="table-container">
+                    <div id="table-${i}" class="table-circle free" onclick="viewTable(${i})">
+                        МАСА ${i}
+                    </div>
+                </div>
+            `;
+        }
+
+        db.ref('tables').on('value', (snapshot) => {
+            const data = snapshot.val() || {};
+            for (let i = 1; i <= 20; i++) {
+                const tableDiv = document.getElementById(`table-${i}`);
+                if (data[i] && data[i].status === 'occupied') {
+                    tableDiv.className = 'table-circle occupied';
+                } else {
+                    tableDiv.className = 'table-circle free';
+                }
+            }
+            if (currentActiveTable) viewTable(currentActiveTable, true);
+        });
+
+        function viewTable(tableNum, isUpdate = false) {
+            currentActiveTable = tableNum;
+            db.ref('tables/' + tableNum).once('value').then((snapshot) => {
+                const data = snapshot.val();
+                
+                if (!isUpdate && (!data || data.status === 'free')) {
+                    alert("Масата е свободна.");
+                    return;
+                }
+
+                document.getElementById('modalTitle').innerText = "Поръчки: Маса " + tableNum;
+                const list = document.getElementById('orderList');
+                list.innerHTML = "";
+                let total = 0;
+
+                if (data && data.orders) {
+                    Object.values(data.orders).forEach(order => {
+                        order.items.forEach(item => {
+                            total += (item.price * item.qty);
+                            list.innerHTML += `
+                                <div class="order-item">
+                                    <span>${item.qty}x ${item.nameBg}</span>
+                                    <span>${(item.price * item.qty).toFixed(2)} €</span>
+                                </div>
+                            `;
+                        });
+                    });
+                }
+
+                document.getElementById('modalTotal').innerText = total.toFixed(2) + " €";
+                if(!isUpdate) document.getElementById('orderModal').style.display = "flex";
+            });
+        }
+
+        function closeModal() {
+            document.getElementById('orderModal').style.display = "none";
+            currentActiveTable = null;
+        }
+
+        function resetTable() {
+            if (confirm("Сигурни ли сте, че искате да изчистите сметката на Маса " + currentActiveTable + "?")) {
+                db.ref('tables/' + currentActiveTable).remove().then(() => {
+                    closeModal();
+                });
+            }
+        }
+    </script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SMART MENU</title>
+    <title>SMART MENU, WEB & DESIGN</title>
     
     <link rel="icon" type="image/png" href="logo2.png">
     <link rel="apple-touch-icon" href="logo2.png">
@@ -78,7 +78,7 @@
 
         .nav-links { display: flex; align-items: center; }
         .nav-links a { 
-            margin-left: 40px; font-weight: 400; font-size: 13px; color: rgba(255,255,255,0.8); 
+            margin-left: 30px; font-weight: 400; font-size: 13px; color: rgba(255,255,255,0.8); 
             text-transform: uppercase; letter-spacing: 2px; position: relative; transition: 0.4s; 
         }
         .nav-links a::after {
@@ -89,7 +89,7 @@
         .nav-links a:hover { color: white; }
         
         .btn-nav {
-            margin-left: 40px; border: 1px solid rgba(255,255,255,0.3); padding: 10px 24px;
+            margin-left: 30px; border: 1px solid rgba(255,255,255,0.3); padding: 10px 24px;
             color: white !important; font-size: 12px; transition: all 0.4s ease;
         }
         .btn-nav:hover { background: white; color: var(--dark) !important; border-color: white; }
@@ -97,7 +97,7 @@
         .lang-btn {
             background: transparent; border: none; color: white;
             padding: 10px; cursor: pointer; font-family: inherit;
-            margin-left: 20px; transition: 0.3s; font-size: 13px; text-transform: uppercase; letter-spacing: 2px;
+            margin-left: 15px; transition: 0.3s; font-size: 13px; text-transform: uppercase; letter-spacing: 2px;
         }
 
         /* --- HERO СЕКЦИЯ --- */
@@ -125,7 +125,7 @@
         }
         .hero h1 { font-size: 72px; line-height: 1.1; letter-spacing: -1px; margin-bottom: 30px; }
         .hero h1 span { font-style: italic; color: var(--lightest); font-weight: 300; }
-        .hero p { font-size: 18px; color: rgba(255,255,255,0.65); max-width: 550px; margin: 0 auto 50px; line-height: 1.8; }
+        .hero p { font-size: 18px; color: rgba(255,255,255,0.65); max-width: 650px; margin: 0 auto 50px; line-height: 1.8; }
         
         .hero-btns { display: flex; gap: 20px; justify-content: center; align-items: center; }
         
@@ -145,6 +145,18 @@
         .section-header p { font-size: 11px; text-transform: uppercase; letter-spacing: 4px; color: var(--primary); margin-bottom: 15px; font-weight: 500; }
         .section-header h2 { font-size: 46px; letter-spacing: -1px; }
 
+        /* --- УСЛУГИ --- */
+        .services-container { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        .service-box {
+            background: var(--bg-alt); padding: 60px 50px; 
+            border: 1px solid var(--hairline); transition: all 0.5s ease;
+            display: flex; flex-direction: column; align-items: flex-start;
+        }
+        .service-box:hover { transform: translateY(-10px); border-color: var(--accent); background: rgba(255, 255, 255, 0.02); }
+        .service-box i { font-size: 40px; color: var(--accent); margin-bottom: 30px; }
+        .service-box h3 { font-size: 28px; margin-bottom: 15px; font-family: 'Playfair Display', serif; }
+        .service-box p { font-size: 16px; opacity: 0.7; }
+
         /* --- ПРЕДИМСТВА --- */
         .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border-top: 1px solid var(--hairline); border-left: 1px solid var(--hairline); }
         .feature-card {
@@ -160,6 +172,19 @@
         .feature-card h3 { margin-bottom: 15px; font-size: 24px; font-weight: 400; line-height: 1.3; }
         .feature-card p { font-size: 15px; opacity: 0.7; }
 
+        /* --- ПОРТФОЛИО --- */
+        .portfolio-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px; }
+        .portfolio-card { position: relative; overflow: hidden; border: 1px solid var(--hairline); group; background: #000; }
+        .portfolio-card img { width: 100%; height: 400px; object-fit: cover; transition: transform 0.7s ease, opacity 0.4s ease; opacity: 0.7; }
+        .portfolio-card:hover img { transform: scale(1.05); opacity: 0.3; }
+        .portfolio-content {
+            position: absolute; bottom: 0; left: 0; width: 100%; padding: 40px;
+            transform: translateY(20px); opacity: 0; transition: all 0.5s ease;
+        }
+        .portfolio-card:hover .portfolio-content { transform: translateY(0); opacity: 1; }
+        .portfolio-content h3 { font-size: 28px; margin-bottom: 10px; }
+        .portfolio-content p { font-size: 13px; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); }
+
         /* --- ПРОЦЕС --- */
         .steps { padding: 150px 5%; background: var(--bg-color); border-top: 1px solid var(--hairline); }
         .steps-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; gap: 40px; }
@@ -174,45 +199,39 @@
             color: transparent;
             line-height: 1;
         }
-        
         .step h4 { font-size: 26px; margin-bottom: 15px; position: relative; z-index: 2; }
         .step p { font-size: 15px; opacity: 0.7; max-width: 95%; position: relative; z-index: 2; }
 
+        /* --- ОТЗИВИ --- */
+        .testimonials { padding: 100px 5%; background: var(--bg-alt); border-top: 1px solid var(--hairline); }
+        .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; max-width: 1200px; margin: 0 auto; }
+        .testimonial-card { padding: 40px; border: 1px solid var(--hairline); background: var(--bg-color); }
+        .testimonial-card i { color: var(--accent); font-size: 24px; margin-bottom: 20px; }
+        .testimonial-card p { font-size: 16px; font-style: italic; margin-bottom: 30px; opacity: 0.8; line-height: 1.7; }
+        .testimonial-author h4 { font-size: 18px; margin-bottom: 5px; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 500; }
+        .testimonial-author span { font-size: 12px; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; }
+
         /* --- ПАРТНЬОРИ / СПОНСОРИ --- */
-        .sponsors-section {
-            padding: 100px 5%;
-            background: var(--bg-alt);
-            border-top: 1px solid var(--hairline);
-        }
-        .sponsors-grid {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 80px;
-            flex-wrap: wrap;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-        .sponsor-logo {
-            max-height: 90px;
-            max-width: 200px;
-            object-fit: contain;
-            filter: grayscale(100%) opacity(0.4);
-            transition: all 0.5s ease;
-        }
-        .sponsor-logo:hover {
-            filter: grayscale(0%) opacity(1);
-            transform: scale(1.05);
-        }
+        .sponsors-section { padding: 100px 5%; background: var(--bg-color); border-top: 1px solid var(--hairline); }
+        .sponsors-grid { display: flex; justify-content: center; align-items: center; gap: 80px; flex-wrap: wrap; max-width: 1000px; margin: 0 auto; }
+        .sponsor-logo { max-height: 90px; max-width: 200px; object-fit: contain; filter: grayscale(100%) opacity(0.4); transition: all 0.5s ease; }
+        .sponsor-logo:hover { filter: grayscale(0%) opacity(1); transform: scale(1.05); }
+
+        /* --- FAQ --- */
+        .faq { padding: 150px 5%; background: var(--bg-alt); border-top: 1px solid var(--hairline); }
+        .faq-container { max-width: 800px; margin: 0 auto; }
+        .faq-item { border-bottom: 1px solid var(--hairline); padding: 25px 0; cursor: pointer; }
+        .faq-question { display: flex; justify-content: space-between; align-items: center; font-size: 20px; font-family: 'Playfair Display', serif; color: white; transition: 0.3s; }
+        .faq-question i { font-size: 16px; color: var(--accent); transition: transform 0.4s ease; }
+        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; font-size: 15px; opacity: 0.7; margin-top: 0; }
+        .faq-item.active .faq-question { color: var(--accent); }
+        .faq-item.active .faq-question i { transform: rotate(180deg); }
+        .faq-item.active .faq-answer { max-height: 200px; margin-top: 20px; }
 
         /* --- КОНТАКТИ --- */
-        .cta-section { 
-            padding: 120px 5%; text-align: center; 
-            max-width: 900px; margin: 0 auto; border-top: 1px solid var(--hairline);
-        }
+        .cta-section { padding: 120px 5%; text-align: center; max-width: 900px; margin: 0 auto; border-top: 1px solid var(--hairline); }
         .cta-section h2 { font-size: 48px; margin-bottom: 20px; letter-spacing: -1px; }
         .cta-section p { font-size: 16px; margin-bottom: 60px; color: var(--default-text); opacity: 0.8; }
-        
         .cta-buttons-wrapper { display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: wrap; width: 100%; }
 
         .contact-btn {
@@ -222,29 +241,67 @@
             min-width: 280px; border: 1px solid white;
         }
         .contact-btn.light-btn { background: transparent; color: white; border: 1px solid rgba(255,255,255,0.2); }
-        
         .contact-btn:hover { background: var(--accent); border-color: var(--accent); color: var(--dark); }
         .contact-btn.light-btn:hover { background: white; color: var(--dark); border-color: white; }
 
-        /* --- FOOTER --- */
+        /* --- FOOTER, MODALS & COOKIE BANNER --- */
         footer { padding: 60px 5% 40px; text-align: center; border-top: 1px solid var(--hairline); background: var(--bg-alt); }
         footer .logo { font-size: 20px; margin-bottom: 15px; display: inline-block; }
-        footer p { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; opacity: 0.4; }
+        footer p { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; opacity: 0.4; margin-bottom: 20px; }
+        .footer-links { display: flex; justify-content: center; gap: 20px; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.6; }
+        .footer-links a:hover { color: var(--accent); opacity: 1; }
+
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(10, 12, 13, 0.95); backdrop-filter: blur(10px);
+            z-index: 2000; opacity: 0; pointer-events: none; transition: 0.4s ease;
+            display: flex; justify-content: center; align-items: center; padding: 20px;
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .modal-content {
+            background: var(--bg-color); border: 1px solid var(--hairline);
+            width: 100%; max-width: 700px; max-height: 80vh; overflow-y: auto;
+            padding: 40px; position: relative; transform: translateY(30px); transition: 0.4s ease;
+        }
+        .modal-overlay.active .modal-content { transform: translateY(0); }
+        .close-modal { position: absolute; top: 20px; right: 20px; font-size: 24px; color: white; cursor: pointer; transition: 0.3s; }
+        .close-modal:hover { color: var(--accent); }
+        .modal-content h3 { font-size: 28px; margin-bottom: 20px; border-bottom: 1px solid var(--hairline); padding-bottom: 15px; }
+        .modal-content h4 { font-size: 18px; margin: 20px 0 10px; font-family: 'Plus Jakarta Sans', sans-serif; }
+        .modal-content p, .modal-content li { font-size: 14px; opacity: 0.8; margin-bottom: 10px; line-height: 1.7; }
+        .modal-content ul { padding-left: 20px; margin-bottom: 20px; }
+
+        /* GDPR Cookie Banner */
+        .cookie-banner {
+            position: fixed; bottom: 0; left: 0; width: 100%; background: #161c1d;
+            border-top: 1px solid var(--hairline); padding: 20px 5%; z-index: 10000;
+            display: none; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.5);
+        }
+        .cookie-text { flex: 1; font-size: 13px; opacity: 0.8; line-height: 1.6; min-width: 250px; }
+        .cookie-text a { color: var(--accent); text-decoration: underline; }
+        .cookie-btns { display: flex; gap: 15px; }
+        .cookie-btn {
+            padding: 10px 24px; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;
+            cursor: pointer; border: 1px solid white; background: transparent; color: white; transition: 0.3s;
+        }
+        .cookie-btn.accept { background: white; color: var(--dark); }
+        .cookie-btn.accept:hover { background: var(--accent); border-color: var(--accent); }
+        .cookie-btn.decline:hover { background: rgba(255,255,255,0.1); }
 
         /* =========================================================
            RESPONSIVE ЗА ТАБЛЕТИ И МОБИЛНИ
            ========================================================= */
         @media (max-width: 1024px) {
-            .features-grid { grid-template-columns: repeat(2, 1fr); }
+            .features-grid, .testimonials-grid { grid-template-columns: repeat(2, 1fr); }
             .hero h1 { font-size: 56px; }
-            .section-padding, .steps { padding: 100px 5%; }
+            .section-padding, .steps, .testimonials, .faq { padding: 100px 5%; }
         }
 
         @media (max-width: 768px) {
             header { padding: 20px 5%; background: rgba(22, 28, 29, 0.98); border-bottom: 1px solid var(--hairline); }
             .menu-toggle { display: block; } 
             
-            /* Мобилно меню */
             .nav-links {
                 position: absolute; top: 100%; left: 0; width: 100%; background: #161c1d;
                 flex-direction: column; align-items: flex-start; padding: 30px 5%; border-bottom: 1px solid var(--hairline);
@@ -257,25 +314,23 @@
             .lang-btn { margin: 20px 0 0 0; padding: 0; }
 
             .hero h1 { font-size: 46px; }
-            .features-grid { grid-template-columns: 1fr; border-left: none; border-top: none; }
+            .services-container, .portfolio-grid { grid-template-columns: 1fr; gap: 20px; }
+            .service-box { padding: 40px 30px; }
+            .portfolio-card img { height: 300px; }
+            
+            .features-grid, .testimonials-grid { grid-template-columns: 1fr; border-left: none; border-top: none; }
             .feature-card { border-right: none; padding: 40px 0; border-bottom: 1px solid var(--hairline); background: transparent; }
             
-            /* Фикс за Процеса на мобилни */
             .steps-container { flex-direction: column; gap: 50px; }
-            .step { 
-                border-top: 1px solid var(--hairline); 
-                padding-top: 30px; 
-                padding-left: 0;
-            }
-            .step::before { 
-                font-size: 70px; 
-                top: -30px; 
-                left: 0; 
-                opacity: 0.8;
-            }
+            .step { border-top: 1px solid var(--hairline); padding-top: 30px; padding-left: 0; }
+            .step::before { font-size: 70px; top: -30px; left: 0; opacity: 0.8; }
 
             .sponsors-grid { gap: 40px; }
             .sponsor-logo { max-height: 70px; }
+            
+            .cookie-banner { flex-direction: column; align-items: flex-start; }
+            .cookie-btns { width: 100%; justify-content: space-between; }
+            .cookie-btn { flex: 1; text-align: center; }
         }
 
         @media (max-width: 480px) {
@@ -287,33 +342,20 @@
             .hero-btns { flex-direction: column; gap: 15px; width: 100%; }
             .btn-main, .btn-outline { width: 100%; padding: 16px 20px; }
 
-            .section-padding, .steps, .sponsors-section { padding: 80px 5%; }
+            .section-padding, .steps, .sponsors-section, .testimonials, .faq { padding: 80px 5%; }
             .section-header { margin-bottom: 50px; }
             .section-header h2 { font-size: 32px; }
-            
-            .feature-icon { margin-bottom: 20px; }
-            .feature-card h3 { font-size: 22px; }
             
             .cta-section { padding: 80px 5%; margin-bottom: 0; border-bottom: 1px solid var(--hairline); }
             .cta-section h2 { font-size: 32px; margin-bottom: 15px; }
             .cta-section p { font-size: 15px; margin-bottom: 40px; }
             
             .cta-buttons-wrapper { flex-direction: column; gap: 12px; }
-            .contact-btn { 
-                width: 100%; min-width: 100%; margin: 0;
-                padding: 16px; font-size: 12px;
-                letter-spacing: 1px;
-                white-space: normal; word-wrap: break-word; overflow-wrap: break-word;
-            }
+            .contact-btn { width: 100%; min-width: 100%; margin: 0; padding: 16px; font-size: 12px; letter-spacing: 1px; }
+            
+            .footer-links { flex-direction: column; gap: 10px; }
         }
     </style>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-5R0EZ7E8PC"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-5R0EZ7E8PC');
-    </script>
 </head>
 <body>
 
@@ -325,8 +367,10 @@
         </div>
 
         <nav class="nav-links" id="nav-links">
-            <a href="#features" data-i18n="nav_features">Естетика</a>
+            <a href="#services" data-i18n="nav_services">Услуги</a>
+            <a href="#portfolio" data-i18n="nav_portfolio">Проекти</a>
             <a href="#how-it-works" data-i18n="nav_how">Процес</a>
+            <a href="#faq" data-i18n="nav_faq">Въпроси</a>
             <a href="mobile.html" class="btn-nav"><span data-i18n="nav_demo">Виж Демо</span></a>
             
             <button id="langToggle" class="lang-btn">
@@ -337,12 +381,78 @@
 
     <section class="hero">
         <div class="hero-content reveal">
-            <span class="hero-subtitle" data-i18n="hero_subtitle">Новият стандарт в готварството</span>
+            <span class="hero-subtitle" data-i18n="hero_subtitle">Новият стандарт в дигиталното присъствие</span>
             <h1 data-i18n="hero_title">Изкуството на <span>дигиталното</span> представяне.</h1>
-            <p data-i18n="hero_desc">Безкомпромисен стил и светкавична скорост. Замени остарелите стандарти с QR изживяване, достойно за най-взискателните клиенти.</p>
+            <p data-i18n="hero_desc">От иновативни QR менюта и премиум уебсайтове до графичен дизайн и 3D проектиране. Безкомпромисен стил във всяко измерение.</p>
             <div class="hero-btns">
-                <a href="#contact" class="btn-main" data-i18n="btn_order">Заяви меню</a>
-                <a href="mobile.html" target="_blank" class="btn-outline" data-i18n="btn_explore">Към демо версията</a>
+                <a href="#contact" class="btn-main" data-i18n="btn_order">Заяви проект</a>
+                <a href="mobile.html" target="_blank" class="btn-outline" data-i18n="btn_explore">Към демо меню</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="section-padding" style="background: var(--bg-color);">
+        <div class="section-header reveal">
+            <p data-i18n="serv_subtitle">Експертиза</p>
+            <h2 data-i18n="serv_title">Решения от най-висок клас.</h2>
+        </div>
+        <div class="services-container">
+            <div class="service-box reveal delay-1">
+                <i class="fas fa-qrcode"></i>
+                <h3 data-i18n="serv1_title">Smart QR Менюта</h3>
+                <p data-i18n="serv1_desc">Интерактивни дигитални менюта за ресторанти и барове. Безплатна изработка с ниска месечна такса и нулев разход за хартия.</p>
+            </div>
+            <div class="service-box reveal delay-2">
+                <i class="fas fa-laptop-code"></i>
+                <h3 data-i18n="serv2_title">Премиум Уебсайтове</h3>
+                <p data-i18n="serv2_desc">Модерни корпоративни сайтове с бързо зареждане и перфектен UI/UX дизайн. Изработваме ги безплатно, плащате само поддръжка.</p>
+            </div>
+            <div class="service-box reveal delay-1">
+                <i class="fas fa-palette"></i>
+                <h3 data-i18n="serv3_title">Графичен Дизайн</h3>
+                <p data-i18n="serv3_desc">Създаваме визуални идентичности, лога и рекламни материали, които отличават вашия бранд и привличат вниманието на аудиторията.</p>
+            </div>
+            <div class="service-box reveal delay-2">
+                <i class="fas fa-cube"></i>
+                <h3 data-i18n="serv4_title">3D Проектиране</h3>
+                <p data-i18n="serv4_desc">Инженерно и концептуално 3D моделиране, оптимизирано специално за 3D принтиране, бързо прототипиране и производство.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="portfolio" class="section-padding" style="background: var(--bg-alt);">
+        <div class="section-header reveal">
+            <p data-i18n="port_subtitle">Творения</p>
+            <h2 data-i18n="port_title">Избрани проекти.</h2>
+        </div>
+        <div class="portfolio-grid">
+            <div class="portfolio-card reveal delay-1">
+                <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Restaurant Menu">
+                <div class="portfolio-content">
+                    <h3>Gourmet Casa</h3>
+                    <p data-i18n="port_cat1">Smart QR Меню</p>
+                </div>
+            </div>
+            <div class="portfolio-card reveal delay-2">
+                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Corporate Website">
+                <div class="portfolio-content">
+                    <h3>Nexus Architecture</h3>
+                    <p data-i18n="port_cat2">Уебсайт & Дизайн</p>
+                </div>
+            </div>
+            <div class="portfolio-card reveal delay-1">
+                <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Cafe Menu">
+                <div class="portfolio-content">
+                    <h3>Urban Roasters</h3>
+                    <p data-i18n="port_cat1">Smart QR Меню</p>
+                </div>
+            </div>
+            <div class="portfolio-card reveal delay-2">
+                <img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="3D Model">
+                <div class="portfolio-content">
+                    <h3>ProtoTech Parts</h3>
+                    <p data-i18n="port_cat3">3D Моделиране</p>
+                </div>
             </div>
         </div>
     </section>
@@ -357,37 +467,32 @@
             <div class="feature-card reveal delay-1">
                 <div class="feature-icon"><i class="fas fa-leaf"></i></div>
                 <h3 data-i18n="card1_title">Устойчивост</h3>
-                <p data-i18n="card1_desc">Актуализирай цени и добавяй нови шедьоври на секундата, без излишни разходи за хартия и печат.</p>
+                <p data-i18n="card1_desc">Актуализирай съдържание и цени на секундата, без излишни разходи за хартия, печат и време.</p>
             </div>
-            
             <div class="feature-card reveal delay-2">
                 <div class="feature-icon"><i class="fas fa-sliders-h"></i></div>
                 <h3 data-i18n="card2_title">Интуитивност</h3>
-                <p data-i18n="card2_desc">Кристално чист интерфейс. Мигновено търсене и елегантни категории за безупречно изживяване.</p>
+                <p data-i18n="card2_desc">Кристално чист интерфейс. Мигновено зареждане и елегантна структура за безупречно потребителско изживяване.</p>
             </div>
-            
             <div class="feature-card reveal delay-3">
-                <div class="feature-icon"><i class="fas fa-globe-europe"></i></div>
-                <h3 data-i18n="card3_title">Глобалност</h3>
-                <p data-i18n="card3_desc">Елиминирай бариерите. Плавно превключване между езиците с изяществото на един допир.</p>
+                <div class="feature-icon"><i class="fas fa-cube"></i></div>
+                <h3 data-i18n="card3_title">Прецизност</h3>
+                <p data-i18n="card3_desc">От перфектния пиксел в дизайна до микронната точност при 3D моделирането за печат.</p>
             </div>
-
             <div class="feature-card reveal delay-1">
                 <div class="feature-icon"><i class="fas fa-mobile-alt"></i></div>
                 <h3 data-i18n="card4_title">Естетика</h3>
-                <p data-i18n="card4_desc">Менюто ти се усеща като нативно приложение от най-висок клас, проектирано специално за теб.</p>
+                <p data-i18n="card4_desc">Проектът ти се усеща като нативно приложение от най-висок клас, създадено специално за твоята аудитория.</p>
             </div>
-
             <div class="feature-card reveal delay-2">
-                <div class="feature-icon"><i class="fas fa-qrcode"></i></div>
+                <div class="feature-icon"><i class="fas fa-bolt"></i></div>
                 <h3 data-i18n="card5_title">Достъпност</h3>
-                <p data-i18n="card5_desc">Едно сканиране дели твоите гости от пълното потапяне в кулинарната ти вселена.</p>
+                <p data-i18n="card5_desc">Само един клик или сканиране делят твоите клиенти от пълното потапяне в твоя свят.</p>
             </div>
-
             <div class="feature-card reveal delay-3">
                 <div class="feature-icon"><i class="fas fa-pencil-ruler"></i></div>
                 <h3 data-i18n="card6_title">Идентичност</h3>
-                <p data-i18n="card6_desc">Всяка линия и цвят са съобразени с твоя бранд, за да отразят точно характера на заведението.</p>
+                <p data-i18n="card6_desc">Всяка линия, цвят и модел са съобразени с твоя бранд, за да отразят точно характера на бизнеса ти.</p>
             </div>
         </div>
     </section>
@@ -400,15 +505,48 @@
         <div class="steps-container">
             <div class="step reveal delay-1" data-step="01">
                 <h4 data-i18n="step1_title">Концепция</h4>
-                <p data-i18n="step1_desc">Предоставяш ни своето меню, визуална идентичност и насоки. Ние поемаме оттам.</p>
+                <p data-i18n="step1_desc">Описвате ни нуждите си – било то уебсайт, меню, бранд дизайн или детайлен 3D модел.</p>
             </div>
             <div class="step reveal delay-2" data-step="02">
                 <h4 data-i18n="step2_title">Проектиране</h4>
-                <p data-i18n="step2_desc">Дизайнерите ни създават дигитална среда, базирана на най-високите стандарти за скорост и типография.</p>
+                <p data-i18n="step2_desc">Създаваме дигиталната среда или 3D геометрията, базирани на най-високите технологични стандарти.</p>
             </div>
             <div class="step reveal delay-3" data-step="03">
                 <h4 data-i18n="step3_title">Реализация</h4>
-                <p data-i18n="step3_desc">Получаваш своите уникални QR кодове, готови да посрещнат първите ти гости.</p>
+                <p data-i18n="step3_desc">Получавате своя готов проект, оптимизиран за уеб или готов за вашия 3D принтер.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonials">
+        <div class="section-header reveal">
+            <p data-i18n="test_subtitle">Отзиви</p>
+            <h2 data-i18n="test_title">Какво казват клиентите ни.</h2>
+        </div>
+        <div class="testimonials-grid">
+            <div class="testimonial-card reveal delay-1">
+                <i class="fas fa-quote-left"></i>
+                <p data-i18n="test1_desc">"Дигиталното меню промени изцяло начина, по който обслужваме гостите си. По-бързо, по-стилно и без разходи за печат."</p>
+                <div class="testimonial-author">
+                    <h4>Иван Петров</h4>
+                    <span data-i18n="test1_role">Собственик на ресторант</span>
+                </div>
+            </div>
+            <div class="testimonial-card reveal delay-2">
+                <i class="fas fa-quote-left"></i>
+                <p data-i18n="test2_desc">"Новият ни корпоративен уебсайт изглежда феноменално на мобилни устройства. Получаваме комплименти от всеки нов клиент."</p>
+                <div class="testimonial-author">
+                    <h4>Мария Георгиева</h4>
+                    <span data-i18n="test2_role">Мениджър Маркетинг</span>
+                </div>
+            </div>
+            <div class="testimonial-card reveal delay-3">
+                <i class="fas fa-quote-left"></i>
+                <p data-i18n="test3_desc">"Имах нужда от сложен 3D модел за прототип на нов продукт. Свършиха работата перфектно и файлът се принтира безупречно."</p>
+                <div class="testimonial-author">
+                    <h4>Георги Димитров</h4>
+                    <span data-i18n="test3_role">Инженер & Изобретател</span>
+                </div>
             </div>
         </div>
     </section>
@@ -419,8 +557,38 @@
             <h2 data-i18n="sponsors_title">Нашите партньори.</h2>
         </div>
         <div class="sponsors-grid reveal delay-1">
-            <img src="technolux.png" alt="TechnoLux" class="sponsor-logo">
-            <img src="globalnet.png" alt="Global Net" class="sponsor-logo">
+            <img src="technolux.png" alt="TechnoLux" class="sponsor-logo" onerror="this.style.display='none'">
+            <img src="globalnet.png" alt="Global Net" class="sponsor-logo" onerror="this.style.display='none'">
+        </div>
+    </section>
+
+    <section id="faq" class="faq">
+        <div class="section-header reveal">
+            <p data-i18n="faq_subtitle">Инфо</p>
+            <h2 data-i18n="faq_title">Често задавани въпроси.</h2>
+        </div>
+        <div class="faq-container reveal delay-1">
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span data-i18n="faq1_q">Колко струва изработката на сайт или меню?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer" data-i18n="faq1_a">Изработката и хостингът на уебсайтове и менюта са напълно безплатни. Заплаща се единствено месечна такса за поддръжка, която варира между 15 и 50 евро.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span data-i18n="faq2_q">Как се таксуват дизайнът и 3D моделирането?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer" data-i18n="faq2_a">За разлика от сайтовете, графичният дизайн и 3D проектирането са услуги с еднократно плащане. Цената се определя индивидуално спрямо сложността на конкретния проект.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span data-i18n="faq3_q">Как и кога се извършва плащането за абонаментите?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer" data-i18n="faq3_a">При стартиране на нов уеб проект е необходимо да предплатите таксата за поддръжка за първите 3 месеца. След изтичането на този период, плащането се извършва на месечна база.</div>
+            </div>
         </div>
     </section>
 
@@ -442,9 +610,63 @@
     </section>
 
     <footer>
-        <div class="logo">Smart<span>Menu</span></div>
+        <div class="logo">Smart<span>Menu</span> & Design</div>
         <p data-i18n="footer_text">© 2026. Изработка на дигитални решения от най-висок клас.</p>
+        <div class="footer-links">
+            <a href="#" onclick="openModal('termsModal'); return false;" data-i18n="footer_terms">Общи условия</a>
+            <a href="#" onclick="openModal('privacyModal'); return false;" data-i18n="footer_privacy">Политика за поверителност (GDPR)</a>
+        </div>
     </footer>
+
+    <!-- COOKIE BANNER -->
+    <div id="cookieBanner" class="cookie-banner">
+        <div class="cookie-text" data-i18n="cookie_text">
+            Този сайт използва бисквитки (cookies), за да анализира трафика и да подобри вашето преживяване. С натискането на "Приемам", вие се съгласявате с нашата <a href="#" onclick="openModal('privacyModal'); return false;">Политика за поверителност</a>.
+        </div>
+        <div class="cookie-btns">
+            <button class="cookie-btn decline" onclick="declineCookies()" data-i18n="cookie_decline">Отказвам</button>
+            <button class="cookie-btn accept" onclick="acceptCookies()" data-i18n="cookie_accept">Приемам</button>
+        </div>
+    </div>
+
+    <!-- MODAL: Общи условия -->
+    <div class="modal-overlay" id="termsModal">
+        <div class="modal-content">
+            <i class="fas fa-times close-modal" onclick="closeModal('termsModal')"></i>
+            <h3 data-i18n="modal_terms_title">Общи условия за ползване</h3>
+            <div data-i18n="modal_terms_content">
+                <p>Настоящите Общи условия регламентират отношенията между агенцията (наричана по-долу "Изпълнител") и клиентите (наричани по-долу "Възложител").</p>
+                <h4>1. Предмет на услугите</h4>
+                <p>Изпълнителят предоставя услуги по изработка, дизайн и поддръжка на дигитални QR менюта, корпоративни уебсайтове, графичен дизайн и 3D проектиране за 3D печат.</p>
+                <h4>2. Ценообразуване и Плащания</h4>
+                <ul>
+                    <li><strong>Уеб проекти (Менюта и Сайтове):</strong> Изработката и хостингът се предоставят безплатно. Възложителят дължи месечна такса за поддръжка (15-50 евро). При стартиране се изисква предплащане за първите 3 месеца.</li>
+                    <li><strong>Графичен дизайн и 3D моделиране:</strong> Тези услуги не са обвързани с месечен абонамент и се таксуват еднократно въз основа на конкретно запитване и оферта.</li>
+                </ul>
+                <h4>3. Права и задължения</h4>
+                <p>Изпълнителят се задължава да изпълни проектите качествено и в срок. Възложителят се задължава да предоставя нужните материали и да спазва сроковете за плащане. Всички 3D модели и графични концепции остават поверителни до тяхното официално пускане или предаване.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: Политика за поверителност (GDPR) -->
+    <div class="modal-overlay" id="privacyModal">
+        <div class="modal-content">
+            <i class="fas fa-times close-modal" onclick="closeModal('privacyModal')"></i>
+            <h3 data-i18n="modal_privacy_title">Политика за поверителност и защита на личните данни (GDPR)</h3>
+            <div data-i18n="modal_privacy_content">
+                <p>Ние уважаваме вашата поверителност и се ангажираме да защитаваме вашите лични данни в съответствие с Общия регламент относно защитата на данните (GDPR).</p>
+                <h4>1. Какви данни събираме и защо?</h4>
+                <p>Събираме единствено базова информация за контакт (име, телефон, имейл), която вие доброволно ни предоставяте при запитване. Използваме я изключително и само за обратна връзка и изпълнение на бизнес отношенията ни.</p>
+                <h4>2. Бисквитки (Cookies) и Анализи</h4>
+                <p>Ако ни дадете изричното си съгласие чрез банера в сайта, използваме Google Analytics за анонимно проследяване на посещенията с цел подобряване на нашите услуги. Ако откажете, тези скриптове не се зареждат.</p>
+                <h4>3. Вашите права</h4>
+                <p>Според изискванията на ЕС имате право по всяко време да поискате достъп до вашите данни, тяхното коригиране или пълно изтриване ("правото да бъдеш забравен"). За целта се свържете с нас на посочения имейл адрес.</p>
+                <h4>4. Защита на трети страни</h4>
+                <p>Не продаваме, не споделяме и не отдаваме под наем вашата лична информация, файлове, лога или 3D модели на трети страни без вашето изрично съгласие.</p>
+            </div>
+        </div>
+    </div>
 
     <script>
         /* --- КИНЕМАТОГРАФИЧЕН СКРОЛ ЕФЕКТ --- */
@@ -491,49 +713,192 @@
             });
         });
 
+        /* --- FAQ АККОРДЕОН --- */
+        const faqItems = document.querySelectorAll('.faq-item');
+        faqItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const isActive = item.classList.contains('active');
+                faqItems.forEach(el => el.classList.remove('active'));
+                if (!isActive) {
+                    item.classList.add('active');
+                }
+            });
+        });
+
+        /* --- MODALS (ПОПЪПИ ЗА ПРАВНИ СТРАНИЦИ) --- */
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+            document.body.style.overflow = 'hidden'; 
+        }
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal-overlay')) {
+                event.target.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+
+        /* --- COOKIE CONSENT / GDPR --- */
+        const cookieBanner = document.getElementById('cookieBanner');
+        
+        function loadGoogleAnalytics() {
+            // Зарежда скрипта само след съгласие
+            const script1 = document.createElement('script');
+            script1.async = true;
+            script1.src = 'https://www.googletagmanager.com/gtag/js?id=G-5R0EZ7E8PC';
+            document.head.appendChild(script1);
+
+            const script2 = document.createElement('script');
+            script2.innerHTML = `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-5R0EZ7E8PC');
+            `;
+            document.head.appendChild(script2);
+        }
+
+        function checkCookieConsent() {
+            const consent = localStorage.getItem('gdpr_consent');
+            if (!consent) {
+                cookieBanner.style.display = 'flex';
+            } else if (consent === 'accepted') {
+                loadGoogleAnalytics();
+            }
+        }
+
+        function acceptCookies() {
+            localStorage.setItem('gdpr_consent', 'accepted');
+            cookieBanner.style.display = 'none';
+            loadGoogleAnalytics();
+        }
+
+        function declineCookies() {
+            localStorage.setItem('gdpr_consent', 'declined');
+            cookieBanner.style.display = 'none';
+        }
+
+        // Проверка при зареждане на страницата
+        checkCookieConsent();
+
         /* --- МНОГОЕЗИЧНОСТ --- */
         const translations = {
             bg: {
-                nav_features: "Естетика", nav_how: "Процес", nav_demo: "Виж Демо",
-                hero_subtitle: "Новият стандарт в готварството",
+                nav_services: "Услуги", nav_portfolio: "Проекти", nav_how: "Процес", nav_faq: "Въпроси", nav_demo: "Виж Демо",
+                hero_subtitle: "Новият стандарт в дигиталното присъствие",
                 hero_title: "Изкуството на <span>дигиталното</span> представяне.",
-                hero_desc: "Безкомпромисен стил и светкавична скорост. Замени остарелите стандарти с QR изживяване, достойно за най-взискателните клиенти.",
-                btn_order: "Заяви меню", btn_explore: "Към демо версията",
+                hero_desc: "От иновативни QR менюта и премиум уебсайтове до графичен дизайн и 3D проектиране. Безкомпромисен стил във всяко измерение.",
+                btn_order: "Заяви проект", btn_explore: "Към демо меню",
+                serv_subtitle: "Експертиза", serv_title: "Решения от най-висок клас.",
+                serv1_title: "Smart QR Менюта", serv1_desc: "Интерактивни дигитални менюта за ресторанти и барове. Безплатна изработка с ниска месечна такса и нулев разход за хартия.",
+                serv2_title: "Премиум Уебсайтове", serv2_desc: "Модерни корпоративни сайтове с бързо зареждане и перфектен UI/UX дизайн. Изработваме ги безплатно, плащате само поддръжка.",
+                serv3_title: "Графичен Дизайн", serv3_desc: "Създаваме визуални идентичности, лога и рекламни материали, които отличават вашия бранд и привличат вниманието на аудиторията.",
+                serv4_title: "3D Проектиране", serv4_desc: "Инженерно и концептуално 3D моделиране, оптимизирано специално за 3D принтиране, бързо прототипиране и производство.",
+                port_subtitle: "Творения", port_title: "Избрани проекти.",
+                port_cat1: "Smart QR Меню", port_cat2: "Уебсайт & Дизайн", port_cat3: "3D Моделиране",
                 feat_title: "Безкомпромисно качество.", feat_subtitle: "Философия на детайла",
-                card1_title: "Устойчивост", card1_desc: "Актуализирай цени и добавяй нови шедьоври на секундата, без излишни разходи за хартия и печат.",
-                card2_title: "Интуитивност", card2_desc: "Кристално чист интерфейс. Мигновено търсене и елегантни категории за безупречно изживяване.",
-                card3_title: "Глобалност", card3_desc: "Елиминирай бариерите. Плавно превключване между езиците с изяществото на един допир.",
-                card4_title: "Естетика", card4_desc: "Менюто ти се усеща като нативно приложение от най-висок клас, проектирано специално за теб.",
-                card5_title: "Достъпност", card5_desc: "Едно сканиране дели твоите гости от пълното потапяне в кулинарната ти вселена.",
-                card6_title: "Идентичност", card6_desc: "Всяка линия и цвят са съобразени с твоя бранд, за да отразят точно характера на заведението.",
+                card1_title: "Устойчивост", card1_desc: "Актуализирай съдържание и цени на секундата, без излишни разходи за хартия, печат и време.",
+                card2_title: "Интуитивност", card2_desc: "Кристално чист интерфейс. Мигновено зареждане и елегантна структура за безупречно потребителско изживяване.",
+                card3_title: "Прецизност", card3_desc: "От перфектния пиксел в дизайна до микронната точност при 3D моделирането за печат.",
+                card4_title: "Естетика", card4_desc: "Проектът ти се усеща като нативно приложение от най-висок клас, създадено специално за твоята аудитория.",
+                card5_title: "Достъпност", card5_desc: "Само един клик или сканиране делят твоите клиенти от пълното потапяне в твоя свят.",
+                card6_title: "Идентичност", card6_desc: "Всяка линия, цвят и модел са съобразени с твоя бранд, за да отразят точно характера на бизнеса ти.",
                 steps_title: "Съвършенството изисква три стъпки.", steps_subtitle: "Интеграция",
-                step1_title: "Концепция", step1_desc: "Предоставяш ни своето меню, визуална идентичност и насоки. Ние поемаме оттам.",
-                step2_title: "Проектиране", step2_desc: "Дизайнерите ни създават дигитална среда, базирана на най-високите стандарти за скорост и типография.",
-                step3_title: "Реализация", step3_desc: "Получаваш своите уникални QR кодове, готови да посрещнат първите ти гости.",
+                step1_title: "Концепция", step1_desc: "Описвате ни нуждите си – било то уебсайт, меню, бранд дизайн или детайлен 3D модел.",
+                step2_title: "Проектиране", step2_desc: "Създаваме дигиталната среда или 3D геометрията, базирани на най-високите технологични стандарти.",
+                step3_title: "Реализация", step3_desc: "Получавате своя готов проект, оптимизиран за уеб или готов за вашия 3D принтер.",
+                test_subtitle: "Отзиви", test_title: "Какво казват клиентите ни.",
+                test1_desc: "\"Дигиталното меню промени изцяло начина, по който обслужваме гостите си. По-бързо, по-стилно и без разходи за печат.\"", test1_role: "Собственик на ресторант",
+                test2_desc: "\"Новият ни корпоративен уебсайт изглежда феноменално на мобилни устройства. Получаваме комплименти от всеки нов клиент.\"", test2_role: "Мениджър Маркетинг",
+                test3_desc: "\"Имах нужда от сложен 3D модел за прототип на нов продукт. Свършиха работата перфектно и файлът се принтира безупречно.\"", test3_role: "Инженер & Изобретател",
                 sponsors_title: "Нашите партньори.", sponsors_subtitle: "С доверието на",
+                faq_subtitle: "Инфо", faq_title: "Често задавани въпроси.",
+                faq1_q: "Колко струва изработката на сайт или меню?", faq1_a: "Изработката и хостингът на уебсайтове и менюта са напълно безплатни. Заплаща се единствено месечна такса за поддръжка, която варира между 15 и 50 евро.",
+                faq2_q: "Как се таксуват дизайнът и 3D моделирането?", faq2_a: "За разлика от сайтовете, графичният дизайн и 3D проектирането са услуги с еднократно плащане. Цената се определя индивидуално спрямо сложността на конкретния проект.",
+                faq3_q: "Как и кога се извършва плащането за абонаментите?", faq3_a: "При стартиране на нов уеб проект е необходимо да предплатите таксата за поддръжка за първите 3 месеца. След изтичането на този период, плащането се извършва на месечна база.",
                 cta_title: "Време е за следващото ниво.", cta_subtitle: "Запази час за персонална консултация с нашия екип.",
-                cta_phone: "Контакт: 0885 348 666", footer_text: "© 2026. Изработка на дигитални решения от най-висок клас."
+                cta_phone: "Контакт: 0885 348 666", footer_text: "© 2026. Изработка на дигитални решения от най-висок клас.",
+                footer_terms: "Общи условия", footer_privacy: "Политика за поверителност (GDPR)",
+                cookie_text: `Този сайт използва бисквитки (cookies), за да анализира трафика и да подобри вашето преживяване. С натискането на "Приемам", вие се съгласявате с нашата <a href="#" onclick="openModal('privacyModal'); return false;">Политика за поверителност</a>.`,
+                cookie_accept: "Приемам", cookie_decline: "Отказвам",
+                modal_terms_title: "Общи условия за ползване",
+                modal_terms_content: `<p>Настоящите Общи условия регламентират отношенията между агенцията (наричана по-долу "Изпълнител") и клиентите (наричани по-долу "Възложител").</p>
+                <h4>1. Предмет на услугите</h4>
+                <p>Изпълнителят предоставя услуги по изработка, дизайн и поддръжка на дигитални QR менюта, корпоративни уебсайтове, графичен дизайн и 3D проектиране за 3D печат.</p>
+                <h4>2. Ценообразуване и Плащания</h4>
+                <ul><li><strong>Уеб проекти (Менюта и Сайтове):</strong> Изработката и хостингът се предоставят безплатно. Възложителят дължи месечна такса за поддръжка (15-50 евро). При стартиране се изисква предплащане за първите 3 месеца.</li><li><strong>Графичен дизайн и 3D моделиране:</strong> Тези услуги не са обвързани с месечен абонамент и се таксуват еднократно въз основа на конкретно запитване и оферта.</li></ul>
+                <h4>3. Права и задължения</h4>
+                <p>Изпълнителят се задължава да изпълни проектите качествено и в срок. Възложителят се задължава да предоставя нужните материали и да спазва сроковете за плащане. Всички 3D модели и графични концепции остават поверителни до тяхното официално пускане или предаване.</p>`,
+                modal_privacy_title: "Политика за поверителност и защита на личните данни (GDPR)",
+                modal_privacy_content: `<p>Ние уважаваме вашата поверителност и се ангажираме да защитаваме вашите лични данни в съответствие с Общия регламент относно защитата на данните (GDPR).</p>
+                <h4>1. Какви данни събираме и защо?</h4>
+                <p>Събираме единствено базова информация за контакт (име, телефон, имейл), която вие доброволно ни предоставяте при запитване. Използваме я изключително и само за обратна връзка и изпълнение на бизнес отношенията ни.</p>
+                <h4>2. Бисквитки (Cookies) и Анализи</h4>
+                <p>Ако ни дадете изричното си съгласие чрез банера в сайта, използваме Google Analytics за анонимно проследяване на посещенията с цел подобряване на нашите услуги. Ако откажете, тези скриптове не се зареждат.</p>
+                <h4>3. Вашите права</h4>
+                <p>Според изискванията на ЕС имате право по всяко време да поискате достъп до вашите данни, тяхното коригиране или пълно изтриване ("правото да бъдеш забравен"). За целта се свържете с нас на посочения имейл адрес.</p>
+                <h4>4. Защита на трети страни</h4>
+                <p>Не продаваме, не споделяме и не отдаваме под наем вашата лична информация, файлове, лога или 3D модели на трети страни без вашето изрично съгласие.</p>`
             },
             en: {
-                nav_features: "Aesthetics", nav_how: "Process", nav_demo: "View Demo",
-                hero_subtitle: "The new standard in hospitality",
+                nav_services: "Services", nav_portfolio: "Projects", nav_how: "Process", nav_faq: "FAQ", nav_demo: "View Demo",
+                hero_subtitle: "The new standard in digital presence",
                 hero_title: "The art of <span>digital</span> presentation.",
-                hero_desc: "Uncompromising style and lightning speed. Replace outdated standards with a QR experience worthy of the most demanding clientele.",
-                btn_order: "Order Menu", btn_explore: "Explore the demo",
+                hero_desc: "From innovative QR menus and premium websites to graphic design and 3D modeling. Uncompromising style in every dimension.",
+                btn_order: "Start a Project", btn_explore: "Explore demo menu",
+                serv_subtitle: "Expertise", serv_title: "High-end solutions.",
+                serv1_title: "Smart QR Menus", serv1_desc: "Interactive digital menus for restaurants and bars. Free creation with a low monthly fee and zero paper waste.",
+                serv2_title: "Premium Websites", serv2_desc: "Modern corporate sites with fast loading and perfect UI/UX. We build them for free, you only pay for maintenance.",
+                serv3_title: "Graphic Design", serv3_desc: "We create visual identities, logos, and promotional materials that make your brand stand out and capture attention.",
+                serv4_title: "3D Modeling", serv4_desc: "Engineering and conceptual 3D modeling, optimized specifically for 3D printing, rapid prototyping, and production.",
+                port_subtitle: "Creations", port_title: "Selected projects.",
+                port_cat1: "Smart QR Menu", port_cat2: "Website & Design", port_cat3: "3D Modeling",
                 feat_title: "Uncompromising quality.", feat_subtitle: "Philosophy of detail",
-                card1_title: "Sustainability", card1_desc: "Update prices and add new culinary masterpieces instantly, without unnecessary paper and printing costs.",
-                card2_title: "Intuitiveness", card2_desc: "Crystal clear interface. Instant search and elegant categories for a flawless experience.",
-                card3_title: "Global Reach", card3_desc: "Eliminate barriers. Smooth switching between languages with the elegance of a single touch.",
-                card4_title: "Aesthetics", card4_desc: "Your menu feels like a high-end native application, designed specifically for you.",
-                card5_title: "Accessibility", card5_desc: "A single scan separates your guests from full immersion in your culinary universe.",
-                card6_title: "Identity", card6_desc: "Every line and colour is tailored to your brand to accurately reflect the character of your establishment.",
+                card1_title: "Sustainability", card1_desc: "Update content and prices instantly, without unnecessary paper, printing, and time costs.",
+                card2_title: "Intuitiveness", card2_desc: "Crystal clear interface. Instant loading and elegant structure for a flawless user experience.",
+                card3_title: "Precision", card3_desc: "From the perfect pixel in design to micron accuracy in 3D modeling for printing.",
+                card4_title: "Aesthetics", card4_desc: "Your project feels like a high-end native application, designed specifically for your audience.",
+                card5_title: "Accessibility", card5_desc: "Just a click or scan separates your clients from full immersion in your world.",
+                card6_title: "Identity", card6_desc: "Every line, color, and model is tailored to your brand to accurately reflect your business.",
                 steps_title: "Perfection requires three steps.", steps_subtitle: "Integration",
-                step1_title: "Concept", step1_desc: "You provide us with your menu, visual identity, and guidelines. We take it from there.",
-                step2_title: "Design", step2_desc: "Our designers create a digital environment based on the highest standards of speed and typography.",
-                step3_title: "Realisation", step3_desc: "You receive your unique QR codes, ready to welcome your first guests.",
+                step1_title: "Concept", step1_desc: "Tell us your needs – be it a website, menu, brand design, or detailed 3D model.",
+                step2_title: "Design", step2_desc: "We create the digital environment or 3D geometry based on the highest technological standards.",
+                step3_title: "Realisation", step3_desc: "You receive your finished project, optimized for the web or ready for your 3D printer.",
+                test_subtitle: "Testimonials", test_title: "What our clients say.",
+                test1_desc: "\"The digital menu completely changed how we serve our guests. Faster, more stylish, and no printing costs.\"", test1_role: "Restaurant Owner",
+                test2_desc: "\"Our new corporate website looks phenomenal on mobile devices. We get compliments from every new client.\"", test2_role: "Marketing Manager",
+                test3_desc: "\"I needed a complex 3D model for a new product prototype. They did a perfect job and the file printed flawlessly.\"", test3_role: "Engineer & Inventor",
                 sponsors_title: "Our Partners.", sponsors_subtitle: "Trusted by",
+                faq_subtitle: "Info", faq_title: "Frequently Asked Questions.",
+                faq1_q: "How much does website or menu creation cost?", faq1_a: "Creation and hosting of websites and menus are completely free. You only pay a monthly maintenance fee ranging from 15 to 50 euros.",
+                faq2_q: "How are design and 3D modeling billed?", faq2_a: "Unlike websites, graphic design and 3D modeling are services with a one-off payment. The price is determined individually based on the complexity of the specific project.",
+                faq3_q: "How and when are subscription payments made?", faq3_a: "When starting a new web project, an upfront payment for the first 3 months of maintenance is required. After this period, billing is done on a monthly basis.",
                 cta_title: "Time for the next level.", cta_subtitle: "Book a personal consultation with our team.",
-                cta_phone: "Contact: +359 885 348 666", footer_text: "© 2026. Crafting high-end digital solutions."
+                cta_phone: "Contact: +359 885 348 666", footer_text: "© 2026. Crafting high-end digital solutions.",
+                footer_terms: "Terms of Service", footer_privacy: "Privacy Policy (GDPR)",
+                cookie_text: `This website uses cookies to analyze traffic and improve your experience. By clicking "Accept", you agree to our <a href="#" onclick="openModal('privacyModal'); return false;">Privacy Policy</a>.`,
+                cookie_accept: "Accept", cookie_decline: "Decline",
+                modal_terms_title: "Terms of Service",
+                modal_terms_content: `<p>These Terms of Service govern the relationship between the agency (hereinafter "Contractor") and the clients (hereinafter "Client").</p>
+                <h4>1. Subject of services</h4>
+                <p>The Contractor provides services for the development, design, and maintenance of digital QR menus, corporate websites, graphic design, and 3D modeling for 3D printing.</p>
+                <h4>2. Pricing and Payments</h4>
+                <ul><li><strong>Web Projects (Menus & Sites):</strong> Creation and hosting are provided free of charge. The Client owes a monthly maintenance fee (15-50 euros). An upfront payment for the first 3 months is required at the start.</li><li><strong>Graphic Design & 3D Modeling:</strong> These services are not tied to a monthly subscription and are billed as a one-off payment based on a specific inquiry and quote.</li></ul>
+                <h4>3. Rights and Obligations</h4>
+                <p>The Contractor is obliged to execute projects with quality and on time. The Client is obliged to provide the necessary materials and adhere to payment deadlines. All 3D models and graphic concepts remain confidential until their official release or handover.</p>`,
+                modal_privacy_title: "Privacy Policy and Data Protection (GDPR)",
+                modal_privacy_content: `<p>We respect your privacy and are committed to protecting your personal data in accordance with the General Data Protection Regulation (GDPR).</p>
+                <h4>1. What data do we collect and why?</h4>
+                <p>We only collect basic contact information (name, phone, email) that you voluntarily provide when making an inquiry. We use it exclusively for feedback and the execution of our business relations.</p>
+                <h4>2. Cookies and Analytics</h4>
+                <p>If you give us your explicit consent via the banner on the site, we use Google Analytics to anonymously track visits in order to improve our services. If you decline, these scripts are not loaded.</p>
+                <h4>3. Your rights</h4>
+                <p>Under EU requirements, you have the right at any time to request access to your data, its correction, or complete deletion ("the right to be forgotten"). To do so, please contact us at the provided email address.</p>
+                <h4>4. Third-party protection</h4>
+                <p>We do not sell, share, or rent your personal information, files, logos, or 3D models to third parties without your explicit consent.</p>`
             }
         };
 

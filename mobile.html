@@ -345,6 +345,27 @@
         @media (min-width: 1024px) {
             .menu-section { grid-template-columns: repeat(3, 1fr); }
         }
+
+        /* --- 6. UI ИЗВЕСТИЯ (ALERTS) --- */
+        #custom-alert-container {
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+            z-index: 3000; display: flex; flex-direction: column; gap: 10px;
+            pointer-events: none; width: 90%; max-width: 400px; align-items: center;
+        }
+        .custom-alert {
+            background: rgba(10, 12, 13, 0.98); border: 1px solid var(--accent);
+            color: white; padding: 12px 20px; border-radius: 4px;
+            font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px; font-weight: 400;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.9);
+            opacity: 0; transform: translateY(-20px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            text-align: center; pointer-events: auto; letter-spacing: 1px;
+        }
+        .custom-alert.show { opacity: 1; transform: translateY(0); }
+        .custom-alert.error { border-color: #e74c3c; color: #e74c3c; }
+        .custom-alert.success { border-color: #2ecc71; color: white; }
+        .custom-alert.success i { color: #2ecc71; margin-right: 8px; }
+        .custom-alert.error i { margin-right: 8px; }
     </style>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-5R0EZ7E8PC"></script>
     <script>
@@ -357,6 +378,8 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 </head>
 <body>
+
+    <div id="custom-alert-container"></div>
 
     <div class="promo-banner">
         <span class="lang-bg">Обедно меню до 16:00ч &bull; Всеки делник</span>
@@ -1325,6 +1348,27 @@
         // --- ЛОГИКА ЗА КОЛИЧКА ---
         let cart = [];
 
+        function showUIAlert(message, type = 'normal') {
+            const container = document.getElementById('custom-alert-container');
+            const alertEl = document.createElement('div');
+            
+            let icon = '';
+            if(type === 'success') icon = '<i class="fas fa-check-circle"></i>';
+            if(type === 'error') icon = '<i class="fas fa-exclamation-circle"></i>';
+            
+            alertEl.className = `custom-alert ${type}`;
+            alertEl.innerHTML = `${icon} ${message}`;
+            
+            container.appendChild(alertEl);
+            
+            setTimeout(() => alertEl.classList.add('show'), 10);
+            
+            setTimeout(() => {
+                alertEl.classList.remove('show');
+                setTimeout(() => alertEl.remove(), 400); 
+            }, 3500);
+        }
+
         // Автоматично инжектиране на бутоните "Добави" към всеки продукт
         document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('.mobile-card').forEach(card => {
@@ -1504,8 +1548,8 @@
         }
 
         // --- ИЗПРАЩАНЕ КЪМ TELEGRAM ---
-// --- CONFIGURATION ---
-// --- 1. КОНФИГУРАЦИЯ ---
+        // --- CONFIGURATION ---
+        // --- 1. КОНФИГУРАЦИЯ ---
         const botToken = '8419693328:AAEkzgyvg6L4LgEkep4kv-wMwckLJ0aGlOU';
         const chatId = '-5174289409'; 
 
@@ -1535,13 +1579,13 @@
         function sendOrder() {
             if (cart.length === 0) {
                 const isEnglish = document.body.classList.contains('english-mode');
-                alert(isEnglish ? "Your cart is empty!" : "Количката ви е празна!");
+                showUIAlert(isEnglish ? "Your cart is empty!" : "Количката ви е празна!", 'error');
                 return;
             }
 
             const currentTable = getTableNumber();
             if (currentTable === "Неизвестна") {
-                alert("Грешка: Не е избран номер на маса (липсва ?table=X в линка).");
+                showUIAlert("Грешка: Не е избран номер на маса (липсва ?table=X в линка).", 'error');
                 return;
             }
 
@@ -1573,7 +1617,7 @@
                 sendToTelegramAPI(messageToTelegram, successAlertBg, successAlertEn, true);
             }).catch(error => {
                 console.error("Firebase Error:", error);
-                alert("Грешка при връзката с кухнята: " + error.message);
+                showUIAlert("Грешка при връзката с кухнята: " + error.message, 'error');
             });
         }
 
@@ -1612,14 +1656,14 @@
             .then(response => {
                 if(response.ok) {
                     const isEnglish = document.body.classList.contains('english-mode');
-                    alert(isEnglish ? successAlertEn : successAlertBg);
+                    showUIAlert(isEnglish ? successAlertEn : successAlertBg, 'success');
                     if (isOrder) {
                         cart = []; // Изчистваме количката само при поръчка
                         updateCartBadge();
                     }
                     closeActionMenu();
                 } else {
-                    alert("Проблем с изпращането към Telegram.");
+                    showUIAlert("Проблем с изпращането към Telegram.", 'error');
                 }
             })
             .catch(error => console.error("Telegram Error:", error));

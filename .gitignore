@@ -1,0 +1,15 @@
+# Runtime data — never commit user accounts, sessions or inquiries
+server-data/
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+desktop.ini
+*.log
+.vscode/
+.idea/
+*.swp
+
+# Dependency / build output (none currently, future-proofing)
+node_modules/
+dist/

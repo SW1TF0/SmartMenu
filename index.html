@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#05070d" />
+  <title>SmartMenuKJ — Web · 3D · Automation · SmartMenus</title>
+  <meta name="description" content="SmartMenuKJ — premium technology execution enterprise. Professional web development, custom 3D printing, home & business automation, and interactive SmartMenus for restaurants." />
+  <meta name="author" content="SmartMenuKJ — Krasimir Uzun" />
+  <meta name="keywords" content="web development, 3D printing, home automation, smart menu, QR menu, Kardzhali, Bulgaria, SmartMenuKJ" />
+
+  <!-- Favicon (inline SVG) -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%2305070d'/%3E%3Cpath d='M54 12 26 56h18l-6 32 32-46H50z' fill='%2338bdf8'/%3E%3C/svg%3E" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="SmartMenuKJ — Premium Technology Execution" />
+  <meta property="og:description" content="Web Development · 3D Printing · Automation · SmartMenus for Restaurants" />
+  <meta property="og:locale" content="en" />
+  <meta property="og:locale:alternate" content="bg" />
+
+  <!-- Google Fonts: Inter + Montserrat -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Montserrat:wght@500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" referrerpolicy="no-referrer" />
+
+  <!-- Tailwind Play CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            display: ['Montserrat', 'Inter', 'sans-serif'],
+          },
+          colors: {
+            ink: { 950: '#05070d', 900: '#080b14', 800: '#0d1320', 700: '#141c2e', 600: '#1d2740' },
+            web:   { DEFAULT: '#38bdf8', glow: '#0ea5e9' },
+            print: { DEFAULT: '#34d399', glow: '#10b981' },
+            auto:  { DEFAULT: '#fbbf24', glow: '#f59e0b' },
+            menu:  { DEFAULT: '#fb923c', glow: '#f97316' },
+          },
+        },
+      },
+    };
+  </script>
+
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- Structured data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "SmartMenuKJ",
+    "description": "Premium technology execution enterprise: web development, 3D printing, automation and SmartMenus.",
+    "founder": { "@type": "Person", "name": "Krasimir Uzun", "jobTitle": "Chief Executive Officer" },
+    "telephone": "+359885348666",
+    "email": "krasimiruzun@smartmenukj.com",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "ul. Dzhebelska 2",
+      "addressLocality": "Baykal, Kardzhali",
+      "postalCode": "6600",
+      "addressCountry": "BG"
+    },
+    "sameAs": [
+      "https://www.instagram.com/1337_krasimir_/",
+      "https://www.linkedin.com/in/krasimir-uzun-316a053bb/"
+    ]
+  }
+  </script>
+</head>
+
+<body class="is-loading bg-ink-950 text-slate-200 font-sans antialiased selection:bg-web/30 selection:text-white overflow-x-hidden">
+
+  <!-- ============ PRELOADER ============ -->
+  <div id="preloader" class="preloader" aria-hidden="true">
+    <div class="preloader-inner">
+      <span class="preloader-mark"><i class="fa-solid fa-bolt"></i></span>
+      <span class="preloader-word">Smart<span class="text-web">Menu</span><span class="text-menu">KJ</span></span>
+      <div class="preloader-bar"><span class="preloader-bar-fill" id="preloader-fill"></span></div>
+      <span class="preloader-tag" data-i18n data-en="Engineering the future of execution" data-bg="Изграждаме бъдещето на изпълнението">Engineering the future of execution</span>
+    </div>
+  </div>
+
+  <!-- ============ MORPHING BACKGROUND LAYER ============ -->
+  <div id="bg-morph" class="bg-morph" aria-hidden="true">
+    <div class="bg-orb bg-orb--a"></div>
+    <div class="bg-orb bg-orb--b"></div>
+    <div class="bg-grid"></div>
+    <div class="bg-noise"></div>
+  </div>
+
+  <!-- Scroll progress bar -->
+  <div id="scroll-progress" class="scroll-progress" aria-hidden="true"></div>
+
+  <!-- Custom cursor glow -->
+  <div id="cursor-glow" class="cursor-glow" aria-hidden="true"></div>
+
+  <!-- Section progress rail -->
+  <nav class="section-rail" aria-label="Section navigation">
+    <a href="#hero" class="rail-dot" data-rail="hero"><span class="rail-label" data-i18n data-en="Home" data-bg="Начало">Home</span></a>
+    <a href="#pillars" class="rail-dot" data-rail="pillars"><span class="rail-label" data-i18n data-en="Services" data-bg="Услуги">Services</span></a>
+    <a href="#why" class="rail-dot" data-rail="why"><span class="rail-label" data-i18n data-en="Why us" data-bg="Защо нас">Why us</span></a>
+    <a href="#work" class="rail-dot" data-rail="work"><span class="rail-label" data-i18n data-en="Work" data-bg="Проекти">Work</span></a>
+    <a href="#calculator" class="rail-dot" data-rail="calculator"><span class="rail-label" data-i18n data-en="Estimate" data-bg="Оценка">Estimate</span></a>
+    <a href="#testimonials" class="rail-dot" data-rail="testimonials"><span class="rail-label" data-i18n data-en="Clients" data-bg="Клиенти">Clients</span></a>
+    <a href="#about" class="rail-dot" data-rail="about"><span class="rail-label" data-i18n data-en="Leadership" data-bg="Ръководство">Leadership</span></a>
+    <a href="#contact" class="rail-dot" data-rail="contact"><span class="rail-label" data-i18n data-en="Contact" data-bg="Контакти">Contact</span></a>
+  </nav>
+
+  <!-- ============ NAVIGATION ============ -->
+  <header id="navbar" class="fixed top-0 inset-x-0 z-50 transition-all duration-500">
+    <nav class="mx-auto max-w-7xl px-5 lg:px-8">
+      <div class="nav-shell flex items-center justify-between h-[68px] px-4 sm:px-6 rounded-2xl mt-3">
+        <a href="#hero" class="flex items-center gap-3 group" aria-label="SmartMenuKJ home">
+          <span class="logo-mark"><i class="fa-solid fa-bolt"></i></span>
+          <span class="font-display font-extrabold tracking-tight text-white text-lg leading-none">
+            Smart<span class="text-web">Menu</span><span class="text-menu">KJ</span>
+          </span>
+        </a>
+
+        <ul class="hidden lg:flex items-center gap-1 text-sm font-medium">
+          <li><a class="nav-link" href="#pillars" data-i18n data-en="Services" data-bg="Услуги">Services</a></li>
+          <li><a class="nav-link" href="#why" data-i18n data-en="Why us" data-bg="Защо нас">Why us</a></li>
+          <li><a class="nav-link" href="#work" data-i18n data-en="Work" data-bg="Проекти">Work</a></li>
+          <li><a class="nav-link" href="#calculator" data-i18n data-en="Estimate" data-bg="Калкулатор">Estimate</a></li>
+          <li><a class="nav-link" href="#about" data-i18n data-en="Leadership" data-bg="Ръководство">Leadership</a></li>
+          <li><a class="nav-link" href="#contact" data-i18n data-en="Contact" data-bg="Контакти">Contact</a></li>
+        </ul>
+
+        <div class="flex items-center gap-2 sm:gap-3">
+          <button id="lang-toggle" class="lang-toggle" aria-label="Switch language">
+            <span data-lang="en" class="lang-opt is-active">EN</span>
+            <span class="lang-sep">/</span>
+            <span data-lang="bg" class="lang-opt">BG</span>
+          </button>
+          <button data-open-auth class="btn-ghost hidden sm:inline-flex" data-i18n data-en="Client Login" data-bg="Вход">Client Login</button>
+          <div class="account hidden sm:flex items-center gap-2 hide" data-account>
+            <button class="account-chip" data-account-toggle aria-label="Account menu">
+              <i class="fa-solid fa-circle-user"></i>
+              <span data-account-name>Account</span>
+              <i class="fa-solid fa-chevron-down account-caret"></i>
+            </button>
+            <div class="account-menu" data-account-menu hidden>
+              <span class="account-email" data-account-email></span>
+              <a href="#calculator" class="account-menu-item"><i class="fa-solid fa-gauge"></i> <span data-i18n data-en="My estimate" data-bg="Моята оценка">My estimate</span></a>
+              <button class="account-menu-item" data-logout><i class="fa-solid fa-right-from-bracket"></i> <span data-i18n data-en="Log out" data-bg="Изход">Log out</span></button>
+            </div>
+          </div>
+          <a href="#contact" class="btn-primary magnetic hidden md:inline-flex" data-i18n data-en="Start a Project" data-bg="Стартирай проект">Start a Project</a>
+          <button id="menu-btn" class="lg:hidden btn-icon" aria-label="Open menu" aria-expanded="false">
+            <i class="fa-solid fa-bars-staggered"></i>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <div id="mobile-menu" class="mobile-menu lg:hidden">
+      <div class="flex flex-col gap-1 p-5">
+        <a class="mobile-link" href="#pillars" data-i18n data-en="Services" data-bg="Услуги">Services</a>
+        <a class="mobile-link" href="#why" data-i18n data-en="Why us" data-bg="Защо нас">Why us</a>
+        <a class="mobile-link" href="#work" data-i18n data-en="Work" data-bg="Проекти">Work</a>
+        <a class="mobile-link" href="#calculator" data-i18n data-en="Estimate" data-bg="Калкулатор">Estimate</a>
+        <a class="mobile-link" href="#testimonials" data-i18n data-en="Clients" data-bg="Клиенти">Clients</a>
+        <a class="mobile-link" href="#about" data-i18n data-en="Leadership" data-bg="Ръководство">Leadership</a>
+        <a class="mobile-link" href="#contact" data-i18n data-en="Contact" data-bg="Контакти">Contact</a>
+        <div class="flex gap-3 mt-3">
+          <button data-open-auth class="btn-ghost flex-1" data-i18n data-en="Client Login" data-bg="Вход">Client Login</button>
+          <a href="#contact" class="btn-primary flex-1 justify-center" data-i18n data-en="Start" data-bg="Старт">Start</a>
+        </div>
+        <div class="account-m flex items-center gap-3 mt-3 hide" data-account-m>
+          <span class="account-m-chip flex-1"><i class="fa-solid fa-circle-user"></i> <span data-account-name>Account</span></span>
+          <button class="btn-ghost" data-logout><i class="fa-solid fa-right-from-bracket mr-2"></i><span data-i18n data-en="Log out" data-bg="Изход">Log out</span></button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ============ HERO ============ -->
+    <section id="hero" class="section-anchor relative min-h-screen flex items-center" data-bg-theme="web">
+      <div class="hero-media" aria-hidden="true">
+        <div class="hero-media-fallback"></div>
+        <canvas id="hero-canvas" class="hero-canvas"></canvas>
+        <!-- Optional: set HERO_VIDEO in script.js to a .mp4 URL to overlay a real ambient loop -->
+        <video class="hero-video" muted loop playsinline preload="none" hidden></video>
+        <div class="hero-media-veil"></div>
+      </div>
+
+      <div class="relative z-10 mx-auto max-w-7xl px-5 lg:px-8 w-full pt-32 pb-20">
+        <div class="max-w-4xl">
+          <div class="reveal" data-reveal>
+            <span class="eyebrow">
+              <span class="eyebrow-dot"></span>
+              <span data-i18n data-en="Technology Execution Enterprise · Kardzhali, Bulgaria" data-bg="Технологично предприятие · Кърджали, България">Technology Execution Enterprise · Kardzhali, Bulgaria</span>
+            </span>
+          </div>
+
+          <h1 class="reveal mt-7 font-display font-black text-white leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl" data-reveal data-reveal-delay="80">
+            <span data-i18n data-en="We engineer the future of" data-bg="Ние изграждаме бъдещето на">We engineer the future of</span>
+            <span class="block mt-1 gradient-text-animated rotator"
+                  data-rotate-en="execution|growth|your brand|what's next"
+                  data-rotate-bg="изпълнението|растежа|вашата марка|следващото">execution</span>
+          </h1>
+
+          <p class="reveal mt-7 text-lg sm:text-xl text-slate-300/90 max-w-2xl leading-relaxed" data-reveal data-reveal-delay="160" data-i18n
+             data-en="SmartMenuKJ unifies elite web development, precision 3D printing, intelligent automation, and interactive SmartMenus into one disciplined engineering practice — built for businesses that refuse the ordinary."
+             data-bg="SmartMenuKJ обединява елитна уеб разработка, прецизен 3D печат, интелигентна автоматизация и интерактивни SmartMenus в една дисциплинирана инженерна практика — за бизнеси, които отказват обикновеното.">
+            SmartMenuKJ unifies elite web development, precision 3D printing, intelligent automation, and interactive SmartMenus into one disciplined engineering practice — built for businesses that refuse the ordinary.
+          </p>
+
+          <div class="reveal mt-10 flex flex-wrap items-center gap-4" data-reveal data-reveal-delay="240">
+            <a href="#calculator" class="btn-primary btn-lg magnetic">
+              <i class="fa-solid fa-calculator mr-2"></i>
+              <span data-i18n data-en="Estimate your project" data-bg="Оцени проекта си">Estimate your project</span>
+            </a>
+            <a href="#work" class="btn-outline btn-lg magnetic group">
+              <span data-i18n data-en="View our work" data-bg="Виж проектите ни">View our work</span>
+              <i class="fa-solid fa-arrow-right ml-2 transition-transform group-hover:translate-x-1"></i>
+            </a>
+          </div>
+
+          <div class="reveal mt-16 grid grid-cols-2 sm:grid-cols-4 gap-5 max-w-3xl" data-reveal data-reveal-delay="320">
+            <div class="stat-card">
+              <div class="stat-num" data-count="120" data-suffix="+">0</div>
+              <div class="stat-label" data-i18n data-en="Projects delivered" data-bg="Реализирани проекта">Projects delivered</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-num" data-count="4" data-suffix="">0</div>
+              <div class="stat-label" data-i18n data-en="Core disciplines" data-bg="Основни направления">Core disciplines</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-num" data-count="99" data-suffix="%">0</div>
+              <div class="stat-label" data-i18n data-en="Client retention" data-bg="Задържани клиенти">Client retention</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-num" data-count="24" data-suffix="/7">0</div>
+              <div class="stat-label" data-i18n data-en="Engineering support" data-bg="Инженерна поддръжка">Engineering support</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <a href="#pillars" class="scroll-cue" aria-label="Scroll down">
+        <span class="scroll-cue-text" data-i18n data-en="Scroll" data-bg="Скрол">Scroll</span>
+        <span class="scroll-cue-mouse"><span class="scroll-cue-wheel"></span></span>
+      </a>
+    </section>
+
+    <!-- ============ MARQUEE ============ -->
+    <div class="marquee-wrap" aria-hidden="true">
+      <div class="marquee">
+        <div class="marquee-track">
+          <span class="marquee-item"><i class="fa-solid fa-code"></i> Web Development</span><span class="marquee-dot">◆</span>
+          <span class="marquee-item"><i class="fa-solid fa-cube"></i> 3D Printing</span><span class="marquee-dot">◆</span>
+          <span class="marquee-item"><i class="fa-solid fa-house-signal"></i> Smart Automation</span><span class="marquee-dot">◆</span>
+          <span class="marquee-item"><i class="fa-solid fa-qrcode"></i> SmartMenus</span><span class="marquee-dot">◆</span>
+          <span class="marquee-item"><i class="fa-solid fa-microchip"></i> Hardware Integration</span><span class="marquee-dot">◆</span>
+          <span class="marquee-item"><i class="fa-solid fa-shield-halved"></i> Secure by Design</span><span class="marquee-dot">◆</span>
+        </div>
+        <div class="marquee-track" aria-hidden="true">
+          <span class="marquee-item"><i class="fa-solid fa-code"></i> Web Development</span><span class="marquee-dot">◆</span>
+          <span class="marquee-item"><i class="fa-solid fa-cube"></i> 3D Printing</span><span class="marquee-dot">◆</span>
+          <span class="marquee-item"><i class="fa-solid fa-house-signal"></i> Smart Automation</span><span class="marquee-dot">◆</span>
+          <span class="marquee-item"><i class="fa-solid fa-qrcode"></i> SmartMenus</span><span class="marquee-dot">◆</span>
+          <span class="marquee-item"><i class="fa-solid fa-microchip"></i> Hardware Integration</span><span class="marquee-dot">◆</span>
+          <span class="marquee-item"><i class="fa-solid fa-shield-halved"></i> Secure by Design</span><span class="marquee-dot">◆</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ 4 PILLARS ============ -->
+    <section id="pillars" class="section-anchor relative py-28 lg:py-36" data-bg-theme="web">
+      <div class="mx-auto max-w-7xl px-5 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto reveal" data-reveal>
+          <span class="section-tag" data-i18n data-en="Four pillars · One standard" data-bg="Четири стълба · Един стандарт">Four pillars · One standard</span>
+          <h2 class="section-title mt-5" data-i18n
+              data-en="A single partner for every layer of your technology."
+              data-bg="Един партньор за всеки слой от вашата технология.">
+            A single partner for every layer of your technology.
+          </h2>
+          <p class="section-sub mt-5" data-i18n
+             data-en="From the code that runs your business to the physical objects in your hands, our disciplines interlock to deliver one coherent, premium result."
+             data-bg="От кода, който движи бизнеса ви, до физическите обекти в ръцете ви — нашите направления се преплитат в едно цялостно, премиум решение.">
+            From the code that runs your business to the physical objects in your hands, our disciplines interlock to deliver one coherent, premium result.
+          </p>
+        </div>
+
+        <div class="mt-16 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+          <article class="pillar-card tilt reveal" data-reveal data-theme="web" tabindex="0">
+            <div class="pillar-glow"></div>
+            <div class="pillar-icon"><i class="fa-solid fa-code"></i></div>
+            <h3 class="pillar-title" data-i18n data-en="Web Development" data-bg="Уеб разработка">Web Development</h3>
+            <p class="pillar-text" data-i18n data-en="High-performance, secure and bespoke digital experiences engineered to scale and convert." data-bg="Високопроизводителни, сигурни и персонализирани дигитални изживявания, изградени да мащабират и да конвертират.">High-performance, secure and bespoke digital experiences engineered to scale and convert.</p>
+            <ul class="pillar-list">
+              <li><i class="fa-solid fa-check"></i> <span data-i18n data-en="Bespoke web apps & sites" data-bg="Персонализирани уеб приложения">Bespoke web apps &amp; sites</span></li>
+              <li><i class="fa-solid fa-check"></i> <span data-i18n data-en="E-commerce & platforms" data-bg="Е-търговия и платформи">E-commerce &amp; platforms</span></li>
+              <li><i class="fa-solid fa-check"></i> <span data-i18n data-en="Performance & SEO" data-bg="Производителност и SEO">Performance &amp; SEO</span></li>
+            </ul>
+            <a href="#work" class="pillar-link" data-pillar-jump="web"><span data-i18n data-en="View solutions" data-bg="Виж решенията">View solutions</span> <i class="fa-solid fa-arrow-right"></i></a>
+          </article>
+
+          <article class="pillar-card tilt reveal" data-reveal data-reveal-delay="80" data-theme="print" tabindex="0">
+            <div class="pillar-glow"></div>
+            <div class="pillar-icon"><i class="fa-solid fa-cube"></i></div>
+            <h3 class="pillar-title" data-i18n data-en="Custom 3D Printing" data-bg="3D печат по поръчка">Custom 3D Printing</h3>
+            <p class="pillar-text" data-i18n data-en="Rapid prototyping, concept models and precise custom manufacturing with engineering-grade accuracy." data-bg="Бързо прототипиране, концептуални модели и прецизно производство с инженерна точност.">Rapid prototyping, concept models and precise custom manufacturing with engineering-grade accuracy.</p>
+            <ul class="pillar-list">
+              <li><i class="fa-solid fa-check"></i> <span data-i18n data-en="Rapid prototyping" data-bg="Бързо прототипиране">Rapid prototyping</span></li>
+              <li><i class="fa-solid fa-check"></i> <span data-i18n data-en="Functional parts" data-bg="Функционални части">Functional parts</span></li>
+              <li><i class="fa-solid fa-check"></i> <span data-i18n data-en="Concept & display models" data-bg="Концептуални модели">Concept &amp; display models</span></li>
+            </ul>
+            <a href="#work" class="pillar-link" data-pillar-jump="print"><span data-i18n data-en="View solutions" data-bg="Виж решенията">View solutions</span> <i class="fa-solid fa-arrow-right"></i></a>
+          </article>
+
+          <article class="pillar-card tilt reveal" data-reveal data-reveal-delay="160" data-theme="auto" tabindex="0">
+            <div class="pillar-glow"></div>
+            <div class="pillar-icon"><i class="fa-solid fa-house-signal"></i></div>
+            <h3 class="pillar-title" data-i18n data-en="Home & Business Automation" data-bg="Автоматизация">Home &amp; Business Automation</h3>
+            <p class="pillar-text" data-i18n data-en="Advanced smart infrastructure with seamless hardware/software integration and resilient networking." data-bg="Усъвършенствана умна инфраструктура с безпроблемна интеграция на хардуер и софтуер и надеждна мрежа.">Advanced smart infrastructure with seamless hardware/software integration and resilient networking.</p>
+            <ul class="pillar-list">
+              <li><i class="fa-solid fa-check"></i> <span data-i18n data-en="Smart infrastructure" data-bg="Умна инфраструктура">Smart infrastructure</span></li>
+              <li><i class="fa-solid fa-check"></i> <span data-i18n data-en="HW/SW integration" data-bg="Хардуер/софтуер интеграция">HW/SW integration</span></li>
+              <li><i class="fa-solid fa-check"></i> <span data-i18n data-en="Networking & security" data-bg="Мрежи и сигурност">Networking &amp; security</span></li>
+            </ul>
+            <a href="#work" class="pillar-link" data-pillar-jump="auto"><span data-i18n data-en="View solutions" data-bg="Виж решенията">View solutions</span> <i class="fa-solid fa-arrow-right"></i></a>
+          </article>
+
+          <article class="pillar-card tilt reveal" data-reveal data-reveal-delay="240" data-theme="menu" tabindex="0">
+            <div class="pillar-glow"></div>
+            <div class="pillar-icon"><i class="fa-solid fa-qrcode"></i></div>
+            <h3 class="pillar-title" data-i18n data-en="SmartMenus for Restaurants" data-bg="SmartMenus за ресторанти">SmartMenus for Restaurants</h3>
+            <p class="pillar-text" data-i18n data-en="Interactive digital QR menus paired with premium, custom-designed physical presentation stands." data-bg="Интерактивни дигитални QR менюта, съчетани с премиум, персонализирани физически стойки за презентация.">Interactive digital QR menus paired with premium, custom-designed physical presentation stands.</p>
+            <ul class="pillar-list">
+              <li><i class="fa-solid fa-check"></i> <span data-i18n data-en="Interactive QR menus" data-bg="Интерактивни QR менюта">Interactive QR menus</span></li>
+              <li><i class="fa-solid fa-check"></i> <span data-i18n data-en="Custom physical stands" data-bg="Дизайнерски стойки">Custom physical stands</span></li>
+              <li><i class="fa-solid fa-check"></i> <span data-i18n data-en="Live updates & analytics" data-bg="Live обновления и анализ">Live updates &amp; analytics</span></li>
+            </ul>
+            <a href="#work" class="pillar-link" data-pillar-jump="menu"><span data-i18n data-en="View solutions" data-bg="Виж решенията">View solutions</span> <i class="fa-solid fa-arrow-right"></i></a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ WHY US ============ -->
+    <section id="why" class="section-anchor relative py-28 lg:py-36" data-bg-theme="print">
+      <div class="mx-auto max-w-7xl px-5 lg:px-8">
+        <div class="grid gap-14 lg:grid-cols-12 items-start">
+          <div class="lg:col-span-5 reveal lg:sticky lg:top-28" data-reveal>
+            <span class="section-tag" data-i18n data-en="Why SmartMenuKJ" data-bg="Защо SmartMenuKJ">Why SmartMenuKJ</span>
+            <h2 class="section-title mt-5 !text-left" data-i18n
+                data-en="The discipline of an enterprise. The agility of a studio."
+                data-bg="Дисциплината на корпорация. Гъвкавостта на студио.">
+              The discipline of an enterprise. The agility of a studio.
+            </h2>
+            <p class="section-sub mt-5 !mx-0 !text-left" data-i18n
+               data-en="We are a single accountable team across every layer of technology — so your project stays coherent, fast and uncompromising from first sketch to live deployment."
+               data-bg="Ние сме един отговорен екип през всички технологични слоеве — така проектът ви остава цялостен, бърз и безкомпромисен от първата скица до внедряването.">
+              We are a single accountable team across every layer of technology — so your project stays coherent, fast and uncompromising from first sketch to live deployment.
+            </p>
+            <div class="why-stats">
+              <div><div class="why-stat-num" data-count="120" data-suffix="+">0</div><span data-i18n data-en="Projects shipped" data-bg="Завършени проекта">Projects shipped</span></div>
+              <div><div class="why-stat-num" data-count="8" data-suffix="+">0</div><span data-i18n data-en="Years of expertise" data-bg="Години опит">Years of expertise</span></div>
+              <div><div class="why-stat-num" data-count="14" data-suffix="">0</div><span data-i18n data-en="Countries served" data-bg="Държави">Countries served</span></div>
+            </div>
+            <a href="#contact" class="btn-primary btn-lg magnetic mt-9 inline-flex">
+              <span data-i18n data-en="Start the conversation" data-bg="Започни разговор">Start the conversation</span>
+              <i class="fa-solid fa-arrow-right ml-2"></i>
+            </a>
+          </div>
+
+          <div class="lg:col-span-7 grid sm:grid-cols-2 gap-5">
+            <div class="why-card spotlight reveal" data-reveal>
+              <span class="why-icon"><i class="fa-solid fa-layer-group"></i></span>
+              <h3 data-i18n data-en="End-to-end ownership" data-bg="Цялостна отговорност">End-to-end ownership</h3>
+              <p data-i18n data-en="One team across web, hardware and manufacturing. No vendor finger-pointing — just a single point of accountability." data-bg="Един екип за уеб, хардуер и производство. Без прехвърляне на отговорност — една точка на отчетност.">One team across web, hardware and manufacturing. No vendor finger-pointing — just a single point of accountability.</p>
+            </div>
+            <div class="why-card spotlight reveal" data-reveal data-reveal-delay="80">
+              <span class="why-icon"><i class="fa-solid fa-shield-halved"></i></span>
+              <h3 data-i18n data-en="Engineered & secure" data-bg="Инженерно и сигурно">Engineered &amp; secure</h3>
+              <p data-i18n data-en="Documented, tested and secure by design. We build systems meant to last, not demos meant to impress." data-bg="Документирано, тествано и сигурно по дизайн. Изграждаме системи, които траят, а не демота за впечатление.">Documented, tested and secure by design. We build systems meant to last, not demos meant to impress.</p>
+            </div>
+            <div class="why-card spotlight reveal" data-reveal data-reveal-delay="120">
+              <span class="why-icon"><i class="fa-solid fa-gauge-high"></i></span>
+              <h3 data-i18n data-en="Speed without compromise" data-bg="Скорост без компромис">Speed without compromise</h3>
+              <p data-i18n data-en="Lean iterations and transparent milestones get you to market fast — with quality gates at every step." data-bg="Кратки итерации и прозрачни етапи ви извеждат бързо на пазара — с контрол на качеството на всяка стъпка.">Lean iterations and transparent milestones get you to market fast — with quality gates at every step.</p>
+            </div>
+            <div class="why-card spotlight reveal" data-reveal data-reveal-delay="160">
+              <span class="why-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></span>
+              <h3 data-i18n data-en="Design that converts" data-bg="Дизайн, който конвертира">Design that converts</h3>
+              <p data-i18n data-en="Premium aesthetics in service of measurable outcomes — engagement, conversion and brand authority." data-bg="Премиум естетика в служба на измерими резултати — ангажираност, конверсии и авторитет.">Premium aesthetics in service of measurable outcomes — engagement, conversion and brand authority.</p>
+            </div>
+            <div class="why-card spotlight reveal" data-reveal data-reveal-delay="200">
+              <span class="why-icon"><i class="fa-solid fa-earth-europe"></i></span>
+              <h3 data-i18n data-en="Local roots, global standard" data-bg="Местни корени, световен стандарт">Local roots, global standard</h3>
+              <p data-i18n data-en="Headquartered in Kardzhali, Bulgaria, delivering for clients across Europe and beyond." data-bg="С централа в Кърджали, България, работим за клиенти в Европа и извън нея.">Headquartered in Kardzhali, Bulgaria, delivering for clients across Europe and beyond.</p>
+            </div>
+            <div class="why-card spotlight reveal" data-reveal data-reveal-delay="240">
+              <span class="why-icon"><i class="fa-solid fa-handshake-angle"></i></span>
+              <h3 data-i18n data-en="Partnership beyond launch" data-bg="Партньорство след старта">Partnership beyond launch</h3>
+              <p data-i18n data-en="Monitoring, optimization and dedicated support keep your solution evolving long after go-live." data-bg="Мониторинг, оптимизация и посветена поддръжка развиват решението ви дълго след старта.">Monitoring, optimization and dedicated support keep your solution evolving long after go-live.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ INTERACTIVE SHOWCASE ============ -->
+    <section id="showcase" class="section-anchor relative py-28 lg:py-36" data-bg-theme="print">
+      <div class="mx-auto max-w-7xl px-5 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto reveal" data-reveal>
+          <span class="section-tag" data-i18n data-en="Interactive showcase" data-bg="Интерактивна витрина">Interactive showcase</span>
+          <h2 class="section-title mt-5" data-i18n data-en="Select a discipline. Watch the value unfold." data-bg="Изберете направление. Вижте стойността.">Select a discipline. Watch the value unfold.</h2>
+        </div>
+
+        <div class="mt-14 grid gap-8 lg:grid-cols-12 reveal" data-reveal data-reveal-delay="100">
+          <div class="lg:col-span-4 flex flex-col gap-3" role="tablist" aria-label="Service showcase selector">
+            <button class="showcase-tab is-active" data-showcase="web" role="tab" aria-selected="true">
+              <span class="showcase-tab-icon"><i class="fa-solid fa-code"></i></span>
+              <span class="showcase-tab-body"><span class="showcase-tab-title" data-i18n data-en="Web Development" data-bg="Уеб разработка">Web Development</span><span class="showcase-tab-sub" data-i18n data-en="Code that converts" data-bg="Код, който конвертира">Code that converts</span></span>
+              <i class="fa-solid fa-chevron-right showcase-tab-arrow"></i>
+            </button>
+            <button class="showcase-tab" data-showcase="print" role="tab" aria-selected="false">
+              <span class="showcase-tab-icon"><i class="fa-solid fa-cube"></i></span>
+              <span class="showcase-tab-body"><span class="showcase-tab-title" data-i18n data-en="3D Printing" data-bg="3D печат">3D Printing</span><span class="showcase-tab-sub" data-i18n data-en="Ideas made physical" data-bg="Идеи в материя">Ideas made physical</span></span>
+              <i class="fa-solid fa-chevron-right showcase-tab-arrow"></i>
+            </button>
+            <button class="showcase-tab" data-showcase="auto" role="tab" aria-selected="false">
+              <span class="showcase-tab-icon"><i class="fa-solid fa-house-signal"></i></span>
+              <span class="showcase-tab-body"><span class="showcase-tab-title" data-i18n data-en="Automation" data-bg="Автоматизация">Automation</span><span class="showcase-tab-sub" data-i18n data-en="Spaces that think" data-bg="Пространства, които мислят">Spaces that think</span></span>
+              <i class="fa-solid fa-chevron-right showcase-tab-arrow"></i>
+            </button>
+            <button class="showcase-tab" data-showcase="menu" role="tab" aria-selected="false">
+              <span class="showcase-tab-icon"><i class="fa-solid fa-qrcode"></i></span>
+              <span class="showcase-tab-body"><span class="showcase-tab-title" data-i18n data-en="SmartMenus" data-bg="SmartMenus">SmartMenus</span><span class="showcase-tab-sub" data-i18n data-en="Dining, reimagined" data-bg="Хранене, преосмислено">Dining, reimagined</span></span>
+              <i class="fa-solid fa-chevron-right showcase-tab-arrow"></i>
+            </button>
+          </div>
+
+          <div class="lg:col-span-8">
+            <div class="showcase-panel is-active" data-panel="web">
+              <div class="showcase-panel-visual" data-theme="web">
+                <div class="mock-browser">
+                  <div class="mock-browser-bar"><span></span><span></span><span></span><div class="mock-url">smartmenukj.com</div></div>
+                  <div class="mock-browser-body"><div class="mock-line w-3/4"></div><div class="mock-line w-1/2"></div><div class="mock-grid"><div class="mock-block"></div><div class="mock-block"></div><div class="mock-block"></div></div><div class="mock-cta"></div></div>
+                </div>
+              </div>
+              <div class="showcase-panel-body">
+                <h3 class="showcase-panel-title" data-i18n data-en="Digital products engineered to perform" data-bg="Дигитални продукти, създадени да представят">Digital products engineered to perform</h3>
+                <p class="showcase-panel-text" data-i18n data-en="We build fast, accessible and secure web platforms — from marketing sites to complex applications — with measurable impact on conversion and brand authority." data-bg="Изграждаме бързи, достъпни и сигурни уеб платформи — от маркетингови сайтове до сложни приложения — с измеримо въздействие върху конверсиите и авторитета на марката.">We build fast, accessible and secure web platforms — from marketing sites to complex applications — with measurable impact on conversion and brand authority.</p>
+                <div class="showcase-metrics"><div><span class="metric-val">100/100</span><span class="metric-lbl" data-i18n data-en="Lighthouse target" data-bg="Lighthouse цел">Lighthouse target</span></div><div><span class="metric-val">&lt; 1s</span><span class="metric-lbl" data-i18n data-en="Load time" data-bg="Време за зареждане">Load time</span></div><div><span class="metric-val">SSR/SPA</span><span class="metric-lbl" data-i18n data-en="Architecture" data-bg="Архитектура">Architecture</span></div></div>
+              </div>
+            </div>
+
+            <div class="showcase-panel" data-panel="print">
+              <div class="showcase-panel-visual" data-theme="print">
+                <div class="mock-printer"><div class="mock-printer-frame"><div class="mock-printer-head"></div><div class="mock-printer-object"></div><div class="mock-printer-bed"></div></div></div>
+              </div>
+              <div class="showcase-panel-body">
+                <h3 class="showcase-panel-title" data-i18n data-en="From CAD file to finished part" data-bg="От CAD файл до готова част">From CAD file to finished part</h3>
+                <p class="showcase-panel-text" data-i18n data-en="Engineering-grade additive manufacturing for prototypes, functional components and bespoke display pieces — delivered with tight tolerances and premium finishing." data-bg="Адитивно производство с инженерно качество за прототипи, функционални компоненти и дизайнерски елементи — с прецизни допуски и премиум обработка.">Engineering-grade additive manufacturing for prototypes, functional components and bespoke display pieces — delivered with tight tolerances and premium finishing.</p>
+                <div class="showcase-metrics"><div><span class="metric-val">±0.1mm</span><span class="metric-lbl" data-i18n data-en="Tolerance" data-bg="Допуск">Tolerance</span></div><div><span class="metric-val">FDM/Resin</span><span class="metric-lbl" data-i18n data-en="Technologies" data-bg="Технологии">Technologies</span></div><div><span class="metric-val">24–72h</span><span class="metric-lbl" data-i18n data-en="Turnaround" data-bg="Срок">Turnaround</span></div></div>
+              </div>
+            </div>
+
+            <div class="showcase-panel" data-panel="auto">
+              <div class="showcase-panel-visual" data-theme="auto">
+                <div class="mock-auto">
+                  <div class="mock-auto-hub"><i class="fa-solid fa-house-signal"></i></div>
+                  <span class="mock-node mock-node--1"><i class="fa-solid fa-lightbulb"></i></span>
+                  <span class="mock-node mock-node--2"><i class="fa-solid fa-temperature-half"></i></span>
+                  <span class="mock-node mock-node--3"><i class="fa-solid fa-video"></i></span>
+                  <span class="mock-node mock-node--4"><i class="fa-solid fa-lock"></i></span>
+                  <svg class="mock-auto-lines" viewBox="0 0 300 200" preserveAspectRatio="none" aria-hidden="true"><line x1="150" y1="100" x2="55" y2="45"></line><line x1="150" y1="100" x2="245" y2="45"></line><line x1="150" y1="100" x2="55" y2="160"></line><line x1="150" y1="100" x2="245" y2="160"></line></svg>
+                </div>
+              </div>
+              <div class="showcase-panel-body">
+                <h3 class="showcase-panel-title" data-i18n data-en="Infrastructure that anticipates you" data-bg="Инфраструктура, която ви изпреварва">Infrastructure that anticipates you</h3>
+                <p class="showcase-panel-text" data-i18n data-en="Unify lighting, climate, security and networking into a single intelligent layer — designed for reliability, privacy and effortless control across home and business." data-bg="Обединете осветление, климат, сигурност и мрежи в един интелигентен слой — проектиран за надеждност, поверителност и лесен контрол у дома и в бизнеса.">Unify lighting, climate, security and networking into a single intelligent layer — designed for reliability, privacy and effortless control across home and business.</p>
+                <div class="showcase-metrics"><div><span class="metric-val">KNX/IP</span><span class="metric-lbl" data-i18n data-en="Protocols" data-bg="Протоколи">Protocols</span></div><div><span class="metric-val">99.9%</span><span class="metric-lbl" data-i18n data-en="Uptime focus" data-bg="Надеждност">Uptime focus</span></div><div><span class="metric-val">Local-first</span><span class="metric-lbl" data-i18n data-en="Privacy" data-bg="Поверителност">Privacy</span></div></div>
+              </div>
+            </div>
+
+            <div class="showcase-panel" data-panel="menu">
+              <div class="showcase-panel-visual" data-theme="menu">
+                <div class="mock-phone"><div class="mock-phone-notch"></div><div class="mock-phone-screen"><div class="mock-menu-head"><span class="mock-menu-logo"><i class="fa-solid fa-utensils"></i></span><div class="mock-line w-1/2"></div></div><div class="mock-menu-item"><div class="mock-menu-thumb"></div><div class="mock-menu-meta"><div class="mock-line w-2/3"></div><div class="mock-line w-1/3"></div></div></div><div class="mock-menu-item"><div class="mock-menu-thumb"></div><div class="mock-menu-meta"><div class="mock-line w-1/2"></div><div class="mock-line w-1/4"></div></div></div><div class="mock-menu-item"><div class="mock-menu-thumb"></div><div class="mock-menu-meta"><div class="mock-line w-3/5"></div><div class="mock-line w-1/4"></div></div></div></div></div>
+                <div class="mock-qr"><i class="fa-solid fa-qrcode"></i></div>
+              </div>
+              <div class="showcase-panel-body">
+                <h3 class="showcase-panel-title" data-i18n data-en="A premium first impression at every table" data-bg="Премиум първо впечатление на всяка маса">A premium first impression at every table</h3>
+                <p class="showcase-panel-text" data-i18n data-en="Interactive QR menus your guests scan in seconds — updated live, multilingual, and presented on custom-designed stands manufactured in-house to match your brand." data-bg="Интерактивни QR менюта, които гостите сканират за секунди — обновявани на живо, многоезични и представени на дизайнерски стойки, произведени при нас по вашата идентичност.">Interactive QR menus your guests scan in seconds — updated live, multilingual, and presented on custom-designed stands manufactured in-house to match your brand.</p>
+                <div class="showcase-metrics"><div><span class="metric-val">0€</span><span class="metric-lbl" data-i18n data-en="Reprint cost" data-bg="Цена за препечат">Reprint cost</span></div><div><span class="metric-val">Multi-lang</span><span class="metric-lbl" data-i18n data-en="Languages" data-bg="Езици">Languages</span></div><div><span class="metric-val">Live</span><span class="metric-lbl" data-i18n data-en="Updates" data-bg="Обновления">Updates</span></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PORTFOLIO / WORK ============ -->
+    <section id="work" class="section-anchor relative py-28 lg:py-36" data-bg-theme="auto">
+      <div class="mx-auto max-w-7xl px-5 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto reveal" data-reveal>
+          <span class="section-tag" data-i18n data-en="Selected work" data-bg="Избрани проекти">Selected work</span>
+          <h2 class="section-title mt-5" data-i18n data-en="Engineering that speaks for itself." data-bg="Инженеринг, който говори сам за себе си.">Engineering that speaks for itself.</h2>
+          <p class="section-sub mt-5" data-i18n data-en="A cross-section of recent engagements across our four disciplines. Filter to explore what we deliver." data-bg="Подбор от последните ни проекти в четирите направления. Филтрирайте, за да разгледате какво създаваме.">A cross-section of recent engagements across our four disciplines. Filter to explore what we deliver.</p>
+        </div>
+
+        <div class="work-filters reveal" data-reveal data-reveal-delay="80">
+          <button class="work-filter is-active" data-filter="all" data-i18n data-en="All" data-bg="Всички">All</button>
+          <button class="work-filter" data-filter="web" data-i18n data-en="Web" data-bg="Уеб">Web</button>
+          <button class="work-filter" data-filter="print" data-i18n data-en="3D Printing" data-bg="3D печат">3D Printing</button>
+          <button class="work-filter" data-filter="auto" data-i18n data-en="Automation" data-bg="Автоматизация">Automation</button>
+          <button class="work-filter" data-filter="menu" data-i18n data-en="SmartMenus" data-bg="SmartMenus">SmartMenus</button>
+        </div>
+
+        <div class="work-grid reveal" data-reveal data-reveal-delay="140">
+          <article class="work-card tilt" data-theme="web" data-cat="web">
+            <div class="work-thumb"><i class="fa-solid fa-chart-line"></i></div>
+            <div class="work-body"><span class="work-cat" data-i18n data-en="Web Development" data-bg="Уеб разработка">Web Development</span><h3 data-i18n data-en="Fintech analytics dashboard" data-bg="Финтех анализ панел">Fintech analytics dashboard</h3><p data-i18n data-en="Real-time data platform with sub-second rendering." data-bg="Платформа в реално време с моментално визуализиране.">Real-time data platform with sub-second rendering.</p></div>
+          </article>
+          <article class="work-card tilt" data-theme="web" data-cat="web">
+            <div class="work-thumb"><i class="fa-solid fa-bag-shopping"></i></div>
+            <div class="work-body"><span class="work-cat" data-i18n data-en="Web Development" data-bg="Уеб разработка">Web Development</span><h3 data-i18n data-en="Luxury e-commerce storefront" data-bg="Луксозен онлайн магазин">Luxury e-commerce storefront</h3><p data-i18n data-en="Headless commerce with a 38% conversion lift." data-bg="Headless търговия с 38% ръст на конверсиите.">Headless commerce with a 38% conversion lift.</p></div>
+          </article>
+          <article class="work-card tilt" data-theme="print" data-cat="print">
+            <div class="work-thumb"><i class="fa-solid fa-building-columns"></i></div>
+            <div class="work-body"><span class="work-cat" data-i18n data-en="3D Printing" data-bg="3D печат">3D Printing</span><h3 data-i18n data-en="Architectural scale model" data-bg="Архитектурен макет">Architectural scale model</h3><p data-i18n data-en="Presentation-grade model for a development pitch." data-bg="Презентационен макет за инвестиционен проект.">Presentation-grade model for a development pitch.</p></div>
+          </article>
+          <article class="work-card tilt" data-theme="print" data-cat="print">
+            <div class="work-thumb"><i class="fa-solid fa-gear"></i></div>
+            <div class="work-body"><span class="work-cat" data-i18n data-en="3D Printing" data-bg="3D печат">3D Printing</span><h3 data-i18n data-en="Custom enclosure prototype" data-bg="Прототип на корпус">Custom enclosure prototype</h3><p data-i18n data-en="Functional housing for an IoT product line." data-bg="Функционален корпус за IoT продуктова линия.">Functional housing for an IoT product line.</p></div>
+          </article>
+          <article class="work-card tilt" data-theme="auto" data-cat="auto">
+            <div class="work-thumb"><i class="fa-solid fa-house-chimney-window"></i></div>
+            <div class="work-body"><span class="work-cat" data-i18n data-en="Automation" data-bg="Автоматизация">Automation</span><h3 data-i18n data-en="Smart villa integration" data-bg="Умна вила">Smart villa integration</h3><p data-i18n data-en="Unified lighting, climate and security control." data-bg="Обединен контрол на осветление, климат и сигурност.">Unified lighting, climate and security control.</p></div>
+          </article>
+          <article class="work-card tilt" data-theme="auto" data-cat="auto">
+            <div class="work-thumb"><i class="fa-solid fa-network-wired"></i></div>
+            <div class="work-body"><span class="work-cat" data-i18n data-en="Automation" data-bg="Автоматизация">Automation</span><h3 data-i18n data-en="Restaurant IoT network" data-bg="Ресторантска IoT мрежа">Restaurant IoT network</h3><p data-i18n data-en="Resilient backbone for a multi-site venue group." data-bg="Надеждна мрежа за група от обекти.">Resilient backbone for a multi-site venue group.</p></div>
+          </article>
+          <article class="work-card tilt" data-theme="menu" data-cat="menu">
+            <div class="work-thumb"><i class="fa-solid fa-wine-glass"></i></div>
+            <div class="work-body"><span class="work-cat" data-i18n data-en="SmartMenus" data-bg="SmartMenus">SmartMenus</span><h3 data-i18n data-en="Fine-dining QR experience" data-bg="QR изживяване за фино хранене">Fine-dining QR experience</h3><p data-i18n data-en="Multilingual menu with bespoke walnut stands." data-bg="Многоезично меню с дизайнерски орехови стойки.">Multilingual menu with bespoke walnut stands.</p></div>
+          </article>
+          <article class="work-card tilt" data-theme="menu" data-cat="menu">
+            <div class="work-thumb"><i class="fa-solid fa-mug-hot"></i></div>
+            <div class="work-body"><span class="work-cat" data-i18n data-en="SmartMenus" data-bg="SmartMenus">SmartMenus</span><h3 data-i18n data-en="Café chain menu rollout" data-bg="Меню за верига кафенета">Café chain menu rollout</h3><p data-i18n data-en="Live updates across twelve locations at once." data-bg="Обновления на живо в дванадесет обекта едновременно.">Live updates across twelve locations at once.</p></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CALCULATOR ============ -->
+    <section id="calculator" class="section-anchor relative py-28 lg:py-36" data-bg-theme="auto">
+      <div class="mx-auto max-w-7xl px-5 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto reveal" data-reveal>
+          <span class="section-tag" data-i18n data-en="Project estimator" data-bg="Калкулатор за проекти">Project estimator</span>
+          <h2 class="section-title mt-5" data-i18n data-en="Combine services. See an instant estimate." data-bg="Комбинирайте услуги. Вижте моментална оценка.">Combine services. See an instant estimate.</h2>
+          <p class="section-sub mt-5" data-i18n data-en="Configure your engagement below. This interactive estimate is indicative — your final quote is tailored after a short discovery call." data-bg="Конфигурирайте проекта си по-долу. Тази оценка е ориентировъчна — финалната оферта се изготвя след кратка консултация.">Configure your engagement below. This interactive estimate is indicative — your final quote is tailored after a short discovery call.</p>
+        </div>
+
+        <div class="mt-14 grid gap-7 lg:grid-cols-12 reveal" data-reveal data-reveal-delay="100">
+          <div class="lg:col-span-7 space-y-5">
+            <div class="calc-card" data-calc-service="web">
+              <label class="calc-head">
+                <input type="checkbox" class="calc-toggle" data-service="web" />
+                <span class="calc-check"></span>
+                <span class="calc-head-icon" data-theme="web"><i class="fa-solid fa-code"></i></span>
+                <span class="calc-head-text"><span class="calc-head-title" data-i18n data-en="Web Development" data-bg="Уеб разработка">Web Development</span><span class="calc-head-sub" data-i18n data-en="From €1,200" data-bg="От €1,200">From €1,200</span></span>
+              </label>
+              <div class="calc-options">
+                <label class="calc-field"><span data-i18n data-en="Project type" data-bg="Тип проект">Project type</span>
+                  <select class="calc-select" data-calc-input="web-type">
+                    <option value="1200" data-i18n data-en="Landing page — €1,200" data-bg="Лендинг — €1,200">Landing page — €1,200</option>
+                    <option value="2800" selected data-i18n data-en="Business website — €2,800" data-bg="Бизнес сайт — €2,800">Business website — €2,800</option>
+                    <option value="5500" data-i18n data-en="E-commerce — €5,500" data-bg="Е-магазин — €5,500">E-commerce — €5,500</option>
+                    <option value="9500" data-i18n data-en="Web application — €9,500" data-bg="Уеб приложение — €9,500">Web application — €9,500</option>
+                  </select>
+                </label>
+                <label class="calc-field"><span data-i18n data-en="Extra pages" data-bg="Допълнителни страници">Extra pages</span>
+                  <div class="calc-stepper" data-stepper="web-pages" data-unit="180" data-min="0" data-max="40"><button type="button" data-step="-1" aria-label="decrease">−</button><input type="text" readonly value="0" /><button type="button" data-step="1" aria-label="increase">+</button></div>
+                </label>
+                <label class="calc-check-line"><input type="checkbox" data-calc-addon="web" data-amount="900" /><span data-i18n data-en="Premium UI/UX design system (+€900)" data-bg="Премиум UI/UX дизайн система (+€900)">Premium UI/UX design system (+€900)</span></label>
+                <label class="calc-check-line"><input type="checkbox" data-calc-addon="web" data-amount="650" /><span data-i18n data-en="CMS & content training (+€650)" data-bg="CMS и обучение (+€650)">CMS &amp; content training (+€650)</span></label>
+              </div>
+            </div>
+
+            <div class="calc-card" data-calc-service="print">
+              <label class="calc-head">
+                <input type="checkbox" class="calc-toggle" data-service="print" />
+                <span class="calc-check"></span>
+                <span class="calc-head-icon" data-theme="print"><i class="fa-solid fa-cube"></i></span>
+                <span class="calc-head-text"><span class="calc-head-title" data-i18n data-en="3D Printing" data-bg="3D печат">3D Printing</span><span class="calc-head-sub" data-i18n data-en="From €150" data-bg="От €150">From €150</span></span>
+              </label>
+              <div class="calc-options">
+                <label class="calc-field"><span data-i18n data-en="Service" data-bg="Услуга">Service</span>
+                  <select class="calc-select" data-calc-input="print-type">
+                    <option value="150" data-i18n data-en="Concept model — €150" data-bg="Концептуален модел — €150">Concept model — €150</option>
+                    <option value="450" selected data-i18n data-en="Functional prototype — €450" data-bg="Функционален прототип — €450">Functional prototype — €450</option>
+                    <option value="1200" data-i18n data-en="Small-batch production — €1,200" data-bg="Малка серия — €1,200">Small-batch production — €1,200</option>
+                  </select>
+                </label>
+                <label class="calc-field"><span data-i18n data-en="Units / iterations" data-bg="Бройки / итерации">Units / iterations</span>
+                  <div class="calc-stepper" data-stepper="print-units" data-unit="90" data-min="0" data-max="100"><button type="button" data-step="-1" aria-label="decrease">−</button><input type="text" readonly value="0" /><button type="button" data-step="1" aria-label="increase">+</button></div>
+                </label>
+                <label class="calc-check-line"><input type="checkbox" data-calc-addon="print" data-amount="350" /><span data-i18n data-en="CAD design from scratch (+€350)" data-bg="CAD дизайн от нулата (+€350)">CAD design from scratch (+€350)</span></label>
+                <label class="calc-check-line"><input type="checkbox" data-calc-addon="print" data-amount="220" /><span data-i18n data-en="Premium finishing & paint (+€220)" data-bg="Премиум обработка и боя (+€220)">Premium finishing &amp; paint (+€220)</span></label>
+              </div>
+            </div>
+
+            <div class="calc-card" data-calc-service="auto">
+              <label class="calc-head">
+                <input type="checkbox" class="calc-toggle" data-service="auto" />
+                <span class="calc-check"></span>
+                <span class="calc-head-icon" data-theme="auto"><i class="fa-solid fa-house-signal"></i></span>
+                <span class="calc-head-text"><span class="calc-head-title" data-i18n data-en="Automation" data-bg="Автоматизация">Automation</span><span class="calc-head-sub" data-i18n data-en="From €1,800" data-bg="От €1,800">From €1,800</span></span>
+              </label>
+              <div class="calc-options">
+                <label class="calc-field"><span data-i18n data-en="Scope" data-bg="Обхват">Scope</span>
+                  <select class="calc-select" data-calc-input="auto-type">
+                    <option value="1800" selected data-i18n data-en="Single-room smart setup — €1,800" data-bg="Една стая — €1,800">Single-room smart setup — €1,800</option>
+                    <option value="4200" data-i18n data-en="Full home / office — €4,200" data-bg="Цял дом / офис — €4,200">Full home / office — €4,200</option>
+                    <option value="9000" data-i18n data-en="Commercial building — €9,000" data-bg="Сграда — €9,000">Commercial building — €9,000</option>
+                  </select>
+                </label>
+                <label class="calc-field"><span data-i18n data-en="Zones / rooms" data-bg="Зони / стаи">Zones / rooms</span>
+                  <div class="calc-stepper" data-stepper="auto-zones" data-unit="600" data-min="0" data-max="60"><button type="button" data-step="-1" aria-label="decrease">−</button><input type="text" readonly value="0" /><button type="button" data-step="1" aria-label="increase">+</button></div>
+                </label>
+                <label class="calc-check-line"><input type="checkbox" data-calc-addon="auto" data-amount="1100" /><span data-i18n data-en="Security & CCTV integration (+€1,100)" data-bg="Сигурност и видеонаблюдение (+€1,100)">Security &amp; CCTV integration (+€1,100)</span></label>
+                <label class="calc-check-line"><input type="checkbox" data-calc-addon="auto" data-amount="750" /><span data-i18n data-en="Network & Wi-Fi backbone (+€750)" data-bg="Мрежа и Wi-Fi (+€750)">Network &amp; Wi-Fi backbone (+€750)</span></label>
+              </div>
+            </div>
+
+            <div class="calc-card" data-calc-service="menu">
+              <label class="calc-head">
+                <input type="checkbox" class="calc-toggle" data-service="menu" />
+                <span class="calc-check"></span>
+                <span class="calc-head-icon" data-theme="menu"><i class="fa-solid fa-qrcode"></i></span>
+                <span class="calc-head-text"><span class="calc-head-title" data-i18n data-en="SmartMenu Infrastructure" data-bg="SmartMenu инфраструктура">SmartMenu Infrastructure</span><span class="calc-head-sub" data-i18n data-en="From €900" data-bg="От €900">From €900</span></span>
+              </label>
+              <div class="calc-options">
+                <label class="calc-field"><span data-i18n data-en="Package" data-bg="Пакет">Package</span>
+                  <select class="calc-select" data-calc-input="menu-type">
+                    <option value="900" selected data-i18n data-en="Digital QR menu — €900" data-bg="Дигитално QR меню — €900">Digital QR menu — €900</option>
+                    <option value="1600" data-i18n data-en="QR menu + branded stands — €1,600" data-bg="QR меню + стойки — €1,600">QR menu + branded stands — €1,600</option>
+                    <option value="2900" data-i18n data-en="Full restaurant suite — €2,900" data-bg="Пълен ресторант пакет — €2,900">Full restaurant suite — €2,900</option>
+                  </select>
+                </label>
+                <label class="calc-field"><span data-i18n data-en="Physical stands" data-bg="Физически стойки">Physical stands</span>
+                  <div class="calc-stepper" data-stepper="menu-stands" data-unit="35" data-min="0" data-max="200"><button type="button" data-step="-1" aria-label="decrease">−</button><input type="text" readonly value="0" /><button type="button" data-step="1" aria-label="increase">+</button></div>
+                </label>
+                <label class="calc-check-line"><input type="checkbox" data-calc-addon="menu" data-amount="240" /><span data-i18n data-en="Extra language packs (+€240)" data-bg="Допълнителни езици (+€240)">Extra language packs (+€240)</span></label>
+                <label class="calc-check-line"><input type="checkbox" data-calc-addon="menu" data-amount="180" /><span data-i18n data-en="Analytics dashboard (+€180/yr)" data-bg="Анализ панел (+€180/год)">Analytics dashboard (+€180/yr)</span></label>
+              </div>
+            </div>
+          </div>
+
+          <div class="lg:col-span-5">
+            <div class="calc-summary">
+              <div class="calc-summary-head">
+                <span class="calc-summary-eyebrow" data-i18n data-en="Live estimate" data-bg="Жива оценка">Live estimate</span>
+                <h3 class="calc-summary-title" data-i18n data-en="Your configuration" data-bg="Вашата конфигурация">Your configuration</h3>
+              </div>
+              <ul id="calc-breakdown" class="calc-breakdown"><li class="calc-empty" data-i18n data-en="Select one or more services to begin." data-bg="Изберете една или повече услуги, за да започнете.">Select one or more services to begin.</li></ul>
+              <div class="calc-bundle" id="calc-bundle" hidden><i class="fa-solid fa-tags"></i><span data-i18n data-en="Multi-service bundle discount applied" data-bg="Приложена отстъпка за комбиниран пакет">Multi-service bundle discount applied</span><strong id="calc-discount">−€0</strong></div>
+              <div class="calc-total-row"><span data-i18n data-en="Estimated total" data-bg="Прогнозна сума">Estimated total</span><span class="calc-total" id="calc-total">€0</span></div>
+              <p class="calc-note" data-i18n data-en="Indicative pricing, excl. VAT. Final scope confirmed after consultation." data-bg="Ориентировъчни цени, без ДДС. Финалният обхват се потвърждава след консултация.">Indicative pricing, excl. VAT. Final scope confirmed after consultation.</p>
+              <button class="btn-primary btn-lg w-full justify-center magnetic" id="calc-send"><i class="fa-solid fa-paper-plane mr-2"></i><span data-i18n data-en="Send my configuration" data-bg="Изпрати конфигурацията">Send my configuration</span></button>
+              <p class="calc-trust"><i class="fa-solid fa-lock"></i><span data-i18n data-en="No commitment · Response within 24h" data-bg="Без ангажимент · Отговор до 24ч">No commitment · Response within 24h</span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PROCESS ============ -->
+    <section id="process" class="section-anchor relative py-28 lg:py-36" data-bg-theme="menu">
+      <div class="mx-auto max-w-7xl px-5 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto reveal" data-reveal>
+          <span class="section-tag" data-i18n data-en="How we work" data-bg="Как работим">How we work</span>
+          <h2 class="section-title mt-5" data-i18n data-en="A disciplined path from idea to impact." data-bg="Дисциплиниран път от идея до резултат.">A disciplined path from idea to impact.</h2>
+        </div>
+
+        <div class="process-timeline mt-16">
+          <div class="process-step reveal" data-reveal>
+            <span class="process-num">01</span><i class="fa-solid fa-compass-drafting process-step-icon"></i>
+            <h3 class="process-step-title" data-i18n data-en="Discovery" data-bg="Анализ">Discovery</h3>
+            <p class="process-step-text" data-i18n data-en="We map your goals, constraints and audience to define a precise, measurable scope." data-bg="Картографираме целите, ограниченията и аудиторията ви, за да дефинираме точен и измерим обхват.">We map your goals, constraints and audience to define a precise, measurable scope.</p>
+          </div>
+          <div class="process-step reveal" data-reveal data-reveal-delay="80">
+            <span class="process-num">02</span><i class="fa-solid fa-pen-ruler process-step-icon"></i>
+            <h3 class="process-step-title" data-i18n data-en="Design" data-bg="Дизайн">Design</h3>
+            <p class="process-step-text" data-i18n data-en="Architecture, interfaces and prototypes — validated early to remove risk before build." data-bg="Архитектура, интерфейси и прототипи — валидирани рано, за да премахнем риска преди разработката.">Architecture, interfaces and prototypes — validated early to remove risk before build.</p>
+          </div>
+          <div class="process-step reveal" data-reveal data-reveal-delay="160">
+            <span class="process-num">03</span><i class="fa-solid fa-gears process-step-icon"></i>
+            <h3 class="process-step-title" data-i18n data-en="Build" data-bg="Изграждане">Build</h3>
+            <p class="process-step-text" data-i18n data-en="Engineering in tight iterations with transparent progress and rigorous quality gates." data-bg="Инженеринг в кратки итерации с прозрачен прогрес и стриктен контрол на качеството.">Engineering in tight iterations with transparent progress and rigorous quality gates.</p>
+          </div>
+          <div class="process-step reveal" data-reveal data-reveal-delay="240">
+            <span class="process-num">04</span><i class="fa-solid fa-rocket process-step-icon"></i>
+            <h3 class="process-step-title" data-i18n data-en="Launch & Support" data-bg="Старт и поддръжка">Launch &amp; Support</h3>
+            <p class="process-step-text" data-i18n data-en="Seamless deployment plus ongoing optimization, monitoring and dedicated support." data-bg="Безпроблемно внедряване плюс непрекъсната оптимизация, мониторинг и посветена поддръжка.">Seamless deployment plus ongoing optimization, monitoring and dedicated support.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ TESTIMONIALS ============ -->
+    <section id="testimonials" class="section-anchor relative py-28 lg:py-36" data-bg-theme="menu">
+      <div class="mx-auto max-w-5xl px-5 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto reveal" data-reveal>
+          <span class="section-tag" data-i18n data-en="Client voices" data-bg="Думи на клиенти">Client voices</span>
+          <h2 class="section-title mt-5" data-i18n data-en="Trusted by founders, owners and operators." data-bg="Доверие от основатели, собственици и оператори.">Trusted by founders, owners and operators.</h2>
+        </div>
+
+        <div class="testimonials reveal" data-reveal data-reveal-delay="100">
+          <div class="testimonial-track" id="testimonial-track">
+            <figure class="testimonial is-active">
+              <i class="fa-solid fa-quote-left testimonial-quote"></i>
+              <blockquote data-i18n data-en="SmartMenuKJ rebuilt our platform and our QR menu system in one coordinated effort. The result is faster, cleaner and unmistakably premium. They simply own the outcome." data-bg="SmartMenuKJ преизгради платформата и QR менютата ни в едно координирано усилие. Резултатът е по-бърз, по-чист и безспорно премиум. Те поемат отговорност за резултата.">SmartMenuKJ rebuilt our platform and our QR menu system in one coordinated effort. The result is faster, cleaner and unmistakably premium. They simply own the outcome.</blockquote>
+              <figcaption><span class="testimonial-avatar">МД</span><span class="testimonial-meta"><strong>Mаria Dimitrova</strong><span data-i18n data-en="Owner · Restaurant Group" data-bg="Собственик · Ресторантска група">Owner · Restaurant Group</span></span></figcaption>
+            </figure>
+            <figure class="testimonial">
+              <i class="fa-solid fa-quote-left testimonial-quote"></i>
+              <blockquote data-i18n data-en="From prototype to production, the engineering rigor was exceptional. Tight tolerances, on-time delivery, and a team that genuinely cares about the details." data-bg="От прототип до производство — инженерната прецизност беше изключителна. Точни допуски, навременна доставка и екип, който истински държи на детайла.">From prototype to production, the engineering rigor was exceptional. Tight tolerances, on-time delivery, and a team that genuinely cares about the details.</blockquote>
+              <figcaption><span class="testimonial-avatar">SP</span><span class="testimonial-meta"><strong>Stefan Petrov</strong><span data-i18n data-en="Founder · Hardware Startup" data-bg="Основател · Хардуерен стартъп">Founder · Hardware Startup</span></span></figcaption>
+            </figure>
+            <figure class="testimonial">
+              <i class="fa-solid fa-quote-left testimonial-quote"></i>
+              <blockquote data-i18n data-en="Our home automation finally feels invisible — it just works. Reliable, private and beautifully integrated. Exactly what we hoped for and more." data-bg="Автоматизацията на дома ни най-сетне е незабележима — просто работи. Надеждна, поверителна и красиво интегрирана. Точно това, на което се надявахме, и повече.">Our home automation finally feels invisible — it just works. Reliable, private and beautifully integrated. Exactly what we hoped for and more.</blockquote>
+              <figcaption><span class="testimonial-avatar">AK</span><span class="testimonial-meta"><strong>Alex Kostov</strong><span data-i18n data-en="Homeowner · Smart Villa" data-bg="Собственик · Умна вила">Homeowner · Smart Villa</span></span></figcaption>
+            </figure>
+          </div>
+          <div class="testimonial-controls">
+            <button class="testimonial-arrow" data-testi-prev aria-label="Previous"><i class="fa-solid fa-arrow-left"></i></button>
+            <div class="testimonial-dots" id="testimonial-dots"></div>
+            <button class="testimonial-arrow" data-testi-next aria-label="Next"><i class="fa-solid fa-arrow-right"></i></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CEO / LEADERSHIP ============ -->
+    <section id="about" class="section-anchor relative py-28 lg:py-36" data-bg-theme="web">
+      <div class="mx-auto max-w-7xl px-5 lg:px-8">
+        <div class="grid gap-12 lg:grid-cols-12 items-center">
+          <div class="lg:col-span-5 reveal" data-reveal>
+            <div class="ceo-portrait">
+              <div class="ceo-avatar">KU</div>
+              <div class="ceo-ring"></div>
+              <div class="ceo-badge"><i class="fa-solid fa-bolt"></i></div>
+            </div>
+          </div>
+          <div class="lg:col-span-7 reveal" data-reveal data-reveal-delay="120">
+            <span class="section-tag" data-i18n data-en="Leadership" data-bg="Ръководство">Leadership</span>
+            <h2 class="section-title mt-5 !text-left" data-i18n data-en="A founder-led vision for engineering excellence." data-bg="Визия за инженерно съвършенство, водена от основателя.">A founder-led vision for engineering excellence.</h2>
+            <blockquote class="ceo-quote" data-i18n
+              data-en="“Technology should feel inevitable — fast, elegant and dependable. At SmartMenuKJ we refuse to separate the digital from the physical. We engineer both, under one roof, to one uncompromising standard.”"
+              data-bg="„Технологията трябва да изглежда неизбежна — бърза, елегантна и надеждна. В SmartMenuKJ отказваме да разделяме дигиталното от физическото. Изграждаме и двете, под един покрив, по един безкомпромисен стандарт.“">
+              “Technology should feel inevitable — fast, elegant and dependable. At SmartMenuKJ we refuse to separate the digital from the physical. We engineer both, under one roof, to one uncompromising standard.”
+            </blockquote>
+            <div class="ceo-signoff">
+              <div>
+                <span class="ceo-name">Krasimir Uzun</span>
+                <span class="ceo-role" data-i18n data-en="Founder & Chief Executive Officer" data-bg="Основател и изпълнителен директор">Founder &amp; Chief Executive Officer</span>
+              </div>
+              <div class="ceo-socials">
+                <a href="https://www.linkedin.com/in/krasimir-uzun-316a053bb/" target="_blank" rel="noopener noreferrer" class="social-btn social-btn--sm magnetic" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+                <a href="https://www.instagram.com/1337_krasimir_/" target="_blank" rel="noopener noreferrer" class="social-btn social-btn--sm magnetic" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                <a href="mailto:krasimiruzun@smartmenukj.com" class="social-btn social-btn--sm magnetic" aria-label="Email"><i class="fa-solid fa-envelope"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CTA band -->
+        <div class="mt-20 reveal" data-reveal>
+          <div class="cta-band">
+            <div class="cta-band-glow"></div>
+            <div class="relative z-10">
+              <h3 class="cta-band-title" data-i18n data-en="Ready to build something exceptional?" data-bg="Готови ли сте да създадем нещо изключително?">Ready to build something exceptional?</h3>
+              <p class="cta-band-text" data-i18n data-en="Tell us about your vision. We'll turn it into a precise plan within 24 hours." data-bg="Разкажете ни за визията си. Ще я превърнем в точен план в рамките на 24 часа.">Tell us about your vision. We'll turn it into a precise plan within 24 hours.</p>
+            </div>
+            <a href="#contact" class="btn-primary btn-lg magnetic relative z-10"><span data-i18n data-en="Book a consultation" data-bg="Запази консултация">Book a consultation</span><i class="fa-solid fa-arrow-right ml-2"></i></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FAQ ============ -->
+    <section id="faq" class="section-anchor relative py-28 lg:py-36" data-bg-theme="print">
+      <div class="mx-auto max-w-3xl px-5 lg:px-8">
+        <div class="text-center reveal" data-reveal>
+          <span class="section-tag" data-i18n data-en="Questions answered" data-bg="Отговори на въпроси">Questions answered</span>
+          <h2 class="section-title mt-5" data-i18n data-en="Everything you need to know." data-bg="Всичко, което трябва да знаете.">Everything you need to know.</h2>
+        </div>
+
+        <div class="faq mt-12 reveal" data-reveal data-reveal-delay="80">
+          <div class="faq-item">
+            <button class="faq-q" aria-expanded="false"><span data-i18n data-en="Can you really cover all four disciplines in one project?" data-bg="Наистина ли покривате всичките четири направления в един проект?">Can you really cover all four disciplines in one project?</span><i class="fa-solid fa-plus faq-icon"></i></button>
+            <div class="faq-a"><p data-i18n data-en="Yes — that is our core advantage. Web, 3D printing, automation and SmartMenus are delivered by one accountable team, so the parts fit together perfectly and you have a single point of contact." data-bg="Да — това е основното ни предимство. Уеб, 3D печат, автоматизация и SmartMenus се изпълняват от един отговорен екип, така че частите пасват идеално и имате една точка за контакт.">Yes — that is our core advantage. Web, 3D printing, automation and SmartMenus are delivered by one accountable team, so the parts fit together perfectly and you have a single point of contact.</p></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q" aria-expanded="false"><span data-i18n data-en="How much does a typical project cost?" data-bg="Колко струва типичен проект?">How much does a typical project cost?</span><i class="fa-solid fa-plus faq-icon"></i></button>
+            <div class="faq-a"><p data-i18n data-en="It depends on scope, but our estimator above gives an instant indicative range. Final pricing is confirmed after a short discovery call where we align on goals and deliverables." data-bg="Зависи от обхвата, но калкулаторът по-горе дава моментален ориентир. Финалната цена се потвърждава след кратка консултация, на която уточняваме целите и резултатите.">It depends on scope, but our estimator above gives an instant indicative range. Final pricing is confirmed after a short discovery call where we align on goals and deliverables.</p></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q" aria-expanded="false"><span data-i18n data-en="Do you work with clients outside Bulgaria?" data-bg="Работите ли с клиенти извън България?">Do you work with clients outside Bulgaria?</span><i class="fa-solid fa-plus faq-icon"></i></button>
+            <div class="faq-a"><p data-i18n data-en="Absolutely. We are based in Kardzhali and deliver web, automation and SmartMenu projects remotely across Europe and beyond, with on-site work arranged where needed." data-bg="Разбира се. Базирани сме в Кърджали и реализираме уеб, автоматизация и SmartMenu проекти дистанционно в Европа и извън нея, с присъствие на място при нужда.">Absolutely. We are based in Kardzhali and deliver web, automation and SmartMenu projects remotely across Europe and beyond, with on-site work arranged where needed.</p></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q" aria-expanded="false"><span data-i18n data-en="What happens after launch?" data-bg="Какво се случва след старта?">What happens after launch?</span><i class="fa-solid fa-plus faq-icon"></i></button>
+            <div class="faq-a"><p data-i18n data-en="We offer ongoing monitoring, optimization and dedicated support. Your solution keeps evolving — we treat go-live as the start of the partnership, not the end." data-bg="Предлагаме непрекъснат мониторинг, оптимизация и посветена поддръжка. Решението ви продължава да се развива — за нас стартът е началото на партньорството, не краят.">We offer ongoing monitoring, optimization and dedicated support. Your solution keeps evolving — we treat go-live as the start of the partnership, not the end.</p></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q" aria-expanded="false"><span data-i18n data-en="How quickly can we start?" data-bg="Колко бързо можем да започнем?">How quickly can we start?</span><i class="fa-solid fa-plus faq-icon"></i></button>
+            <div class="faq-a"><p data-i18n data-en="We respond to every serious inquiry within one business day and can usually begin discovery within the same week, depending on current capacity." data-bg="Отговаряме на всяко сериозно запитване в рамките на един работен ден и обикновено можем да започнем анализа в същата седмица, според текущия капацитет.">We respond to every serious inquiry within one business day and can usually begin discovery within the same week, depending on current capacity.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CONTACT ============ -->
+    <section id="contact" class="section-anchor relative py-28 lg:py-36" data-bg-theme="web">
+      <div class="mx-auto max-w-7xl px-5 lg:px-8">
+        <div class="grid gap-12 lg:grid-cols-12 items-start">
+          <div class="lg:col-span-5 reveal" data-reveal>
+            <span class="section-tag" data-i18n data-en="Contact & corporate footprint" data-bg="Контакти и присъствие">Contact &amp; corporate footprint</span>
+            <h2 class="section-title mt-5 !text-left" data-i18n data-en="Let's engineer your next move." data-bg="Нека изградим следващата ви стъпка.">Let's engineer your next move.</h2>
+            <p class="section-sub mt-5 !mx-0 !text-left" data-i18n data-en="Reach the SmartMenuKJ team directly. We respond to every serious inquiry within one business day." data-bg="Свържете се директно с екипа на SmartMenuKJ. Отговаряме на всяко сериозно запитване в рамките на един работен ден.">Reach the SmartMenuKJ team directly. We respond to every serious inquiry within one business day.</p>
+
+            <div class="mt-10 space-y-4">
+              <div class="contact-detail">
+                <span class="contact-detail-icon"><i class="fa-solid fa-user-tie"></i></span>
+                <div><span class="contact-detail-label" data-i18n data-en="Chief Executive Officer" data-bg="Изпълнителен директор">Chief Executive Officer</span><span class="contact-detail-value">Krasimir Uzun</span></div>
+              </div>
+              <a class="contact-detail contact-detail--link" href="tel:+359885348666">
+                <span class="contact-detail-icon"><i class="fa-solid fa-phone"></i></span>
+                <div><span class="contact-detail-label" data-i18n data-en="Phone" data-bg="Телефон">Phone</span><span class="contact-detail-value">+359 88 534 8666</span></div>
+              </a>
+              <a class="contact-detail contact-detail--link" href="mailto:krasimiruzun@smartmenukj.com">
+                <span class="contact-detail-icon"><i class="fa-solid fa-envelope"></i></span>
+                <div><span class="contact-detail-label" data-i18n data-en="Email" data-bg="Имейл">Email</span><span class="contact-detail-value">krasimiruzun@smartmenukj.com</span></div>
+              </a>
+              <div class="contact-detail">
+                <span class="contact-detail-icon"><i class="fa-solid fa-location-dot"></i></span>
+                <div><span class="contact-detail-label" data-i18n data-en="Headquarters" data-bg="Централа">Headquarters</span><span class="contact-detail-value">ul. „Dzhebelska" 2, 6600 Baykal,<br/>Kardzhali, Bulgaria</span></div>
+              </div>
+            </div>
+
+            <div class="mt-8 flex items-center gap-3">
+              <a href="https://www.instagram.com/1337_krasimir_/" target="_blank" rel="noopener noreferrer" class="social-btn magnetic" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+              <a href="https://www.linkedin.com/in/krasimir-uzun-316a053bb/" target="_blank" rel="noopener noreferrer" class="social-btn magnetic" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+              <a href="mailto:krasimiruzun@smartmenukj.com" class="social-btn magnetic" aria-label="Email"><i class="fa-solid fa-envelope"></i></a>
+            </div>
+          </div>
+
+          <div class="lg:col-span-7 reveal" data-reveal data-reveal-delay="120">
+            <form id="contact-form" class="contact-form" novalidate>
+              <div class="grid sm:grid-cols-2 gap-5">
+                <div class="field">
+                  <label for="cf-name" data-i18n data-en="Full name" data-bg="Име и фамилия">Full name</label>
+                  <input id="cf-name" name="name" type="text" autocomplete="name" data-i18n-ph data-en-ph="Your name" data-bg-ph="Вашето име" placeholder="Your name" required minlength="2" />
+                  <span class="field-error" data-i18n data-en="Please enter your name." data-bg="Моля, въведете името си.">Please enter your name.</span>
+                </div>
+                <div class="field">
+                  <label for="cf-email" data-i18n data-en="Email address" data-bg="Имейл адрес">Email address</label>
+                  <input id="cf-email" name="email" type="email" autocomplete="email" data-i18n-ph data-en-ph="you@company.com" data-bg-ph="vie@firma.com" placeholder="you@company.com" required />
+                  <span class="field-error" data-i18n data-en="Enter a valid email address." data-bg="Въведете валиден имейл.">Enter a valid email address.</span>
+                </div>
+                <div class="field">
+                  <label for="cf-phone" data-i18n data-en="Phone (optional)" data-bg="Телефон (по избор)">Phone (optional)</label>
+                  <input id="cf-phone" name="phone" type="tel" autocomplete="tel" data-i18n-ph data-en-ph="+359 ..." data-bg-ph="+359 ..." placeholder="+359 ..." />
+                  <span class="field-error" data-i18n data-en="Enter a valid phone number." data-bg="Въведете валиден телефон.">Enter a valid phone number.</span>
+                </div>
+                <div class="field">
+                  <label for="cf-service" data-i18n data-en="Service of interest" data-bg="Интересуваща услуга">Service of interest</label>
+                  <select id="cf-service" name="service" required>
+                    <option value="" disabled selected data-i18n data-en="Select a service" data-bg="Изберете услуга">Select a service</option>
+                    <option value="web" data-i18n data-en="Web Development" data-bg="Уеб разработка">Web Development</option>
+                    <option value="print" data-i18n data-en="3D Printing" data-bg="3D печат">3D Printing</option>
+                    <option value="auto" data-i18n data-en="Automation" data-bg="Автоматизация">Automation</option>
+                    <option value="menu" data-i18n data-en="SmartMenus" data-bg="SmartMenus">SmartMenus</option>
+                    <option value="multi" data-i18n data-en="Multiple / not sure" data-bg="Няколко / не съм сигурен">Multiple / not sure</option>
+                  </select>
+                  <span class="field-error" data-i18n data-en="Please choose a service." data-bg="Моля, изберете услуга.">Please choose a service.</span>
+                </div>
+              </div>
+              <div class="field mt-5">
+                <label for="cf-message" data-i18n data-en="Project details" data-bg="Детайли за проекта">Project details</label>
+                <textarea id="cf-message" name="message" rows="5" data-i18n-ph data-en-ph="Tell us about your goals, timeline and budget..." data-bg-ph="Разкажете за целите, сроковете и бюджета си..." placeholder="Tell us about your goals, timeline and budget..." required minlength="10"></textarea>
+                <span class="field-error" data-i18n data-en="Please add a few details (min. 10 characters)." data-bg="Добавете няколко детайла (мин. 10 символа).">Please add a few details (min. 10 characters).</span>
+              </div>
+
+              <label class="consent mt-5">
+                <input type="checkbox" id="cf-consent" required />
+                <span class="consent-box"></span>
+                <span class="consent-text" data-i18n data-en="I agree to be contacted about my inquiry and accept the privacy terms." data-bg="Съгласен съм да бъда потърсен относно запитването ми и приемам условията за поверителност.">I agree to be contacted about my inquiry and accept the privacy terms.</span>
+              </label>
+              <span class="field-error" id="cf-consent-error" data-i18n data-en="Please accept to continue." data-bg="Моля, приемете, за да продължите.">Please accept to continue.</span>
+
+              <button type="submit" class="btn-primary btn-lg w-full justify-center mt-6 magnetic" id="cf-submit">
+                <span class="cf-submit-label" data-i18n data-en="Send message" data-bg="Изпрати съобщение">Send message</span>
+                <i class="fa-solid fa-arrow-right ml-2 cf-submit-icon"></i>
+                <i class="fa-solid fa-spinner fa-spin cf-submit-spinner" hidden></i>
+              </button>
+
+              <div class="form-success" id="cf-success" hidden>
+                <i class="fa-solid fa-circle-check"></i>
+                <span data-i18n data-en="Thank you! Your message has been sent — we'll be in touch within 24 hours." data-bg="Благодарим! Съобщението е изпратено — ще се свържем с вас до 24 часа.">Thank you! Your message has been sent — we'll be in touch within 24 hours.</span>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="relative border-t border-white/10 pt-16 pb-10 mt-10">
+    <div class="mx-auto max-w-7xl px-5 lg:px-8">
+      <div class="grid gap-10 md:grid-cols-12">
+        <div class="md:col-span-5">
+          <a href="#hero" class="flex items-center gap-3 mb-5" aria-label="SmartMenuKJ home">
+            <span class="logo-mark"><i class="fa-solid fa-bolt"></i></span>
+            <span class="font-display font-extrabold tracking-tight text-white text-lg">Smart<span class="text-web">Menu</span><span class="text-menu">KJ</span></span>
+          </a>
+          <p class="text-slate-400 max-w-sm leading-relaxed text-sm" data-i18n data-en="A premium technology execution enterprise — engineering web, 3D, automation and SmartMenus from Kardzhali, Bulgaria, for clients worldwide." data-bg="Премиум технологично предприятие — изграждаме уеб, 3D, автоматизация и SmartMenus от Кърджали, България, за клиенти по целия свят.">A premium technology execution enterprise — engineering web, 3D, automation and SmartMenus from Kardzhali, Bulgaria, for clients worldwide.</p>
+          <div class="mt-6 flex items-center gap-3">
+            <a href="https://www.instagram.com/1337_krasimir_/" target="_blank" rel="noopener noreferrer" class="social-btn social-btn--sm magnetic" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://www.linkedin.com/in/krasimir-uzun-316a053bb/" target="_blank" rel="noopener noreferrer" class="social-btn social-btn--sm magnetic" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+          </div>
+        </div>
+
+        <div class="md:col-span-3">
+          <h4 class="footer-title" data-i18n data-en="Services" data-bg="Услуги">Services</h4>
+          <ul class="footer-links">
+            <li><a href="#pillars" data-i18n data-en="Web Development" data-bg="Уеб разработка">Web Development</a></li>
+            <li><a href="#pillars" data-i18n data-en="3D Printing" data-bg="3D печат">3D Printing</a></li>
+            <li><a href="#pillars" data-i18n data-en="Automation" data-bg="Автоматизация">Automation</a></li>
+            <li><a href="#pillars" data-i18n data-en="SmartMenus" data-bg="SmartMenus">SmartMenus</a></li>
+          </ul>
+        </div>
+
+        <div class="md:col-span-4">
+          <h4 class="footer-title" data-i18n data-en="Get in touch" data-bg="Свържете се">Get in touch</h4>
+          <ul class="footer-links">
+            <li><a href="tel:+359885348666"><i class="fa-solid fa-phone mr-2 text-web"></i>+359 88 534 8666</a></li>
+            <li><a href="mailto:krasimiruzun@smartmenukj.com"><i class="fa-solid fa-envelope mr-2 text-web"></i>krasimiruzun@smartmenukj.com</a></li>
+            <li><span class="text-slate-400"><i class="fa-solid fa-location-dot mr-2 text-web"></i>ul. „Dzhebelska" 2, 6600 Baykal, Kardzhali</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="mt-12 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-500">
+        <p>© <span id="year"></span> SmartMenuKJ. <span data-i18n data-en="All rights reserved." data-bg="Всички права запазени.">All rights reserved.</span></p>
+        <p class="flex items-center gap-2"><span data-i18n data-en="Engineered with precision in Bulgaria" data-bg="Изградено с прецизност в България">Engineered with precision in Bulgaria</span><i class="fa-solid fa-bolt text-web"></i></p>
+      </div>
+    </div>
+  </footer>
+
+  <button id="to-top" class="to-top" aria-label="Back to top"><i class="fa-solid fa-arrow-up"></i></button>
+
+  <!-- ============ AUTH MODAL ============ -->
+  <div id="auth-modal" class="auth-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="auth-title">
+    <div class="auth-overlay" data-close-auth></div>
+    <div class="auth-dialog" role="document">
+      <button class="auth-close" data-close-auth aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+      <div class="auth-brand">
+        <span class="logo-mark logo-mark--lg"><i class="fa-solid fa-bolt"></i></span>
+        <span class="font-display font-extrabold text-white text-xl">Smart<span class="text-web">Menu</span><span class="text-menu">KJ</span></span>
+      </div>
+      <div class="auth-tabs">
+        <button class="auth-tab is-active" data-auth-tab="login" data-i18n data-en="Sign in" data-bg="Вход">Sign in</button>
+        <button class="auth-tab" data-auth-tab="register" data-i18n data-en="Create account" data-bg="Регистрация">Create account</button>
+        <span class="auth-tab-indicator"></span>
+      </div>
+
+      <form class="auth-form is-active" data-auth-form="login" novalidate>
+        <h3 id="auth-title" class="auth-form-title" data-i18n data-en="Welcome back" data-bg="Добре дошли отново">Welcome back</h3>
+        <p class="auth-form-sub" data-i18n data-en="Access your client portal and project dashboard." data-bg="Достъп до клиентския портал и таблото за проекти.">Access your client portal and project dashboard.</p>
+        <div class="field">
+          <label data-i18n data-en="Email" data-bg="Имейл">Email</label>
+          <div class="input-icon"><i class="fa-solid fa-envelope"></i><input type="email" name="email" required data-i18n-ph data-en-ph="you@company.com" data-bg-ph="vie@firma.com" placeholder="you@company.com" /></div>
+          <span class="field-error" data-i18n data-en="Enter a valid email." data-bg="Въведете валиден имейл.">Enter a valid email.</span>
+        </div>
+        <div class="field">
+          <label data-i18n data-en="Password" data-bg="Парола">Password</label>
+          <div class="input-icon"><i class="fa-solid fa-lock"></i><input type="password" name="password" required minlength="6" data-i18n-ph data-en-ph="••••••••" data-bg-ph="••••••••" placeholder="••••••••" /><button type="button" class="pw-toggle" aria-label="Show password"><i class="fa-solid fa-eye"></i></button></div>
+          <span class="field-error" data-i18n data-en="Min. 6 characters." data-bg="Мин. 6 символа.">Min. 6 characters.</span>
+        </div>
+        <p class="auth-error" data-auth-error hidden><i class="fa-solid fa-circle-exclamation"></i> <span></span></p>
+        <div class="auth-row">
+          <label class="consent consent--sm"><input type="checkbox" /><span class="consent-box"></span><span class="consent-text" data-i18n data-en="Remember me" data-bg="Запомни ме">Remember me</span></label>
+          <a href="#" class="auth-forgot" data-i18n data-en="Forgot password?" data-bg="Забравена парола?">Forgot password?</a>
+        </div>
+        <button type="submit" class="btn-primary btn-lg w-full justify-center mt-2"><span data-i18n data-en="Sign in" data-bg="Вход">Sign in</span></button>
+        <div class="auth-divider"><span data-i18n data-en="or continue with" data-bg="или продължете с">or continue with</span></div>
+        <div class="auth-social"><button type="button" class="auth-social-btn"><i class="fa-brands fa-google"></i> Google</button><button type="button" class="auth-social-btn"><i class="fa-brands fa-apple"></i> Apple</button></div>
+      </form>
+
+      <form class="auth-form" data-auth-form="register" novalidate>
+        <h3 class="auth-form-title" data-i18n data-en="Create your account" data-bg="Създайте акаунт">Create your account</h3>
+        <p class="auth-form-sub" data-i18n data-en="Join the SmartMenuKJ client portal in seconds." data-bg="Присъединете се към портала на SmartMenuKJ за секунди.">Join the SmartMenuKJ client portal in seconds.</p>
+        <div class="field">
+          <label data-i18n data-en="Full name" data-bg="Име и фамилия">Full name</label>
+          <div class="input-icon"><i class="fa-solid fa-user"></i><input type="text" name="name" required minlength="2" data-i18n-ph data-en-ph="Your name" data-bg-ph="Вашето име" placeholder="Your name" /></div>
+          <span class="field-error" data-i18n data-en="Enter your name." data-bg="Въведете името си.">Enter your name.</span>
+        </div>
+        <div class="field">
+          <label data-i18n data-en="Email" data-bg="Имейл">Email</label>
+          <div class="input-icon"><i class="fa-solid fa-envelope"></i><input type="email" name="email" required data-i18n-ph data-en-ph="you@company.com" data-bg-ph="vie@firma.com" placeholder="you@company.com" /></div>
+          <span class="field-error" data-i18n data-en="Enter a valid email." data-bg="Въведете валиден имейл.">Enter a valid email.</span>
+        </div>
+        <div class="field">
+          <label data-i18n data-en="Password" data-bg="Парола">Password</label>
+          <div class="input-icon"><i class="fa-solid fa-lock"></i><input type="password" name="password" required minlength="6" data-i18n-ph data-en-ph="Create a password" data-bg-ph="Създайте парола" placeholder="Create a password" /><button type="button" class="pw-toggle" aria-label="Show password"><i class="fa-solid fa-eye"></i></button></div>
+          <span class="field-error" data-i18n data-en="Min. 6 characters." data-bg="Мин. 6 символа.">Min. 6 characters.</span>
+        </div>
+        <label class="consent consent--sm mt-1"><input type="checkbox" required /><span class="consent-box"></span><span class="consent-text" data-i18n data-en="I accept the terms & privacy policy" data-bg="Приемам условията и политиката за поверителност">I accept the terms &amp; privacy policy</span></label>
+        <span class="field-error" data-i18n data-en="Please accept the terms." data-bg="Моля, приемете условията.">Please accept the terms.</span>
+        <p class="auth-error" data-auth-error hidden><i class="fa-solid fa-circle-exclamation"></i> <span></span></p>
+        <button type="submit" class="btn-primary btn-lg w-full justify-center mt-3"><span data-i18n data-en="Create account" data-bg="Създай акаунт">Create account</span></button>
+      </form>
+
+      <div class="auth-success" data-auth-success hidden>
+        <i class="fa-solid fa-circle-check"></i>
+        <p data-i18n data-en="Success! This is a front-end demo — connect your backend to complete authentication." data-bg="Успех! Това е демо — свържете бекенда си, за да завършите автентикацията.">Success! This is a front-end demo — connect your backend to complete authentication.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>

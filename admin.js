@@ -27,8 +27,10 @@
 
   /* ---- backend mode ---- */
   let sb = null, mode = 'local';
-  if (CFG.SUPABASE_URL && CFG.SUPABASE_ANON_KEY && window.supabase && window.supabase.createClient) {
-    try { sb = window.supabase.createClient(CFG.SUPABASE_URL, CFG.SUPABASE_ANON_KEY); mode = 'supabase'; } catch (e) { sb = null; }
+  const normSbUrl = (u) => String(u || '').trim().replace(/\/+$/, '').replace(/\/(rest|auth)\/v1$/i, '').replace(/\/+$/, '');
+  const sbUrl = normSbUrl(CFG.SUPABASE_URL);
+  if (sbUrl && CFG.SUPABASE_ANON_KEY && window.supabase && window.supabase.createClient) {
+    try { sb = window.supabase.createClient(sbUrl, CFG.SUPABASE_ANON_KEY); mode = 'supabase'; } catch (e) { sb = null; }
   }
   async function detectMode() {
     if (sb) { mode = 'supabase'; return; }

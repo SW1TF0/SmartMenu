@@ -47,9 +47,12 @@
     // Optional cloud database (Supabase). When configured it becomes the
     // central store for auth, inquiries and view analytics.
     const CFG = window.SMKJ_CONFIG || {};
+    // Accept either the bare project URL or one pasted with /rest/v1 or /auth/v1 — supabase-js needs the base.
+    const normSbUrl = (u) => String(u || '').trim().replace(/\/+$/, '').replace(/\/(rest|auth)\/v1$/i, '').replace(/\/+$/, '');
     let sb = null;
-    if (CFG.SUPABASE_URL && CFG.SUPABASE_ANON_KEY && window.supabase && window.supabase.createClient) {
-      try { sb = window.supabase.createClient(CFG.SUPABASE_URL, CFG.SUPABASE_ANON_KEY); } catch (e) { sb = null; }
+    const sbUrl = normSbUrl(CFG.SUPABASE_URL);
+    if (sbUrl && CFG.SUPABASE_ANON_KEY && window.supabase && window.supabase.createClient) {
+      try { sb = window.supabase.createClient(sbUrl, CFG.SUPABASE_ANON_KEY); } catch (e) { sb = null; }
     }
     const sbName = (u) => (u && u.user_metadata && u.user_metadata.name) || (u && u.email) || '';
 

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <title>Admin · SmartMenuKJ</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%2305070d'/%3E%3Cpath d='M54 12 26 56h18l-6 32 32-46H50z' fill='%2338bdf8'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" referrerpolicy="no-referrer" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { theme: { extend: {
+      fontFamily: { sans: ['Inter','system-ui','sans-serif'], display: ['Montserrat','Inter','sans-serif'] },
+      colors: { ink: { 950:'#05070d',900:'#080b14',800:'#0d1320',700:'#141c2e' }, web:{DEFAULT:'#38bdf8',glow:'#0ea5e9'}, menu:{DEFAULT:'#fb923c'} },
+    } } };
+  </script>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="bg-ink-950 text-slate-200 font-sans antialiased min-h-screen">
+  <div class="admin-bg" aria-hidden="true"></div>
+
+  <!-- Top bar -->
+  <header class="admin-topbar">
+    <a href="index.html" class="flex items-center gap-3" aria-label="SmartMenuKJ home">
+      <span class="logo-mark"><i class="fa-solid fa-bolt"></i></span>
+      <span class="font-display font-extrabold tracking-tight text-white text-lg">Smart<span class="text-web">Menu</span><span class="text-menu">KJ</span></span>
+      <span class="admin-badge">Admin</span>
+    </a>
+    <div class="flex items-center gap-3">
+      <a href="index.html" class="btn-ghost"><i class="fa-solid fa-arrow-left mr-2"></i>Back to site</a>
+      <button id="admin-logout" class="btn-ghost hide"><i class="fa-solid fa-right-from-bracket mr-2"></i>Log out</button>
+    </div>
+  </header>
+
+  <main class="admin-main">
+    <!-- Login state -->
+    <section id="admin-login" class="admin-login">
+      <div class="admin-login-card">
+        <span class="logo-mark logo-mark--lg mx-auto"><i class="fa-solid fa-lock"></i></span>
+        <h1 class="admin-login-title">Admin access</h1>
+        <p class="admin-login-sub">Sign in with an authorized administrator account.</p>
+        <form id="admin-login-form" novalidate>
+          <div class="field">
+            <label>Email</label>
+            <div class="input-icon"><i class="fa-solid fa-envelope"></i><input type="email" name="email" required placeholder="you@smartmenukj.com" /></div>
+          </div>
+          <div class="field mt-4">
+            <label>Password</label>
+            <div class="input-icon"><i class="fa-solid fa-lock"></i><input type="password" name="password" required placeholder="••••••••" /><button type="button" class="pw-toggle" aria-label="Show password"><i class="fa-solid fa-eye"></i></button></div>
+          </div>
+          <p class="auth-error" id="admin-login-error" hidden><i class="fa-solid fa-circle-exclamation"></i> <span></span></p>
+          <button type="submit" class="btn-primary btn-lg w-full justify-center mt-5"><span>Sign in</span></button>
+        </form>
+        <p class="admin-mode-note" id="admin-mode-note"></p>
+      </div>
+    </section>
+
+    <!-- Denied state -->
+    <section id="admin-denied" class="admin-denied hide">
+      <i class="fa-solid fa-shield-halved"></i>
+      <h1>Access restricted</h1>
+      <p>This account is not authorized for the admin panel. Sign in with an administrator account.</p>
+      <button class="btn-outline btn-lg mt-6" id="admin-denied-logout"><i class="fa-solid fa-right-from-bracket mr-2"></i>Switch account</button>
+    </section>
+
+    <!-- Dashboard state -->
+    <section id="admin-dashboard" class="admin-dashboard hide">
+      <div class="admin-head">
+        <div>
+          <h1 class="admin-h1">Dashboard</h1>
+          <p class="admin-sub" id="admin-welcome">Welcome back.</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="admin-source" id="admin-source"></span>
+          <button class="btn-ghost" id="admin-refresh"><i class="fa-solid fa-rotate mr-2"></i>Refresh</button>
+        </div>
+      </div>
+
+      <!-- Metric cards -->
+      <div class="admin-metrics">
+        <div class="admin-metric"><span class="admin-metric-icon" data-c="web"><i class="fa-solid fa-eye"></i></span><div><div class="admin-metric-num" id="m-views">—</div><div class="admin-metric-lbl">Total views</div></div></div>
+        <div class="admin-metric"><span class="admin-metric-icon" data-c="print"><i class="fa-solid fa-calendar-day"></i></span><div><div class="admin-metric-num" id="m-today">—</div><div class="admin-metric-lbl">Views today</div></div></div>
+        <div class="admin-metric"><span class="admin-metric-icon" data-c="auto"><i class="fa-solid fa-users"></i></span><div><div class="admin-metric-num" id="m-users">—</div><div class="admin-metric-lbl">Registered users</div></div></div>
+        <div class="admin-metric"><span class="admin-metric-icon" data-c="menu"><i class="fa-solid fa-inbox"></i></span><div><div class="admin-metric-num" id="m-inq">—</div><div class="admin-metric-lbl">Contact inquiries</div></div></div>
+      </div>
+
+      <!-- Views chart -->
+      <div class="admin-panel">
+        <div class="admin-panel-head"><h2>Views — last 14 days</h2></div>
+        <div class="admin-chart" id="admin-chart"></div>
+      </div>
+
+      <!-- Inquiries -->
+      <div class="admin-panel">
+        <div class="admin-panel-head">
+          <h2>Contact inquiries (<span id="inq-count">0</span>)</h2>
+          <button class="btn-ghost btn-sm" id="export-inq"><i class="fa-solid fa-file-csv mr-2"></i>Export CSV</button>
+        </div>
+        <div class="admin-table-wrap">
+          <table class="admin-table" id="inq-table">
+            <thead><tr><th>Date</th><th>Name</th><th>Email</th><th>Service</th><th>Message</th></tr></thead>
+            <tbody id="inq-body"></tbody>
+          </table>
+          <p class="admin-empty" id="inq-empty" hidden>No inquiries yet.</p>
+        </div>
+      </div>
+
+      <!-- Users -->
+      <div class="admin-panel">
+        <div class="admin-panel-head">
+          <h2>Registered users (<span id="users-count">0</span>)</h2>
+          <button class="btn-ghost btn-sm" id="export-users"><i class="fa-solid fa-file-csv mr-2"></i>Export CSV</button>
+        </div>
+        <div class="admin-table-wrap">
+          <table class="admin-table" id="users-table">
+            <thead><tr><th>Name</th><th>Email</th><th>Joined</th></tr></thead>
+            <tbody id="users-body"></tbody>
+          </table>
+          <p class="admin-empty" id="users-empty" hidden>No users yet.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>

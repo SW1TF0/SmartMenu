@@ -29,6 +29,10 @@ $DataDir = Join-Path $Root 'server-data'
 $UsersFile     = Join-Path $DataDir 'users.json'
 $SessionsFile  = Join-Path $DataDir 'sessions.json'
 $InquiriesFile = Join-Path $DataDir 'inquiries.json'
+$ViewsFile     = Join-Path $DataDir 'views.json'
+
+# Accounts whose email is listed here gain access to the admin panel (/admin.html)
+$AdminEmails = @('krasimiruzun@smartmenukj.com')
 
 if (-not (Test-Path $DataDir)) { New-Item -ItemType Directory -Path $DataDir | Out-Null }
 
@@ -39,18 +43,32 @@ function Load-Array([string]$path) {
   if (-not (Test-Path $path)) { return @() }
   $text = [IO.File]::ReadAllText($path, $Utf8)
   if ([string]::IsNullOrWhiteSpace($text)) { return @() }
-  return @($text | ConvertFrom-Json)
+  # NOTE: ConvertFrom-Json (Windows PowerShell 5.1) emits an array as a single
+  # non-enumerated object, so we must materialize it into a variable before
+  # wrapping with @() — otherwise multi-item arrays collapse to one element.
+  $parsed = $text | ConvertFrom-Json
+  if ($null -eq $parsed) { return @() }
+  return @($parsed)
 }
 function Save-Array([string]$path, $arr) {
-  $arr = @($arr)
-  if ($arr.Count -eq 0) {
-    $json = '[]'
-  } elseif ($arr.Count -eq 1) {
-    $json = '[' + ($arr[0] | ConvertTo-Json -Depth 8) + ']'
-  } else {
-    $json = $arr | ConvertTo-Json -Depth 8
+  # Serialize each element on its own and join, so single-item and multi-item
+  # arrays always produce a clean JSON array (avoids PowerShell's ConvertTo-Json
+  # wrapping arrays in {"value":[...],"Count":N}).
+  $parts = @()
+  foreach ($item in @($arr)) {
+    if ($null -ne $item) { $parts += ($item | ConvertTo-Json -Depth 8 -Compress) }
   }
+  $json = '[' + ($parts -join ',') + ']'
   [IO.File]::WriteAllText($path, $json, $Utf8)
+}
+function Load-Object([string]$path) {
+  if (-not (Test-Path $path)) { return $null }
+  $text = [IO.File]::ReadAllText($path, $Utf8)
+  if ([string]::IsNullOrWhiteSpace($text)) { return $null }
+  return ($text | ConvertFrom-Json)
+}
+function Save-Object([string]$path, $obj) {
+  [IO.File]::WriteAllText($path, ($obj | ConvertTo-Json -Depth 8), $Utf8)
 }
 
 # ---------- Crypto helpers ----------
@@ -248,6 +266,52 @@ function Handle-Contact($ctx) {
   Send-Json $ctx @{ ok = $true; id = $inquiry.id } 201
 }
 
+function Get-ViewsData {
+  $v = Load-Object $ViewsFile
+  $total = 0; $daily = @{}
+  if ($v) {
+    $total = [int]$v.total
+    if ($v.daily) { $v.daily.PSObject.Properties | ForEach-Object { $daily[$_.Name] = [int]$_.Value } }
+  }
+  return @{ total = $total; daily = $daily }
+}
+function Handle-Track($ctx) {
+  $data = Get-ViewsData
+  $today = (Get-Date).ToUniversalTime().ToString('yyyy-MM-dd')
+  $data.total = $data.total + 1
+  if ($data.daily.ContainsKey($today)) { $data.daily[$today] = $data.daily[$today] + 1 } else { $data.daily[$today] = 1 }
+  Save-Object $ViewsFile $data
+  Send-Json $ctx @{ total = $data.total } 200
+}
+
+# Returns the admin user object, $false (logged in but not admin), or $null (not authenticated)
+function Require-Admin($ctx) {
+  $u = Get-SessionUser $ctx
+  if (-not $u) { return $null }
+  if ($AdminEmails -contains $u.email) { return $u }
+  return $false
+}
+function Handle-AdminSummary($ctx) {
+  $admin = Require-Admin $ctx
+  if ($null -eq $admin)  { Send-Json $ctx @{ error = 'Not authenticated.' } 401; return }
+  if ($admin -eq $false) { Send-Json $ctx @{ error = 'Forbidden - admin access only.' } 403; return }
+
+  # Map to plain hashtables so single-item arrays serialize as proper JSON arrays
+  $users = @(Load-Array $UsersFile | ForEach-Object { @{ id = $_.id; name = $_.name; email = $_.email; createdAt = $_.createdAt } })
+  $inquiries = @(Load-Array $InquiriesFile | ForEach-Object { @{ id = $_.id; name = $_.name; email = $_.email; phone = $_.phone; service = $_.service; message = $_.message; userId = $_.userId; createdAt = $_.createdAt } })
+  $views = Get-ViewsData
+  $today = (Get-Date).ToUniversalTime().ToString('yyyy-MM-dd')
+
+  Send-Json $ctx @{
+    admin          = @{ name = $admin.name; email = $admin.email }
+    views          = @{ total = $views.total; today = ([int]$views.daily[$today]); daily = $views.daily }
+    usersCount     = $users.Count
+    inquiriesCount = $inquiries.Count
+    users          = $users
+    inquiries      = $inquiries
+  } 200
+}
+
 # ---------- Static file serving ----------
 $Mime = @{
   '.html' = 'text/html; charset=utf-8'; '.css' = 'text/css; charset=utf-8'; '.js' = 'application/javascript; charset=utf-8'
@@ -291,9 +355,11 @@ function Route($ctx) {
       'POST /api/register' { Handle-Register $ctx; return }
       'POST /api/login'    { Handle-Login $ctx; return }
       'POST /api/logout'   { Handle-Logout $ctx; return }
-      'GET /api/me'        { Handle-Me $ctx; return }
-      'POST /api/contact'  { Handle-Contact $ctx; return }
-      default              { Send-Json $ctx @{ error = 'Not found.' } 404; return }
+      'GET /api/me'           { Handle-Me $ctx; return }
+      'POST /api/contact'     { Handle-Contact $ctx; return }
+      'POST /api/track'       { Handle-Track $ctx; return }
+      'GET /api/admin/summary' { Handle-AdminSummary $ctx; return }
+      default                 { Send-Json $ctx @{ error = 'Not found.' } 404; return }
     }
   }
   Serve-Static $ctx $path.TrimStart('/')

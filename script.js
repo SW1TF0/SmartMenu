@@ -40,9 +40,18 @@
   const CONTACT_ENDPOINT = ''; // e.g. 'https://formspree.io/f/xxxxxxx'
 
   const Backend = (() => {
-    let mode = null;            // 'server' | 'local'
+    let mode = null;            // 'supabase' | 'server' | 'local'
     let firstMe = null;         // cached result of the initial probe
     const KEY = { users: 'smkj_users', session: 'smkj_session', inq: 'smkj_inquiries' };
+
+    // Optional cloud database (Supabase). When configured it becomes the
+    // central store for auth, inquiries and view analytics.
+    const CFG = window.SMKJ_CONFIG || {};
+    let sb = null;
+    if (CFG.SUPABASE_URL && CFG.SUPABASE_ANON_KEY && window.supabase && window.supabase.createClient) {
+      try { sb = window.supabase.createClient(CFG.SUPABASE_URL, CFG.SUPABASE_ANON_KEY); } catch (e) { sb = null; }
+    }
+    const sbName = (u) => (u && u.user_metadata && u.user_metadata.name) || (u && u.email) || '';
 
     const lsGet = (k, d) => { try { const v = JSON.parse(localStorage.getItem(k)); return v === null ? d : v; } catch (e) { return d; } };
     const lsSet = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} };
@@ -105,8 +114,48 @@
       return { ok: true, status: 201, local: true };
     }
 
+    // ----- Supabase (cloud) implementations -----
+    async function sbRegister(p) {
+      const name = (p.name || '').trim();
+      const email = (p.email || '').trim().toLowerCase();
+      const password = p.password || '';
+      if (name.length < 2) return { ok: false, status: 400, error: 'Please enter your name.' };
+      if (!isEmail(email)) return { ok: false, status: 400, error: 'Enter a valid email.' };
+      if (password.length < 6) return { ok: false, status: 400, error: 'Password must be at least 6 characters.' };
+      const { data, error } = await sb.auth.signUp({ email, password, options: { data: { name } } });
+      if (error) return { ok: false, status: 400, error: error.message };
+      const u = data.user;
+      return { ok: true, status: 201, user: { id: u && u.id, name, email }, pending: !data.session };
+    }
+    async function sbLogin(p) {
+      const email = (p.email || '').trim().toLowerCase();
+      const { data, error } = await sb.auth.signInWithPassword({ email, password: p.password || '' });
+      if (error) return { ok: false, status: 401, error: 'Invalid email or password.' };
+      const u = data.user;
+      return { ok: true, status: 200, user: { id: u.id, name: sbName(u), email: u.email } };
+    }
+    async function sbLogout() { try { await sb.auth.signOut(); } catch (e) {} return { ok: true, status: 200 }; }
+    async function sbMe() {
+      const { data } = await sb.auth.getUser();
+      const u = data && data.user;
+      if (!u) return { ok: true, status: 200, user: null };
+      return { ok: true, status: 200, user: { id: u.id, name: sbName(u), email: u.email } };
+    }
+    async function sbContact(p) {
+      const { error } = await sb.from('inquiries').insert({
+        name: p.name, email: p.email, phone: p.phone, service: p.service, message: p.message,
+      });
+      if (error) return { ok: false, status: 400, error: error.message };
+      return { ok: true, status: 201 };
+    }
+    async function sbTrack() {
+      try { await sb.from('views').insert({ path: location.pathname }); } catch (e) {}
+      return { ok: true };
+    }
+
     async function ensureMode() {
       if (mode) return mode;
+      if (sb) { mode = 'supabase'; return mode; }
       try {
         const r = await fetch('/api/me', { credentials: 'same-origin' });
         const ct = r.headers.get('content-type') || '';
@@ -119,17 +168,28 @@
     return {
       async me() {
         await ensureMode();
+        if (mode === 'supabase') return sbMe();
         if (mode === 'server') {
           if (firstMe) { const f = firstMe; firstMe = null; return Object.assign({ ok: true, status: 200 }, f); }
           return serverCall('me', null, 'GET');
         }
         return localMe();
       },
-      async register(p) { await ensureMode(); return mode === 'server' ? serverCall('register', p) : localRegister(p); },
-      async login(p)    { await ensureMode(); return mode === 'server' ? serverCall('login', p) : localLogin(p); },
-      async logout()    { await ensureMode(); return mode === 'server' ? serverCall('logout', null) : localLogout(); },
-      async contact(p)  {
+      async register(p) {
         await ensureMode();
+        return mode === 'supabase' ? sbRegister(p) : mode === 'server' ? serverCall('register', p) : localRegister(p);
+      },
+      async login(p) {
+        await ensureMode();
+        return mode === 'supabase' ? sbLogin(p) : mode === 'server' ? serverCall('login', p) : localLogin(p);
+      },
+      async logout() {
+        await ensureMode();
+        return mode === 'supabase' ? sbLogout() : mode === 'server' ? serverCall('logout', null) : localLogout();
+      },
+      async contact(p) {
+        await ensureMode();
+        if (mode === 'supabase') return sbContact(p);
         if (mode === 'server') return serverCall('contact', p);
         if (CONTACT_ENDPOINT) {
           try {
@@ -138,6 +198,13 @@
           } catch (e) {}
         }
         return localContact(p);
+      },
+      async trackView() {
+        await ensureMode();
+        if (mode === 'supabase') return sbTrack();
+        if (mode === 'server') { try { await fetch('/api/track', { method: 'POST', credentials: 'same-origin' }); } catch (e) {} return { ok: true }; }
+        try { const n = (parseInt(localStorage.getItem('smkj_views') || '0', 10) || 0) + 1; localStorage.setItem('smkj_views', String(n)); } catch (e) {}
+        return { ok: true };
       },
       isLocal() { return mode === 'local'; },
     };
@@ -938,10 +1005,13 @@
     })
   );
 
-  // Restore session on load (real API or static fallback)
+  // Restore session on load (cloud / real API / static fallback)
   Backend.me()
     .then((res) => { if (res && res.user) setAuthState(res.user); })
     .catch(() => {});
+
+  // Page-view tracking is consent-gated (see the cookie-consent module below).
+  function trackPageView() { Backend.trackView().catch(() => {}); }
 
   // Auth form submit — real backend (register / login)
   $$('.auth-form').forEach((form) => {
@@ -1295,6 +1365,43 @@
       }
     })
   );
+
+  /* ==========================================================
+     21. COOKIE CONSENT (GDPR / EU)
+     ========================================================== */
+  (function cookieConsent() {
+    const banner = $('#cookie-banner');
+    if (!banner) return;
+    const KEY = 'smkj_consent';
+    const prefs = $('[data-cookie-prefs]', banner);
+    const analyticsToggle = $('#cookie-analytics', banner);
+    const btnSave = $('[data-cookie="save"]', banner);
+    const btnAccept = $('[data-cookie="accept"]', banner);
+    const btnReject = $('[data-cookie="reject"]', banner);
+    const btnCustomize = $('[data-cookie="customize"]', banner);
+
+    const read = () => { try { return JSON.parse(localStorage.getItem(KEY)); } catch (e) { return null; } };
+    const write = (analytics) => { try { localStorage.setItem(KEY, JSON.stringify({ essential: true, analytics: !!analytics, ts: Date.now() })); } catch (e) {} };
+
+    function openBanner(showPrefs) {
+      banner.hidden = false;
+      if (prefs) prefs.hidden = !showPrefs;
+      if (btnSave) btnSave.hidden = !showPrefs;
+      [btnAccept, btnReject, btnCustomize].forEach((b) => { if (b) b.hidden = !!showPrefs; });
+      const c = read(); if (c && analyticsToggle) analyticsToggle.checked = !!c.analytics;
+    }
+    function closeBanner() { banner.hidden = true; }
+
+    if (btnAccept) btnAccept.addEventListener('click', () => { write(true); closeBanner(); trackPageView(); });
+    if (btnReject) btnReject.addEventListener('click', () => { write(false); closeBanner(); });
+    if (btnCustomize) btnCustomize.addEventListener('click', () => openBanner(true));
+    if (btnSave) btnSave.addEventListener('click', () => { const a = !!(analyticsToggle && analyticsToggle.checked); write(a); closeBanner(); if (a) trackPageView(); });
+    $$('[data-cookie-settings]').forEach((b) => b.addEventListener('click', () => openBanner(true)));
+
+    const existing = read();
+    if (!existing) { setTimeout(() => openBanner(false), 700); }
+    else if (existing.analytics) { trackPageView(); }
+  })();
 
   /* ==========================================================
      INIT

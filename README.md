@@ -2,77 +2,93 @@
 
 > Premium technology execution enterprise — **Web Development · 3D Printing · Home & Business Automation · SmartMenus for Restaurants.**
 
-A high-end, fully responsive, bilingual (🇧🇬 / 🇬🇧) single-page website with scroll-driven background morphing, an interactive project estimator, a glassmorphism auth experience, and a real backend for registration and contact inquiries.
+A high-end, fully responsive, bilingual (🇧🇬 / 🇬🇧) single-page website with scroll-driven background morphing, an interactive estimator, a glassmorphism auth experience, a real backend, an **admin dashboard**, and full **EU / GDPR cookie compliance**.
 
 Headquartered in Kardzhali, Bulgaria. Founder & CEO: **Krasimir Uzun**.
 
 ---
 
-## ✨ Features
+## ⚡ Quick start (zero setup)
 
-- **Scroll-driven background morphing** — the gradient & accent colour blend between each service section.
-- **Animated hero** — particle-constellation canvas + rotating headline word.
-- **Interactive 4-pillar showcase** with live mock visuals.
-- **Project & service estimator** — combine services for an instant, multi-service bundle-discounted quote.
-- **Filterable portfolio**, auto-rotating **testimonials**, **CEO vision** spotlight and an **FAQ** accordion.
-- **Glassmorphism auth** (register / login) with a real backend, hashed passwords and sessions.
-- **Contact form** with validation that stores inquiries server-side.
-- **3D pointer-tilt** cards, cursor spotlight, magnetic buttons, reveal-on-scroll, section-progress rail.
-- **Bilingual** EN/BG toggle (persisted) and full `prefers-reduced-motion` support.
-- **SEO ready** — structured data (JSON-LD), Open Graph, sitemap, robots.
+1. Copy this folder anywhere on a Windows PC.
+2. Double-click **`Start-SmartMenuKJ.bat`**.
+3. Your browser opens at `http://localhost:5173` — the full site, with working registration, contact form and admin panel. Done.
+
+> The admin dashboard is at `http://localhost:5173/admin.html` (or the **Admin** link in the footer). Sign in with the admin account (the email listed in `config.js` → `ADMIN_EMAILS`, default `krasimiruzun@smartmenukj.com`). All data is saved as JSON files in `server-data/`.
 
 ---
 
-## 🧱 Tech stack
+## ✨ Features
 
-| Layer | Technology |
-|-------|------------|
-| Markup | HTML5 |
-| Styling | Tailwind CSS (CDN) + custom `styles.css` |
-| Behaviour | Vanilla JavaScript (no framework, no build step) |
-| Icons / Fonts | Font Awesome 6, Google Fonts (Inter + Montserrat) |
-| Backend (self-hosted) | PowerShell HTTP server (`server.ps1`) + JSON storage |
-| Backend (static hosting) | Built-in client-side fallback (localStorage) |
+- **Scroll-driven background morphing**, animated particle hero, rotating headline.
+- **Interactive 4-pillar showcase**, **filterable portfolio**, **testimonials**, **CEO vision**, **FAQ**.
+- **Project estimator** with multi-service bundle discounts.
+- **Registration & login** with hashed passwords + sessions.
+- **Contact form** that stores inquiries.
+- **Admin dashboard** (`admin.html`) — total views, views today, registered users, contact inquiries, a 14-day views chart, sortable tables and **CSV export**.
+- **EU / GDPR cookie consent** (accept / reject / customize) with consent-gated analytics + a bilingual **Privacy & Cookie Policy** page.
+- **Bilingual** EN/BG toggle (persisted), full `prefers-reduced-motion` support.
+- **SEO** — JSON-LD structured data, Open Graph, sitemap, robots, custom 404.
 
-There is **no build step** — it's plain files you can host anywhere.
+---
+
+## 🗄️ Where your data lives (3 modes — it auto-detects)
+
+The site has an adaptive data layer. It picks the best available backend automatically:
+
+| Mode | When | Data location | Admin sees |
+|------|------|---------------|-----------|
+| **Cloud (Supabase)** | `config.js` has Supabase keys | Your Supabase project | All visitors, any device — works on GitHub Pages |
+| **Self-hosted** | Served by `server.ps1` (e.g. the launcher) | `server-data/*.json` files | All data on that machine |
+| **Static demo** | Plain static hosting, no config | The visitor's browser (localStorage) | Only that browser |
+
+**Want one central place to see ALL data, on GitHub Pages?** Use the Cloud mode below.
+
+---
+
+## ☁️ Enable the cloud database (Supabase) — optional, ~3 min
+
+This gives you real centralized data + analytics that you can view from the admin panel on any device, while still hosting on GitHub Pages.
+
+1. Create a free project at <https://supabase.com>.
+2. Open **SQL Editor → New query**, paste the entire contents of **`SUPABASE_SETUP.sql`**, and **Run**.
+3. **Authentication → Providers → Email** → turn **OFF** "Confirm email" (so sign-up logs in instantly).
+4. **Project Settings → API** → copy **Project URL** and the **anon public** key into `config.js`:
+   ```js
+   window.SMKJ_CONFIG = {
+     SUPABASE_URL: 'https://YOURPROJECT.supabase.co',
+     SUPABASE_ANON_KEY: 'your-anon-public-key',
+     ADMIN_EMAILS: ['krasimiruzun@smartmenukj.com'],
+   };
+   ```
+5. Register on the site with your admin email — you're now the admin. The anon key is public by design and safe to commit.
 
 ---
 
 ## 🚀 Deploy to GitHub Pages
 
-This site runs perfectly as a **static site**. When no backend is present (as on GitHub Pages), the front-end automatically falls back to a secure client-side store, so **registration, login, sessions and the contact form all still work** for the live demo.
+The site runs perfectly as a **static site**. Auth & contact keep working via the cloud (if configured) or the local fallback.
 
-**Option A — GitHub Actions (recommended):** already included in `.github/workflows/deploy.yml`.
+**Option A — GitHub Actions (recommended):** included in `.github/workflows/deploy.yml`.
 1. Push this repo to GitHub.
-2. Go to **Settings → Pages → Build and deployment → Source: GitHub Actions**.
-3. Every push to `main` deploys automatically. Your site goes live at `https://<username>.github.io/<repo>/`.
+2. **Settings → Pages → Source: GitHub Actions.** Every push to `main` deploys to `https://<username>.github.io/<repo>/`.
 
 **Option B — Deploy from branch:** Settings → Pages → Source: *Deploy from a branch* → `main` / `/ (root)`.
 
-> Using a custom domain (e.g. `smartmenukj.com`)? Add it under Settings → Pages → Custom domain, then create a `CNAME` file containing the domain.
+> Custom domain (e.g. `smartmenukj.com`)? Add it under Settings → Pages → Custom domain and create a `CNAME` file with the domain.
 
 ---
 
-## 🖥️ Run locally
+## 🔐 GDPR / EU cookies
 
-### Static only (no installs)
-Any static server works. With Windows PowerShell:
-```powershell
-powershell -ExecutionPolicy Bypass -File serve.ps1
-```
-Then open <http://localhost:5173>.
-
-### Full backend (real registration + contact storage)
-```powershell
-powershell -ExecutionPolicy Bypass -File server.ps1
-```
-Then open <http://localhost:5173>. Data is written to `server-data/` (git-ignored).
-
-> Opening `index.html` directly via `file://` will run the static fallback, but a served origin (`http://` / `https://`) is recommended so password hashing and sessions behave correctly.
+- A consent banner appears on first visit: **Accept all**, **Reject non-essential**, or **Customize**.
+- Only **essential** storage (login session, language, consent choice) is used until you opt in.
+- **Analytics** (anonymous visit counting) runs only after consent and can be changed anytime via the **Cookie settings** link in the footer.
+- A full bilingual **Privacy & Cookie Policy** lives at `privacy.html`.
 
 ---
 
-## 🔌 Backend API (when self-hosted via `server.ps1`)
+## 🔌 Backend API (self-hosted via `server.ps1`)
 
 | Method | Endpoint | Purpose |
 |--------|----------|---------|
@@ -81,21 +97,10 @@ Then open <http://localhost:5173>. Data is written to `server-data/` (git-ignore
 | `POST` | `/api/logout` | Sign out |
 | `GET`  | `/api/me` | Current session user |
 | `POST` | `/api/contact` | Submit a contact inquiry |
+| `POST` | `/api/track` | Record an (anonymous) page view |
+| `GET`  | `/api/admin/summary` | Admin-only: views, users, inquiries |
 
-**Security:** passwords are hashed with **PBKDF2-SHA256** (100k iterations, per-user salt); sessions use an **HttpOnly cookie**; every endpoint validates input server-side; data files are never served over HTTP.
-
----
-
-## ⚙️ Configuration
-
-All in `script.js` (top of the file):
-
-| Constant | Default | Purpose |
-|----------|---------|---------|
-| `CONTACT_ENDPOINT` | `''` | On static hosting, set to a form-service URL (e.g. Formspree) to deliver contact messages by email. |
-| `HERO_VIDEO` | `''` | Set to an `.mp4` URL to overlay a real ambient video behind the hero. |
-
-Server port: set the `SMKJ_PORT` environment variable before launching `server.ps1` (default `5173`).
+**Security:** PBKDF2-SHA256 password hashing (100k iterations, per-user salt); HttpOnly session cookies; server-side validation; admin endpoints gated by `$AdminEmails`; data files are never served over HTTP.
 
 ---
 
@@ -103,16 +108,31 @@ Server port: set the `SMKJ_PORT` environment variable before launching `server.p
 
 ```
 .
-├── index.html          # Markup for the whole single-page site
-├── styles.css          # Custom styling, animations, morphing, components
-├── script.js           # All behaviour + adaptive backend adapter
-├── server.ps1          # Full app server (static + JSON API) — self-hosting
-├── serve.ps1           # Static-only dev server
-├── 404.html            # Branded not-found page (GitHub Pages)
-├── robots.txt / sitemap.xml
-├── .github/workflows/  # GitHub Pages deployment
-└── server-data/        # Runtime JSON storage (git-ignored)
+├── index.html              # The single-page website
+├── admin.html / admin.js   # Admin dashboard (views + all data)
+├── privacy.html            # Bilingual GDPR privacy & cookie policy
+├── styles.css              # Styling, animations, components
+├── script.js               # Site behaviour + adaptive backend adapter
+├── config.js               # Your Supabase keys + admin emails
+├── server.ps1              # Full app server (static + JSON API)
+├── serve.ps1               # Static-only dev server
+├── Start-SmartMenuKJ.bat   # One-click launcher (Windows)
+├── SUPABASE_SETUP.sql      # One-time cloud database setup
+├── 404.html · robots.txt · sitemap.xml
+├── .github/workflows/      # GitHub Pages deployment
+└── server-data/            # Runtime JSON storage (git-ignored)
 ```
+
+---
+
+## ⚙️ Configuration (`config.js`)
+
+| Constant | Purpose |
+|----------|---------|
+| `SUPABASE_URL` / `SUPABASE_ANON_KEY` | Enable the cloud database |
+| `ADMIN_EMAILS` | Accounts allowed into the admin panel |
+
+In `script.js`: `CONTACT_ENDPOINT` (a Formspree URL for contact delivery on static hosting) and `HERO_VIDEO` (an `.mp4` to overlay behind the hero).
 
 ---
 

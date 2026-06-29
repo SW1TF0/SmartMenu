@@ -961,8 +961,15 @@
       </div>
 
       <div class="mt-12 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-500">
-        <p>© <span id="year"></span> SmartMenuKJ. <span data-i18n data-en="All rights reserved." data-bg="Всички права запазени.">All rights reserved.</span></p>
-        <p class="flex items-center gap-2"><span data-i18n data-en="Engineered with precision in Bulgaria" data-bg="Изградено с прецизност в България">Engineered with precision in Bulgaria</span><i class="fa-solid fa-bolt text-web"></i></p>
+        <p class="flex flex-wrap items-center gap-x-4 gap-y-1">
+          <span>© <span id="year"></span> SmartMenuKJ. <span data-i18n data-en="All rights reserved." data-bg="Всички права запазени.">All rights reserved.</span></span>
+          <a href="privacy.html" class="footer-admin-link" data-i18n data-en="Privacy" data-bg="Поверителност">Privacy</a>
+          <button type="button" class="footer-admin-link" data-cookie-settings data-i18n data-en="Cookie settings" data-bg="Бисквитки">Cookie settings</button>
+        </p>
+        <p class="flex items-center gap-4">
+          <a href="admin.html" class="footer-admin-link"><i class="fa-solid fa-gauge-high mr-1"></i><span data-i18n data-en="Admin" data-bg="Админ">Admin</span></a>
+          <span class="flex items-center gap-2"><span data-i18n data-en="Engineered with precision in Bulgaria" data-bg="Изградено с прецизност в България">Engineered with precision in Bulgaria</span><i class="fa-solid fa-bolt text-web"></i></span>
+        </p>
       </div>
     </div>
   </footer>
@@ -1041,6 +1048,51 @@
   <!-- Toast -->
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
+  <!-- ============ COOKIE CONSENT (GDPR / EU) ============ -->
+  <div id="cookie-banner" class="cookie-banner" role="dialog" aria-modal="false" aria-label="Cookie consent" hidden>
+    <div class="cookie-card">
+      <div class="cookie-head">
+        <span class="cookie-icon"><i class="fa-solid fa-cookie-bite"></i></span>
+        <div>
+          <h3 class="cookie-title" data-i18n data-en="We value your privacy" data-bg="Ние ценим вашата поверителност">We value your privacy</h3>
+          <p class="cookie-text" data-i18n
+             data-en="We use essential cookies to make the site work and, only with your consent, analytics cookies to understand how it is used. You can change your choice anytime."
+             data-bg="Използваме задължителни бисквитки, за да работи сайтът, и само с ваше съгласие — аналитични бисквитки, за да разберем как се използва. Можете да промените избора си по всяко време.">
+            We use essential cookies to make the site work and, only with your consent, analytics cookies to understand how it is used. You can change your choice anytime.
+          </p>
+          <a href="privacy.html" class="cookie-link" data-i18n data-en="Read our Privacy &amp; Cookie Policy" data-bg="Прочетете Политиката за поверителност">Read our Privacy &amp; Cookie Policy</a>
+        </div>
+      </div>
+
+      <div class="cookie-prefs" data-cookie-prefs hidden>
+        <label class="cookie-pref">
+          <span>
+            <strong data-i18n data-en="Essential" data-bg="Задължителни">Essential</strong>
+            <small data-i18n data-en="Required for login & security. Always on." data-bg="Нужни за вход и сигурност. Винаги активни.">Required for login &amp; security. Always on.</small>
+          </span>
+          <input type="checkbox" checked disabled />
+        </label>
+        <label class="cookie-pref">
+          <span>
+            <strong data-i18n data-en="Analytics" data-bg="Аналитични">Analytics</strong>
+            <small data-i18n data-en="Anonymous visit counting to improve the site." data-bg="Анонимно броене на посещения за подобряване на сайта.">Anonymous visit counting to improve the site.</small>
+          </span>
+          <input type="checkbox" id="cookie-analytics" />
+        </label>
+      </div>
+
+      <div class="cookie-actions">
+        <button type="button" class="btn-ghost" data-cookie="customize" data-i18n data-en="Customize" data-bg="Настройки">Customize</button>
+        <button type="button" class="btn-ghost" data-cookie="reject" data-i18n data-en="Reject non-essential" data-bg="Откажи незадължителните">Reject non-essential</button>
+        <button type="button" class="btn-primary" data-cookie="accept" data-i18n data-en="Accept all" data-bg="Приеми всички">Accept all</button>
+        <button type="button" class="btn-primary" data-cookie="save" hidden data-i18n data-en="Save preferences" data-bg="Запази избора">Save preferences</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Supabase client (only used when configured in config.js) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

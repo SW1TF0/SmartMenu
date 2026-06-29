@@ -44,8 +44,11 @@
   /* ---- auth ---- */
   async function currentUser() {
     if (mode === 'supabase') {
-      const { data } = await sb.auth.getUser();
-      const u = data && data.user; if (!u) return null;
+      // getSession() reads the persisted session (shared across pages) without a network race
+      let u = null;
+      try { const { data } = await sb.auth.getSession(); u = data && data.session && data.session.user; } catch (e) {}
+      if (!u) { try { const { data } = await sb.auth.getUser(); u = data && data.user; } catch (e) {} }
+      if (!u) return null;
       return { id: u.id, email: (u.email || '').toLowerCase(), name: (u.user_metadata && u.user_metadata.name) || u.email };
     }
     if (mode === 'server') {
@@ -97,14 +100,17 @@
       const usersQ = await sb.from('profiles').select('name,email,created_at').order('created_at', { ascending: false });
       const inqQ   = await sb.from('inquiries').select('name,email,phone,service,message,created_at').order('created_at', { ascending: false });
       const viewQ  = await sb.from('views').select('created_at');
-      if (usersQ.error || inqQ.error || viewQ.error) return { ok: false };
+      // Resilient: if a query fails (e.g. a policy issue) still show the dashboard with what loaded.
+      const err = (usersQ.error || inqQ.error || viewQ.error);
+      const usersD = usersQ.data || [];
+      const inqD = inqQ.data || [];
       const views = viewQ.data || [];
       const daily = aggregateDaily(views);
-      return { ok: true, data: {
+      return { ok: true, warn: err ? err.message : null, data: {
         admin: { name: user.name, email: user.email },
         views: { total: views.length, today: daily[todayUTC()] || 0, daily },
-        usersCount: (usersQ.data || []).length, inquiriesCount: (inqQ.data || []).length,
-        users: usersQ.data || [], inquiries: inqQ.data || [],
+        usersCount: usersD.length, inquiriesCount: inqD.length,
+        users: usersD, inquiries: inqD,
       } };
     }
     if (mode === 'server') {
@@ -204,6 +210,7 @@
     if (!res.ok) { toast('Could not load data. Check your setup.', 'fa-triangle-exclamation'); show('login'); return; }
     renderDashboard(user, res.data);
     show('dash');
+    if (res.warn) toast('Some data could not load: ' + res.warn, 'fa-triangle-exclamation');
   }
   async function init() {
     await detectMode();

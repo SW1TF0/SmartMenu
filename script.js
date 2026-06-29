@@ -1023,7 +1023,7 @@
       const kind = form.getAttribute('data-auth-form'); // 'login' | 'register'
       const errEl = $('[data-auth-error]', form);
       const errText = errEl ? errEl.querySelector('span') : null;
-      if (errEl) errEl.hidden = true;
+      if (errEl) { errEl.hidden = true; errEl.classList.remove('is-info'); }
 
       let valid = true;
       $$('input[required]', form).forEach((input) => {
@@ -1045,6 +1045,15 @@
         if (!res.ok) {
           if (errText) errText.textContent = res.error || (lang === 'bg' ? 'Възникна грешка.' : 'Something went wrong.');
           if (errEl) errEl.hidden = false;
+          return;
+        }
+        // Cloud sign-up may require email confirmation (no session yet)
+        if (res.pending) {
+          if (errText) errText.textContent = (lang === 'bg'
+            ? 'Акаунтът е създаден! Проверете имейла си, за да го потвърдите, след което влезте.'
+            : 'Account created! Check your email to confirm it, then sign in.');
+          if (errEl) { errEl.classList.add('is-info'); errEl.hidden = false; }
+          form.reset();
           return;
         }
         setAuthState(res.user);

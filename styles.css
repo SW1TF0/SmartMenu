@@ -1643,6 +1643,7 @@ body.is-loading { overflow: hidden; }
   animation: line-in 0.3s ease;
 }
 .btn-primary.is-loading { opacity: 0.75; pointer-events: none; }
+.auth-error.is-info { color: #7dd3fc; background: rgba(56,189,248,0.1); border-color: rgba(56,189,248,0.35); }
 
 /* ============================================================
    ADMIN PANEL

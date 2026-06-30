@@ -340,13 +340,15 @@
   if (menuBtn && mobileMenu) {
     menuBtn.addEventListener('click', () => {
       const open = mobileMenu.classList.toggle('is-open');
+      document.body.classList.toggle('menu-open', open);
       menuBtn.setAttribute('aria-expanded', String(open));
       menuBtn.querySelector('i').className = open ? 'fa-solid fa-xmark' : 'fa-solid fa-bars-staggered';
     });
-    // Close on link click
-    $$('.mobile-link, #mobile-menu [href]', mobileMenu).forEach((a) =>
+    // Close on link / button click inside the menu
+    $$('.mobile-link, #mobile-menu [href], #mobile-menu button', mobileMenu).forEach((a) =>
       a.addEventListener('click', () => {
         mobileMenu.classList.remove('is-open');
+        document.body.classList.remove('menu-open');
         menuBtn.setAttribute('aria-expanded', 'false');
         menuBtn.querySelector('i').className = 'fa-solid fa-bars-staggered';
       })

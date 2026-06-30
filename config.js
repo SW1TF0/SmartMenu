@@ -16,7 +16,7 @@
         "Confirm email" (so sign-up logs you in instantly)
 
    Leave SUPABASE_URL empty to keep using the self-hosted
-   PowerShell backend (server.ps1) or the local demo fallback.
+   PowerShell backend (server.ps1) or the local fallback.
    The anon key is PUBLIC by design — safe to commit.
    ============================================================ */
 window.SMKJ_CONFIG = {

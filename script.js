@@ -32,7 +32,7 @@
      served by a backend (self-hosted). When deployed as a static
      site (e.g. GitHub Pages) the API is absent, so it transparently
      falls back to a client-side store (localStorage) — registration,
-     login, sessions and contact all still work for the live demo.
+     login, sessions and contact all still work without a server.
 
      For real contact delivery on a static host, set CONTACT_ENDPOINT
      to a form service URL (e.g. a Formspree endpoint).
@@ -209,6 +209,20 @@
         try { const n = (parseInt(localStorage.getItem('smkj_views') || '0', 10) || 0) + 1; localStorage.setItem('smkj_views', String(n)); } catch (e) {}
         return { ok: true };
       },
+      async resetPassword(email) {
+        await ensureMode();
+        email = (email || '').trim().toLowerCase();
+        if (!isEmail(email)) return { ok: false, status: 400, error: 'Enter a valid email.' };
+        if (mode === 'supabase') {
+          const redirectTo = new URL('reset-password.html', location.href).href;
+          const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo });
+          if (error) return { ok: false, status: 400, error: error.message };
+          return { ok: true, status: 200 };
+        }
+        // Self-hosted/local have no email service — direct the user to contact us.
+        return { ok: false, status: 501, error: 'unsupported' };
+      },
+      hasCloud() { return mode === 'supabase'; },
       isLocal() { return mode === 'local'; },
     };
   })();
@@ -1085,6 +1099,38 @@
     input.addEventListener('input', () => {
       const field = input.closest('.field');
       if (field) field.classList.remove('has-error');
+    })
+  );
+
+  // Forgot password — sends a reset link to the email entered above
+  $$('.auth-forgot').forEach((link) =>
+    link.addEventListener('click', async (e) => {
+      e.preventDefault();
+      const form = link.closest('form');
+      const emailInput = form ? $('input[name="email"]', form) : null;
+      const errEl = form ? $('[data-auth-error]', form) : null;
+      const errText = errEl ? errEl.querySelector('span') : null;
+      const email = emailInput ? emailInput.value.trim() : '';
+      const setMsg = (msg, info) => {
+        if (errText) errText.textContent = msg;
+        if (errEl) { errEl.hidden = false; errEl.classList.toggle('is-info', !!info); }
+      };
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        if (emailInput) { emailInput.focus(); const f = emailInput.closest('.field'); if (f) f.classList.add('has-error'); }
+        setMsg(lang === 'bg' ? 'Въведете имейла си в полето по-горе, след което натиснете „Забравена парола".' : 'Enter your email in the field above, then click "Forgot password".', false);
+        return;
+      }
+      link.style.pointerEvents = 'none';
+      let res;
+      try { res = await Backend.resetPassword(email); } catch (err) { res = { ok: false }; }
+      link.style.pointerEvents = '';
+      if (res && res.ok) {
+        setMsg(lang === 'bg' ? 'Ако съществува акаунт, изпратихме връзка за нова парола на имейла ви.' : 'If an account exists, we\'ve emailed you a link to reset your password.', true);
+      } else if (res && res.error === 'unsupported') {
+        setMsg(lang === 'bg' ? 'За нулиране на паролата пишете на krasimiruzun@smartmenukj.com.' : 'To reset your password, contact krasimiruzun@smartmenukj.com.', true);
+      } else {
+        setMsg((res && res.error) || (lang === 'bg' ? 'Възникна грешка. Опитайте отново.' : 'Something went wrong. Please try again.'), false);
+      }
     })
   );
 

@@ -3,7 +3,7 @@
    Data layer adapts to whatever backend is available:
      • Supabase (cloud)   — centralized, works on GitHub Pages
      • server.ps1 (API)   — self-hosted
-     • localStorage       — static demo fallback (this browser)
+     • localStorage       — local fallback (this browser)
    ============================================================ */
 (function () {
   'use strict';
@@ -39,7 +39,7 @@
       mode = (r.ok || r.status === 401 || r.status === 403) ? 'server' : 'local';
     } catch (e) { mode = 'local'; }
   }
-  const modeLabel = () => ({ supabase: 'Cloud database (Supabase)', server: 'Self-hosted server', local: 'Local browser (demo)' }[mode]);
+  const modeLabel = () => ({ supabase: 'Cloud database (Supabase)', server: 'Self-hosted server', local: 'Local (this browser)' }[mode]);
 
   /* ---- auth ---- */
   async function currentUser() {

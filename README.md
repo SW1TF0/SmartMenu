@@ -40,7 +40,7 @@ The site has an adaptive data layer. It picks the best available backend automat
 |------|------|---------------|-----------|
 | **Cloud (Supabase)** | `config.js` has Supabase keys | Your Supabase project | All visitors, any device — works on GitHub Pages |
 | **Self-hosted** | Served by `server.ps1` (e.g. the launcher) | `server-data/*.json` files | All data on that machine |
-| **Static demo** | Plain static hosting, no config | The visitor's browser (localStorage) | Only that browser |
+| **Static fallback** | Plain static hosting, no config | The visitor's browser (localStorage) | Only that browser |
 
 **Want one central place to see ALL data, on GitHub Pages?** Use the Cloud mode below.
 

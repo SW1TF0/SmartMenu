@@ -21,6 +21,14 @@
   <meta property="og:description" content="Web Development · 3D Printing · Automation · SmartMenus for Restaurants" />
   <meta property="og:locale" content="en" />
   <meta property="og:locale:alternate" content="bg" />
+  <meta property="og:url" content="https://www.smartmenukj.com/" />
+  <meta property="og:image" content="https://www.smartmenukj.com/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="SmartMenuKJ — Premium Technology Execution" />
+  <meta name="twitter:description" content="Web Development · 3D Printing · Automation · SmartMenus for Restaurants" />
+  <meta name="twitter:image" content="https://www.smartmenukj.com/og-image.png" />
 
   <!-- Google Fonts: Inter + Montserrat -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -153,6 +161,7 @@
             <div class="account-menu" data-account-menu hidden>
               <span class="account-email" data-account-email></span>
               <a href="#calculator" class="account-menu-item"><i class="fa-solid fa-gauge"></i> <span data-i18n data-en="My estimate" data-bg="Моята оценка">My estimate</span></a>
+              <button class="account-menu-item" data-change-pass><i class="fa-solid fa-key"></i> <span data-i18n data-en="Change password" data-bg="Смяна на парола">Change password</span></button>
               <button class="account-menu-item" data-logout><i class="fa-solid fa-right-from-bracket"></i> <span data-i18n data-en="Log out" data-bg="Изход">Log out</span></button>
             </div>
           </div>
@@ -190,6 +199,18 @@
     <section id="hero" class="section-anchor relative min-h-screen flex items-center" data-bg-theme="web">
       <div class="hero-media" aria-hidden="true">
         <div class="hero-media-fallback"></div>
+        <!-- Animated aurora backdrop -->
+        <div class="hero-aurora">
+          <span class="aurora-band aurora-band--1"></span>
+          <span class="aurora-band aurora-band--2"></span>
+          <span class="aurora-band aurora-band--3"></span>
+          <span class="aurora-band aurora-band--4"></span>
+        </div>
+        <div class="hero-beams">
+          <span class="hero-beam hero-beam--1"></span>
+          <span class="hero-beam hero-beam--2"></span>
+          <span class="hero-beam hero-beam--3"></span>
+        </div>
         <canvas id="hero-canvas" class="hero-canvas"></canvas>
         <!-- Optional: set HERO_VIDEO in script.js to a .mp4 URL to overlay a real ambient loop -->
         <video class="hero-video" muted loop playsinline preload="none" hidden></video>

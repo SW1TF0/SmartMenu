@@ -574,6 +574,7 @@
     const mouse = { x: -9999, y: -9999, active: false };
     let accent = { r: 56, g: 189, b: 248 };
     const LINK = 138; // px node-to-node connection distance
+    const stars = []; // occasional shooting stars
 
     function hexToRgb(hex) {
       hex = (hex || '').trim().replace('#', '');
@@ -666,6 +667,36 @@
             ctx.stroke();
           }
         }
+      }
+
+      // Shooting stars — spawn rarely, streak diagonally, fade out
+      if (Math.random() < 0.006 && stars.length < 3) {
+        stars.push({
+          x: Math.random() * w * 0.7,
+          y: Math.random() * h * 0.35,
+          vx: 7 + Math.random() * 5,
+          vy: 3 + Math.random() * 2.5,
+          life: 1,
+        });
+      }
+      for (let i = stars.length - 1; i >= 0; i--) {
+        const s = stars[i];
+        s.x += s.vx; s.y += s.vy; s.life -= 0.018;
+        if (s.life <= 0 || s.x > w + 60 || s.y > h + 60) { stars.splice(i, 1); continue; }
+        const tail = 14;
+        const grad = ctx.createLinearGradient(s.x - s.vx * tail, s.y - s.vy * tail, s.x, s.y);
+        grad.addColorStop(0, `rgba(${r},${g},${b},0)`);
+        grad.addColorStop(1, `rgba(255,255,255,${0.85 * s.life})`);
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = 1.6;
+        ctx.beginPath();
+        ctx.moveTo(s.x - s.vx * tail, s.y - s.vy * tail);
+        ctx.lineTo(s.x, s.y);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, 1.6, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,255,255,${s.life})`;
+        ctx.fill();
       }
     }
 
@@ -992,8 +1023,10 @@
   );
 
   /* ---- Auth state + account UI ---- */
+  let currentUserEmail = null;
   function setAuthState(user) {
     const isIn = !!user;
+    currentUserEmail = isIn ? user.email : null;
     $$('[data-open-auth]').forEach((b) => b.classList.toggle('hide', isIn));
     $$('[data-account], [data-account-m]').forEach((b) => b.classList.toggle('hide', !isIn));
     if (isIn) {
@@ -1021,6 +1054,26 @@
       try { await Backend.logout(); } catch (err) {}
       setAuthState(null);
       showToast(lang === 'bg' ? 'Излязохте успешно.' : 'Signed out.', 'fa-right-from-bracket');
+    })
+  );
+
+  // Change password — emails the signed-in user a secure reset link
+  $$('[data-change-pass]').forEach((b) =>
+    b.addEventListener('click', async () => {
+      if (!currentUserEmail) return;
+      let res;
+      try { res = await Backend.resetPassword(currentUserEmail); } catch (err) { res = { ok: false }; }
+      if (res && res.ok) {
+        showToast(lang === 'bg'
+          ? 'Изпратихме връзка за смяна на паролата на ' + currentUserEmail
+          : 'We emailed a password-change link to ' + currentUserEmail, 'fa-envelope-circle-check');
+      } else if (res && res.error === 'unsupported') {
+        showToast(lang === 'bg'
+          ? 'За смяна на паролата пишете на krasimiruzun@smartmenukj.com'
+          : 'To change your password, contact krasimiruzun@smartmenukj.com', 'fa-envelope');
+      } else {
+        showToast((res && res.error) || (lang === 'bg' ? 'Възникна грешка. Опитайте отново.' : 'Something went wrong. Please try again.'), 'fa-triangle-exclamation');
+      }
     })
   );
 

@@ -61,6 +61,14 @@
   </script>
 
   <link rel="stylesheet" href="styles.css" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <noscript>
+    <style>
+      /* Without JS, reveal-on-scroll elements must still be visible */
+      .reveal { opacity: 1 !important; transform: none !important; }
+      #preloader, .cursor-glow, #cookie-banner { display: none !important; }
+    </style>
+  </noscript>
 
   <!-- Structured data -->
   <script type="application/ld+json">
@@ -988,6 +996,7 @@
         <p class="flex flex-wrap items-center gap-x-4 gap-y-1">
           <span>© <span id="year"></span> SmartMenuKJ. <span data-i18n data-en="All rights reserved." data-bg="Всички права запазени.">All rights reserved.</span></span>
           <a href="privacy.html" class="footer-admin-link" data-i18n data-en="Privacy" data-bg="Поверителност">Privacy</a>
+          <a href="terms.html" class="footer-admin-link" data-i18n data-en="Terms" data-bg="Условия">Terms</a>
           <button type="button" class="footer-admin-link" data-cookie-settings data-i18n data-en="Cookie settings" data-bg="Бисквитки">Cookie settings</button>
         </p>
         <p class="flex items-center gap-4">
@@ -1054,7 +1063,7 @@
           <div class="input-icon"><i class="fa-solid fa-lock"></i><input type="password" name="password" required minlength="6" data-i18n-ph data-en-ph="Create a password" data-bg-ph="Създайте парола" placeholder="Create a password" /><button type="button" class="pw-toggle" aria-label="Show password"><i class="fa-solid fa-eye"></i></button></div>
           <span class="field-error" data-i18n data-en="Min. 6 characters." data-bg="Мин. 6 символа.">Min. 6 characters.</span>
         </div>
-        <label class="consent consent--sm mt-1"><input type="checkbox" required /><span class="consent-box"></span><span class="consent-text" data-i18n data-en="I accept the terms & privacy policy" data-bg="Приемам условията и политиката за поверителност">I accept the terms &amp; privacy policy</span></label>
+        <label class="consent consent--sm mt-1"><input type="checkbox" required /><span class="consent-box"></span><span class="consent-text"><span data-i18n data-en="I accept the" data-bg="Приемам">I accept the</span> <a href="terms.html" target="_blank" class="consent-link" data-i18n data-en="terms" data-bg="условията">terms</a> <span data-i18n data-en="&amp;" data-bg="и">&amp;</span> <a href="privacy.html" target="_blank" class="consent-link" data-i18n data-en="privacy policy" data-bg="политиката за поверителност">privacy policy</a></span></label>
         <span class="field-error" data-i18n data-en="Please accept the terms." data-bg="Моля, приемете условията.">Please accept the terms.</span>
         <p class="auth-error" data-auth-error hidden><i class="fa-solid fa-circle-exclamation"></i> <span></span></p>
         <button type="submit" class="btn-primary btn-lg w-full justify-center mt-3"><span data-i18n data-en="Create account" data-bg="Създай акаунт">Create account</span></button>

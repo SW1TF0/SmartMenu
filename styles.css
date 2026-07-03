@@ -1875,3 +1875,37 @@ body.is-loading { overflow: hidden; }
   .ceo-quote { font-size: 1.1rem; padding-left: 1rem; }
   .testimonial blockquote { font-size: 1.15rem; }
 }
+
+/* ============================================================
+   UTILITY SHIMS — let admin/privacy/terms pages work without
+   the Tailwind CDN (only the utilities those pages use).
+   ============================================================ */
+.page-static, .page-shim { background-color: #05070d; color: #e2e8f0; font-family: 'Inter', system-ui, sans-serif; -webkit-font-smoothing: antialiased; min-height: 100vh; margin: 0; }
+.antialiased { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+.bg-ink-950 { background-color: #05070d; }
+.min-h-screen { min-height: 100vh; }
+.font-sans { font-family: 'Inter', system-ui, sans-serif; }
+.font-display { font-family: 'Montserrat', 'Inter', sans-serif; }
+.text-slate-200 { color: #e2e8f0; }
+.text-white { color: #fff; }
+.text-web { color: #38bdf8; }
+.text-menu { color: #fb923c; }
+.text-lg { font-size: 1.125rem; line-height: 1.75rem; }
+.font-extrabold { font-weight: 800; }
+.tracking-tight { letter-spacing: -0.025em; }
+.flex { display: flex; }
+.items-center { align-items: center; }
+.justify-center { justify-content: center; }
+.gap-2 { gap: 0.5rem; }
+.gap-3 { gap: 0.75rem; }
+.mr-2 { margin-right: 0.5rem; }
+.mt-4 { margin-top: 1rem; }
+.mt-5 { margin-top: 1.25rem; }
+.mt-6 { margin-top: 1.5rem; }
+.mx-auto { margin-left: auto; margin-right: auto; }
+.w-full { width: 100%; }
+.u-brand { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; }
+.u-wordmark { font-family: 'Montserrat', 'Inter', sans-serif; font-weight: 800; letter-spacing: -0.025em; color: #fff; font-size: 1.125rem; }
+.u-row { display: flex; align-items: center; gap: 0.75rem; }
+.consent-link { color: var(--web); text-decoration: underline; text-underline-offset: 2px; }
+.consent-link:hover { color: #7dd3fc; }

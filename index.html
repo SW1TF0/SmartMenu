@@ -8,6 +8,7 @@
   <meta name="description" content="SmartMenuKJ — premium technology execution enterprise. Professional web development, custom 3D printing, home & business automation, and interactive SmartMenus for restaurants." />
   <meta name="author" content="SmartMenuKJ — Krasimir Uzun" />
   <meta name="keywords" content="web development, 3D printing, home automation, smart menu, QR menu, Kardzhali, Bulgaria, SmartMenuKJ" />
+  <link rel="canonical" href="https://www.smartmenukj.com/" />
 
   <!-- Favicons (real files so Google Search shows the logo) -->
   <link rel="icon" href="/favicon.ico" sizes="any" />
@@ -17,6 +18,7 @@
 
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="SmartMenuKJ" />
   <meta property="og:title" content="SmartMenuKJ — Premium Technology Execution" />
   <meta property="og:description" content="Web Development · 3D Printing · Automation · SmartMenus for Restaurants" />
   <meta property="og:locale" content="en" />
@@ -36,30 +38,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Montserrat:wght@500;600;700;800;900&display=swap" rel="stylesheet" />
 
   <!-- Font Awesome -->
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" referrerpolicy="no-referrer" />
 
-  <!-- Tailwind Play CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Inter', 'system-ui', 'sans-serif'],
-            display: ['Montserrat', 'Inter', 'sans-serif'],
-          },
-          colors: {
-            ink: { 950: '#05070d', 900: '#080b14', 800: '#0d1320', 700: '#141c2e', 600: '#1d2740' },
-            web:   { DEFAULT: '#38bdf8', glow: '#0ea5e9' },
-            print: { DEFAULT: '#34d399', glow: '#10b981' },
-            auto:  { DEFAULT: '#fbbf24', glow: '#f59e0b' },
-            menu:  { DEFAULT: '#fb923c', glow: '#f97316' },
-          },
-        },
-      },
-    };
-  </script>
-
+  <!-- Precompiled Tailwind utilities (replaces the Play CDN runtime) -->
+  <link rel="stylesheet" href="tailwind.css" />
   <link rel="stylesheet" href="styles.css" />
   <link rel="manifest" href="/site.webmanifest" />
   <noscript>
@@ -74,12 +58,19 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "Organization",
+    "@type": ["Organization", "ProfessionalService"],
+    "@id": "https://www.smartmenukj.com/#org",
     "name": "SmartMenuKJ",
+    "url": "https://www.smartmenukj.com/",
+    "logo": "https://www.smartmenukj.com/favicon.png",
+    "image": "https://www.smartmenukj.com/og-image.png",
     "description": "Premium technology execution enterprise: web development, 3D printing, automation and SmartMenus.",
     "founder": { "@type": "Person", "name": "Krasimir Uzun", "jobTitle": "Chief Executive Officer" },
     "telephone": "+359885348666",
     "email": "krasimiruzun@smartmenukj.com",
+    "priceRange": "€€",
+    "areaServed": "Europe",
+    "knowsLanguage": ["en", "bg"],
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "ul. Dzhebelska 2",
@@ -87,9 +78,48 @@
       "postalCode": "6600",
       "addressCountry": "BG"
     },
+    "makesOffer": [
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Web Development" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Custom 3D Printing" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Home & Business Automation" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "SmartMenus for Restaurants" } }
+    ],
     "sameAs": [
       "https://www.instagram.com/1337_krasimir_/",
       "https://www.linkedin.com/in/krasimir-uzun-316a053bb/"
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Can you really cover all four disciplines in one project?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes — that is our core advantage. Web, 3D printing, automation and SmartMenus are delivered by one accountable team, so the parts fit together perfectly and you have a single point of contact." }
+      },
+      {
+        "@type": "Question",
+        "name": "How much does a typical project cost?",
+        "acceptedAnswer": { "@type": "Answer", "text": "It depends on scope, but our on-site estimator gives an instant indicative range. Final pricing is confirmed after a short discovery call where we align on goals and deliverables." }
+      },
+      {
+        "@type": "Question",
+        "name": "Do you work with clients outside Bulgaria?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Absolutely. We are based in Kardzhali and deliver web, automation and SmartMenu projects remotely across Europe and beyond, with on-site work arranged where needed." }
+      },
+      {
+        "@type": "Question",
+        "name": "What happens after launch?",
+        "acceptedAnswer": { "@type": "Answer", "text": "We offer ongoing monitoring, optimization and dedicated support. Your solution keeps evolving — we treat go-live as the start of the partnership, not the end." }
+      },
+      {
+        "@type": "Question",
+        "name": "How quickly can we start?",
+        "acceptedAnswer": { "@type": "Answer", "text": "We respond to every serious inquiry within one business day and can usually begin discovery within the same week, depending on current capacity." }
+      }
     ]
   }
   </script>
@@ -374,7 +404,7 @@
               <li><i class="fa-solid fa-check"></i> <span data-i18n data-en="Custom physical stands" data-bg="Дизайнерски стойки">Custom physical stands</span></li>
               <li><i class="fa-solid fa-check"></i> <span data-i18n data-en="Live updates & analytics" data-bg="Live обновления и анализ">Live updates &amp; analytics</span></li>
             </ul>
-            <a href="#work" class="pillar-link" data-pillar-jump="menu"><span data-i18n data-en="View solutions" data-bg="Виж решенията">View solutions</span> <i class="fa-solid fa-arrow-right"></i></a>
+            <a href="demo.html" class="pillar-link"><span data-i18n data-en="Try the live demo" data-bg="Пробвай демото на живо">Try the live demo</span> <i class="fa-solid fa-arrow-right"></i></a>
           </article>
         </div>
       </div>
@@ -528,6 +558,7 @@
                 <h3 class="showcase-panel-title" data-i18n data-en="A premium first impression at every table" data-bg="Премиум първо впечатление на всяка маса">A premium first impression at every table</h3>
                 <p class="showcase-panel-text" data-i18n data-en="Interactive QR menus your guests scan in seconds — updated live, multilingual, and presented on custom-designed stands manufactured in-house to match your brand." data-bg="Интерактивни QR менюта, които гостите сканират за секунди — обновявани на живо, многоезични и представени на дизайнерски стойки, произведени при нас по вашата идентичност.">Interactive QR menus your guests scan in seconds — updated live, multilingual, and presented on custom-designed stands manufactured in-house to match your brand.</p>
                 <div class="showcase-metrics"><div><span class="metric-val">0€</span><span class="metric-lbl" data-i18n data-en="Reprint cost" data-bg="Цена за препечат">Reprint cost</span></div><div><span class="metric-val">Multi-lang</span><span class="metric-lbl" data-i18n data-en="Languages" data-bg="Езици">Languages</span></div><div><span class="metric-val">Live</span><span class="metric-lbl" data-i18n data-en="Updates" data-bg="Обновления">Updates</span></div></div>
+                <a href="demo.html" class="btn-primary magnetic mt-7 inline-flex self-start"><i class="fa-solid fa-qrcode mr-2"></i><span data-i18n data-en="Open the live demo menu" data-bg="Отвори демо менюто на живо">Open the live demo menu</span></a>
               </div>
             </div>
           </div>
@@ -979,6 +1010,7 @@
             <li><a href="#pillars" data-i18n data-en="3D Printing" data-bg="3D печат">3D Printing</a></li>
             <li><a href="#pillars" data-i18n data-en="Automation" data-bg="Автоматизация">Automation</a></li>
             <li><a href="#pillars" data-i18n data-en="SmartMenus" data-bg="SmartMenus">SmartMenus</a></li>
+            <li><a href="demo.html" data-i18n data-en="Live menu demo" data-bg="Демо меню на живо">Live menu demo</a></li>
           </ul>
         </div>
 

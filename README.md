@@ -109,9 +109,11 @@ The site runs perfectly as a **static site**. Auth & contact keep working via th
 ```
 .
 ├── index.html              # The single-page website
+├── demo.html               # Live interactive SmartMenu demo (what clients get)
 ├── admin.html / admin.js   # Admin dashboard (views + all data)
 ├── privacy.html            # Bilingual GDPR privacy & cookie policy
 ├── styles.css              # Styling, animations, components
+├── tailwind.css            # Precompiled Tailwind utilities (see note below)
 ├── script.js               # Site behaviour + adaptive backend adapter
 ├── config.js               # Your Supabase keys + admin emails
 ├── server.ps1              # Full app server (static + JSON API)
@@ -133,6 +135,12 @@ The site runs perfectly as a **static site**. Auth & contact keep working via th
 | `ADMIN_EMAILS` | Accounts allowed into the admin panel |
 
 In `script.js`: `CONTACT_ENDPOINT` (a Formspree URL for contact delivery on static hosting) and `HERO_VIDEO` (an `.mp4` to overlay behind the hero).
+
+> **Note on `tailwind.css`:** the homepage's Tailwind utility classes are precompiled into `tailwind.css` (instead of loading the slow Tailwind Play CDN at runtime). If you add **new** Tailwind classes to `index.html`, rebuild it with:
+> ```sh
+> npx tailwindcss@3 -i input.css -o tailwind.css --minify
+> ```
+> using a `tailwind.config.js` whose `content` covers `index.html` + `script.js` and whose `theme.extend` matches the brand colors/fonts (ink/web/print/auto/menu, Inter/Montserrat). Existing classes keep working without a rebuild.
 
 ---
 

@@ -25,6 +25,7 @@
   const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const isCoarse = window.matchMedia('(hover: none)').matches;
+  const pageLoadedAt = performance.now(); // used by the contact form's anti-bot time gate
 
   /* ==========================================================
      0. BACKEND ADAPTER
@@ -1249,6 +1250,18 @@
         return;
       }
 
+      // Anti-bot: honeypot filled, or submitted inhumanly fast (<3s after load)
+      // → pretend success, never hit the backend.
+      const hp = $('#cf-company-site');
+      const tooFast = (performance.now() - pageLoadedAt) < 3000;
+      if ((hp && hp.value.trim() !== '') || tooFast) {
+        contactForm.reset();
+        if (successBox) successBox.hidden = false;
+        showToast(t(I18N.toastSent), 'fa-paper-plane');
+        setTimeout(() => { if (successBox) successBox.hidden = true; }, 6000);
+        return;
+      }
+
       // Real async send to the backend
       const label = $('.cf-submit-label', submitBtn);
       const icon = $('.cf-submit-icon', submitBtn);
@@ -1296,7 +1309,14 @@
   let toastTimer;
   function showToast(message, icon = 'fa-circle-check') {
     if (!toastEl) return;
-    toastEl.innerHTML = `<i class="fa-solid ${icon}"></i><span>${message}</span>`;
+    // Build via DOM APIs — `message` can contain user/server-supplied text,
+    // so it must never be parsed as HTML.
+    toastEl.textContent = '';
+    const iconEl = document.createElement('i');
+    iconEl.className = 'fa-solid ' + icon;
+    const spanEl = document.createElement('span');
+    spanEl.textContent = String(message);
+    toastEl.append(iconEl, spanEl);
     toastEl.classList.add('show');
     clearTimeout(toastTimer);
     toastTimer = setTimeout(() => toastEl.classList.remove('show'), 4200);

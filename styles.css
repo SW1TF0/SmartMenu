@@ -1909,3 +1909,9 @@ body.is-loading { overflow: hidden; }
 .u-row { display: flex; align-items: center; gap: 0.75rem; }
 .consent-link { color: var(--web); text-decoration: underline; text-underline-offset: 2px; }
 .consent-link:hover { color: #7dd3fc; }
+
+/* ============================================================
+   HONEYPOT — off-screen anti-bot field (never display:none, some
+   bots skip hidden fields; off-screen still gets auto-filled)
+   ============================================================ */
+.hp-wrap { position: absolute !important; left: -9999px !important; top: -9999px !important; width: 1px; height: 1px; overflow: hidden; }

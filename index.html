@@ -2,6 +2,7 @@
 <html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data:; connect-src 'self' https://*.supabase.co; object-src 'none'; base-uri 'self'; form-action 'self'; frame-src 'none'; upgrade-insecure-requests" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#05070d" />
   <title>SmartMenuKJ — Web · 3D · Automation · SmartMenus</title>
@@ -40,12 +41,13 @@
   <!-- Font Awesome -->
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha384-PPIZEGYM1v8zp5Py7UjFb79S58UeqCL9pYVnVPURKEqvioPROaVAJKKLzvH2rDnI" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-  <!-- Tailwind runtime. NOTE: a precompiled tailwind.css was tried here, but a
-       valid build must include every responsive variant (sm:/md:/lg:/xl:) used
-       in this file — see the README before swapping this out again. -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Tailwind runtime, version-pinned. NOTE: a precompiled tailwind.css was
+       tried here, but a valid build must include every responsive variant
+       (sm:/md:/lg:/xl:) used in this file — see the README before swapping
+       this out again. -->
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <script>
     tailwind.config = {
       theme: {
@@ -991,6 +993,12 @@
               </label>
               <span class="field-error" id="cf-consent-error" data-i18n data-en="Please accept to continue." data-bg="Моля, приемете, за да продължите.">Please accept to continue.</span>
 
+              <!-- Honeypot: invisible to humans; bots that fill it are silently dropped -->
+              <div class="hp-wrap" aria-hidden="true">
+                <label for="cf-company-site">Company website</label>
+                <input id="cf-company-site" name="company_website" type="text" tabindex="-1" autocomplete="off" />
+              </div>
+
               <button type="submit" class="btn-primary btn-lg w-full justify-center mt-6 magnetic" id="cf-submit">
                 <span class="cf-submit-label" data-i18n data-en="Send message" data-bg="Изпрати съобщение">Send message</span>
                 <i class="fa-solid fa-arrow-right ml-2 cf-submit-icon"></i>
@@ -1174,8 +1182,8 @@
     </div>
   </div>
 
-  <!-- Supabase client (only used when configured in config.js) -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Supabase client (only used when configured in config.js) — version-pinned with integrity hash -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.2/dist/umd/supabase.min.js" integrity="sha384-sgcvElP/LlNRtORGYFLO/9K/bENcpJK19HgvqslWXog6d8f/Va4TpltGiBlGntCM" crossorigin="anonymous"></script>
   <script src="config.js"></script>
   <script src="script.js"></script>
 </body>

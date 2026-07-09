@@ -112,13 +112,35 @@ function Test-Email([string]$email) { return ($email -match '^[^\s@]+@[^\s@]+\.[
 function Now-Epoch { return [int64]([DateTimeOffset]::UtcNow.ToUnixTimeSeconds()) }
 function Now-Text  { return ((Get-Date).ToUniversalTime().ToString("yyyy-MM-dd HH:mm 'UTC'")) }
 
+# ---------- Rate limiting (anti brute-force on auth endpoints) ----------
+$RateBuckets = @{}
+function Test-RateLimited($ctx, [string]$bucket, [int]$max = 8, [int]$windowSec = 600) {
+  $ip = $ctx.Request.RemoteEndPoint.Address.ToString()
+  $key = "$bucket|$ip"
+  $now = Now-Epoch
+  $hits = @()
+  if ($RateBuckets.ContainsKey($key)) {
+    $hits = @($RateBuckets[$key] | Where-Object { ($now - $_) -lt $windowSec })
+  }
+  if ($hits.Count -ge $max) { $RateBuckets[$key] = $hits; return $true }
+  $hits += $now
+  $RateBuckets[$key] = $hits
+  return $false
+}
+
 # ---------- HTTP helpers ----------
+function Add-SecurityHeaders($ctx) {
+  $ctx.Response.Headers.Add('X-Content-Type-Options', 'nosniff')
+  $ctx.Response.Headers.Add('X-Frame-Options', 'DENY')
+  $ctx.Response.Headers.Add('Referrer-Policy', 'strict-origin-when-cross-origin')
+}
 function Send-Json($ctx, $obj, [int]$status = 200) {
   $json  = $obj | ConvertTo-Json -Depth 8 -Compress
   $bytes = $Utf8.GetBytes($json)
   $ctx.Response.StatusCode = $status
   $ctx.Response.ContentType = 'application/json; charset=utf-8'
   $ctx.Response.Headers.Add('Cache-Control', 'no-store')
+  Add-SecurityHeaders $ctx
   $ctx.Response.ContentLength64 = $bytes.Length
   try { $ctx.Response.OutputStream.Write($bytes, 0, $bytes.Length); $ctx.Response.Close() } catch {}
 }
@@ -174,6 +196,7 @@ function Add-Session([string]$userId) {
 function Public-User($u) { return [PSCustomObject]@{ id = $u.id; name = $u.name; email = $u.email } }
 
 function Handle-Register($ctx) {
+  if (Test-RateLimited $ctx 'register' 8 600) { Send-Json $ctx @{ error = 'Too many attempts. Please try again later.' } 429; return }
   $b = Read-Body $ctx
   if (-not $b) { Send-Json $ctx @{ error = 'Invalid request.' } 400; return }
   $name = ('' + $b.name).Trim()
@@ -203,6 +226,7 @@ function Handle-Register($ctx) {
 }
 
 function Handle-Login($ctx) {
+  if (Test-RateLimited $ctx 'login' 8 600) { Send-Json $ctx @{ error = 'Too many attempts. Please try again later.' } 429; return }
   $b = Read-Body $ctx
   if (-not $b) { Send-Json $ctx @{ error = 'Invalid request.' } 400; return }
   $email = ('' + $b.email).Trim().ToLower()
@@ -240,6 +264,9 @@ function Handle-Me($ctx) {
 function Handle-Contact($ctx) {
   $b = Read-Body $ctx
   if (-not $b) { Send-Json $ctx @{ error = 'Invalid request.' } 400; return }
+  # Honeypot: bots that POST the hidden field get a fake success and no record
+  if (('' + $b.company_website).Trim() -ne '') { Send-Json $ctx @{ ok = $true } 201; return }
+  if (Test-RateLimited $ctx 'contact' 10 600) { Send-Json $ctx @{ error = 'Too many messages. Please try again later.' } 429; return }
   $name = ('' + $b.name).Trim()
   $email = ('' + $b.email).Trim()
   $message = ('' + $b.message).Trim()
@@ -336,6 +363,7 @@ function Serve-Static($ctx, [string]$rel) {
     $ct = $Mime[$ext]; if (-not $ct) { $ct = 'application/octet-stream' }
     $ctx.Response.ContentType = $ct
     $ctx.Response.Headers.Add('Cache-Control', 'no-store')
+    Add-SecurityHeaders $ctx
     $ctx.Response.ContentLength64 = $bytes.Length
     try { $ctx.Response.OutputStream.Write($bytes, 0, $bytes.Length); $ctx.Response.Close() } catch {}
   } else {

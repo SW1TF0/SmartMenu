@@ -113,7 +113,6 @@ The site runs perfectly as a **static site**. Auth & contact keep working via th
 ├── admin.html / admin.js   # Admin dashboard (views + all data)
 ├── privacy.html            # Bilingual GDPR privacy & cookie policy
 ├── styles.css              # Styling, animations, components
-├── tailwind.css            # Precompiled Tailwind utilities (see note below)
 ├── script.js               # Site behaviour + adaptive backend adapter
 ├── config.js               # Your Supabase keys + admin emails
 ├── server.ps1              # Full app server (static + JSON API)
@@ -136,11 +135,11 @@ The site runs perfectly as a **static site**. Auth & contact keep working via th
 
 In `script.js`: `CONTACT_ENDPOINT` (a Formspree URL for contact delivery on static hosting) and `HERO_VIDEO` (an `.mp4` to overlay behind the hero).
 
-> **Note on `tailwind.css`:** the homepage's Tailwind utility classes are precompiled into `tailwind.css` (instead of loading the slow Tailwind Play CDN at runtime). If you add **new** Tailwind classes to `index.html`, rebuild it with:
+> **Note on replacing the Tailwind CDN:** the homepage currently uses the Tailwind Play CDN. A precompiled `tailwind.css` was tried once but broke the mobile layout because the build was missing all responsive variants (`sm:` / `md:` / `lg:` / `xl:`). If you try again, build with:
 > ```sh
 > npx tailwindcss@3 -i input.css -o tailwind.css --minify
 > ```
-> using a `tailwind.config.js` whose `content` covers `index.html` + `script.js` and whose `theme.extend` matches the brand colors/fonts (ink/web/print/auto/menu, Inter/Montserrat). Existing classes keep working without a rebuild.
+> where `tailwind.config.js` has `content: ["./index.html", "./script.js"]` and a `theme.extend` matching the brand tokens (ink/web/print/auto/menu colors, Inter/Montserrat fonts). **Verify the output contains `lg\:hidden` and `md\:grid-cols-2` before shipping** — if those are absent, the build didn't scan the files and mobile will break.
 
 ---
 

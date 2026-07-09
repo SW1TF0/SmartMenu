@@ -42,8 +42,29 @@
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" referrerpolicy="no-referrer" />
 
-  <!-- Precompiled Tailwind utilities (replaces the Play CDN runtime) -->
-  <link rel="stylesheet" href="tailwind.css" />
+  <!-- Tailwind runtime. NOTE: a precompiled tailwind.css was tried here, but a
+       valid build must include every responsive variant (sm:/md:/lg:/xl:) used
+       in this file — see the README before swapping this out again. -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            display: ['Montserrat', 'Inter', 'sans-serif'],
+          },
+          colors: {
+            ink: { 950: '#05070d', 900: '#080b14', 800: '#0d1320', 700: '#141c2e', 600: '#1d2740' },
+            web:   { DEFAULT: '#38bdf8', glow: '#0ea5e9' },
+            print: { DEFAULT: '#34d399', glow: '#10b981' },
+            auto:  { DEFAULT: '#fbbf24', glow: '#f59e0b' },
+            menu:  { DEFAULT: '#fb923c', glow: '#f97316' },
+          },
+        },
+      },
+    };
+  </script>
   <link rel="stylesheet" href="styles.css" />
   <link rel="manifest" href="/site.webmanifest" />
   <noscript>

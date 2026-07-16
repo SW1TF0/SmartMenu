@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https:; connect-src 'self' https://api.telegram.org; object-src 'none'; base-uri 'self'; form-action 'self'; frame-src 'none'; upgrade-insecure-requests" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#120b07" />
+  <title>Live SmartMenu Demo — SmartMenuKJ</title>
+  <meta name="description" content="Try a real interactive SmartMenu by SmartMenuKJ — the digital QR menu your restaurant guests scan at the table. Bilingual, live-updated, beautiful on every phone." />
+  <link rel="canonical" href="https://www.smartmenukj.com/demo.html" />
+
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="SmartMenuKJ" />
+  <meta property="og:title" content="Live SmartMenu Demo — scan, browse, order" />
+  <meta property="og:description" content="This is what your guests see when they scan a SmartMenuKJ QR code. Try it yourself." />
+  <meta property="og:url" content="https://www.smartmenukj.com/demo.html" />
+  <meta property="og:image" content="https://www.smartmenukj.com/og-image.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha384-PPIZEGYM1v8zp5Py7UjFb79S58UeqCL9pYVnVPURKEqvioPROaVAJKKLzvH2rDnI" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <style>
+    :root {
+      --bg: #120b07;
+      --bg-soft: #1b110a;
+      --card: #221509;
+      --card-2: #2a1a0c;
+      --line: rgba(255, 190, 120, 0.14);
+      --accent: #fb923c;
+      --accent-deep: #f97316;
+      --gold: #fbbf24;
+      --text: #f5ede4;
+      --muted: #b8a48f;
+      --green: #34d399;
+      --red: #f87171;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', system-ui, sans-serif;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+    .wrap { max-width: 560px; margin: 0 auto; padding: 0 18px 180px; }
+
+    /* Demo ribbon */
+    .demo-ribbon {
+      position: sticky; top: 0; z-index: 60;
+      background: linear-gradient(90deg, #0ea5e9, #38bdf8);
+      color: #05070d; font-size: 13px; font-weight: 600;
+      padding: 8px 14px; text-align: center;
+    }
+    .demo-ribbon a { color: inherit; font-weight: 800; text-decoration: underline; white-space: nowrap; }
+
+    /* Hero */
+    .resto-hero {
+      position: relative; overflow: hidden;
+      padding: 40px 18px 30px; text-align: center;
+      background:
+        radial-gradient(600px 240px at 50% -60px, rgba(251, 146, 60, 0.28), transparent 70%),
+        radial-gradient(400px 200px at 85% 10%, rgba(251, 191, 36, 0.12), transparent 70%),
+        var(--bg-soft);
+      border-bottom: 1px solid var(--line);
+    }
+    .resto-logo {
+      width: 64px; height: 64px; border-radius: 20px; margin: 0 auto 14px;
+      display: grid; place-items: center; font-size: 26px; color: #fff;
+      background: linear-gradient(135deg, var(--accent), var(--accent-deep));
+      box-shadow: 0 10px 30px rgba(249, 115, 22, 0.35);
+    }
+    .resto-name { font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 28px; letter-spacing: -0.5px; }
+    .resto-tag { color: var(--muted); font-size: 14px; margin-top: 6px; }
+    .resto-meta {
+      display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;
+      margin-top: 14px; font-size: 12.5px; color: var(--muted);
+    }
+    .resto-meta span i { color: var(--accent); margin-right: 5px; }
+    .open-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(52, 211, 153, 0.12); color: var(--green);
+      border: 1px solid rgba(52, 211, 153, 0.3);
+      padding: 3px 10px; border-radius: 999px; font-weight: 600;
+    }
+    .open-pill::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--green); animation: pulse 1.8s infinite; }
+    @keyframes pulse { 50% { opacity: 0.35; } }
+
+    /* Language toggle */
+    .lang-toggle {
+      position: absolute; top: 14px; right: 14px;
+      display: flex; border: 1px solid var(--line); border-radius: 999px;
+      background: rgba(0,0,0,0.35); overflow: hidden; backdrop-filter: blur(6px);
+    }
+    .lang-toggle button {
+      border: 0; background: transparent; color: var(--muted);
+      font: 600 12.5px 'Inter', sans-serif; padding: 7px 13px; cursor: pointer;
+    }
+    .lang-toggle button.is-active { background: var(--accent); color: #1a0d02; }
+
+    /* Search */
+    .search-row { margin: 18px 0 4px; position: relative; }
+    .search-row i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 14px; }
+    .search-row input {
+      width: 100%; padding: 13px 15px 13px 42px;
+      background: var(--card); color: var(--text);
+      border: 1px solid var(--line); border-radius: 14px;
+      font: 500 15px 'Inter', sans-serif; outline: none;
+      transition: border-color 0.2s;
+    }
+    .search-row input:focus { border-color: var(--accent); }
+    .search-row input::placeholder { color: var(--muted); }
+
+    /* Category nav */
+    .cat-nav {
+      position: sticky; top: 37px; z-index: 50;
+      display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none;
+      padding: 12px 18px; margin: 0 -18px;
+      background: linear-gradient(var(--bg) 82%, transparent);
+    }
+    .cat-nav::-webkit-scrollbar { display: none; }
+    .cat-chip {
+      flex: 0 0 auto; border: 1px solid var(--line); border-radius: 999px;
+      background: var(--card); color: var(--muted);
+      font: 600 13.5px 'Inter', sans-serif; padding: 9px 16px; cursor: pointer;
+      transition: all 0.2s; text-decoration: none; display: inline-flex; align-items: center; gap: 7px;
+    }
+    .cat-chip i { font-size: 12px; }
+    .cat-chip.is-active { background: linear-gradient(135deg, var(--accent), var(--accent-deep)); border-color: transparent; color: #1a0d02; }
+
+    /* Sections & cards */
+    .menu-section { padding-top: 10px; }
+    .menu-section h2 {
+      font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 20px;
+      margin: 26px 0 4px; display: flex; align-items: center; gap: 10px;
+    }
+    .menu-section h2 i { color: var(--accent); font-size: 16px; }
+    .menu-section .sec-sub { color: var(--muted); font-size: 13px; margin-bottom: 14px; }
+
+    .dish {
+      display: flex; gap: 14px; align-items: flex-start;
+      background: var(--card); border: 1px solid var(--line); border-radius: 18px;
+      padding: 14px; margin-bottom: 12px;
+      transition: transform 0.15s ease, border-color 0.2s;
+    }
+    .dish.is-chef { border-color: rgba(251, 191, 36, 0.45); background: linear-gradient(160deg, rgba(251, 191, 36, 0.08), var(--card) 55%); }
+    .dish-emoji {
+      flex: 0 0 54px; height: 54px; border-radius: 14px; font-size: 26px;
+      display: grid; place-items: center; background: var(--card-2);
+      border: 1px solid var(--line);
+    }
+    .dish-main { flex: 1; min-width: 0; }
+    .dish-head { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; }
+    .dish-name { font-weight: 700; font-size: 15.5px; }
+    .dish-price { font-family: 'Montserrat', sans-serif; font-weight: 800; color: var(--accent); font-size: 15.5px; white-space: nowrap; text-align: right;}
+    .dish-price small { display: block; color: var(--muted); font: 500 10.5px 'Inter', sans-serif; }
+    .dish-desc { color: var(--muted); font-size: 13px; line-height: 1.5; margin-top: 4px; }
+    .dish-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    
+    .dish-actions { display: flex; justify-content: flex-end; margin-top: 10px; }
+    .add-to-cart-btn {
+      background: transparent; color: var(--accent); border: 1px solid var(--accent);
+      border-radius: 8px; padding: 6px 14px; font: 600 12px 'Inter', sans-serif;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .add-to-cart-btn:hover, .add-to-cart-btn:active { background: var(--accent); color: #000; transform: scale(0.95); }
+
+    .tag {
+      font-size: 10.5px; font-weight: 700; letter-spacing: 0.03em;
+      padding: 3px 8px; border-radius: 999px; text-transform: uppercase;
+    }
+    .tag--veg { background: rgba(52, 211, 153, 0.13); color: var(--green); }
+    .tag--spicy { background: rgba(248, 113, 113, 0.13); color: var(--red); }
+    .tag--chef { background: rgba(251, 191, 36, 0.15); color: var(--gold); }
+    .tag--new { background: rgba(56, 189, 248, 0.14); color: #7dd3fc; }
+    .tag--allergen { background: rgba(255, 255, 255, 0.07); color: var(--muted); text-transform: none; }
+
+    .no-results { text-align: center; color: var(--muted); padding: 40px 0; display: none; }
+    .no-results i { font-size: 28px; color: var(--accent); margin-bottom: 10px; display: block; }
+
+    /* Action Buttons (FAB Container) */
+    .fab-container {
+      position: fixed; right: 18px; bottom: 24px; z-index: 55;
+      display: flex; flex-direction: column; gap: 12px; align-items: flex-end;
+    }
+    .fab {
+      border: 0; cursor: pointer; border-radius: 999px;
+      display: inline-flex; align-items: center; gap: 9px;
+      padding: 12px 18px; font: 700 13px 'Inter', sans-serif; color: #1a0d02;
+      background: linear-gradient(135deg, var(--accent), var(--accent-deep));
+      box-shadow: 0 10px 25px rgba(249, 115, 22, 0.4);
+      transition: transform 0.15s ease;
+    }
+    .fab:active { transform: scale(0.94); }
+    .fab-secondary {
+      background: var(--card-2); color: var(--text);
+      border: 1px solid var(--line);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+    .fab-cart {
+      background: var(--green); color: #000;
+      box-shadow: 0 10px 25px rgba(52, 211, 153, 0.35);
+      display: none; /* Shows when items are added */
+    }
+    .badge {
+      background: #000; color: var(--green); border-radius: 50%;
+      padding: 2px 7px; font-size: 11px; font-weight: 900;
+    }
+
+    /* Cart Modal */
+    .cart-modal {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 100;
+      display: none; align-items: center; justify-content: center; padding: 18px;
+      backdrop-filter: blur(4px);
+    }
+    .cart-content {
+      background: var(--card); width: 100%; max-width: 420px; border-radius: 20px;
+      padding: 24px; border: 1px solid var(--line); box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    }
+    .cart-content h3 { margin-bottom: 18px; border-bottom: 1px solid var(--line); padding-bottom: 12px; font-family: 'Montserrat', sans-serif; display: flex; align-items: center; gap: 10px; }
+    .cart-item { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 14px; line-height: 1.4; }
+    .cart-item span:first-child { color: var(--text); padding-right: 15px; }
+    .cart-item span:last-child { color: var(--accent); font-weight: bold; white-space: nowrap; }
+    .cart-total { font-weight: 800; font-size: 18px; margin-top: 20px; text-align: right; border-top: 1px solid var(--line); padding-top: 15px; color: var(--green); }
+    .cart-actions { display: flex; gap: 12px; margin-top: 24px; }
+    .cart-btn { flex: 1; padding: 12px; border-radius: 12px; border: none; font-weight: 700; cursor: pointer; transition: transform 0.1s; font-size: 14px;}
+    .cart-btn:active { transform: scale(0.96); }
+    .btn-send { background: var(--green); color: #000; }
+    .btn-close { background: transparent; color: var(--text); border: 1px solid var(--line); }
+
+    /* Toast */
+    .toast {
+      position: fixed; left: 50%; bottom: 26px; transform: translate(-50%, 20px); z-index: 110;
+      background: #241407; color: var(--text); border: 1px solid var(--line);
+      padding: 12px 18px; border-radius: 14px; font-size: 13.5px; line-height: 1.45;
+      max-width: min(420px, calc(100vw - 36px));
+      opacity: 0; pointer-events: none; transition: all 0.3s ease;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+    }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+    .toast i { color: var(--accent); margin-right: 8px; }
+
+    /* Bottom CTA */
+    .powered {
+      margin-top: 44px; border-top: 1px solid var(--line); padding-top: 26px; text-align: center;
+    }
+    .powered p { color: var(--muted); font-size: 13.5px; line-height: 1.6; max-width: 420px; margin: 0 auto; }
+    .powered strong { color: var(--text); }
+    .powered-cta {
+      display: inline-flex; align-items: center; gap: 9px; margin-top: 16px;
+      background: linear-gradient(135deg, #38bdf8, #0ea5e9); color: #05070d;
+      font: 700 14.5px 'Inter', sans-serif; text-decoration: none;
+      padding: 13px 22px; border-radius: 999px;
+      box-shadow: 0 12px 30px rgba(14, 165, 233, 0.35);
+    }
+    .powered-back { display: inline-block; margin-top: 14px; color: var(--muted); font-size: 13px; text-decoration: none; }
+    .powered-back:hover { color: var(--text); }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      * { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="demo-ribbon" data-i18n
+       data-en='You are viewing a live SmartMenu demo · <a href="index.html#contact">Get one for your restaurant →</a>'
+       data-bg='Разглеждате демо на живо SmartMenu · <a href="index.html#contact">Вземете за вашия ресторант →</a>'>
+    You are viewing a live SmartMenu demo · <a href="index.html#contact">Get one for your restaurant →</a>
+  </div>
+
+  <header class="resto-hero">
+    <div class="lang-toggle" role="group" aria-label="Language">
+      <button type="button" data-set-lang="en">EN</button>
+      <button type="button" data-set-lang="bg">БГ</button>
+    </div>
+    <div class="resto-logo"><i class="fa-solid fa-utensils"></i></div>
+    <h1 class="resto-name">Aura Garden &amp; Grill</h1>
+    <p class="resto-tag" data-i18n data-en="Seasonal kitchen · Wood-fire grill · Kardzhali" data-bg="Сезонна кухня · Скара на жар · Кърджали">Seasonal kitchen · Wood-fire grill · Kardzhali</p>
+    <div class="resto-meta">
+      <span class="open-pill" data-i18n data-en="Open now · until 23:00" data-bg="Отворено · до 23:00">Open now · until 23:00</span>
+      <span><i class="fa-solid fa-wifi"></i>AuraGuest</span>
+      <span><i class="fa-solid fa-location-dot"></i><span data-i18n data-en="Table 12" data-bg="Маса 12">Table 12</span></span>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <div class="search-row">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="search" id="dish-search" autocomplete="off"
+             data-i18n-ph data-en-ph="Search the menu…" data-bg-ph="Търсене в менюто…" placeholder="Search the menu…" />
+    </div>
+
+    <nav class="cat-nav" id="cat-nav" aria-label="Menu categories">
+      <a class="cat-chip is-active" href="#starters"><i class="fa-solid fa-seedling"></i><span data-i18n data-en="Starters" data-bg="Предястия">Starters</span></a>
+      <a class="cat-chip" href="#salads"><i class="fa-solid fa-leaf"></i><span data-i18n data-en="Salads" data-bg="Салати">Salads</span></a>
+      <a class="cat-chip" href="#grill"><i class="fa-solid fa-fire"></i><span data-i18n data-en="Grill & Mains" data-bg="Скара и основни">Grill &amp; Mains</span></a>
+      <a class="cat-chip" href="#desserts"><i class="fa-solid fa-ice-cream"></i><span data-i18n data-en="Desserts" data-bg="Десерти">Desserts</span></a>
+      <a class="cat-chip" href="#drinks"><i class="fa-solid fa-martini-glass"></i><span data-i18n data-en="Drinks" data-bg="Напитки">Drinks</span></a>
+    </nav>
+
+    <section class="menu-section" id="starters">
+      <h2><i class="fa-solid fa-seedling"></i><span data-i18n data-en="Starters" data-bg="Предястия">Starters</span></h2>
+      <p class="sec-sub" data-i18n data-en="Small plates, made for sharing." data-bg="Малки порции, идеални за споделяне.">Small plates, made for sharing.</p>
+
+      <article class="dish is-chef">
+        <div class="dish-emoji">🧀</div>
+        <div class="dish-main">
+          <div class="dish-head">
+            <span class="dish-name" data-i18n data-en="Baked feta in honey & thyme" data-bg="Печено сирене с мед и мащерка">Baked feta in honey &amp; thyme</span>
+            <span class="dish-price">€6.90<small>13.49 лв.</small></span>
+          </div>
+          <p class="dish-desc" data-i18n data-en="Creamy local feta, wildflower honey, toasted sesame, warm pita." data-bg="Кремообразно местно сирене, планински мед, печен сусам, топла питка.">Creamy local feta, wildflower honey, toasted sesame, warm pita.</p>
+          <div class="dish-tags"><span class="tag tag--chef" data-i18n data-en="Chef's pick" data-bg="Избор на готвача">Chef's pick</span><span class="tag tag--veg" data-i18n data-en="Vegetarian" data-bg="Вегетарианско">Vegetarian</span><span class="tag tag--allergen" data-i18n data-en="Allergens: 1, 7, 11" data-bg="Алергени: 1, 7, 11">Allergens: 1, 7, 11</span></div>
+          <div class="dish-actions">
+            <button class="add-to-cart-btn" data-name="Печено сирене" data-price="13.49">+ <span data-i18n data-en="Add" data-bg="Добави">Добави</span></button>
+          </div>
+        </div>
+      </article>
+
+      <article class="dish">
+        <div class="dish-emoji">🍄</div>
+        <div class="dish-main">
+          <div class="dish-head">
+            <span class="dish-name" data-i18n data-en="Wild mushrooms on toast" data-bg="Горски гъби върху селски хляб">Wild mushrooms on toast</span>
+            <span class="dish-price">€7.50<small>14.67 лв.</small></span>
+          </div>
+          <p class="dish-desc" data-i18n data-en="Porcini & oyster mushrooms, garlic butter, parsley, sourdough." data-bg="Манатарки и кладница, чесново масло, магданоз, хляб с квас.">Porcini &amp; oyster mushrooms, garlic butter, parsley, sourdough.</p>
+          <div class="dish-tags"><span class="tag tag--veg" data-i18n data-en="Vegetarian" data-bg="Вегетарианско">Vegetarian</span><span class="tag tag--allergen" data-i18n data-en="Allergens: 1, 7" data-bg="Алергени: 1, 7">Allergens: 1, 7</span></div>
+          <div class="dish-actions">
+            <button class="add-to-cart-btn" data-name="Горски гъби върху селски хляб" data-price="14.67">+ <span data-i18n data-en="Add" data-bg="Добави">Добави</span></button>
+          </div>
+        </div>
+      </article>
+
+      <article class="dish">
+        <div class="dish-emoji">🦐</div>
+        <div class="dish-main">
+          <div class="dish-head">
+            <span class="dish-name" data-i18n data-en="Chili-garlic prawns" data-bg="Скариди с чили и чесън">Chili-garlic prawns</span>
+            <span class="dish-price">€10.90<small>21.32 лв.</small></span>
+          </div>
+          <p class="dish-desc" data-i18n data-en="Pan-seared prawns, chili oil, lemon, charred bread." data-bg="Запечени скариди, чили олио, лимон, препечен хляб.">Pan-seared prawns, chili oil, lemon, charred bread.</p>
+          <div class="dish-tags"><span class="tag tag--spicy" data-i18n data-en="Spicy" data-bg="Люто">Spicy</span><span class="tag tag--allergen" data-i18n data-en="Allergens: 1, 2" data-bg="Алергени: 1, 2">Allergens: 1, 2</span></div>
+          <div class="dish-actions">
+            <button class="add-to-cart-btn" data-name="Скариди с чили и чесън" data-price="21.32">+ <span data-i18n data-en="Add" data-bg="Добави">Добави</span></button>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="menu-section" id="salads">
+      <h2><i class="fa-solid fa-leaf"></i><span data-i18n data-en="Salads" data-bg="Салати">Salads</span></h2>
+      <p class="sec-sub" data-i18n data-en="Fresh from the morning market." data-bg="Свежо от сутрешния пазар.">Fresh from the morning market.</p>
+
+      <article class="dish">
+        <div class="dish-emoji">🍅</div>
+        <div class="dish-main">
+          <div class="dish-head">
+            <span class="dish-name" data-i18n data-en="Heirloom shopska" data-bg="Шопска от розови домати">Heirloom shopska</span>
+            <span class="dish-price">€5.90<small>11.54 лв.</small></span>
+          </div>
+          <p class="dish-desc" data-i18n data-en="Pink tomatoes, cucumber, roasted pepper, aged white cheese." data-bg="Розови домати, краставица, печена чушка, отлежало сирене.">Pink tomatoes, cucumber, roasted pepper, aged white cheese.</p>
+          <div class="dish-tags"><span class="tag tag--veg" data-i18n data-en="Vegetarian" data-bg="Вегетарианско">Vegetarian</span><span class="tag tag--allergen" data-i18n data-en="Allergens: 7" data-bg="Алергени: 7">Allergens: 7</span></div>
+          <div class="dish-actions">
+            <button class="add-to-cart-btn" data-name="Шопска от розови домати" data-price="11.54">+ <span data-i18n data-en="Add" data-bg="Добави">Добави</span></button>
+          </div>
+        </div>
+      </article>
+
+      <article class="dish">
+        <div class="dish-emoji">🥑</div>
+        <div class="dish-main">
+          <div class="dish-head">
+            <span class="dish-name" data-i18n data-en="Grilled avocado & quinoa" data-bg="Печено авокадо с киноа">Grilled avocado &amp; quinoa</span>
+            <span class="dish-price">€8.40<small>16.43 лв.</small></span>
+          </div>
+          <p class="dish-desc" data-i18n data-en="Charred avocado, herbed quinoa, pomegranate, citrus dressing." data-bg="Авокадо на скара, киноа с билки, нар, цитрусов дресинг.">Charred avocado, herbed quinoa, pomegranate, citrus dressing.</p>
+          <div class="dish-tags"><span class="tag tag--veg" data-i18n data-en="Vegan" data-bg="Веган">Vegan</span><span class="tag tag--new" data-i18n data-en="New" data-bg="Ново">New</span></div>
+          <div class="dish-actions">
+            <button class="add-to-cart-btn" data-name="Печено авокадо с киноа" data-price="16.43">+ <span data-i18n data-en="Add" data-bg="Добави">Добави</span></button>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="menu-section" id="grill">
+      <h2><i class="fa-solid fa-fire"></i><span data-i18n data-en="Grill &amp; Mains" data-bg="Скара и основни">Grill &amp; Mains</span></h2>
+      <p class="sec-sub" data-i18n data-en="Over real wood embers, every evening." data-bg="Върху истинска жар, всяка вечер.">Over real wood embers, every evening.</p>
+
+      <article class="dish is-chef">
+        <div class="dish-emoji">🥩</div>
+        <div class="dish-main">
+          <div class="dish-head">
+            <span class="dish-name" data-i18n data-en="Ribeye, ember-roasted (350g)" data-bg="Ребрайб на жар (350 г)">Ribeye, ember-roasted (350g)</span>
+            <span class="dish-price">€24.50<small>47.92 лв.</small></span>
+          </div>
+          <p class="dish-desc" data-i18n data-en="Dry-aged ribeye, smoked salt, rosemary butter, grilled vegetables." data-bg="Зряло телешко, опушена сол, розмариново масло, зеленчуци на скара.">Dry-aged ribeye, smoked salt, rosemary butter, grilled vegetables.</p>
+          <div class="dish-tags"><span class="tag tag--chef" data-i18n data-en="Chef's pick" data-bg="Избор на готвача">Chef's pick</span><span class="tag tag--allergen" data-i18n data-en="Allergens: 7" data-bg="Алергени: 7">Allergens: 7</span></div>
+          <div class="dish-actions">
+            <button class="add-to-cart-btn" data-name="Ребрайб на жар" data-price="47.92">+ <span data-i18n data-en="Add" data-bg="Добави">Добави</span></button>
+          </div>
+        </div>
+      </article>
+
+      <article class="dish">
+        <div class="dish-emoji">🍗</div>
+        <div class="dish-main">
+          <div class="dish-head">
+            <span class="dish-name" data-i18n data-en="Free-range chicken skewers" data-bg="Шишчета от домашно пиле">Free-range chicken skewers</span>
+            <span class="dish-price">€11.80<small>23.08 лв.</small></span>
+          </div>
+          <p class="dish-desc" data-i18n data-en="Marinated 24h, smoked paprika glaze, flatbread, garlic yogurt." data-bg="Мариновани 24 ч., глазура с пушен пипер, питка, чеснов йогурт.">Marinated 24h, smoked paprika glaze, flatbread, garlic yogurt.</p>
+          <div class="dish-tags"><span class="tag tag--allergen" data-i18n data-en="Allergens: 1, 7" data-bg="Алергени: 1, 7">Allergens: 1, 7</span></div>
+          <div class="dish-actions">
+            <button class="add-to-cart-btn" data-name="Шишчета от домашно пиле" data-price="23.08">+ <span data-i18n data-en="Add" data-bg="Добави">Добави</span></button>
+          </div>
+        </div>
+      </article>
+
+      <article class="dish">
+        <div class="dish-emoji">🐟</div>
+        <div class="dish-main">
+          <div class="dish-head">
+            <span class="dish-name" data-i18n data-en="Whole sea bass, lemon & herbs" data-bg="Цял лаврак с лимон и билки">Whole sea bass, lemon &amp; herbs</span>
+            <span class="dish-price">€16.90<small>33.05 лв.</small></span>
+          </div>
+          <p class="dish-desc" data-i18n data-en="Grilled over embers, olive oil, capers, seasonal greens." data-bg="Печен на жар, зехтин, каперси, сезонни зеленчуци.">Grilled over embers, olive oil, capers, seasonal greens.</p>
+          <div class="dish-tags"><span class="tag tag--allergen" data-i18n data-en="Allergens: 4" data-bg="Алергени: 4">Allergens: 4</span></div>
+          <div class="dish-actions">
+            <button class="add-to-cart-btn" data-name="Цял лаврак с лимон и билки" data-price="33.05">+ <span data-i18n data-en="Add" data-bg="Добави">Добави</span></button>
+          </div>
+        </div>
+      </article>
+
+      <article class="dish">
+        <div class="dish-emoji">🍝</div>
+        <div class="dish-main">
+          <div class="dish-head">
+            <span class="dish-name" data-i18n data-en="Truffle tagliatelle" data-bg="Талиатели с трюфел">Truffle tagliatelle</span>
+            <span class="dish-price">€12.40<small>24.25 лв.</small></span>
+          </div>
+          <p class="dish-desc" data-i18n data-en="Fresh pasta, black truffle cream, aged parmesan, chives." data-bg="Прясна паста, крем от черен трюфел, отлежал пармезан, див лук.">Fresh pasta, black truffle cream, aged parmesan, chives.</p>
+          <div class="dish-tags"><span class="tag tag--veg" data-i18n data-en="Vegetarian" data-bg="Вегетарианско">Vegetarian</span><span class="tag tag--allergen" data-i18n data-en="Allergens: 1, 3, 7" data-bg="Алергени: 1, 3, 7">Allergens: 1, 3, 7</span></div>
+          <div class="dish-actions">
+            <button class="add-to-cart-btn" data-name="Талиатели с трюфел" data-price="24.25">+ <span data-i18n data-en="Add" data-bg="Добави">Добави</span></button>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="menu-section" id="desserts">
+      <h2><i class="fa-solid fa-ice-cream"></i><span data-i18n data-en="Desserts" data-bg="Десерти">Desserts</span></h2>
+      <p class="sec-sub" data-i18n data-en="Save a little room." data-bg="Оставете си място.">Save a little room.</p>
+
+      <article class="dish">
+        <div class="dish-emoji">🍫</div>
+        <div class="dish-main">
+          <div class="dish-head">
+            <span class="dish-name" data-i18n data-en="Warm chocolate fondant" data-bg="Топъл шоколадов суфле">Warm chocolate fondant</span>
+            <span class="dish-price">€6.50<small>12.71 лв.</small></span>
+          </div>
+          <p class="dish-desc" data-i18n data-en="Molten 70% chocolate, vanilla ice cream, salted caramel." data-bg="Течен 70% шоколад, ванилов сладолед, солен карамел.">Molten 70% chocolate, vanilla ice cream, salted caramel.</p>
+          <div class="dish-tags"><span class="tag tag--veg" data-i18n data-en="Vegetarian" data-bg="Вегетарианско">Vegetarian</span><span class="tag tag--allergen" data-i18n data-en="Allergens: 1, 3, 7" data-bg="Алергени: 1, 3, 7">Allergens: 1, 3, 7</span></div>
+          <div class="dish-actions">
+            <button class="add-to-cart-btn" data-name="Топъл шоколадов суфле" data-price="12.71">+ <span data-i18n data-en="Add" data-bg="Добави">Добави</span></button>
+          </div>
+        </div>
+      </article>
+
+      <article class="dish">
+        <div class="dish-emoji">🍯</div>
+        <div class="dish-main">
+          <div class="dish-head">
+            <span class="dish-name" data-i18n data-en="Yogurt, honey & walnuts" data-bg="Йогурт с мед и орехи">Yogurt, honey &amp; walnuts</span>
+            <span class="dish-price">€4.90<small>9.58 лв.</small></span>
+          </div>
+          <p class="dish-desc" data-i18n data-en="Strained Rhodope yogurt, pine honey, candied walnuts." data-bg="Цедено родопско кисело мляко, боров мед, карамелизирани орехи.">Strained Rhodope yogurt, pine honey, candied walnuts.</p>
+          <div class="dish-tags"><span class="tag tag--veg" data-i18n data-en="Vegetarian" data-bg="Вегетарианско">Vegetarian</span><span class="tag tag--allergen" data-i18n data-en="Allergens: 7, 8" data-bg="Алергени: 7, 8">Allergens: 7, 8</span></div>
+          <div class="dish-actions">
+            <button class="add-to-cart-btn" data-name="Йогурт с мед и орехи" data-price="9.58">+ <span data-i18n data-en="Add" data-bg="Добави">Добави</span></button>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="menu-section" id="drinks">
+      <h2><i class="fa-solid fa-martini-glass"></i><span data-i18n data-en="Drinks" data-bg="Напитки">Drinks</span></h2>
+      <p class="sec-sub" data-i18n data-en="Local wines, craft beer, signature cocktails." data-bg="Местни вина, крафт бира, авторски коктейли.">Local wines, craft beer, signature cocktails.</p>
+
+      <article class="dish">
+        <div class="dish-emoji">🍷</div>
+        <div class="dish-main">
+          <div class="dish-head">
+            <span class="dish-name" data-i18n data-en="Mavrud reserve (glass)" data-bg="Мавруд резерва (чаша)">Mavrud reserve (glass)</span>
+            <span class="dish-price">€5.20<small>10.17 лв.</small></span>
+          </div>
+          <p class="dish-desc" data-i18n data-en="Thracian valley red, dark fruit, soft tannins." data-bg="Червено от Тракийската низина, тъмни плодове, меки танини.">Thracian valley red, dark fruit, soft tannins.</p>
+          <div class="dish-actions">
+            <button class="add-to-cart-btn" data-name="Мавруд резерва (чаша)" data-price="10.17">+ <span data-i18n data-en="Add" data-bg="Добави">Добави</span></button>
+          </div>
+        </div>
+      </article>
+
+      <article class="dish">
+        <div class="dish-emoji">🍹</div>
+        <div class="dish-main">
+          <div class="dish-head">
+            <span class="dish-name" data-i18n data-en="Smoked rosemary spritz" data-bg="Спритц с опушен розмарин">Smoked rosemary spritz</span>
+            <span class="dish-price">€6.80<small>13.30 лв.</small></span>
+          </div>
+          <p class="dish-desc" data-i18n data-en="House aperitivo, sparkling wine, smoked rosemary sprig." data-bg="Домашно аперитиво, пенливо вино, опушена клонка розмарин.">House aperitivo, sparkling wine, smoked rosemary sprig.</p>
+          <div class="dish-tags"><span class="tag tag--new" data-i18n data-en="New" data-bg="Ново">New</span></div>
+          <div class="dish-actions">
+            <button class="add-to-cart-btn" data-name="Спритц с опушен розмарин" data-price="13.30">+ <span data-i18n data-en="Add" data-bg="Добави">Добави</span></button>
+          </div>
+        </div>
+      </article>
+
+      <article class="dish">
+        <div class="dish-emoji">☕</div>
+        <div class="dish-main">
+          <div class="dish-head">
+            <span class="dish-name" data-i18n data-en="Specialty espresso" data-bg="Спешълти еспресо">Specialty espresso</span>
+            <span class="dish-price">€2.40<small>4.69 лв.</small></span>
+          </div>
+          <p class="dish-desc" data-i18n data-en="Single-origin, freshly roasted, served with sparkling water." data-bg="Едносортово, прясно изпечено, сервирано с газирана вода.">Single-origin, freshly roasted, served with sparkling water.</p>
+          <div class="dish-actions">
+            <button class="add-to-cart-btn" data-name="Спешълти еспресо" data-price="4.69">+ <span data-i18n data-en="Add" data-bg="Добави">Добави</span></button>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <div class="no-results" id="no-results">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <span data-i18n data-en="Nothing matches your search." data-bg="Няма резултати за вашето търсене.">Nothing matches your search.</span>
+    </div>
+
+    <div class="powered">
+      <p data-i18n
+         data-en="This entire menu is a <strong>SmartMenu</strong> — updated live from a dashboard, bilingual out of the box, and paired with custom 3D-printed table stands. Built by <strong>SmartMenuKJ</strong> in Kardzhali, Bulgaria."
+         data-bg="Цялото това меню е <strong>SmartMenu</strong> — обновявано на живо от табло, двуезично по подразбиране и съчетано с 3D-печатани стойки за маса. Създадено от <strong>SmartMenuKJ</strong> в Кърджали, България.">
+        This entire menu is a <strong>SmartMenu</strong> — updated live from a dashboard, bilingual out of the box, and paired with custom 3D-printed table stands. Built by <strong>SmartMenuKJ</strong> in Kardzhali, Bulgaria.
+      </p>
+      <a class="powered-cta" href="index.html#contact">
+        <i class="fa-solid fa-bolt"></i>
+        <span data-i18n data-en="Get a SmartMenu for your restaurant" data-bg="Вземете SmartMenu за вашия ресторант">Get a SmartMenu for your restaurant</span>
+      </a>
+      <br />
+      <a class="powered-back" href="index.html">← <span data-i18n data-en="Back to smartmenukj.com" data-bg="Обратно към smartmenukj.com">Back to smartmenukj.com</span></a>
+    </div>
+  </div>
+
+  <!-- Bottom Floating Actions -->
+  <div class="fab-container">
+    <button class="fab fab-cart" id="btn-cart" type="button">
+      <i class="fa-solid fa-cart-shopping"></i>
+      <span data-i18n data-en="Order" data-bg="Поръчка">Поръчка</span>
+      <span class="badge" id="cart-count">0</span>
+    </button>
+    <button class="fab fab-secondary" id="request-bill" type="button">
+      <i class="fa-solid fa-file-invoice-dollar"></i>
+      <span data-i18n data-en="Bill" data-bg="Сметка">Сметка</span>
+    </button>
+    <button class="fab" id="call-waiter" type="button">
+      <i class="fa-solid fa-bell-concierge"></i>
+      <span data-i18n data-en="Waiter" data-bg="Сервитьор">Сервитьор</span>
+    </button>
+  </div>
+
+  <!-- Cart Modal -->
+  <div class="cart-modal" id="cart-modal">
+    <div class="cart-content">
+      <h3><i class="fa-solid fa-utensils"></i> <span data-i18n data-en="Your Order" data-bg="Вашата поръчка">Вашата поръчка</span></h3>
+      <div id="cart-items"></div>
+      <div class="cart-total">
+        <span data-i18n data-en="Total:" data-bg="Общо:">Общо:</span> <span id="cart-total-price">0.00 лв.</span>
+      </div>
+      <div class="cart-actions">
+        <button class="cart-btn btn-close" id="cart-close" data-i18n data-en="Close" data-bg="Затвори">Затвори</button>
+        <button class="cart-btn btn-send" id="cart-send" data-i18n data-en="Send Order" data-bg="Изпрати">Изпрати</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    (function () {
+      'use strict';
+      var $ = function (s, c) { return (c || document).querySelector(s); };
+      var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
+
+      /* ---- Language ---- */
+      var LANG_KEY = 'smkj_lang';
+      var lang = (navigator.language || '').toLowerCase().indexOf('bg') === 0 ? 'bg' : 'en';
+      try {
+        var stored = localStorage.getItem(LANG_KEY);
+        if (stored === 'en' || stored === 'bg') lang = stored;
+      } catch (e) {}
+
+      function applyLang(next) {
+        lang = next === 'bg' ? 'bg' : 'en';
+        document.documentElement.lang = lang;
+        $$('[data-i18n]').forEach(function (el) {
+          var v = el.getAttribute('data-' + lang);
+          if (v !== null) el.innerHTML = v;
+        });
+        $$('[data-i18n-ph]').forEach(function (el) {
+          var v = el.getAttribute('data-' + lang + '-ph');
+          if (v !== null) el.setAttribute('placeholder', v);
+        });
+        $$('[data-set-lang]').forEach(function (b) {
+          b.classList.toggle('is-active', b.getAttribute('data-set-lang') === lang);
+        });
+        try { localStorage.setItem(LANG_KEY, lang); } catch (e) {}
+      }
+      $$('[data-set-lang]').forEach(function (b) {
+        b.addEventListener('click', function () { applyLang(b.getAttribute('data-set-lang')); });
+      });
+      applyLang(lang);
+
+      /* ---- Category chips follow scroll ---- */
+      var chips = $$('.cat-chip');
+      var sections = $$('.menu-section');
+      function setActiveChip(id) {
+        chips.forEach(function (c) {
+          var on = c.getAttribute('href') === '#' + id;
+          c.classList.toggle('is-active', on);
+          if (on && c.scrollIntoView) c.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
+        });
+      }
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (en) { if (en.isIntersecting) setActiveChip(en.target.id); });
+        }, { rootMargin: '-30% 0px -60% 0px' });
+        sections.forEach(function (s) { io.observe(s); });
+      }
+      chips.forEach(function (c) {
+        c.addEventListener('click', function () { setActiveChip(c.getAttribute('href').slice(1)); });
+      });
+
+      /* ---- Search filter ---- */
+      var search = $('#dish-search');
+      var noRes = $('#no-results');
+      search.addEventListener('input', function () {
+        var q = search.value.trim().toLowerCase();
+        var any = false;
+        $$('.dish').forEach(function (d) {
+          var show = !q || d.textContent.toLowerCase().indexOf(q) !== -1;
+          d.style.display = show ? '' : 'none';
+          if (show) any = true;
+        });
+        sections.forEach(function (s) {
+          var visible = $$('.dish', s).some(function (d) { return d.style.display !== 'none'; });
+          s.style.display = visible ? '' : 'none';
+        });
+        noRes.style.display = any ? 'none' : 'block';
+      });
+
+      /* ---- Toast Notification ---- */
+      var toast = $('#toast');
+      var toastTimer = null;
+      function showToast(msg) {
+        toast.innerHTML = '<i class="fa-solid fa-circle-check"></i> ' + msg;
+        toast.classList.add('show');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(function () { toast.classList.remove('show'); }, 4000);
+      }
+
+      /* =========================================
+         TELEGRAM BOT INTEGRATION
+         ========================================= */
+      const TG_TOKEN = '8923642506:AAF1xhehfXs6ToGBcBE6DPcXTlKiKfMWEUE';
+      const TG_CHAT = '-5466654302';
+      const TABLE = '12';
+
+      function sendToTelegram(message, successText) {
+        var url = 'https://api.telegram.org/bot' + TG_TOKEN + '/sendMessage';
+        fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            chat_id: TG_CHAT,
+            text: message,
+            parse_mode: 'HTML'
+          })
+        })
+        .then(function(res) {
+          if (res.ok) {
+             showToast(successText);
+          } else {
+             showToast(lang === 'bg' ? 'Грешка при изпращане!' : 'Error sending!');
+          }
+        })
+        .catch(function(err) {
+          showToast(lang === 'bg' ? 'Мрежова грешка!' : 'Network error!');
+        });
+      }
+
+      /* ---- 1. Call Waiter ---- */
+      $('#call-waiter').addEventListener('click', function () {
+        let msg = `🛎 <b>Маса ${TABLE}</b> вика сервитьор!`;
+        let toastMsg = lang === 'bg' ? 'Сервитьорът е повикан!' : 'Waiter called!';
+        sendToTelegram(msg, toastMsg);
+      });
+
+      /* ---- 2. Request Bill ---- */
+      $('#request-bill').addEventListener('click', function () {
+        let msg = `💳 <b>Маса ${TABLE}</b> иска сметката!`;
+        let toastMsg = lang === 'bg' ? 'Сметката е поискана!' : 'Bill requested!';
+        sendToTelegram(msg, toastMsg);
+      });
+
+      /* ---- 3. Order System (Cart) ---- */
+      let cart = {};
+
+      $$('.add-to-cart-btn').forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          let name = this.getAttribute('data-name');
+          let price = parseFloat(this.getAttribute('data-price'));
+
+          if (cart[name]) {
+            cart[name].qty++;
+          } else {
+            cart[name] = { price: price, qty: 1 };
+          }
+          
+          updateCartUI();
+          showToast(lang === 'bg' ? name + ' добавено!' : 'Added to order!');
+        });
+      });
+
+      function updateCartUI() {
+        let totalQty = 0;
+        let totalPrice = 0;
+        let html = '';
+
+        for (let item in cart) {
+          totalQty += cart[item].qty;
+          let sum = cart[item].qty * cart[item].price;
+          totalPrice += sum;
+          html += `<div class="cart-item"><span>${cart[item].qty}x ${item}</span><span>${sum.toFixed(2)} лв.</span></div>`;
+        }
+
+        $('#cart-items').innerHTML = html;
+        $('#cart-total-price').innerText = totalPrice.toFixed(2) + ' лв.';
+
+        if (totalQty > 0) {
+          $('#btn-cart').style.display = 'inline-flex';
+          $('#cart-count').innerText = totalQty;
+        } else {
+          $('#btn-cart').style.display = 'none';
+        }
+      }
+
+      $('#btn-cart').addEventListener('click', function() {
+        $('#cart-modal').style.display = 'flex';
+      });
+
+      $('#cart-close').addEventListener('click', function() {
+        $('#cart-modal').style.display = 'none';
+      });
+
+      $('#cart-send').addEventListener('click', function() {
+        if (Object.keys(cart).length === 0) return;
+
+        let tgMsg = `🍽 <b>Нова поръчка от Маса ${TABLE}</b>\n\n`;
+        let total = 0;
+
+        for (let item in cart) {
+          let sum = cart[item].qty * cart[item].price;
+          total += sum;
+          tgMsg += `▫️ ${cart[item].qty}x ${item} - ${sum.toFixed(2)} лв.\n`;
+        }
+        tgMsg += `\n💰 <b>Общо: ${total.toFixed(2)} лв.</b>`;
+
+        let toastMsg = lang === 'bg' ? 'Поръчката е изпратена към кухнята!' : 'Order sent to the kitchen!';
+        sendToTelegram(tgMsg, toastMsg);
+
+        cart = {}; // Empty cart after send
+        updateCartUI();
+        $('#cart-modal').style.display = 'none';
+      });
+
+    })();
+  </script>
+</body>
+</html>

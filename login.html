@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Log in — SmartMenuKJ</title>
+<meta name="robots" content="noindex" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<header id="site-header" data-active="login.html"></header>
+
+<main>
+  <div class="auth-shell">
+    <div class="auth-card reveal in">
+      <div class="auth-tabs">
+        <button class="active" data-tab="signin" data-i18n="login.tab.signin">Sign in</button>
+        <button data-tab="signup" data-i18n="login.tab.signup">Create account</button>
+      </div>
+
+      <div id="panelSignin" class="tab-panel-auth">
+        <button class="btn btn-google btn-block" type="button">
+          <svg viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.6 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 8 3l6-6C34.5 5.1 29.6 3 24 3 12.4 3 3 12.4 3 24s9.4 21 21 21 21-9.4 21-21c0-1.2-.1-2.3-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 15.9 18.9 13 24 13c3.1 0 5.8 1.1 8 3l6-6C34.5 5.1 29.6 3 24 3 16.3 3 9.7 7.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 45c5.5 0 10.4-1.9 14.2-5.1l-6.6-5.4C29.6 36.4 27 37 24 37c-5.3 0-9.7-3.4-11.3-8.1l-6.5 5C9.6 40.5 16.2 45 24 45z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.2 4.3-4.1 5.7l6.6 5.4C41.8 36 45 30.4 45 24c0-1.2-.1-2.3-.4-3.5z"/></svg>
+          <span data-i18n="login.google">Continue with Google</span>
+        </button>
+        <div class="auth-divider" data-i18n="login.or">or</div>
+        <form id="signinForm">
+          <div class="field">
+            <label for="signinEmail" data-i18n="contact.form.email">Email</label>
+            <input id="signinEmail" type="email" required autocomplete="email" />
+          </div>
+          <div class="field">
+            <label for="signinPassword" data-i18n="login.password">Password</label>
+            <input id="signinPassword" type="password" required autocomplete="current-password" minlength="6" />
+          </div>
+          <button type="submit" class="btn btn-primary btn-block" data-i18n="login.signin.submit">Sign in</button>
+          <p style="text-align:center; margin-top:14px;">
+            <a href="#" id="forgotLink" style="font-size:13px;" data-i18n="login.forgot">Forgot your password?</a>
+          </p>
+          <div id="signinNote" class="form-note"></div>
+        </form>
+      </div>
+
+      <div id="panelSignup" class="tab-panel-auth hidden">
+        <button class="btn btn-google btn-block" type="button">
+          <svg viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.6 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 8 3l6-6C34.5 5.1 29.6 3 24 3 12.4 3 3 12.4 3 24s9.4 21 21 21 21-9.4 21-21c0-1.2-.1-2.3-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 15.9 18.9 13 24 13c3.1 0 5.8 1.1 8 3l6-6C34.5 5.1 29.6 3 24 3 16.3 3 9.7 7.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 45c5.5 0 10.4-1.9 14.2-5.1l-6.6-5.4C29.6 36.4 27 37 24 37c-5.3 0-9.7-3.4-11.3-8.1l-6.5 5C9.6 40.5 16.2 45 24 45z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.2 4.3-4.1 5.7l6.6 5.4C41.8 36 45 30.4 45 24c0-1.2-.1-2.3-.4-3.5z"/></svg>
+          <span data-i18n="login.google">Continue with Google</span>
+        </button>
+        <div class="auth-divider" data-i18n="login.or">or</div>
+        <form id="signupForm">
+          <div class="field">
+            <label for="signupName" data-i18n="contact.form.name">Full name</label>
+            <input id="signupName" type="text" required autocomplete="name" />
+          </div>
+          <div class="field">
+            <label for="signupEmail" data-i18n="contact.form.email">Email</label>
+            <input id="signupEmail" type="email" required autocomplete="email" />
+          </div>
+          <div class="field">
+            <label for="signupPassword" data-i18n="login.password">Password</label>
+            <input id="signupPassword" type="password" required autocomplete="new-password" minlength="6" />
+          </div>
+          <button type="submit" class="btn btn-primary btn-block" data-i18n="login.signup.submit">Create account</button>
+          <div id="signupNote" class="form-note"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer id="site-footer"></footer>
+
+<script type="module">
+  import { mountChrome } from "./js/chrome.js";
+  import { registerDict, applyI18n, initLangSwitch } from "./js/i18n.js";
+  import { initCookieBanner } from "./js/cookies.js";
+
+  registerDict({
+    en: {
+      "login.tab.signin": "Sign in", "login.tab.signup": "Create account", "login.google": "Continue with Google", "login.or": "or",
+      "login.password": "Password", "login.signin.submit": "Sign in", "login.forgot": "Forgot your password?", "login.signup.submit": "Create account",
+    },
+    bg: {
+      "login.tab.signin": "Вход", "login.tab.signup": "Регистрация", "login.google": "Продължи с Google", "login.or": "или",
+      "login.password": "Парола", "login.signin.submit": "Вход", "login.forgot": "Забравена парола?", "login.signup.submit": "Регистрирай се",
+    },
+  });
+
+  mountChrome();
+  applyI18n();
+  initLangSwitch();
+  initCookieBanner();
+</script>
+<script type="module" src="js/login.js"></script>
+</body>
+</html>

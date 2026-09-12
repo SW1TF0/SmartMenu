@@ -1,11 +1,11 @@
 {
-  "name": "SmartMenuKJ — Technology Execution Enterprise",
+  "name": "SmartMenuKJ — Web, 3D Printing, Smart Home, Cameras, Menus & PC Service",
   "short_name": "SmartMenuKJ",
-  "description": "Web Development · 3D Printing · Automation · SmartMenus for Restaurants",
+  "description": "Web Development · 3D Printing · Smart Home & Business Automation · Camera Systems · Digital Smart Menus · PC & Printer Service",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#05070d",
-  "theme_color": "#05070d",
+  "background_color": "#0a0e14",
+  "theme_color": "#0a0e14",
   "icons": [
     { "src": "/favicon.png", "sizes": "192x192", "type": "image/png" },
     { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },

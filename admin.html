@@ -1,132 +1,89 @@
-<!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<!doctype html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data:; connect-src 'self' https://*.supabase.co; object-src 'none'; base-uri 'self'; form-action 'self'; frame-src 'none'; upgrade-insecure-requests" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="robots" content="noindex" />
-  <title>Admin · SmartMenuKJ</title>
-  <link rel="icon" href="/favicon.ico" sizes="any" />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <link rel="icon" type="image/png" sizes="192x192" href="/favicon.png" />
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha384-PPIZEGYM1v8zp5Py7UjFb79S58UeqCL9pYVnVPURKEqvioPROaVAJKKLzvH2rDnI" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <!-- No CSS framework — styles.css provides everything (incl. utility shims) -->
-  <link rel="stylesheet" href="styles.css" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Admin — SmartMenuKJ</title>
+<meta name="robots" content="noindex, nofollow" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css" />
 </head>
-<body class="bg-ink-950 text-slate-200 font-sans antialiased min-h-screen">
-  <div class="admin-bg" aria-hidden="true"></div>
+<body>
 
-  <!-- Top bar -->
-  <header class="admin-topbar">
-    <a href="index.html" class="flex items-center gap-3" aria-label="SmartMenuKJ home">
-      <span class="logo-mark"><i class="fa-solid fa-bolt"></i></span>
-      <span class="font-display font-extrabold tracking-tight text-white text-lg">Smart<span class="text-web">Menu</span><span class="text-menu">KJ</span></span>
-      <span class="admin-badge">Admin</span>
-    </a>
-    <div class="flex items-center gap-3">
-      <a href="index.html" class="btn-ghost"><i class="fa-solid fa-arrow-left mr-2"></i>Back to site</a>
-      <button id="admin-logout" class="btn-ghost hide"><i class="fa-solid fa-right-from-bracket mr-2"></i>Log out</button>
+<header id="site-header" data-active="admin.html"></header>
+
+<main>
+  <section class="page-hero" style="padding:56px 0 32px;">
+    <div class="container" style="text-align:left;">
+      <h1 class="h-lg mt-0">Admin dashboard</h1>
+      <p class="lede">Leads, quote requests and registered users for SmartMenuKJ.</p>
     </div>
-  </header>
+  </section>
 
-  <main class="admin-main">
-    <!-- Login state -->
-    <section id="admin-login" class="admin-login">
-      <div class="admin-login-card">
-        <span class="logo-mark logo-mark--lg mx-auto"><i class="fa-solid fa-lock"></i></span>
-        <h1 class="admin-login-title">Admin access</h1>
-        <p class="admin-login-sub">Sign in with an authorized administrator account.</p>
-        <form id="admin-login-form" novalidate>
-          <div class="field">
-            <label>Email</label>
-            <div class="input-icon"><i class="fa-solid fa-envelope"></i><input type="email" name="email" required placeholder="you@smartmenukj.com" /></div>
+  <section class="section" style="padding-top:0;">
+    <div class="container">
+      <div id="adminGuard" class="empty-state hidden">
+        <h3>Admins only</h3>
+        <p>Sign in with the admin account to view this page.</p>
+        <a href="login.html?next=admin.html" class="btn btn-primary">Log in</a>
+      </div>
+
+      <div id="adminContent" class="hidden">
+        <div class="dash-stats">
+          <div class="dash-stat"><b id="statTotalLeads">0</b><span>Total leads</span></div>
+          <div class="dash-stat"><b id="statNewLeads">0</b><span>New / unhandled</span></div>
+          <div class="dash-stat"><b id="statWeek">0</b><span>Leads this week</span></div>
+          <div class="dash-stat"><b id="statUsers">0</b><span>Registered users</span></div>
+        </div>
+
+        <div class="tab-row">
+          <button class="tab-btn active" data-tab="tabLeads">Leads</button>
+          <button class="tab-btn" data-tab="tabUsers">Users</button>
+        </div>
+
+        <div id="tabLeads" class="tab-panel active">
+          <div class="flex justify-between items-center" style="margin-bottom:16px;">
+            <h3 class="mb-0">Leads &amp; quote requests</h3>
+            <button id="exportCsv" class="btn btn-ghost btn-sm">Export CSV</button>
           </div>
-          <div class="field mt-4">
-            <label>Password</label>
-            <div class="input-icon"><i class="fa-solid fa-lock"></i><input type="password" name="password" required placeholder="••••••••" /><button type="button" class="pw-toggle" aria-label="Show password"><i class="fa-solid fa-eye"></i></button></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Date</th><th>Name</th><th>Email</th><th>Phone</th><th>Service</th><th>Message</th><th>Status</th><th></th></tr></thead>
+              <tbody id="leadsBody"></tbody>
+            </table>
           </div>
-          <p class="auth-error" id="admin-login-error" hidden><i class="fa-solid fa-circle-exclamation"></i> <span></span></p>
-          <button type="submit" class="btn-primary btn-lg w-full justify-center mt-5"><span>Sign in</span></button>
-        </form>
-        <p class="admin-mode-note" id="admin-mode-note"></p>
-      </div>
-    </section>
-
-    <!-- Denied state -->
-    <section id="admin-denied" class="admin-denied hide">
-      <i class="fa-solid fa-shield-halved"></i>
-      <h1>Access restricted</h1>
-      <p>This account is not authorized for the admin panel. Sign in with an administrator account.</p>
-      <button class="btn-outline btn-lg mt-6" id="admin-denied-logout"><i class="fa-solid fa-right-from-bracket mr-2"></i>Switch account</button>
-    </section>
-
-    <!-- Dashboard state -->
-    <section id="admin-dashboard" class="admin-dashboard hide">
-      <div class="admin-head">
-        <div>
-          <h1 class="admin-h1">Dashboard</h1>
-          <p class="admin-sub" id="admin-welcome">Welcome back.</p>
+          <div id="leadsEmpty" class="empty-state hidden"><p>No leads yet.</p></div>
         </div>
-        <div class="flex items-center gap-2">
-          <span class="admin-source" id="admin-source"></span>
-          <button class="btn-ghost" id="admin-refresh"><i class="fa-solid fa-rotate mr-2"></i>Refresh</button>
+
+        <div id="tabUsers" class="tab-panel">
+          <h3 style="margin-bottom:16px;">Registered users</h3>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Name</th><th>Email</th><th>Registered</th></tr></thead>
+              <tbody id="usersBody"></tbody>
+            </table>
+          </div>
+          <div id="usersEmpty" class="empty-state hidden"><p>No registered users yet.</p></div>
         </div>
       </div>
+    </div>
+  </section>
+</main>
 
-      <!-- Metric cards -->
-      <div class="admin-metrics">
-        <div class="admin-metric"><span class="admin-metric-icon" data-c="web"><i class="fa-solid fa-eye"></i></span><div><div class="admin-metric-num" id="m-views">—</div><div class="admin-metric-lbl">Total views</div></div></div>
-        <div class="admin-metric"><span class="admin-metric-icon" data-c="print"><i class="fa-solid fa-calendar-day"></i></span><div><div class="admin-metric-num" id="m-today">—</div><div class="admin-metric-lbl">Views today</div></div></div>
-        <div class="admin-metric"><span class="admin-metric-icon" data-c="auto"><i class="fa-solid fa-users"></i></span><div><div class="admin-metric-num" id="m-users">—</div><div class="admin-metric-lbl">Registered users</div></div></div>
-        <div class="admin-metric"><span class="admin-metric-icon" data-c="menu"><i class="fa-solid fa-inbox"></i></span><div><div class="admin-metric-num" id="m-inq">—</div><div class="admin-metric-lbl">Contact inquiries</div></div></div>
-      </div>
+<footer id="site-footer"></footer>
 
-      <!-- Views chart -->
-      <div class="admin-panel">
-        <div class="admin-panel-head"><h2>Views — last 14 days</h2></div>
-        <div class="admin-chart" id="admin-chart"></div>
-      </div>
-
-      <!-- Inquiries -->
-      <div class="admin-panel">
-        <div class="admin-panel-head">
-          <h2>Contact inquiries (<span id="inq-count">0</span>)</h2>
-          <button class="btn-ghost btn-sm" id="export-inq"><i class="fa-solid fa-file-csv mr-2"></i>Export CSV</button>
-        </div>
-        <div class="admin-table-wrap">
-          <table class="admin-table" id="inq-table">
-            <thead><tr><th>Date</th><th>Name</th><th>Email</th><th>Service</th><th>Message</th></tr></thead>
-            <tbody id="inq-body"></tbody>
-          </table>
-          <p class="admin-empty" id="inq-empty" hidden>No inquiries yet.</p>
-        </div>
-      </div>
-
-      <!-- Users -->
-      <div class="admin-panel">
-        <div class="admin-panel-head">
-          <h2>Registered users (<span id="users-count">0</span>)</h2>
-          <button class="btn-ghost btn-sm" id="export-users"><i class="fa-solid fa-file-csv mr-2"></i>Export CSV</button>
-        </div>
-        <div class="admin-table-wrap">
-          <table class="admin-table" id="users-table">
-            <thead><tr><th>Name</th><th>Email</th><th>Joined</th></tr></thead>
-            <tbody id="users-body"></tbody>
-          </table>
-          <p class="admin-empty" id="users-empty" hidden>No users yet.</p>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <div id="toast" class="toast" role="status" aria-live="polite"></div>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.2/dist/umd/supabase.min.js" integrity="sha384-sgcvElP/LlNRtORGYFLO/9K/bENcpJK19HgvqslWXog6d8f/Va4TpltGiBlGntCM" crossorigin="anonymous"></script>
-  <script src="config.js"></script>
-  <script src="admin.js"></script>
+<script type="module">
+  import { mountChrome } from "./js/chrome.js";
+  import { applyI18n, initLangSwitch } from "./js/i18n.js";
+  import { initCookieBanner } from "./js/cookies.js";
+  mountChrome();
+  applyI18n();
+  initLangSwitch();
+  initCookieBanner();
+</script>
+<script type="module" src="js/admin.js"></script>
 </body>
 </html>

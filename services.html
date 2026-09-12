@@ -16,12 +16,12 @@
   .svc-block { display: grid; grid-template-columns: .9fr 1.1fr; gap: 48px; align-items: start; }
   @media (max-width: 860px) { .svc-block { grid-template-columns: 1fr; } }
   .svc-icon-lg { width: 68px; height: 68px; border-radius: 18px; display:flex; align-items:center; justify-content:center;
-    background: linear-gradient(135deg, rgba(45,212,200,.18), rgba(79,141,255,.14)); color: var(--accent); margin-bottom: 20px; }
+    background: var(--svc-soft, var(--accent-soft)); color: var(--svc, var(--accent)); margin-bottom: 20px; }
   .svc-icon-lg svg { width: 34px; height: 34px; }
   .feat-list { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 20px; margin: 22px 0 26px; }
   @media (max-width: 560px) { .feat-list { grid-template-columns: 1fr; } }
   .feat-list li { display: flex; gap: 10px; align-items: flex-start; font-size: 14.5px; color: var(--text-dim); }
-  .feat-list svg { width: 18px; height: 18px; color: var(--accent); flex-shrink: 0; margin-top: 2px; }
+  .feat-list svg { width: 18px; height: 18px; color: var(--svc, var(--accent)); flex-shrink: 0; margin-top: 2px; }
   .svc-anchor { padding-top: 90px; margin-top: -90px; }
 </style>
 </head>
@@ -37,19 +37,19 @@
       <h1 class="h-lg" data-i18n="svcpage.title">Everything runs through one team.</h1>
       <p class="lede center" data-i18n="svcpage.lede">Pick one service to start, or combine several — most of our clients do.</p>
       <div class="hero-actions" style="justify-content:center;">
-        <a href="#web" data-i18n="svc.web" class="pill accent">Web Development</a>
-        <a href="#print3d" data-i18n="svc.print3d" class="pill accent">3D Printing</a>
-        <a href="#smarthome" data-i18n="svc.smarthome" class="pill accent">Smart Home &amp; Business</a>
-        <a href="#cameras" data-i18n="svc.cameras" class="pill accent">Camera &amp; Security</a>
-        <a href="#menu" data-i18n="svc.menu" class="pill accent">Digital Smart Menus</a>
-        <a href="#pc" data-i18n="svc.pc" class="pill accent">PC &amp; Printer Service</a>
+        <a href="#web" data-i18n="svc.web" class="pill accent c-web">Web Development</a>
+        <a href="#print3d" data-i18n="svc.print3d" class="pill accent c-print3d">3D Printing</a>
+        <a href="#smarthome" data-i18n="svc.smarthome" class="pill accent c-smarthome">Smart Home &amp; Business</a>
+        <a href="#cameras" data-i18n="svc.cameras" class="pill accent c-cameras">Camera &amp; Security</a>
+        <a href="#menu" data-i18n="svc.menu" class="pill accent c-menu">Digital Smart Menus</a>
+        <a href="#pc" data-i18n="svc.pc" class="pill accent c-pc">PC &amp; Printer Service</a>
       </div>
     </div>
   </section>
 
   <!-- WEB -->
   <section class="section svc-anchor" id="web">
-    <div class="container svc-block reveal">
+    <div class="container svc-block reveal c-web">
       <div>
         <div class="svc-icon-lg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 5h16v11H4z"/><path d="M2 19h20M9 8h6M9 11h4"/></svg></div>
         <div class="eyebrow" data-i18n="svc.web">Web Development</div>
@@ -65,14 +65,14 @@
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg><span data-i18n="web.f5">Cloud backends (Firebase) when needed</span></li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg><span data-i18n="web.f6">Hosting &amp; ongoing maintenance</span></li>
         </ul>
-        <a href="contact.html?service=web#quote" class="btn btn-primary" data-i18n="svcpage.cta">Get a quote for this</a>
+        <a href="contact.html?service=web#quote" class="btn btn-svc" data-i18n="svcpage.cta">Get a quote for this</a>
       </div>
     </div>
   </section>
 
   <!-- 3D PRINTING -->
   <section class="section section-alt svc-anchor" id="print3d">
-    <div class="container svc-block reveal">
+    <div class="container svc-block reveal c-print3d">
       <div>
         <div class="svc-icon-lg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5M12 12v10"/></svg></div>
         <div class="eyebrow" data-i18n="svc.print3d">3D Printing</div>
@@ -88,14 +88,14 @@
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg><span data-i18n="print.f5">Functional &amp; decorative prints</span></li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg><span data-i18n="print.f6">Free design consultation</span></li>
         </ul>
-        <a href="contact.html?service=print3d#quote" class="btn btn-primary" data-i18n="svcpage.cta">Get a quote for this</a>
+        <a href="contact.html?service=print3d#quote" class="btn btn-svc" data-i18n="svcpage.cta">Get a quote for this</a>
       </div>
     </div>
   </section>
 
   <!-- SMART HOME -->
   <section class="section svc-anchor" id="smarthome">
-    <div class="container svc-block reveal">
+    <div class="container svc-block reveal c-smarthome">
       <div>
         <div class="svc-icon-lg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg></div>
         <div class="eyebrow" data-i18n="svc.smarthome">Smart Home &amp; Business</div>
@@ -111,14 +111,14 @@
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg><span data-i18n="sh.f5">Custom automation routines</span></li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg><span data-i18n="sh.f6">Control from anywhere</span></li>
         </ul>
-        <a href="contact.html?service=smarthome#quote" class="btn btn-primary" data-i18n="svcpage.cta">Get a quote for this</a>
+        <a href="contact.html?service=smarthome#quote" class="btn btn-svc" data-i18n="svcpage.cta">Get a quote for this</a>
       </div>
     </div>
   </section>
 
   <!-- CAMERAS -->
   <section class="section section-alt svc-anchor" id="cameras">
-    <div class="container svc-block reveal">
+    <div class="container svc-block reveal c-cameras">
       <div>
         <div class="svc-icon-lg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="14" height="11" rx="2"/><path d="M17 10l4-2v9l-4-2"/></svg></div>
         <div class="eyebrow" data-i18n="svc.cameras">Camera &amp; Security Systems</div>
@@ -134,14 +134,14 @@
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg><span data-i18n="cam.f5">Night vision coverage</span></li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg><span data-i18n="cam.f6">Ties into your smart home setup</span></li>
         </ul>
-        <a href="contact.html?service=cameras#quote" class="btn btn-primary" data-i18n="svcpage.cta">Get a quote for this</a>
+        <a href="contact.html?service=cameras#quote" class="btn btn-svc" data-i18n="svcpage.cta">Get a quote for this</a>
       </div>
     </div>
   </section>
 
   <!-- SMART MENU -->
   <section class="section svc-anchor" id="menu">
-    <div class="container svc-block reveal">
+    <div class="container svc-block reveal c-menu">
       <div>
         <div class="svc-icon-lg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></div>
         <div class="eyebrow" data-i18n="svc.menu">Digital Smart Menus</div>
@@ -157,14 +157,14 @@
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg><span data-i18n="menu.f5">Works on any smartphone</span></li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg><span data-i18n="menu.f6">Insights on popular dishes</span></li>
         </ul>
-        <a href="contact.html?service=menu#quote" class="btn btn-primary" data-i18n="svcpage.cta">Get a quote for this</a>
+        <a href="contact.html?service=menu#quote" class="btn btn-svc" data-i18n="svcpage.cta">Get a quote for this</a>
       </div>
     </div>
   </section>
 
   <!-- PC & PRINTER -->
   <section class="section section-alt svc-anchor" id="pc">
-    <div class="container svc-block reveal">
+    <div class="container svc-block reveal c-pc">
       <div>
         <div class="svc-icon-lg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg></div>
         <div class="eyebrow" data-i18n="svc.pc">PC &amp; Printer Service</div>
@@ -180,7 +180,7 @@
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg><span data-i18n="pc.f5">Data backup &amp; recovery</span></li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg><span data-i18n="pc.f6">Home &amp; office network setup</span></li>
         </ul>
-        <a href="contact.html?service=pc#quote" class="btn btn-primary" data-i18n="svcpage.cta">Get a quote for this</a>
+        <a href="contact.html?service=pc#quote" class="btn btn-svc" data-i18n="svcpage.cta">Get a quote for this</a>
       </div>
     </div>
   </section>

@@ -26,6 +26,7 @@
   --shadow: 0 24px 60px -30px rgba(20, 22, 26, 0.18);
   --shadow-sm: 0 8px 24px -12px rgba(20, 22, 26, 0.12);
   --font-head: "Manrope", "Inter", sans-serif;
+  --font-display: "Fraunces", ui-serif, Georgia, serif;
   --font-body: "Inter", sans-serif;
   --max: 1180px;
 
@@ -62,7 +63,7 @@ a, button { touch-action: manipulation; }
   * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }
 
-h1, h2, h3, h4 { font-family: var(--font-head); font-weight: 800; line-height: 1.15; margin: 0 0 .5em; letter-spacing: -0.015em; color: var(--text); }
+h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height: 1.12; margin: 0 0 .5em; letter-spacing: -0.01em; color: var(--text); }
 p { margin: 0 0 1em; color: var(--text-dim); }
 a { color: inherit; text-decoration: none; }
 img { max-width: 100%; display: block; }
@@ -182,8 +183,8 @@ h2.h-lg { font-size: clamp(30px, 4.6vw, 50px); letter-spacing: -0.025em; }
 }
 .hero-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 56px; align-items: center; position: relative; z-index: 1; }
 @media (max-width: 960px) { .hero-grid { grid-template-columns: 1fr; } }
-.hero h1 { font-size: clamp(38px, 6.2vw, 76px); letter-spacing: -0.03em; line-height: 1.05; }
-.hero .rotator { background: linear-gradient(100deg, var(--accent), var(--accent-light)); -webkit-background-clip: text; background-clip: text; color: transparent; position: relative; display: inline-block; }
+.hero h1 { font-size: clamp(38px, 6vw, 72px); letter-spacing: -0.015em; line-height: 1.06; }
+.hero .rotator { background: linear-gradient(100deg, var(--accent), var(--accent-light)); -webkit-background-clip: text; background-clip: text; color: transparent; position: relative; display: inline-block; font-style: italic; }
 .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
 .hero-stats { display: flex; gap: 32px; margin-top: 44px; flex-wrap: wrap; padding-top: 32px; border-top: 1px solid var(--border); }
 .hero-stats .stat b { display: block; font-family: var(--font-head); font-size: 28px; color: var(--text); letter-spacing: -.02em; }
@@ -308,12 +309,12 @@ h2.h-lg { font-size: clamp(30px, 4.6vw, 50px); letter-spacing: -0.025em; }
 /* Founder pull-quote */
 .pullquote-wrap { max-width: 780px; margin: 0 auto; text-align: center; position: relative; }
 .pullquote-wrap .qmark {
-  font-family: var(--font-head); font-size: 120px; line-height: 1; font-weight: 800;
-  color: var(--accent-soft); position: absolute; top: -58px; left: 50%; transform: translateX(-50%); z-index: 0; user-select: none;
+  font-family: var(--font-display); font-style: italic; font-size: 130px; line-height: 1; font-weight: 600;
+  color: var(--accent-soft); position: absolute; top: -62px; left: 50%; transform: translateX(-50%); z-index: 0; user-select: none;
 }
 .pullquote-wrap blockquote {
-  font-family: var(--font-head); font-weight: 700; font-size: clamp(21px, 2.8vw, 30px); line-height: 1.45;
-  color: var(--text); margin: 0 0 26px; position: relative; z-index: 1; letter-spacing: -0.015em;
+  font-family: var(--font-display); font-style: italic; font-weight: 500; font-size: clamp(22px, 3vw, 32px); line-height: 1.4;
+  color: var(--text); margin: 0 0 26px; position: relative; z-index: 1; letter-spacing: -0.005em;
 }
 .pullquote-who { display: flex; align-items: center; justify-content: center; gap: 12px; }
 .pullquote-who .avatar { width: 46px; height: 46px; border-radius: 50%; background: var(--text); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-family: var(--font-head); flex-shrink: 0; }

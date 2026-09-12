@@ -114,12 +114,25 @@ function footerHTML() {
   </div>`;
 }
 
+function mobileCtaHTML() {
+  return `
+  <a href="tel:+359885348666" class="btn btn-ghost btn-sm" data-i18n="mobilecta.call">Call</a>
+  <a href="contact.html#quote" class="btn btn-primary btn-block" data-i18n="nav.quote">Get a Quote</a>`;
+}
+
 export function mountChrome() {
   const header = document.getElementById("site-header");
   const footer = document.getElementById("site-footer");
   const active = header ? header.getAttribute("data-active") : "";
   if (header) header.innerHTML = headerHTML(active);
   if (footer) footer.innerHTML = footerHTML();
+
+  if (header && !header.hasAttribute("data-hide-mobile-cta") && !document.querySelector(".mobile-cta-bar")) {
+    const bar = document.createElement("div");
+    bar.className = "mobile-cta-bar";
+    bar.innerHTML = mobileCtaHTML();
+    document.body.appendChild(bar);
+  }
 
   const toggle = document.getElementById("navToggle");
   const links = document.getElementById("navLinks");

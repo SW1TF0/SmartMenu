@@ -50,6 +50,7 @@ export const COMMON = {
     "contact.form.name": "Full name",
     "contact.form.email": "Email",
     "ctaband.cta1": "Start a project",
+    "mobilecta.call": "Call",
   },
   bg: {
     "nav.home": "Начало",
@@ -86,6 +87,7 @@ export const COMMON = {
     "contact.form.name": "Име",
     "contact.form.email": "Имейл",
     "ctaband.cta1": "Започни проект",
+    "mobilecta.call": "Обади се",
   },
 };
 

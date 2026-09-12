@@ -1,0 +1,64 @@
+rules_version = '2';
+
+// ============================================================================
+// Firestore security rules — SmartMenuKJ
+// ----------------------------------------------------------------------------
+// Collections:
+//   users  { uid, name, email, createdAt }   — one doc per account, id = uid
+//   leads  { name, email, phone, service, message, uid, status, createdAt }
+//          — contact form + service quote requests. Anyone can create one;
+//            the submitter (if signed in) and admins can read; only admins
+//            can update (status) or delete.
+//
+// Admin check supports EITHER strategy described in js/firebase-config.js:
+//   1) email allowlist (isAdminEmail) — matches ADMIN_EMAILS in code
+//   2) custom claim `admin: true` (isAdminClaim) — for a future Cloud Function
+// ============================================================================
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdminClaim() {
+      return isSignedIn() && request.auth.token.admin == true;
+    }
+
+    function isAdminEmail() {
+      // Keep in sync with ADMIN_EMAILS in js/firebase-config.js
+      return isSignedIn() && request.auth.token.email in [
+        "krasimiruzun@smartmenukj.com"
+      ];
+    }
+
+    function isAdmin() {
+      return isAdminClaim() || isAdminEmail();
+    }
+
+    // A member can create/read/update only their own profile doc
+    // (id === auth uid). Admins can read all (needed for the admin panel).
+    match /users/{userId} {
+      allow create: if isSignedIn() && request.auth.uid == userId;
+      allow read: if isSignedIn() && (request.auth.uid == userId || isAdmin());
+      allow update: if isSignedIn() && request.auth.uid == userId;
+      allow delete: if isAdmin();
+    }
+
+    // Contact form + service quote requests: anyone can submit (create-only
+    // for the public). The signed-in submitter can read/track their own
+    // leads (used by account.html); only admins can read all, update status,
+    // or delete.
+    match /leads/{leadId} {
+      allow create: if request.resource.data.keys().hasAll(["name", "email", "message", "service", "status"])
+                    && request.resource.data.name is string && request.resource.data.name.size() > 0 && request.resource.data.name.size() < 200
+                    && request.resource.data.email is string && request.resource.data.email.size() > 0 && request.resource.data.email.size() < 200
+                    && request.resource.data.message is string && request.resource.data.message.size() > 0 && request.resource.data.message.size() < 5000
+                    && request.resource.data.status == "new"
+                    && (request.resource.data.uid == null || (isSignedIn() && request.resource.data.uid == request.auth.uid));
+      allow read: if isAdmin() || (isSignedIn() && resource.data.uid == request.auth.uid);
+      allow update, delete: if isAdmin();
+    }
+  }
+}

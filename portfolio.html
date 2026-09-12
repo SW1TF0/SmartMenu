@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Our Work — SmartMenuKJ</title>
+<meta name="description" content="A look at the kind of web, 3D printing, smart home, camera, digital menu and PC/printer projects SmartMenuKJ builds for clients in Kardzhali and across Bulgaria." />
+<link rel="canonical" href="https://www.smartmenukj.com/portfolio.html" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css" />
+<style>
+  .filter-row { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-bottom: 40px; }
+  .proj-thumb { height: 150px; border-radius: 12px; margin: -30px -30px 20px; display: flex; align-items: center; justify-content: center; }
+  .proj-thumb svg { width: 44px; height: 44px; color: rgba(255,255,255,.8); }
+</style>
+</head>
+<body>
+
+<header id="site-header" data-active="portfolio.html"></header>
+
+<main>
+  <section class="page-hero">
+    <div class="container">
+      <div class="crumbs"><a href="index.html" data-i18n="nav.home">Home</a> / <span data-i18n="nav.portfolio">Work</span></div>
+      <div class="eyebrow center" data-i18n="folio.eyebrow">Our work</div>
+      <h1 class="h-lg" data-i18n="folio.title">The kind of projects we build.</h1>
+      <p class="lede center" data-i18n="folio.lede">A snapshot across all six services. Full case studies and client names available on request.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="filter-row reveal">
+        <button class="tab-btn active" data-filter="all" data-i18n="folio.filter.all">All</button>
+        <button class="tab-btn" data-filter="web" data-i18n="svc.web">Web Development</button>
+        <button class="tab-btn" data-filter="print3d" data-i18n="svc.print3d">3D Printing</button>
+        <button class="tab-btn" data-filter="smarthome" data-i18n="svc.smarthome">Smart Home &amp; Business</button>
+        <button class="tab-btn" data-filter="cameras" data-i18n="svc.cameras">Camera &amp; Security</button>
+        <button class="tab-btn" data-filter="menu" data-i18n="svc.menu">Digital Smart Menus</button>
+        <button class="tab-btn" data-filter="pc" data-i18n="svc.pc">PC &amp; Printer Service</button>
+      </div>
+
+      <div class="grid grid-3" id="projGrid">
+        <div class="card reveal" data-cat="menu">
+          <div class="proj-thumb" style="background:linear-gradient(135deg,#2dd4c8,#1a8f86);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></div>
+          <span class="pill accent" data-i18n="svc.menu">Digital Smart Menus</span>
+          <h3 style="margin-top:12px;" data-i18n="folio.p1.title">Café digital menu &amp; QR system</h3>
+          <p data-i18n="folio.p1.desc">A full QR menu rollout for a Kardzhali café, with live specials and instant price updates.</p>
+        </div>
+        <div class="card reveal" data-cat="smarthome">
+          <div class="proj-thumb" style="background:linear-gradient(135deg,#4f8dff,#2a4f9c);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg></div>
+          <span class="pill accent" data-i18n="svc.smarthome">Smart Home &amp; Business</span>
+          <h3 style="margin-top:12px;" data-i18n="folio.p2.title">Whole-home automation retrofit</h3>
+          <p data-i18n="folio.p2.desc">Lighting, heating and access control unified into a single app for a family home.</p>
+        </div>
+        <div class="card reveal" data-cat="print3d">
+          <div class="proj-thumb" style="background:linear-gradient(135deg,#f5a524,#a56b0f);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5M12 12v10"/></svg></div>
+          <span class="pill accent" data-i18n="svc.print3d">3D Printing</span>
+          <h3 style="margin-top:12px;" data-i18n="folio.p3.title">Discontinued appliance part, reprinted</h3>
+          <p data-i18n="folio.p3.desc">Reverse-engineered a broken bracket and 3D-printed a full replacement run.</p>
+        </div>
+        <div class="card reveal" data-cat="web">
+          <div class="proj-thumb" style="background:linear-gradient(135deg,#2dd4c8,#4f8dff);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h16v11H4z"/><path d="M2 19h20M9 8h6M9 11h4"/></svg></div>
+          <span class="pill accent" data-i18n="svc.web">Web Development</span>
+          <h3 style="margin-top:12px;" data-i18n="folio.p4.title">Booking site for a local service business</h3>
+          <p data-i18n="folio.p4.desc">A fast, mobile-first site with an online booking form and automatic confirmation emails.</p>
+        </div>
+        <div class="card reveal" data-cat="cameras">
+          <div class="proj-thumb" style="background:linear-gradient(135deg,#f2555a,#7d1f22);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="14" height="11" rx="2"/><path d="M17 10l4-2v9l-4-2"/></svg></div>
+          <span class="pill accent" data-i18n="svc.cameras">Camera &amp; Security</span>
+          <h3 style="margin-top:12px;" data-i18n="folio.p5.title">Shop-front camera &amp; remote monitoring</h3>
+          <p data-i18n="folio.p5.desc">Four-camera IP system with phone alerts and two weeks of local recording.</p>
+        </div>
+        <div class="card reveal" data-cat="pc">
+          <div class="proj-thumb" style="background:linear-gradient(135deg,#93a1ae,#3b4652);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg></div>
+          <span class="pill accent" data-i18n="svc.pc">PC &amp; Printer Service</span>
+          <h3 style="margin-top:12px;" data-i18n="folio.p6.title">Small office network &amp; PC refresh</h3>
+          <p data-i18n="folio.p6.desc">Upgraded five workstations, set up a shared printer, and cleaned up the office Wi-Fi.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container">
+      <div class="cta-band reveal">
+        <h2 class="h-lg" data-i18n="folio.cta.title">Want your project on this list?</h2>
+        <div class="hero-actions" style="justify-content:center;">
+          <a href="contact.html#quote" class="btn btn-primary" data-i18n="ctaband.cta1">Start a project</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer id="site-footer"></footer>
+
+<script type="module">
+  import { mountChrome } from "./js/chrome.js";
+  import { registerDict, applyI18n, initLangSwitch } from "./js/i18n.js";
+  import { initCookieBanner } from "./js/cookies.js";
+  import { initReveal } from "./js/site.js";
+
+  registerDict({
+    en: {
+      "folio.eyebrow": "Our work", "folio.title": "The kind of projects we build.",
+      "folio.lede": "A snapshot across all six services. Full case studies and client names available on request.",
+      "folio.filter.all": "All",
+      "folio.p1.title": "Café digital menu & QR system", "folio.p1.desc": "A full QR menu rollout for a Kardzhali café, with live specials and instant price updates.",
+      "folio.p2.title": "Whole-home automation retrofit", "folio.p2.desc": "Lighting, heating and access control unified into a single app for a family home.",
+      "folio.p3.title": "Discontinued appliance part, reprinted", "folio.p3.desc": "Reverse-engineered a broken bracket and 3D-printed a full replacement run.",
+      "folio.p4.title": "Booking site for a local service business", "folio.p4.desc": "A fast, mobile-first site with an online booking form and automatic confirmation emails.",
+      "folio.p5.title": "Shop-front camera & remote monitoring", "folio.p5.desc": "Four-camera IP system with phone alerts and two weeks of local recording.",
+      "folio.p6.title": "Small office network & PC refresh", "folio.p6.desc": "Upgraded five workstations, set up a shared printer, and cleaned up the office Wi-Fi.",
+      "folio.cta.title": "Want your project on this list?",
+    },
+    bg: {
+      "folio.eyebrow": "Нашите проекти", "folio.title": "Какви проекти изграждаме.",
+      "folio.lede": "Примери от всичките шест услуги. Пълни казуси и имена на клиенти — при поискване.",
+      "folio.filter.all": "Всички",
+      "folio.p1.title": "Дигитално меню и QR система за кафене", "folio.p1.desc": "Пълно внедряване на QR меню за кафене в Кърджали, с оферти на живо и мигновени промени в цените.",
+      "folio.p2.title": "Автоматизация на цял дом", "folio.p2.desc": "Осветление, отопление и контрол на достъпа в едно приложение за семеен дом.",
+      "folio.p3.title": "Спряна от производство част, отпечатана наново", "folio.p3.desc": "Възпроизведохме счупена скоба и отпечатахме цяла серия резервни части.",
+      "folio.p4.title": "Сайт за резервации за локален бизнес", "folio.p4.desc": "Бърз, mobile-first сайт с онлайн форма за резервации и автоматични имейли за потвърждение.",
+      "folio.p5.title": "Камери за магазин и отдалечено наблюдение", "folio.p5.desc": "IP система с четири камери, известия на телефона и две седмици локален запис.",
+      "folio.p6.title": "Мрежа и обновяване на компютри за малък офис", "folio.p6.desc": "Обновихме пет работни станции, настроихме споделен принтер и оправихме офис Wi-Fi.",
+      "folio.cta.title": "Искате вашият проект да е в списъка?",
+    },
+  });
+
+  mountChrome();
+  applyI18n();
+  initLangSwitch();
+  initCookieBanner();
+  initReveal();
+
+  document.querySelectorAll(".filter-row .tab-btn").forEach((btn) =>
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".filter-row .tab-btn").forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+      const filter = btn.getAttribute("data-filter");
+      document.querySelectorAll("#projGrid .card").forEach((card) => {
+        card.style.display = filter === "all" || card.getAttribute("data-cat") === filter ? "" : "none";
+      });
+    })
+  );
+</script>
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>My Account — SmartMenuKJ</title>
+<meta name="robots" content="noindex" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<header id="site-header" data-active="account.html"></header>
+
+<main>
+  <section class="page-hero" style="padding-bottom:0;">
+    <div class="container">
+      <div class="eyebrow center" data-i18n="acct.eyebrow">Your account</div>
+      <h1 class="h-lg" data-i18n="acct.title">Account</h1>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div id="accountGuard" class="empty-state hidden reveal in">
+        <h3 data-i18n="acct.guard.title">You need to sign in first.</h3>
+        <p data-i18n="acct.guard.desc">Log in or create an account to view your requests.</p>
+        <a href="login.html?next=account.html" class="btn btn-primary" data-i18n="nav.login">Log in</a>
+      </div>
+
+      <div id="accountContent" class="hidden reveal in">
+        <div class="grid grid-2" style="align-items:start; margin-bottom:40px;">
+          <div class="card">
+            <h3 data-i18n="acct.profile.title" style="margin-bottom:18px;">Profile</h3>
+            <form id="profileForm">
+              <div class="field">
+                <label for="acctName" data-i18n="contact.form.name">Full name</label>
+                <input id="acctName" type="text" />
+              </div>
+              <div class="field">
+                <label data-i18n="contact.form.email">Email</label>
+                <div id="acctEmail" style="padding:13px 15px; border-radius:10px; background:var(--bg); border:1px solid var(--border);"></div>
+              </div>
+              <button type="submit" class="btn btn-primary" data-i18n="acct.profile.save">Save changes</button>
+              <div id="profileNote" class="form-note"></div>
+            </form>
+          </div>
+          <div class="card">
+            <h3 data-i18n="acct.summary.title" style="margin-bottom:18px;">Summary</h3>
+            <p class="text-dim" data-i18n="acct.member.since" style="margin-bottom:4px;">Member since</p>
+            <p id="acctSince" style="font-family:var(--font-head); font-weight:700; font-size:20px; color:var(--text);">—</p>
+          </div>
+        </div>
+
+        <h3 data-i18n="acct.leads.title" style="margin-bottom:18px;">Your requests</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr>
+              <th data-i18n="acct.th.date">Date</th>
+              <th data-i18n="acct.th.service">Service</th>
+              <th data-i18n="acct.th.message">Message</th>
+              <th data-i18n="acct.th.status">Status</th>
+            </tr></thead>
+            <tbody id="leadsList"></tbody>
+          </table>
+        </div>
+        <div id="leadsEmpty" class="empty-state hidden">
+          <p data-i18n="acct.leads.empty">No requests yet.</p>
+          <a href="contact.html#quote" class="btn btn-ghost btn-sm" data-i18n="ctaband.cta1">Start a project</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer id="site-footer"></footer>
+
+<script type="module">
+  import { mountChrome } from "./js/chrome.js";
+  import { registerDict, applyI18n, initLangSwitch } from "./js/i18n.js";
+  import { initCookieBanner } from "./js/cookies.js";
+
+  registerDict({
+    en: {
+      "acct.eyebrow": "Your account", "acct.title": "Account",
+      "acct.guard.title": "You need to sign in first.", "acct.guard.desc": "Log in or create an account to view your requests.",
+      "acct.profile.title": "Profile", "acct.profile.save": "Save changes",
+      "acct.summary.title": "Summary", "acct.member.since": "Member since",
+      "acct.leads.title": "Your requests", "acct.th.date": "Date", "acct.th.service": "Service", "acct.th.message": "Message", "acct.th.status": "Status",
+      "acct.leads.empty": "No requests yet.",
+    },
+    bg: {
+      "acct.eyebrow": "Вашият профил", "acct.title": "Профил",
+      "acct.guard.title": "Трябва да влезете първо.", "acct.guard.desc": "Влезте или се регистрирайте, за да видите заявките си.",
+      "acct.profile.title": "Профил", "acct.profile.save": "Запази промените",
+      "acct.summary.title": "Обобщение", "acct.member.since": "Член от",
+      "acct.leads.title": "Вашите заявки", "acct.th.date": "Дата", "acct.th.service": "Услуга", "acct.th.message": "Съобщение", "acct.th.status": "Статус",
+      "acct.leads.empty": "Все още няма заявки.",
+    },
+  });
+
+  mountChrome();
+  applyI18n();
+  initLangSwitch();
+  initCookieBanner();
+</script>
+<script type="module" src="js/account.js"></script>
+</body>
+</html>

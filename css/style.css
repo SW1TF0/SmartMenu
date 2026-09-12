@@ -92,8 +92,9 @@ h2.h-lg { font-size: clamp(28px, 4vw, 42px); }
   position: sticky; top: 0; z-index: 100;
   background: rgba(255, 255, 255, .92); backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--border);
-  transition: border-color .2s ease;
+  transition: border-color .2s ease, box-shadow .2s ease;
 }
+.site-header.scrolled { box-shadow: 0 8px 24px -18px rgba(20, 22, 26, 0.25); }
 .nav { display: flex; align-items: center; justify-content: space-between; height: 72px; }
 .brand { display: flex; align-items: center; gap: 10px; font-family: var(--font-head); font-weight: 800; font-size: 18px; color: var(--text); }
 .brand .mark {
@@ -299,6 +300,9 @@ tr:last-child td { border-bottom: none; }
 .gap-8 { gap: 8px; } .gap-12 { gap: 12px; }
 .text-dim { color: var(--text-dim); } .text-faint { color: var(--text-faint); }
 .hidden { display: none !important; }
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px;
+}
 .spinner { width: 18px; height: 18px; border-radius: 50%; border: 2px solid rgba(0,0,0,.12); border-top-color: #fff; animation: spin .7s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 .section-head { max-width: 660px; margin: 0 auto 44px; text-align: center; }

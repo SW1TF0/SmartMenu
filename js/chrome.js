@@ -138,7 +138,7 @@ export function mountChrome() {
 
   const scrollHeader = () => {
     if (!header) return;
-    header.style.borderBottomColor = window.scrollY > 8 ? "var(--border-strong)" : "var(--border)";
+    header.classList.toggle("scrolled", window.scrollY > 8);
   };
   document.addEventListener("scroll", scrollHeader, { passive: true });
   scrollHeader();

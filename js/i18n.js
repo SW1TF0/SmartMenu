@@ -2,7 +2,7 @@
 // Lightweight EN / BG translation engine.
 // Usage per page:
 //   <script type="module">
-//     import { registerDict, applyI18n, initLangSwitch } from "./js/i18n.js";
+//     import { registerDict, applyI18n, initLangSwitch } from "./js/i18n.js?v=20260928";
 //     registerDict({ en: {...}, bg: {...} });
 //     applyI18n();
 //     initLangSwitch();
@@ -147,10 +147,17 @@ export function t(key) {
 export function applyI18n(root = document) {
   const lang = getLang();
   document.documentElement.lang = lang;
-  root.querySelectorAll("[data-i18n]").forEach((el) => (el.textContent = t(el.getAttribute("data-i18n"))));
-  root.querySelectorAll("[data-i18n-html]").forEach((el) => (el.innerHTML = t(el.getAttribute("data-i18n-html"))));
-  root.querySelectorAll("[data-i18n-ph]").forEach((el) => el.setAttribute("placeholder", t(el.getAttribute("data-i18n-ph"))));
-  root.querySelectorAll("[data-i18n-aria]").forEach((el) => el.setAttribute("aria-label", t(el.getAttribute("data-i18n-aria"))));
+  // A key with no translation keeps the element's built-in text rather than showing the raw key.
+  const each = (attr, apply) =>
+    root.querySelectorAll(`[${attr}]`).forEach((el) => {
+      const key = el.getAttribute(attr);
+      const value = t(key);
+      if (value !== key) apply(el, value);
+    });
+  each("data-i18n", (el, v) => (el.textContent = v));
+  each("data-i18n-html", (el, v) => (el.innerHTML = v));
+  each("data-i18n-ph", (el, v) => el.setAttribute("placeholder", v));
+  each("data-i18n-aria", (el, v) => el.setAttribute("aria-label", v));
   document.querySelectorAll("[data-lang-btn]").forEach((btn) => {
     const on = btn.getAttribute("data-lang-btn") === lang;
     btn.classList.toggle("active", on);

@@ -2,7 +2,7 @@
 // Contact / quote-request form handling — writes to the `leads` collection.
 // Used by contact.html (general + service-specific quote requests).
 // ============================================================================
-import { db, auth } from "./firebase-config.js";
+import { db, auth } from "./firebase-config.js?v=20260928";
 import {
   collection,
   addDoc,

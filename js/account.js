@@ -2,9 +2,9 @@
 // account.html — customer dashboard: profile + the visitor's own submitted
 // leads (quote requests / contact messages).
 // ============================================================================
-import { auth, db } from "./firebase-config.js";
-import { watchAuth } from "./auth.js";
-import { t, escapeHtml } from "./i18n.js";
+import { auth, db } from "./firebase-config.js?v=20260928";
+import { watchAuth } from "./auth.js?v=20260928";
+import { t, escapeHtml } from "./i18n.js?v=20260928";
 import {
   doc,
   getDoc,

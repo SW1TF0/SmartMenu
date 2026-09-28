@@ -1,8 +1,8 @@
 // ============================================================================
 // login.html — sign in / register tabs + Google sign-in + forgot password.
 // ============================================================================
-import { registerWithEmail, loginWithEmail, loginWithGoogle, resetPassword, friendlyAuthError, watchAuth } from "./auth.js";
-import { getLang } from "./i18n.js";
+import { registerWithEmail, loginWithEmail, loginWithGoogle, resetPassword, friendlyAuthError, watchAuth } from "./auth.js?v=20260928";
+import { getLang } from "./i18n.js?v=20260928";
 
 const tabs = document.querySelectorAll(".auth-tabs button");
 const panels = { signin: document.getElementById("panelSignin"), signup: document.getElementById("panelSignup") };

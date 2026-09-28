@@ -5,7 +5,7 @@
 // Expects <header id="site-header" data-active="PAGE"></header> and
 // <footer id="site-footer"></footer> placeholders in the page HTML.
 // ============================================================================
-import { t, escapeHtml } from "./i18n.js";
+import { t, escapeHtml } from "./i18n.js?v=20260928";
 
 const NAV_ITEMS = [
   { key: "index.html", label: "nav.home" },
@@ -271,7 +271,7 @@ export function mountChrome() {
   // Firebase loads lazily so the header, footer and translations still render
   // when the SDK is slow, offline or blocked; the nav starts signed-out.
   renderAuth(null, false);
-  import("./auth.js")
+  import("./auth.js?v=20260928")
     .then(({ watchAuth, isAdmin, logout }) =>
       watchAuth((user) => {
         const admin = isAdmin(user);

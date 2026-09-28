@@ -3,9 +3,9 @@
 // (kept in sync — each audience word shows the service built for it) and the
 // animated stat counters.
 // ============================================================================
-import { initReveal, typeInto, prefersReducedMotion } from "./site.js";
-import { createGlyphMatrix, mountDotIcons } from "./dots.js";
-import { getLang, t } from "./i18n.js";
+import { initReveal, typeInto, prefersReducedMotion } from "./site.js?v=20260928";
+import { createGlyphMatrix, mountDotIcons } from "./dots.js?v=20260928";
+import { getLang, t } from "./i18n.js?v=20260928";
 
 initReveal();
 mountDotIcons();

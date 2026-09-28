@@ -81,6 +81,8 @@ npx serve .
 
 ## Deploying
 
+**Bump the asset version on every CSS/JS change.** GitHub Pages lets browsers reuse files for 10 minutes, so right after a deploy a returning visitor can get new HTML with old CSS/JS and see a broken page. Every stylesheet link, `<script src>` and relative module import carries `?v=YYYYMMDD` — replace the old value with a new one **everywhere at once** (all `*.html` and `js/*.js`). Mixed versions of the same module load it twice (e.g. Firebase would initialise twice).
+
 - **Firebase Hosting:** `firebase deploy --project smartmenukj` (deploys hosting + rules).
 - **GitHub Pages (keeps the existing `www.smartmenukj.com` domain):** push to `main`; the `CNAME` file is already in place.
 

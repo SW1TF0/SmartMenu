@@ -1,8 +1,8 @@
 // ============================================================================
 // contact.html — quote/contact form wiring.
 // ============================================================================
-import { wireContactForm } from "./contact.js";
-import { getLang } from "./i18n.js";
+import { wireContactForm } from "./contact.js?v=20260928";
+import { getLang } from "./i18n.js?v=20260928";
 
 const form = document.getElementById("quoteForm");
 const note = document.getElementById("quoteNote");

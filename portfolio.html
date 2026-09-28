@@ -6,128 +6,138 @@
 <title>Our Work — SmartMenuKJ</title>
 <meta name="description" content="A look at the kind of web, 3D printing, smart home, camera, digital menu and PC/printer projects SmartMenuKJ builds for clients in Kardzhali and across Bulgaria." />
 <link rel="canonical" href="https://www.smartmenukj.com/portfolio.html" />
+<meta property="og:title" content="Our Work — SmartMenuKJ" />
+<meta property="og:description" content="The kind of projects SmartMenuKJ builds across web, 3D printing, smart home, cameras, digital menus and PC service." />
+<meta property="og:image" content="https://www.smartmenukj.com/og-image.png" />
+<meta property="og:url" content="https://www.smartmenukj.com/portfolio.html" />
+<meta property="og:type" content="website" />
+<meta name="theme-color" content="#f1f0ee" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@700;800&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&display=swap" rel="stylesheet" />
+<link rel="manifest" href="/site.webmanifest" />
+<link rel="preload" href="fonts/handjet-dot.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="fonts/geist.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="stylesheet" href="css/style.css" />
-<style>
-  .filter-row { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-bottom: 40px; }
-  .proj-thumb { height: 150px; border-radius: 14px 14px 0 0; margin: -28px -28px 20px; display: flex; align-items: center; justify-content: center; }
-  .proj-thumb svg { width: 44px; height: 44px; color: rgba(255,255,255,.8); }
-</style>
+<script>(function(d){d.documentElement.classList.add("js");try{var t=localStorage.getItem("smkj_theme");if(t==="dark"||t==="light")d.documentElement.setAttribute("data-theme",t)}catch(e){}})(document);</script>
 </head>
 <body>
 
-<header id="site-header" data-active="portfolio.html"></header>
+<a class="skip-link" href="#main" data-i18n="a11y.skip">Skip to content</a>
+<header id="site-header" class="site-header" data-active="portfolio.html"></header>
 
-<main>
+<main id="main">
   <section class="page-hero">
     <div class="container">
-      <div class="crumbs"><a href="index.html" data-i18n="nav.home">Home</a> / <span data-i18n="nav.portfolio">Work</span></div>
-      <div class="eyebrow center" data-i18n="folio.eyebrow">Our work</div>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html" data-i18n="nav.home">Home</a><span aria-hidden="true">/</span><span data-i18n="nav.portfolio">Work</span></nav>
+      <p class="eyebrow" data-i18n="folio.eyebrow">Our work</p>
       <h1 class="h-lg" data-i18n="folio.title">The kind of projects we build.</h1>
-      <p class="lede center" data-i18n="folio.lede">A snapshot across all six services. Full case studies and client names available on request.</p>
+      <p class="lede" data-i18n="folio.lede">A snapshot across all six services. Full case studies and client names available on request.</p>
+    </div>
+  </section>
+
+  <section class="svc">
+    <div class="container">
+      <div class="filter-row reveal" role="group" data-i18n-aria="folio.filter.label" aria-label="Filter projects">
+        <button type="button" class="tab-btn active" data-filter="all" aria-pressed="true" data-i18n="folio.filter.all">All</button>
+        <button type="button" class="tab-btn" data-filter="web" aria-pressed="false" data-i18n="svc.web">Web Development</button>
+        <button type="button" class="tab-btn" data-filter="print3d" aria-pressed="false" data-i18n="svc.print3d">3D Printing</button>
+        <button type="button" class="tab-btn" data-filter="smarthome" aria-pressed="false" data-i18n="svc.smarthome">Smart Home &amp; Business</button>
+        <button type="button" class="tab-btn" data-filter="cameras" aria-pressed="false" data-i18n="svc.cameras">Camera &amp; Security Systems</button>
+        <button type="button" class="tab-btn" data-filter="menu" aria-pressed="false" data-i18n="svc.menu">Digital Smart Menus</button>
+        <button type="button" class="tab-btn" data-filter="pc" aria-pressed="false" data-i18n="svc.pc">PC &amp; Printer Service</button>
+      </div>
+
+      <div class="grid grid-3" id="projGrid">
+        <article class="card work reveal" data-cat="menu">
+          <div class="proj-thumb"><span class="dot-icon" data-dot-icon="menu"></span></div>
+          <span class="pill accent" data-i18n="svc.menu">Digital Smart Menus</span>
+          <h3 data-i18n="folio.p1.title">Café digital menu &amp; QR system</h3>
+          <p data-i18n="folio.p1.desc">A full QR menu rollout for a Kardzhali café, with live specials and instant price updates.</p>
+        </article>
+        <article class="card work reveal" data-cat="smarthome">
+          <div class="proj-thumb"><span class="dot-icon" data-dot-icon="smarthome"></span></div>
+          <span class="pill accent" data-i18n="svc.smarthome">Smart Home &amp; Business</span>
+          <h3 data-i18n="folio.p2.title">Whole-home automation retrofit</h3>
+          <p data-i18n="folio.p2.desc">Lighting, heating and access control unified into a single app for a family home.</p>
+        </article>
+        <article class="card work reveal" data-cat="print3d">
+          <div class="proj-thumb"><span class="dot-icon" data-dot-icon="print3d"></span></div>
+          <span class="pill accent" data-i18n="svc.print3d">3D Printing</span>
+          <h3 data-i18n="folio.p3.title">Discontinued appliance part, reprinted</h3>
+          <p data-i18n="folio.p3.desc">Reverse-engineered a broken bracket and 3D-printed a full replacement run.</p>
+        </article>
+        <article class="card work reveal" data-cat="web">
+          <div class="proj-thumb"><span class="dot-icon" data-dot-icon="web"></span></div>
+          <span class="pill accent" data-i18n="svc.web">Web Development</span>
+          <h3 data-i18n="folio.p4.title">Booking site for a local service business</h3>
+          <p data-i18n="folio.p4.desc">A fast, mobile-first site with an online booking form and automatic confirmation emails.</p>
+        </article>
+        <article class="card work reveal" data-cat="cameras">
+          <div class="proj-thumb"><span class="dot-icon" data-dot-icon="cameras"></span></div>
+          <span class="pill accent" data-i18n="svc.cameras">Camera &amp; Security Systems</span>
+          <h3 data-i18n="folio.p5.title">Shop-front camera &amp; remote monitoring</h3>
+          <p data-i18n="folio.p5.desc">Four-camera IP system with phone alerts and two weeks of local recording.</p>
+        </article>
+        <article class="card work reveal" data-cat="pc">
+          <div class="proj-thumb"><span class="dot-icon" data-dot-icon="pc"></span></div>
+          <span class="pill accent" data-i18n="svc.pc">PC &amp; Printer Service</span>
+          <h3 data-i18n="folio.p6.title">Small office network &amp; PC refresh</h3>
+          <p data-i18n="folio.p6.desc">Upgraded five workstations, set up a shared printer, and cleaned up the office Wi-Fi.</p>
+        </article>
+      </div>
     </div>
   </section>
 
   <section class="section">
     <div class="container">
-      <div class="filter-row reveal">
-        <button class="tab-btn active" data-filter="all" data-i18n="folio.filter.all">All</button>
-        <button class="tab-btn" data-filter="web" data-i18n="svc.web">Web Development</button>
-        <button class="tab-btn" data-filter="print3d" data-i18n="svc.print3d">3D Printing</button>
-        <button class="tab-btn" data-filter="smarthome" data-i18n="svc.smarthome">Smart Home &amp; Business</button>
-        <button class="tab-btn" data-filter="cameras" data-i18n="svc.cameras">Camera &amp; Security</button>
-        <button class="tab-btn" data-filter="menu" data-i18n="svc.menu">Digital Smart Menus</button>
-        <button class="tab-btn" data-filter="pc" data-i18n="svc.pc">PC &amp; Printer Service</button>
-      </div>
-
-      <div class="grid grid-3" id="projGrid">
-        <div class="card reveal c-menu" data-cat="menu">
-          <div class="proj-thumb" style="background:linear-gradient(135deg,#2dd4c8,#1a8f86);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></div>
-          <span class="pill accent" data-i18n="svc.menu">Digital Smart Menus</span>
-          <h3 style="margin-top:12px;" data-i18n="folio.p1.title">Café digital menu &amp; QR system</h3>
-          <p data-i18n="folio.p1.desc">A full QR menu rollout for a Kardzhali café, with live specials and instant price updates.</p>
+      <div class="cta-band invert reveal">
+        <div>
+          <p class="eyebrow live" data-i18n="folio.cta.eyebrow">Free quote within 24 hours</p>
+          <h2 class="h-lg" data-i18n="folio.cta.title">Want your project on this list?</h2>
         </div>
-        <div class="card reveal c-smarthome" data-cat="smarthome">
-          <div class="proj-thumb" style="background:linear-gradient(135deg,#4f8dff,#2a4f9c);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg></div>
-          <span class="pill accent" data-i18n="svc.smarthome">Smart Home &amp; Business</span>
-          <h3 style="margin-top:12px;" data-i18n="folio.p2.title">Whole-home automation retrofit</h3>
-          <p data-i18n="folio.p2.desc">Lighting, heating and access control unified into a single app for a family home.</p>
-        </div>
-        <div class="card reveal c-print3d" data-cat="print3d">
-          <div class="proj-thumb" style="background:linear-gradient(135deg,#f5a524,#a56b0f);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5M12 12v10"/></svg></div>
-          <span class="pill accent" data-i18n="svc.print3d">3D Printing</span>
-          <h3 style="margin-top:12px;" data-i18n="folio.p3.title">Discontinued appliance part, reprinted</h3>
-          <p data-i18n="folio.p3.desc">Reverse-engineered a broken bracket and 3D-printed a full replacement run.</p>
-        </div>
-        <div class="card reveal c-web" data-cat="web">
-          <div class="proj-thumb" style="background:linear-gradient(135deg,#2dd4c8,#4f8dff);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h16v11H4z"/><path d="M2 19h20M9 8h6M9 11h4"/></svg></div>
-          <span class="pill accent" data-i18n="svc.web">Web Development</span>
-          <h3 style="margin-top:12px;" data-i18n="folio.p4.title">Booking site for a local service business</h3>
-          <p data-i18n="folio.p4.desc">A fast, mobile-first site with an online booking form and automatic confirmation emails.</p>
-        </div>
-        <div class="card reveal c-cameras" data-cat="cameras">
-          <div class="proj-thumb" style="background:linear-gradient(135deg,#f2555a,#7d1f22);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="14" height="11" rx="2"/><path d="M17 10l4-2v9l-4-2"/></svg></div>
-          <span class="pill accent" data-i18n="svc.cameras">Camera &amp; Security</span>
-          <h3 style="margin-top:12px;" data-i18n="folio.p5.title">Shop-front camera &amp; remote monitoring</h3>
-          <p data-i18n="folio.p5.desc">Four-camera IP system with phone alerts and two weeks of local recording.</p>
-        </div>
-        <div class="card reveal c-pc" data-cat="pc">
-          <div class="proj-thumb" style="background:linear-gradient(135deg,#93a1ae,#3b4652);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg></div>
-          <span class="pill accent" data-i18n="svc.pc">PC &amp; Printer Service</span>
-          <h3 style="margin-top:12px;" data-i18n="folio.p6.title">Small office network &amp; PC refresh</h3>
-          <p data-i18n="folio.p6.desc">Upgraded five workstations, set up a shared printer, and cleaned up the office Wi-Fi.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section section-alt">
-    <div class="container">
-      <div class="cta-band reveal">
-        <h2 class="h-lg" data-i18n="folio.cta.title">Want your project on this list?</h2>
-        <div class="hero-actions" style="justify-content:center;">
-          <a href="contact.html#quote" class="btn btn-primary" data-i18n="ctaband.cta1">Start a project</a>
+        <div class="hero-actions">
+          <a href="contact.html#quote" class="btn btn-primary btn-rec"><span data-i18n="ctaband.cta1">Start a project</span></a>
         </div>
       </div>
     </div>
   </section>
 </main>
 
-<footer id="site-footer"></footer>
+<footer id="site-footer" class="site-footer invert"></footer>
 
 <script type="module">
   import { mountChrome } from "./js/chrome.js";
   import { registerDict, applyI18n, initLangSwitch } from "./js/i18n.js";
   import { initCookieBanner } from "./js/cookies.js";
   import { initReveal } from "./js/site.js";
+  import { mountDotIcons } from "./js/dots.js";
 
   registerDict({
     en: {
       "folio.eyebrow": "Our work", "folio.title": "The kind of projects we build.",
       "folio.lede": "A snapshot across all six services. Full case studies and client names available on request.",
-      "folio.filter.all": "All",
+      "folio.filter.all": "All", "folio.filter.label": "Filter projects by service",
       "folio.p1.title": "Café digital menu & QR system", "folio.p1.desc": "A full QR menu rollout for a Kardzhali café, with live specials and instant price updates.",
       "folio.p2.title": "Whole-home automation retrofit", "folio.p2.desc": "Lighting, heating and access control unified into a single app for a family home.",
       "folio.p3.title": "Discontinued appliance part, reprinted", "folio.p3.desc": "Reverse-engineered a broken bracket and 3D-printed a full replacement run.",
       "folio.p4.title": "Booking site for a local service business", "folio.p4.desc": "A fast, mobile-first site with an online booking form and automatic confirmation emails.",
       "folio.p5.title": "Shop-front camera & remote monitoring", "folio.p5.desc": "Four-camera IP system with phone alerts and two weeks of local recording.",
       "folio.p6.title": "Small office network & PC refresh", "folio.p6.desc": "Upgraded five workstations, set up a shared printer, and cleaned up the office Wi-Fi.",
+      "folio.cta.eyebrow": "Free quote within 24 hours",
       "folio.cta.title": "Want your project on this list?",
     },
     bg: {
       "folio.eyebrow": "Нашите проекти", "folio.title": "Какви проекти изграждаме.",
       "folio.lede": "Примери от всичките шест услуги. Пълни казуси и имена на клиенти — при поискване.",
-      "folio.filter.all": "Всички",
+      "folio.filter.all": "Всички", "folio.filter.label": "Филтрирай проектите по услуга",
       "folio.p1.title": "Дигитално меню и QR система за кафене", "folio.p1.desc": "Пълно внедряване на QR меню за кафене в Кърджали, с оферти на живо и мигновени промени в цените.",
       "folio.p2.title": "Автоматизация на цял дом", "folio.p2.desc": "Осветление, отопление и контрол на достъпа в едно приложение за семеен дом.",
       "folio.p3.title": "Спряна от производство част, отпечатана наново", "folio.p3.desc": "Възпроизведохме счупена скоба и отпечатахме цяла серия резервни части.",
       "folio.p4.title": "Сайт за резервации за локален бизнес", "folio.p4.desc": "Бърз, mobile-first сайт с онлайн форма за резервации и автоматични имейли за потвърждение.",
       "folio.p5.title": "Камери за магазин и отдалечено наблюдение", "folio.p5.desc": "IP система с четири камери, известия на телефона и две седмици локален запис.",
       "folio.p6.title": "Мрежа и обновяване на компютри за малък офис", "folio.p6.desc": "Обновихме пет работни станции, настроихме споделен принтер и оправихме офис Wi-Fi.",
+      "folio.cta.eyebrow": "Безплатна оферта до 24 часа",
       "folio.cta.title": "Искате вашият проект да е в списъка?",
     },
   });
@@ -137,11 +147,15 @@
   initLangSwitch();
   initCookieBanner();
   initReveal();
+  mountDotIcons();
 
-  document.querySelectorAll(".filter-row .tab-btn").forEach((btn) =>
+  const filterButtons = document.querySelectorAll(".filter-row .tab-btn");
+  filterButtons.forEach((btn) =>
     btn.addEventListener("click", () => {
-      document.querySelectorAll(".filter-row .tab-btn").forEach((b) => b.classList.remove("active"));
-      btn.classList.add("active");
+      filterButtons.forEach((b) => {
+        b.classList.toggle("active", b === btn);
+        b.setAttribute("aria-pressed", b === btn ? "true" : "false");
+      });
       const filter = btn.getAttribute("data-filter");
       document.querySelectorAll("#projGrid .card").forEach((card) => {
         card.style.display = filter === "all" || card.getAttribute("data-cat") === filter ? "" : "none";

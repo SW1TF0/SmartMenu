@@ -10,7 +10,9 @@ const serviceSelect = document.getElementById("serviceSelect");
 
 const params = new URLSearchParams(window.location.search);
 const presetService = params.get("service");
-if (presetService && serviceSelect) serviceSelect.value = presetService;
+if (presetService && serviceSelect && serviceSelect.querySelector(`option[value="${CSS.escape(presetService)}"]`)) {
+  serviceSelect.value = presetService;
+}
 
 wireContactForm(form, {
   onSuccess: () => {
@@ -18,7 +20,11 @@ wireContactForm(form, {
     note.className = "form-note show ok";
   },
   onError: (err) => {
-    note.textContent = err.message || (getLang() === "bg" ? "Възникна грешка." : "Something went wrong.");
+    console.error("Lead submission failed:", err);
+    note.textContent =
+      getLang() === "bg"
+        ? "Запитването не беше изпратено. Опитайте отново или ни се обадете на +359 88 534 8666."
+        : "Your request didn't go through. Please try again, or call us on +359 88 534 8666.";
     note.className = "form-note show err";
   },
 });

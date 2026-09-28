@@ -8,15 +8,19 @@
 <link rel="canonical" href="https://www.smartmenukj.com/" />
 <meta property="og:title" content="SmartMenuKJ — technology, built and installed" />
 <meta property="og:description" content="Websites, 3D printing, smart home & business automation, camera systems, digital menus and PC/printer service — one team, Kardzhali, Bulgaria." />
-<meta property="og:image" content="/og-image.png" />
+<meta property="og:image" content="https://www.smartmenukj.com/og-image.png" />
+<meta property="og:url" content="https://www.smartmenukj.com/" />
 <meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="theme-color" content="#f1f0ee" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 <link rel="manifest" href="/site.webmanifest" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@700;800&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&display=swap" rel="stylesheet" />
+<link rel="preload" href="fonts/handjet-dot.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="fonts/geist.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="stylesheet" href="css/style.css" />
+<script>(function(d){d.documentElement.classList.add("js");try{var t=localStorage.getItem("smkj_theme");if(t==="dark"||t==="light")d.documentElement.setAttribute("data-theme",t)}catch(e){}})(document);</script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -25,6 +29,7 @@
   "founder": "Krasimir Uzun",
   "email": "krasimiruzun@smartmenukj.com",
   "telephone": "+359885348666",
+  "image": "https://www.smartmenukj.com/og-image.png",
   "address": { "@type": "PostalAddress", "streetAddress": "ul. Dzhebelska 2", "addressLocality": "Kardzhali", "postalCode": "6600", "addressCountry": "BG" },
   "url": "https://www.smartmenukj.com/",
   "sameAs": ["https://www.instagram.com/1337_krasimir_/", "https://www.linkedin.com/in/krasimir-uzun-316a053bb/"]
@@ -33,47 +38,30 @@
 </head>
 <body>
 
-<header id="site-header" data-active="index.html"></header>
+<a class="skip-link" href="#main" data-i18n="a11y.skip">Skip to content</a>
+<header id="site-header" class="site-header" data-active="index.html"></header>
 
-<main>
+<main id="main">
   <!-- HERO -->
   <section class="hero">
     <div class="container hero-grid">
-      <div class="reveal in">
-        <div class="eyebrow" data-i18n="hero.eyebrow">Kardzhali, Bulgaria</div>
-        <h1><span data-i18n="hero.title.pre">Technology, built and installed — for </span><span class="rotator" id="heroRotator">restaurants.</span></h1>
+      <div class="hero-copy">
+        <p class="eyebrow live" data-i18n="hero.eyebrow">Kardzhali, Bulgaria</p>
+        <h1 class="h-xl hero-title"><span data-i18n="hero.title.pre">Technology, built and installed — for </span><span class="rotator" id="heroRotator" aria-hidden="true">restaurants.</span><span class="caret" aria-hidden="true"></span><span class="sr-only" data-i18n="hero.title.sr">restaurants, homes, businesses, offices, workshops and brands.</span></h1>
         <p class="lede" data-i18n="hero.lede">One team for websites, 3D-printed parts, smart home & business automation, camera systems, digital menus, and PC/printer service. From first sketch to installed and running.</p>
         <div class="hero-actions">
-          <a href="contact.html#quote" class="btn btn-primary" data-i18n="hero.cta1">Get a free quote</a>
-          <a href="services.html" class="btn btn-ghost" data-i18n="hero.cta2">Explore services</a>
+          <a href="contact.html#quote" class="btn btn-primary btn-rec"><span data-i18n="hero.cta1">Get a free quote</span></a>
+          <a href="services.html" class="btn btn-ghost"><span data-i18n="hero.cta2">Explore services</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         </div>
       </div>
-      <div class="hero-visual reveal in">
-        <div class="hero-visual-grid">
-          <div class="hero-tile c-web">
-            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v12H4z"/><path d="M8 20h8M12 16v4"/></svg></div>
-            <span data-i18n="svc.web">Web Development</span>
-          </div>
-          <div class="hero-tile c-print3d">
-            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5M12 12v10"/></svg></div>
-            <span data-i18n="svc.print3d">3D Printing</span>
-          </div>
-          <div class="hero-tile c-smarthome">
-            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg></div>
-            <span data-i18n="svc.smarthome">Smart Home</span>
-          </div>
-          <div class="hero-tile c-cameras">
-            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="14" height="11" rx="2"/><path d="M17 10l4-2v9l-4-2"/></svg></div>
-            <span data-i18n="svc.cameras">Camera Systems</span>
-          </div>
-          <div class="hero-tile c-menu">
-            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></div>
-            <span data-i18n="svc.menu">Digital Smart Menus</span>
-          </div>
-          <div class="hero-tile c-pc">
-            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg></div>
-            <span data-i18n="svc.pc">PC &amp; Printer Service</span>
-          </div>
+
+      <div class="device">
+        <div class="device-bar"><span>SmartMenuKJ</span><span id="glyphCount">01/06</span></div>
+        <canvas id="glyphMatrix" width="396" height="396" aria-hidden="true"></canvas>
+        <div class="device-caption">
+          <a id="glyphLink" href="services.html#menu"><span class="rec" aria-hidden="true"></span><span class="label" id="glyphLabel" data-i18n="svc.menu">Digital Smart Menus</span></a>
+          <button class="icon-btn" id="glyphPause" type="button" aria-label="Pause"></button>
+          <button class="icon-btn" id="glyphNext" type="button" data-i18n-aria="hero.matrix.next" aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
         </div>
       </div>
     </div>
@@ -97,47 +85,37 @@
   <!-- SERVICES -->
   <section class="section" id="services">
     <div class="container">
+      <div class="sys-bar reveal"><p class="eyebrow" data-i18n="svchome.eyebrow">What we do</p><span class="sys-meta">06</span></div>
       <div class="section-head reveal">
-        <div class="eyebrow" data-i18n="svchome.eyebrow">What we do</div>
         <h2 class="h-lg" data-i18n="svchome.title">Six services. One point of contact.</h2>
-        <p class="lede center" data-i18n="svchome.lede">Mix and match — most clients start with one service and grow into two or three as we get to know their business.</p>
+        <p class="lede" data-i18n="svchome.lede">Mix and match — most clients start with one service and grow into two or three as we get to know their business.</p>
       </div>
-      <div class="grid grid-3">
-        <a href="services.html#web" class="card reveal c-web">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 5h16v11H4z"/><path d="M2 19h20M9 8h6M9 11h4"/></svg></div>
-          <h3 data-i18n="svc.web">Web Development</h3>
-          <p data-i18n="svchome.web.desc">Fast, modern business websites and web apps — designed, built, and kept online.</p>
-          <span class="card-link" data-i18n="svchome.learn">Learn more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      <div class="widget-grid">
+        <a href="services.html#menu" class="card widget widget-wide span-2 reveal">
+          <div class="widget-head"><span class="widget-tag"><span class="dot-red" aria-hidden="true"></span><span data-i18n="svchome.original">Where it all started</span></span><span class="arrow-dot" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
+          <div class="widget-body"><h3 data-i18n="svc.menu">Digital Smart Menus</h3><p data-i18n="svchome.menu.desc">QR-code menus for restaurants and cafés — always up to date, easy to manage.</p></div>
+          <span class="dot-icon widget-art" data-dot-icon="menu"></span>
         </a>
-        <a href="services.html#print3d" class="card reveal c-print3d">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5M12 12v10"/></svg></div>
-          <h3 data-i18n="svc.print3d">3D Printing</h3>
-          <p data-i18n="svchome.print3d.desc">Custom parts, prototypes, replacement pieces, and small-batch production.</p>
-          <span class="card-link" data-i18n="svchome.learn">Learn more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        <a href="services.html#web" class="card widget reveal">
+          <div class="widget-head"><span class="dot-icon" data-dot-icon="web"></span><span class="arrow-dot" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
+          <div class="widget-body"><h3 data-i18n="svc.web">Web Development</h3><p data-i18n="svchome.web.desc">Fast, modern business websites and web apps — designed, built, and kept online.</p></div>
         </a>
-        <a href="services.html#smarthome" class="card reveal c-smarthome">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg></div>
-          <h3 data-i18n="svc.smarthome">Smart Home &amp; Business</h3>
-          <p data-i18n="svchome.smarthome.desc">Lighting, climate, access and automation — controlled from one app.</p>
-          <span class="card-link" data-i18n="svchome.learn">Learn more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        <a href="services.html#print3d" class="card widget reveal">
+          <div class="widget-head"><span class="dot-icon" data-dot-icon="print3d"></span><span class="arrow-dot" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
+          <div class="widget-body"><h3 data-i18n="svc.print3d">3D Printing</h3><p data-i18n="svchome.print3d.desc">Custom parts, prototypes, replacement pieces, and small-batch production.</p></div>
         </a>
-        <a href="services.html#cameras" class="card reveal c-cameras">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="14" height="11" rx="2"/><path d="M17 10l4-2v9l-4-2"/></svg></div>
-          <h3 data-i18n="svc.cameras">Camera &amp; Security Systems</h3>
-          <p data-i18n="svchome.cameras.desc">HD/IP cameras, remote viewing, and monitoring for homes and businesses.</p>
-          <span class="card-link" data-i18n="svchome.learn">Learn more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        <a href="services.html#smarthome" class="card widget reveal">
+          <div class="widget-head"><span class="dot-icon" data-dot-icon="smarthome"></span><span class="arrow-dot" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
+          <div class="widget-body"><h3 data-i18n="svc.smarthome">Smart Home &amp; Business</h3><p data-i18n="svchome.smarthome.desc">Lighting, climate, access and automation — controlled from one app.</p></div>
         </a>
-        <a href="services.html#menu" class="card reveal c-menu">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></div>
-          <h3 data-i18n="svc.menu">Digital Smart Menus</h3>
-          <p data-i18n="svchome.menu.desc">QR-code menus for restaurants and cafés — always up to date, easy to manage.</p>
-          <span class="card-link" data-i18n="svchome.learn">Learn more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        <a href="services.html#cameras" class="card widget reveal">
+          <div class="widget-head"><span class="dot-icon" data-dot-icon="cameras"></span><span class="arrow-dot" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
+          <div class="widget-body"><h3 data-i18n="svc.cameras">Camera &amp; Security Systems</h3><p data-i18n="svchome.cameras.desc">HD/IP cameras, remote viewing, and monitoring for homes and businesses.</p></div>
         </a>
-        <a href="services.html#pc" class="card reveal c-pc">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg></div>
-          <h3 data-i18n="svc.pc">PC &amp; Printer Service</h3>
-          <p data-i18n="svchome.pc.desc">Builds, upgrades, repairs, and printer setup &amp; maintenance for home and office.</p>
-          <span class="card-link" data-i18n="svchome.learn">Learn more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        <a href="services.html#pc" class="card widget widget-wide span-2 reveal">
+          <div class="widget-head"><span class="arrow-dot" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
+          <div class="widget-body"><h3 data-i18n="svc.pc">PC &amp; Printer Service</h3><p data-i18n="svchome.pc.desc">Builds, upgrades, repairs, and printer setup &amp; maintenance for home and office.</p></div>
+          <span class="dot-icon widget-art" data-dot-icon="pc"></span>
         </a>
       </div>
     </div>
@@ -146,27 +124,28 @@
   <!-- PROCESS -->
   <section class="section section-alt">
     <div class="container">
+      <div class="sys-bar reveal"><p class="eyebrow" data-i18n="process.eyebrow">How it works</p><span class="sys-meta">04</span></div>
       <div class="section-head reveal">
-        <div class="eyebrow" data-i18n="process.eyebrow">How it works</div>
         <h2 class="h-lg" data-i18n="process.title">From a message to something installed.</h2>
       </div>
-      <div class="steps">
-        <div class="step reveal"><h3 data-i18n="process.1.title">Tell us what you need</h3><p data-i18n="process.1.desc">A quick call or message — what you're picturing, your budget, your timeline.</p></div>
-        <div class="step reveal"><h3 data-i18n="process.2.title">Get a clear quote</h3><p data-i18n="process.2.desc">A written estimate within 24 hours, no jargon, no obligation.</p></div>
-        <div class="step reveal"><h3 data-i18n="process.3.title">We build it</h3><p data-i18n="process.3.desc">You get progress updates — a preview link, printed prototypes, or on-site photos.</p></div>
-        <div class="step reveal"><h3 data-i18n="process.4.title">We install &amp; support</h3><p data-i18n="process.4.desc">Set up on location where needed, with support after launch — not just a handoff.</p></div>
-      </div>
+      <ol class="steps">
+        <li class="step reveal"><h3 data-i18n="process.1.title">Tell us what you need</h3><p data-i18n="process.1.desc">A quick call or message — what you're picturing, your budget, your timeline.</p></li>
+        <li class="step reveal"><h3 data-i18n="process.2.title">Get a clear quote</h3><p data-i18n="process.2.desc">A written estimate within 24 hours, no jargon, no obligation.</p></li>
+        <li class="step reveal"><h3 data-i18n="process.3.title">We build it</h3><p data-i18n="process.3.desc">You get progress updates — a preview link, printed prototypes, or on-site photos.</p></li>
+        <li class="step reveal"><h3 data-i18n="process.4.title">We install &amp; support</h3><p data-i18n="process.4.desc">Set up on location where needed, with support after launch — not just a handoff.</p></li>
+      </ol>
     </div>
   </section>
 
-  <!-- STATS (dark contrast band) -->
-  <section class="stats-dark">
+  <!-- STATS (dark band) -->
+  <section class="stats-dark invert">
     <div class="container">
+      <p class="eyebrow" data-i18n="statsdark.eyebrow">By the numbers</p>
       <div class="stats-dark-grid">
-        <div class="stats-dark-item"><b data-count="6" data-suffix="">0</b><span data-i18n="statsdark.1">Core services</span></div>
-        <div class="stats-dark-item"><b data-count="24" data-suffix="h">0</b><span data-i18n="statsdark.2">Average quote turnaround</span></div>
-        <div class="stats-dark-item"><b data-count="100" data-suffix="%">0</b><span data-i18n="statsdark.3">Installed &amp; supported locally</span></div>
-        <div class="stats-dark-item"><b data-count="1" data-suffix="">0</b><span data-i18n="statsdark.4">Point of contact for everything</span></div>
+        <div class="stats-dark-item"><b data-count="6" data-suffix="">6</b><span data-i18n="statsdark.1">Core services</span></div>
+        <div class="stats-dark-item"><b data-count="24" data-suffix="h">24h</b><span data-i18n="statsdark.2">Average quote turnaround</span></div>
+        <div class="stats-dark-item"><b data-count="100" data-suffix="%">100%</b><span data-i18n="statsdark.3">Installed &amp; supported locally</span></div>
+        <div class="stats-dark-item"><b data-count="1" data-suffix="">1</b><span data-i18n="statsdark.4">Point of contact for everything</span></div>
       </div>
     </div>
   </section>
@@ -174,66 +153,70 @@
   <!-- FOUNDER PULL-QUOTE -->
   <section class="section">
     <div class="container">
-      <div class="pullquote-wrap reveal">
-        <div class="qmark" aria-hidden="true">&ldquo;</div>
+      <figure class="pullquote-wrap reveal">
+        <p class="eyebrow" data-i18n="pq.eyebrow">From the founder</p>
         <blockquote data-i18n="pq.quote">I started this company scanning restaurant menus into QR codes for cafés down the street. Six services later, the promise hasn't changed: one person to call, whatever the problem is.</blockquote>
-        <div class="pullquote-who">
-          <div class="avatar">KU</div>
+        <figcaption class="pullquote-who">
+          <div class="avatar" aria-hidden="true">KU</div>
           <div class="meta">
             <div class="name">Krasimir Uzun</div>
             <div class="role" data-i18n="pq.role">Founder &amp; CEO, SmartMenuKJ</div>
           </div>
-        </div>
-      </div>
+        </figcaption>
+      </figure>
     </div>
   </section>
 
   <!-- PORTFOLIO TEASER -->
-  <section class="section">
+  <section class="section section-alt">
     <div class="container">
-      <div class="flex justify-between items-center reveal" style="flex-wrap:wrap; gap:16px; margin-bottom:40px;">
-        <div>
-          <div class="eyebrow" data-i18n="worktease.eyebrow">Selected work</div>
-          <h2 class="h-lg mb-0" data-i18n="worktease.title">A sample of what we build.</h2>
-        </div>
-        <a href="portfolio.html" class="btn btn-ghost" data-i18n="worktease.cta">View all work</a>
+      <div class="sys-bar reveal"><p class="eyebrow" data-i18n="worktease.eyebrow">Selected work</p><span class="sys-meta">03</span></div>
+      <div class="section-head reveal">
+        <h2 class="h-lg" data-i18n="worktease.title">A sample of what we build.</h2>
+        <div class="head-action"><a href="portfolio.html" class="btn btn-ghost"><span data-i18n="worktease.cta">View all work</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
       </div>
       <div class="grid grid-3">
-        <div class="card reveal c-menu">
+        <article class="card work reveal">
+          <div class="work-screen"><span class="dot-icon" data-dot-icon="menu"></span></div>
           <span class="pill accent" data-i18n="svc.menu">Digital Smart Menus</span>
-          <h3 style="margin-top:14px;" data-i18n="worktease.1.title">QR menu for a Kardzhali café</h3>
+          <h3 data-i18n="worktease.1.title">QR menu for a Kardzhali café</h3>
           <p data-i18n="worktease.1.desc">Live menu editing, seasonal specials, and an instant-load page tuned for phones on café Wi-Fi.</p>
-        </div>
-        <div class="card reveal c-smarthome">
+        </article>
+        <article class="card work reveal">
+          <div class="work-screen"><span class="dot-icon" data-dot-icon="smarthome"></span></div>
           <span class="pill accent" data-i18n="svc.smarthome">Smart Home &amp; Business</span>
-          <h3 style="margin-top:14px;" data-i18n="worktease.2.title">Whole-home automation retrofit</h3>
+          <h3 data-i18n="worktease.2.title">Whole-home automation retrofit</h3>
           <p data-i18n="worktease.2.desc">Lighting, heating and access control unified into a single app for a family home.</p>
-        </div>
-        <div class="card reveal c-print3d">
+        </article>
+        <article class="card work reveal">
+          <div class="work-screen"><span class="dot-icon" data-dot-icon="print3d"></span></div>
           <span class="pill accent" data-i18n="svc.print3d">3D Printing</span>
-          <h3 style="margin-top:14px;" data-i18n="worktease.3.title">Replacement parts on demand</h3>
+          <h3 data-i18n="worktease.3.title">Replacement parts on demand</h3>
           <p data-i18n="worktease.3.desc">Reverse-engineered a discontinued appliance bracket and printed a full replacement run.</p>
-        </div>
+        </article>
       </div>
     </div>
   </section>
 
   <!-- CTA -->
-  <section class="section">
+  <section class="section section-cta">
     <div class="container">
-      <div class="cta-band reveal">
-        <h2 class="h-lg" data-i18n="ctaband.title">Have something to build?</h2>
-        <p class="lede center" data-i18n="ctaband.lede">Tell us what you need — we'll reply with a clear quote within a day.</p>
-        <div class="hero-actions" style="justify-content:center;">
-          <a href="contact.html#quote" class="btn btn-primary" data-i18n="ctaband.cta1">Start a project</a>
-          <a href="tel:+359885348666" class="btn btn-ghost" data-i18n="ctaband.cta2">Call +359 88 534 8666</a>
+      <div class="cta-band invert reveal">
+        <div>
+          <p class="eyebrow live" data-i18n="ctaband.eyebrow">Free quote within 24 hours</p>
+          <h2 class="h-lg" data-i18n="ctaband.title">Have something to build?</h2>
+          <p class="lede" data-i18n="ctaband.lede">Tell us what you need — we'll reply with a clear quote within a day.</p>
+        </div>
+        <div class="hero-actions">
+          <a href="contact.html#quote" class="btn btn-primary btn-rec"><span data-i18n="ctaband.cta1">Start a project</span></a>
+          <a href="tel:+359885348666" class="btn btn-ghost"><span data-i18n="ctaband.cta2">Call +359 88 534 8666</span></a>
         </div>
       </div>
     </div>
   </section>
 </main>
 
-<footer id="site-footer"></footer>
+<footer id="site-footer" class="site-footer invert"></footer>
 
 <script type="module">
   import { mountChrome } from "./js/chrome.js";
@@ -244,16 +227,19 @@
     en: {
       "hero.eyebrow": "Kardzhali, Bulgaria",
       "hero.title.pre": "Technology, built and installed — for ",
+      "hero.title.sr": "restaurants, homes, businesses, offices, workshops and brands.",
       "hero.lede": "One team for websites, 3D-printed parts, smart home & business automation, camera systems, digital menus, and PC/printer service. From first sketch to installed and running.",
       "hero.cta1": "Get a free quote", "hero.cta2": "Explore services",
-      "hero.stat1": "core services, one team", "hero.stat2": "average quote turnaround", "hero.stat3": "installed & supported locally",
+      "hero.matrix.pause": "Pause the service display", "hero.matrix.play": "Play the service display", "hero.matrix.next": "Show the next service",
+      "statsdark.eyebrow": "By the numbers",
       "statsdark.1": "Core services", "statsdark.2": "Average quote turnaround", "statsdark.3": "Installed & supported locally", "statsdark.4": "Point of contact for everything",
+      "pq.eyebrow": "From the founder",
       "pq.quote": "I started this company scanning restaurant menus into QR codes for cafés down the street. Six services later, the promise hasn't changed: one person to call, whatever the problem is.",
       "pq.role": "Founder & CEO, SmartMenuKJ",
       "strip.1": "Restaurants & Cafés", "strip.2": "Homes & Offices", "strip.3": "Retail & Studios", "strip.4": "Local Businesses", "strip.5": "Kardzhali & Beyond",
       "svchome.eyebrow": "What we do", "svchome.title": "Six services. One point of contact.",
       "svchome.lede": "Mix and match — most clients start with one service and grow into two or three as we get to know their business.",
-      "svchome.learn": "Learn more",
+      "svchome.original": "Where it all started",
       "svchome.web.desc": "Fast, modern business websites and web apps — designed, built, and kept online.",
       "svchome.print3d.desc": "Custom parts, prototypes, replacement pieces, and small-batch production.",
       "svchome.smarthome.desc": "Lighting, climate, access and automation — controlled from one app.",
@@ -269,22 +255,26 @@
       "worktease.1.title": "QR menu for a Kardzhali café", "worktease.1.desc": "Live menu editing, seasonal specials, and an instant-load page tuned for phones on café Wi-Fi.",
       "worktease.2.title": "Whole-home automation retrofit", "worktease.2.desc": "Lighting, heating and access control unified into a single app for a family home.",
       "worktease.3.title": "Replacement parts on demand", "worktease.3.desc": "Reverse-engineered a discontinued appliance bracket and printed a full replacement run.",
+      "ctaband.eyebrow": "Free quote within 24 hours",
       "ctaband.title": "Have something to build?", "ctaband.lede": "Tell us what you need — we'll reply with a clear quote within a day.",
       "ctaband.cta1": "Start a project", "ctaband.cta2": "Call +359 88 534 8666",
     },
     bg: {
       "hero.eyebrow": "Кърджали, България",
       "hero.title.pre": "Технологии, изградени и монтирани — за ",
+      "hero.title.sr": "ресторанти, домове, бизнеси, офиси, ателиета и марки.",
       "hero.lede": "Един екип за уебсайтове, 3D-принтирани части, автоматизация на дома и бизнеса, камери, дигитални менюта и сервиз на компютри и принтери. От идеята до монтажа.",
       "hero.cta1": "Безплатна оферта", "hero.cta2": "Разгледай услугите",
-      "hero.stat1": "основни услуги, един екип", "hero.stat2": "средно време за оферта", "hero.stat3": "монтирано и поддържано locally",
+      "hero.matrix.pause": "Пауза на дисплея с услуги", "hero.matrix.play": "Пусни дисплея с услуги", "hero.matrix.next": "Покажи следващата услуга",
+      "statsdark.eyebrow": "В числа",
       "statsdark.1": "Основни услуги", "statsdark.2": "Средно време за оферта", "statsdark.3": "Монтирано и поддържано локално", "statsdark.4": "Точка за контакт за всичко",
+      "pq.eyebrow": "От основателя",
       "pq.quote": "Започнах тази компания, като превръщах ресторантски менюта в QR кодове за кафенета наблизо. Шест услуги по-късно обещанието е същото: един човек за обаждане, каквото и да е проблемът.",
       "pq.role": "Основател и CEO, SmartMenuKJ",
       "strip.1": "Ресторанти и кафенета", "strip.2": "Домове и офиси", "strip.3": "Магазини и ателиета", "strip.4": "Местен бизнес", "strip.5": "Кърджали и региона",
       "svchome.eyebrow": "С какво се занимаваме", "svchome.title": "Шест услуги. Едно място за контакт.",
       "svchome.lede": "Комбинирайте ги — повечето клиенти започват с една услуга и с времето добавят още.",
-      "svchome.learn": "Научи повече",
+      "svchome.original": "Откъдето започна всичко",
       "svchome.web.desc": "Бързи, модерни бизнес сайтове и уеб приложения — проектирани, изградени и поддържани.",
       "svchome.print3d.desc": "Индивидуални части, прототипи, резервни детайли и малки серии.",
       "svchome.smarthome.desc": "Осветление, климат, достъп и автоматизация — от едно приложение.",
@@ -300,6 +290,7 @@
       "worktease.1.title": "QR меню за кафене в Кърджали", "worktease.1.desc": "Редакция на менюто на живо, сезонни оферти и мигновено зареждаща страница за телефони.",
       "worktease.2.title": "Автоматизация на цял дом", "worktease.2.desc": "Осветление, отопление и контрол на достъпа в едно приложение за семеен дом.",
       "worktease.3.title": "Резервни части при поискване", "worktease.3.desc": "Възпроизведохме спряна от производство скоба и отпечатахме цяла серия.",
+      "ctaband.eyebrow": "Безплатна оферта до 24 часа",
       "ctaband.title": "Имате нужда от нещо?", "ctaband.lede": "Кажете ни какво ви трябва — ще отговорим с ясна оферта до един ден.",
       "ctaband.cta1": "Започни проект", "ctaband.cta2": "Обади се +359 88 534 8666",
     },

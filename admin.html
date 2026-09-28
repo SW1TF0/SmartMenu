@@ -5,28 +5,32 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Admin — SmartMenuKJ</title>
 <meta name="robots" content="noindex, nofollow" />
+<meta name="theme-color" content="#f1f0ee" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@700;800&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&display=swap" rel="stylesheet" />
+<link rel="preload" href="fonts/handjet-dot.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="fonts/geist.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="stylesheet" href="css/style.css" />
+<script>(function(d){d.documentElement.classList.add("js");try{var t=localStorage.getItem("smkj_theme");if(t==="dark"||t==="light")d.documentElement.setAttribute("data-theme",t)}catch(e){}})(document);</script>
 </head>
 <body>
 
-<header id="site-header" data-active="admin.html" data-hide-mobile-cta></header>
+<a class="skip-link" href="#main" data-i18n="a11y.skip">Skip to content</a>
+<header id="site-header" class="site-header" data-active="admin.html" data-hide-mobile-cta></header>
 
-<main>
-  <section class="page-hero" style="padding:56px 0 32px;">
-    <div class="container" style="text-align:left;">
-      <h1 class="h-lg mt-0">Admin dashboard</h1>
+<main id="main">
+  <section class="page-hero">
+    <div class="container">
+      <p class="eyebrow live">Admin</p>
+      <h1 class="h-lg">Dashboard</h1>
       <p class="lede">Leads, quote requests and registered users for SmartMenuKJ.</p>
     </div>
   </section>
 
-  <section class="section" style="padding-top:0;">
+  <section class="svc section-last">
     <div class="container">
-      <div id="adminGuard" class="empty-state hidden">
-        <h3>Admins only</h3>
+      <div id="adminGuard" class="card empty-state hidden">
+        <h2 class="h-md">Admins only</h2>
         <p>Sign in with the admin account to view this page.</p>
         <a href="login.html?next=admin.html" class="btn btn-primary">Log in</a>
       </div>
@@ -39,27 +43,27 @@
           <div class="dash-stat"><b id="statUsers">0</b><span>Registered users</span></div>
         </div>
 
-        <div class="tab-row">
-          <button class="tab-btn active" data-tab="tabLeads">Leads</button>
-          <button class="tab-btn" data-tab="tabUsers">Users</button>
+        <div class="tab-row" role="tablist">
+          <button type="button" class="tab-btn active" role="tab" aria-selected="true" data-tab="tabLeads">Leads</button>
+          <button type="button" class="tab-btn" role="tab" aria-selected="false" data-tab="tabUsers">Users</button>
         </div>
 
-        <div id="tabLeads" class="tab-panel active">
-          <div class="flex justify-between items-center" style="margin-bottom:16px;">
-            <h3 class="mb-0">Leads &amp; quote requests</h3>
-            <button id="exportCsv" class="btn btn-ghost btn-sm">Export CSV</button>
+        <div id="tabLeads" class="tab-panel active" role="tabpanel">
+          <div class="panel-head">
+            <h3>Leads &amp; quote requests</h3>
+            <button type="button" id="exportCsv" class="btn btn-ghost btn-sm">Export CSV</button>
           </div>
           <div class="table-wrap">
             <table>
-              <thead><tr><th>Date</th><th>Name</th><th>Email</th><th>Phone</th><th>Service</th><th>Message</th><th>Status</th><th></th></tr></thead>
+              <thead><tr><th>Date</th><th>Name</th><th>Email</th><th>Phone</th><th>Service</th><th>Message</th><th>Status</th><th><span class="sr-only">Actions</span></th></tr></thead>
               <tbody id="leadsBody"></tbody>
             </table>
           </div>
           <div id="leadsEmpty" class="empty-state hidden"><p>No leads yet.</p></div>
         </div>
 
-        <div id="tabUsers" class="tab-panel">
-          <h3 style="margin-bottom:16px;">Registered users</h3>
+        <div id="tabUsers" class="tab-panel" role="tabpanel">
+          <div class="panel-head"><h3>Registered users</h3></div>
           <div class="table-wrap">
             <table>
               <thead><tr><th>Name</th><th>Email</th><th>Registered</th></tr></thead>
@@ -73,7 +77,7 @@
   </section>
 </main>
 
-<footer id="site-footer"></footer>
+<footer id="site-footer" class="site-footer invert"></footer>
 
 <script type="module">
   import { mountChrome } from "./js/chrome.js";

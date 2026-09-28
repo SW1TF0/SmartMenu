@@ -8,7 +8,18 @@ A professional, bilingual (🇬🇧 EN / 🇧🇬 BG) multi-service business web
 
 ## Stack
 
-Plain HTML/CSS/JS — no build step, no framework, no npm install. Firebase is loaded straight from the `gstatic.com` CDN as ES modules.
+Plain HTML/CSS/JS — no build step, no framework, no npm install. Firebase is loaded straight from the `gstatic.com` CDN as ES modules (lazily for the header, so the page shell still renders if the SDK is slow or blocked).
+
+## Design system
+
+The look follows the Nothing design language: monochrome surfaces, dot-matrix display type, mono system labels and one signal red.
+
+- **Themes** — light ("paper" `#f1f0ee`, white widgets) and true-black dark. The site follows the visitor's OS setting; the header toggle overrides it (saved as `smkj_theme`). All colours are tokens at the top of `css/style.css`; `.invert` re-scopes them for dark bands (stats, CTA, footer, cookie card).
+- **Red (`--red`) is a signal, not decoration** — live indicators, the active nav item, the typing caret, one "record" pixel per pictogram, errors and new-lead status. Keep it that way when adding UI.
+- **Type** — self-hosted in `fonts/` (no Google Fonts requests, which matters for GDPR):
+  - `Handjet Dot` — Handjet (OFL) instanced to round "Circle" dots, Latin + Cyrillic. Headlines (`h1`, `h2`, `.h-xl/.h-lg/.h-md`) and big numerals.
+  - `Geist` — body and UI text. `Geist Mono` — uppercase labels (`.eyebrow`, nav, pills, table headers).
+- **Pictograms** — 15×15 dot bitmaps in `js/dots.js` (`ICONS`). Use `<span class="dot-icon" data-dot-icon="web"></span>` and call `mountDotIcons()`. The home hero's round LED matrix (`createGlyphMatrix`) morphs between the same bitmaps.
 
 - **Firebase Authentication** — email/password + Google sign-in
 - **Cloud Firestore** — `users` (accounts) and `leads` (contact/quote requests)
@@ -26,13 +37,16 @@ login.html          Sign in / register (email+password and Google)
 account.html        Signed-in customer dashboard — profile + their own requests
 admin.html          Admin dashboard — all leads + users, CSV export (gated)
 privacy.html, terms.html, 404.html
-css/style.css       Design system
+css/style.css       Design system (tokens, themes, components)
+fonts/              Self-hosted woff2 subsets (Handjet Dot, Geist, Geist Mono) + OFL licences
 js/
   firebase-config.js  Firebase project config + ADMIN_EMAILS
   auth.js             Auth helpers (register/login/Google/logout/reset)
-  chrome.js           Shared header/nav + footer, injected on every page
-  i18n.js             EN/BG translation engine (data-i18n attributes)
-  site.js             Scroll-reveal + hero word rotator
+  chrome.js           Shared header/nav + footer, theme toggle, Kardzhali clock
+  i18n.js             EN/BG translation engine (data-i18n attributes) + escapeHtml
+  dots.js             Dot-matrix pictograms + the hero's LED matrix
+  site.js             Scroll-reveal + typewriter helper
+  home.js             Home hero (matrix + typing headline) and stat counters
   cookies.js          GDPR cookie consent banner
   contact.js, contact-page.js   Lead-form submission
   account.js, admin.js, login.js  Page-specific logic

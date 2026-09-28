@@ -2,9 +2,12 @@
 // admin.html — gated dashboard: leads (contact/quote submissions) + users.
 // Access is gated by ADMIN_EMAILS in firebase-config.js (client-side gate)
 // and mirrored in firebase/firestore.rules (server-side enforcement).
+// Lead and user fields are written by the public, so every value is escaped
+// before it is put into the page.
 // ============================================================================
 import { db } from "./firebase-config.js";
 import { watchAuth, isAdmin } from "./auth.js";
+import { escapeHtml } from "./i18n.js";
 import {
   collection,
   getDocs,
@@ -27,6 +30,7 @@ const leadsEmpty = document.getElementById("leadsEmpty");
 const usersEmpty = document.getElementById("usersEmpty");
 const exportBtn = document.getElementById("exportCsv");
 
+const STATUSES = ["new", "progress", "done"];
 let leadsCache = [];
 
 function fmtDate(ts) {
@@ -35,9 +39,7 @@ function fmtDate(ts) {
 }
 
 function statusOptions(current) {
-  return ["new", "progress", "done"]
-    .map((s) => `<option value="${s}" ${s === current ? "selected" : ""}>${s}</option>`)
-    .join("");
+  return STATUSES.map((s) => `<option value="${s}" ${s === current ? "selected" : ""}>${s}</option>`).join("");
 }
 
 async function loadLeads() {
@@ -56,18 +58,20 @@ async function loadLeads() {
   }
   leadsEmpty.classList.add("hidden");
   leadsBody.innerHTML = leadsCache
-    .map(
-      (l) => `<tr data-id="${l.id}">
-      <td>${fmtDate(l.createdAt)}</td>
-      <td>${l.name || ""}</td>
-      <td><a href="mailto:${l.email}">${l.email || ""}</a></td>
-      <td>${l.phone || "—"}</td>
-      <td>${l.service || "general"}</td>
-      <td style="max-width:260px;">${(l.message || "").slice(0, 140)}</td>
-      <td><select class="status-select" data-id="${l.id}">${statusOptions(l.status)}</select></td>
-      <td><button class="btn btn-ghost btn-sm delete-lead" data-id="${l.id}">Delete</button></td>
-    </tr>`
-    )
+    .map((l) => {
+      const id = escapeHtml(l.id);
+      const email = l.email ? String(l.email) : "";
+      return `<tr data-id="${id}">
+      <td>${escapeHtml(fmtDate(l.createdAt))}</td>
+      <td>${escapeHtml(l.name || "")}</td>
+      <td>${email ? `<a href="mailto:${escapeHtml(email)}">${escapeHtml(email)}</a>` : ""}</td>
+      <td>${escapeHtml(l.phone || "—")}</td>
+      <td>${escapeHtml(l.service || "general")}</td>
+      <td style="max-width:260px;">${escapeHtml(String(l.message || "").slice(0, 140))}</td>
+      <td><select class="status-select" data-id="${id}" aria-label="Status">${statusOptions(l.status)}</select></td>
+      <td><button type="button" class="btn btn-ghost btn-sm delete-lead" data-id="${id}">Delete</button></td>
+    </tr>`;
+    })
     .join("");
 
   leadsBody.querySelectorAll(".status-select").forEach((sel) =>
@@ -95,17 +99,23 @@ async function loadUsers() {
   }
   usersEmpty.classList.add("hidden");
   usersBody.innerHTML = users
-    .map((u) => `<tr><td>${u.name || "—"}</td><td>${u.email || ""}</td><td>${fmtDate(u.createdAt)}</td></tr>`)
+    .map((u) => `<tr><td>${escapeHtml(u.name || "—")}</td><td>${escapeHtml(u.email || "")}</td><td>${escapeHtml(fmtDate(u.createdAt))}</td></tr>`)
     .join("");
+}
+
+// Spreadsheet apps treat cells starting with = + - @ as formulas; prefix them
+// so a malicious lead can't smuggle a formula into the exported file.
+function csvCell(value) {
+  let s = String(value == null ? "" : value).replace(/\r?\n/g, " ");
+  if (/^[=+\-@\t\r]/.test(s)) s = "'" + s;
+  return `"${s.replace(/"/g, '""')}"`;
 }
 
 function exportLeadsCsv() {
   const rows = [["Date", "Name", "Email", "Phone", "Service", "Message", "Status"]];
-  leadsCache.forEach((l) =>
-    rows.push([fmtDate(l.createdAt), l.name, l.email, l.phone, l.service, (l.message || "").replace(/\n/g, " "), l.status])
-  );
-  const csv = rows.map((r) => r.map((c) => `"${String(c || "").replace(/"/g, '""')}"`).join(",")).join("\n");
-  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  leadsCache.forEach((l) => rows.push([fmtDate(l.createdAt), l.name, l.email, l.phone, l.service, l.message, l.status]));
+  const csv = rows.map((r) => r.map(csvCell).join(",")).join("\n");
+  const blob = new Blob(["﻿" + csv], { type: "text/csv;charset=utf-8;" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
@@ -116,9 +126,11 @@ function exportLeadsCsv() {
 
 document.querySelectorAll(".tab-btn").forEach((btn) =>
   btn.addEventListener("click", () => {
-    document.querySelectorAll(".tab-btn").forEach((b) => b.classList.remove("active"));
+    document.querySelectorAll(".tab-btn").forEach((b) => {
+      b.classList.toggle("active", b === btn);
+      b.setAttribute("aria-selected", b === btn ? "true" : "false");
+    });
     document.querySelectorAll(".tab-panel").forEach((p) => p.classList.remove("active"));
-    btn.classList.add("active");
     document.getElementById(btn.getAttribute("data-tab")).classList.add("active");
   })
 );

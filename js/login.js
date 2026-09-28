@@ -9,8 +9,10 @@ const panels = { signin: document.getElementById("panelSignin"), signup: documen
 
 tabs.forEach((tab) =>
   tab.addEventListener("click", () => {
-    tabs.forEach((t) => t.classList.remove("active"));
-    tab.classList.add("active");
+    tabs.forEach((t) => {
+      t.classList.toggle("active", t === tab);
+      t.setAttribute("aria-selected", t === tab ? "true" : "false");
+    });
     Object.values(panels).forEach((p) => p.classList.add("hidden"));
     panels[tab.getAttribute("data-tab")].classList.remove("hidden");
   })
@@ -18,7 +20,9 @@ tabs.forEach((tab) =>
 
 function redirectTarget() {
   const params = new URLSearchParams(window.location.search);
-  return params.get("next") || "account.html";
+  const next = params.get("next") || "";
+  // Only allow same-site relative pages (e.g. "account.html") — never an absolute or protocol URL.
+  return /^[a-z0-9-]+\.html$/i.test(next) ? next : "account.html";
 }
 
 function showNote(el, msg, ok) {
@@ -67,7 +71,8 @@ signupForm.addEventListener("submit", async (e) => {
 
 document.querySelectorAll(".btn-google").forEach((btn) =>
   btn.addEventListener("click", async () => {
-    const note = btn.closest(".tab-panel").querySelector(".form-note");
+    const panel = btn.closest(".tab-panel-auth");
+    const note = panel ? panel.querySelector(".form-note") : null;
     try {
       await loginWithGoogle();
     } catch (err) {
@@ -78,7 +83,9 @@ document.querySelectorAll(".btn-google").forEach((btn) =>
 
 document.getElementById("forgotLink").addEventListener("click", async (e) => {
   e.preventDefault();
-  const email = (document.getElementById("signinEmail").value || "").trim() || prompt(getLang() === "bg" ? "Въведете имейл за възстановяване:" : "Enter your email to reset your password:");
+  const email =
+    (document.getElementById("signinEmail").value || "").trim() ||
+    prompt(getLang() === "bg" ? "Въведете имейл за възстановяване:" : "Enter your email to reset your password:");
   if (!email) return;
   try {
     await resetPassword(email);

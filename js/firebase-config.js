@@ -27,8 +27,11 @@ const firebaseConfig = {
 // Admin identification — anyone signed in with one of these emails gets
 // access to admin.html. Keep this list in sync with firebase/firestore.rules.
 // ----------------------------------------------------------------------------
-export const ADMIN_EMAILS = ["krasimiruzun@smartmenukj.com"];
-
+export const ADMIN_EMAILS = [
+  "krasimiruzun@smartmenukj.com",
+  "dobrev@smartmenukj.com",
+  "serkan@smartmenukj.com",
+];
 export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);

@@ -603,6 +603,29 @@ a.card:hover .card-link svg { transform: translateX(3px); }
 .pullquote-who .name { font-weight: 600; font-size: 15px; color: var(--ink); }
 .pullquote-who .role { font: 500 11px/1.4 var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
 
+/* ----------------------------------------------------------- partners -- */
+/* Entries come from js/partners.js. Logos sit in monochrome and get their own
+   colours back on hover; without a logo the initials are drawn in dot type. */
+.partner-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 980px) { .partner-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 520px) { .partner-grid { grid-template-columns: minmax(0, 1fr); } }
+.partner { display: flex; align-items: center; gap: 18px; height: 100%; padding: 18px 22px 18px 18px; }
+.partner-mark {
+  width: 72px; height: 72px; flex: none; border-radius: var(--r-md);
+  display: flex; align-items: center; justify-content: center; overflow: hidden;
+  background: var(--widget-2); color: var(--ink);
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+.partner-mark img { max-width: 76%; max-height: 60%; object-fit: contain; filter: grayscale(1); opacity: 0.85; transition: filter 0.25s ease, opacity 0.25s ease; }
+.partner-initials { font: 500 34px/1 var(--font-dot); letter-spacing: 0.02em; }
+.partner-meta { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.partner-name { font-weight: 600; font-size: 16px; color: var(--ink); overflow-wrap: anywhere; }
+.partner-type { font: 500 11px/1.4 var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+a.partner:hover .partner-name, a.partner:hover .partner-type { color: var(--on-ink); }
+a.partner:hover .partner-mark { background: color-mix(in srgb, var(--on-ink) 12%, transparent); color: var(--on-ink); }
+a.partner:hover .partner-mark img { filter: none; opacity: 1; }
+.partner.is-placeholder { outline: 1px dashed var(--line-strong); outline-offset: -1px; }
+
 /* ----------------------------------------------------------- CTA band -- */
 .cta-band {
   position: relative; overflow: hidden; isolation: isolate;

@@ -603,6 +603,30 @@ a.card:hover .card-link svg { transform: translateX(3px); }
 .pullquote-who .name { font-weight: 600; font-size: 15px; color: var(--ink); }
 .pullquote-who .role { font: 500 11px/1.4 var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
 
+/* ----------------------------------------------------------- partners -- */
+/* Entries come from js/partners.js. Logos sit on a white plate in both themes;
+   without a logo the initials are drawn in dot type. */
+.partner-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 1100px) { .partner-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 520px) { .partner-grid { grid-template-columns: minmax(0, 1fr); } .partner-mark { aspect-ratio: 2 / 1; } }
+.partner { display: flex; flex-direction: column; align-items: flex-start; gap: 20px; height: 100%; padding: 14px 14px 24px; }
+.partner > .partner-meta { padding: 0 10px; }
+.partner-mark {
+  width: 100%; aspect-ratio: 16 / 10; flex: none; border-radius: var(--r-md);
+  display: flex; align-items: center; justify-content: center; overflow: hidden;
+  background: var(--widget-2); color: var(--ink);
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+.partner-mark.has-logo { background: #fff; box-shadow: inset 0 0 0 1px var(--line); }
+.partner-mark img { max-width: 72%; max-height: 82%; object-fit: contain; }
+.partner-initials { font: 500 56px/1 var(--font-dot); letter-spacing: 0.02em; }
+.partner-meta { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.partner-name { font-weight: 600; font-size: 16px; color: var(--ink); overflow-wrap: anywhere; }
+.partner-type { font: 500 11px/1.4 var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+a.partner:hover .partner-name, a.partner:hover .partner-type { color: var(--on-ink); }
+a.partner:hover .partner-mark:not(.has-logo) { background: color-mix(in srgb, var(--on-ink) 12%, transparent); color: var(--on-ink); }
+.partner.is-placeholder { outline: 1px dashed var(--line-strong); outline-offset: -1px; }
+
 /* ----------------------------------------------------------- CTA band -- */
 .cta-band {
   position: relative; overflow: hidden; isolation: isolate;

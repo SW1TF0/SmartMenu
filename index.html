@@ -198,6 +198,18 @@
     </div>
   </section>
 
+  <!-- PARTNERS — entries live in js/partners.js -->
+  <section class="section" id="partners">
+    <div class="container">
+      <div class="sys-bar reveal"><p class="eyebrow" data-i18n="partners.eyebrow">Partners</p><span class="sys-meta" id="partnersCount"></span></div>
+      <div class="section-head reveal">
+        <h2 class="h-lg" data-i18n="partners.title">Working alongside good people.</h2>
+        <p class="lede" data-i18n="partners.lede">Local businesses in Kardzhali we work with and build for.</p>
+      </div>
+      <ul class="partner-grid" id="partnerGrid"></ul>
+    </div>
+  </section>
+
   <!-- CTA -->
   <section class="section section-cta">
     <div class="container">
@@ -222,6 +234,7 @@
   import { mountChrome } from "./js/chrome.js";
   import { registerDict, applyI18n, initLangSwitch } from "./js/i18n.js";
   import { initCookieBanner } from "./js/cookies.js";
+  import { PARTNERS, renderPartners } from "./js/partners.js";
 
   registerDict({
     en: {
@@ -258,6 +271,9 @@
       "ctaband.eyebrow": "Free quote within 24 hours",
       "ctaband.title": "Have something to build?", "ctaband.lede": "Tell us what you need — we'll reply with a clear quote within a day.",
       "ctaband.cta1": "Start a project", "ctaband.cta2": "Call +359 88 534 8666",
+      "partners.eyebrow": "Partners", "partners.title": "Working alongside good people.",
+      "partners.lede": "Local businesses in Kardzhali we work with and build for.",
+      "partners.type.auto": "Car dealership", "partners.type.tech": "Technology", "partners.type.isp": "Internet provider", "partners.type.service": "Service & repair",
     },
     bg: {
       "hero.eyebrow": "Кърджали, България",
@@ -293,8 +309,14 @@
       "ctaband.eyebrow": "Безплатна оферта до 24 часа",
       "ctaband.title": "Имате нужда от нещо?", "ctaband.lede": "Кажете ни какво ви трябва — ще отговорим с ясна оферта до един ден.",
       "ctaband.cta1": "Започни проект", "ctaband.cta2": "Обади се +359 88 534 8666",
+      "partners.eyebrow": "Партньори", "partners.title": "Работим с добри хора.",
+      "partners.lede": "Местни бизнеси в Кърджали, с които и за които работим.",
+      "partners.type.auto": "Автокъща", "partners.type.tech": "Технологии", "partners.type.isp": "Интернет доставчик", "partners.type.service": "Сервиз и ремонт",
     },
   });
+
+  renderPartners(document.getElementById("partnerGrid"));
+  document.getElementById("partnersCount").textContent = String(PARTNERS.length).padStart(2, "0");
 
   mountChrome();
   applyI18n();

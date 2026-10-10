@@ -28,7 +28,7 @@ The look follows the Nothing design language: monochrome surfaces, dot-matrix di
 ## Project structure
 
 ```
-index.html         Home — hero, services overview, process, work teaser, testimonials
+index.html         Home — hero, services overview, process, work teaser, partners
 services.html       All six services in detail, each with its own quote CTA
 about.html          Company story + founder bio
 portfolio.html      Filterable sample-work showcase
@@ -47,6 +47,7 @@ js/
   dots.js             Dot-matrix pictograms + the hero's LED matrix
   site.js             Scroll-reveal + typewriter helper
   home.js             Home hero (matrix + typing headline) and stat counters
+  partners.js         Partner list for the home page — edit PARTNERS to add names, logos, links
   cookies.js          GDPR cookie consent banner
   contact.js, contact-page.js   Lead-form submission
   account.js, admin.js, login.js  Page-specific logic

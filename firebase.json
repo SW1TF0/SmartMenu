@@ -9,10 +9,14 @@
       "firebase/**",
       "**/.*",
       "**/node_modules/**",
-      "README.md"
+      "README.md",
+      "tools/**"
     ],
     "rewrites": [],
     "cleanUrls": true,
-    "trailingSlash": false
+    "trailingSlash": false,
+    "predeploy": [
+      "node tools/build-bg.mjs"
+    ]
   }
 }

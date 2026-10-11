@@ -113,14 +113,14 @@ function headerHTML(active) {
 function authNavHTML(user, admin) {
   if (!user) {
     return `<div class="flex gap-8">
-      <a href="login.html" class="btn btn-ghost btn-sm" data-i18n="nav.login">Log in</a>
+      <a href="/login.html" class="btn btn-ghost btn-sm" data-i18n="nav.login">Log in</a>
       <a href="contact.html#quote" class="btn btn-primary btn-sm" data-i18n="nav.quote">Get a Quote</a>
     </div>`;
   }
   const initial = escapeHtml((user.displayName || user.email || "?").trim().charAt(0).toUpperCase());
   return `<div class="flex gap-8 items-center">
-    ${admin ? `<a href="admin.html" class="btn btn-ghost btn-sm" data-i18n="nav.admin">Admin</a>` : ""}
-    <a href="account.html" class="btn btn-ghost btn-sm"><span class="avatar-mini" aria-hidden="true">${initial}</span><span data-i18n="nav.account">Account</span></a>
+    ${admin ? `<a href="/admin.html" class="btn btn-ghost btn-sm" data-i18n="nav.admin">Admin</a>` : ""}
+    <a href="/account.html" class="btn btn-ghost btn-sm"><span class="avatar-mini" aria-hidden="true">${initial}</span><span data-i18n="nav.account">Account</span></a>
     <button type="button" class="btn btn-warm btn-sm navLogout" data-i18n="nav.logout">Sign out</button>
   </div>`;
 }
@@ -156,7 +156,7 @@ function footerHTML() {
           <li><a href="about.html" data-i18n="footer.about">About us</a></li>
           <li><a href="portfolio.html" data-i18n="footer.portfolio">Our work</a></li>
           <li><a href="contact.html" data-i18n="footer.contact">Contact</a></li>
-          <li><a href="login.html" data-i18n="footer.login">Log in / Register</a></li>
+          <li><a href="/login.html" data-i18n="footer.login">Log in / Register</a></li>
         </ul>
       </div>
       <div>

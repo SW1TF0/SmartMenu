@@ -16,6 +16,36 @@ const STORAGE_KEY = "smkj_lang";
 let dict = { en: {}, bg: {} };
 let sessionLang = null;
 
+// Public pages exist twice: /page.html (English) and /bg/page.html (Bulgarian,
+// built by tools/build-bg.mjs) so search engines index both languages. On
+// those pages the URL decides the language and the switch moves between the
+// twins; other pages (login, account, admin) still translate in place.
+const altLinks = {};
+document.querySelectorAll('link[rel="alternate"][hreflang]').forEach((l) => (altLinks[l.hreflang] = l.href));
+const PAGE_LANG = altLinks.bg ? (document.documentElement.getAttribute("lang") === "bg" ? "bg" : "en") : null;
+
+function twinUrl(lang) {
+  const url = new URL(altLinks[lang], location.href);
+  return url.pathname + location.search + location.hash;
+}
+
+function savedLang() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    return saved === "en" || saved === "bg" ? saved : null;
+  } catch (e) {
+    return null; /* storage unavailable (private mode / blocked) */
+  }
+}
+
+// A visitor who picked a language (or, on an English page, whose browser is
+// Bulgarian) is sent to that twin. Crawlers have neither, so they stay put.
+if (PAGE_LANG) {
+  const browserBg = navigator.language && navigator.language.toLowerCase().startsWith("bg");
+  const want = savedLang() || (PAGE_LANG === "en" && browserBg ? "bg" : PAGE_LANG);
+  if (want !== PAGE_LANG) location.replace(twinUrl(want));
+}
+
 export const COMMON = {
   en: {
     "nav.home": "Home",
@@ -128,14 +158,10 @@ export function registerDict(pageDict) {
 }
 
 export function getLang() {
+  if (PAGE_LANG) return PAGE_LANG;
   if (sessionLang) return sessionLang;
-  let saved = null;
-  try {
-    saved = localStorage.getItem(STORAGE_KEY);
-  } catch (e) {
-    /* storage unavailable (private mode / blocked) — fall back to the browser language */
-  }
-  if (saved === "en" || saved === "bg") return saved;
+  const saved = savedLang();
+  if (saved) return saved;
   return navigator.language && navigator.language.toLowerCase().startsWith("bg") ? "bg" : "en";
 }
 
@@ -165,6 +191,10 @@ export function setLang(lang) {
     localStorage.setItem(STORAGE_KEY, lang);
   } catch (e) {
     /* storage unavailable — the choice lasts for this page view only */
+  }
+  if (PAGE_LANG && lang !== PAGE_LANG) {
+    location.href = twinUrl(lang);
+    return;
   }
   applyI18n();
 }

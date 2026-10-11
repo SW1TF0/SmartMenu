@@ -15,10 +15,10 @@
 import { escapeHtml } from "./i18n.js";
 
 export const PARTNERS = [
-  { name: "Great Wall Motors Kardzhali", type: "partners.type.auto", logo: "img/partners/gwm.png", url: "" },
-  { name: "TechnoLux", type: "partners.type.tech", logo: "img/partners/technolux.png", url: "" },
-  { name: "GlobalNet", type: "partners.type.isp", logo: "img/partners/globalnet.png", url: "" },
-  { name: "Remela Service", type: "partners.type.service", logo: "img/partners/remela.png", url: "" },
+  { name: "Great Wall Motors Kardzhali", type: "partners.type.auto", logo: "/img/partners/gwm.png", url: "" },
+  { name: "TechnoLux", type: "partners.type.tech", logo: "/img/partners/technolux.png", url: "" },
+  { name: "GlobalNet", type: "partners.type.isp", logo: "/img/partners/globalnet.png", url: "" },
+  { name: "Remela Service", type: "partners.type.service", logo: "/img/partners/remela.png", url: "" },
 ];
 
 function initials(name) {

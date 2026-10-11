@@ -6,11 +6,17 @@
 <title>SmartMenuKJ — Web, 3D Printing, Smart Home, Cameras & IT Services in Kardzhali</title>
 <meta name="description" content="SmartMenuKJ builds and installs websites, 3D-printed parts, smart home & business automation, camera/security systems, digital restaurant menus, and PC/printer service — based in Kardzhali, Bulgaria." />
 <link rel="canonical" href="https://www.smartmenukj.com/" />
+<link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/" />
+<link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/" />
+<link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/" />
 <meta property="og:title" content="SmartMenuKJ — technology, built and installed" />
 <meta property="og:description" content="Websites, 3D printing, smart home & business automation, camera systems, digital menus and PC/printer service — one team, Kardzhali, Bulgaria." />
 <meta property="og:image" content="https://www.smartmenukj.com/og-image.png" />
 <meta property="og:url" content="https://www.smartmenukj.com/" />
 <meta property="og:type" content="website" />
+<meta property="og:site_name" content="SmartMenuKJ" />
+<meta property="og:locale" content="en_GB" />
+<meta property="og:locale:alternate" content="bg_BG" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="theme-color" content="#f1f0ee" media="(prefers-color-scheme: light)" />
 <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
@@ -24,15 +30,49 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "LocalBusiness",
-  "name": "SmartMenuKJ",
-  "founder": "Krasimir Uzun",
-  "email": "krasimiruzun@smartmenukj.com",
-  "telephone": "+359885348666",
-  "image": "https://www.smartmenukj.com/og-image.png",
-  "address": { "@type": "PostalAddress", "streetAddress": "ul. Dzhebelska 2", "addressLocality": "Kardzhali", "postalCode": "6600", "addressCountry": "BG" },
-  "url": "https://www.smartmenukj.com/",
-  "sameAs": ["https://www.instagram.com/smartmenukj/", "https://www.linkedin.com/in/krasimir-uzun-316a053bb/"]
+  "@graph": [
+    {
+      "@type": "LocalBusiness",
+      "@id": "https://www.smartmenukj.com/#business",
+      "name": "SmartMenuKJ",
+      "alternateName": "SmartMenu KJ",
+      "description": "Web development, 3D printing, smart home & business automation, camera & security systems, digital QR menus, and PC & printer service in Kardzhali, Bulgaria.",
+      "founder": { "@type": "Person", "name": "Krasimir Uzun" },
+      "email": "krasimiruzun@smartmenukj.com",
+      "telephone": "+359885348666",
+      "image": "https://www.smartmenukj.com/og-image.png",
+      "logo": "https://www.smartmenukj.com/apple-touch-icon.png",
+      "address": { "@type": "PostalAddress", "streetAddress": "ul. Dzhebelska 2", "addressLocality": "Kardzhali", "addressRegion": "Kardzhali", "postalCode": "6600", "addressCountry": "BG" },
+      "areaServed": [
+        { "@type": "City", "name": "Kardzhali" },
+        { "@type": "AdministrativeArea", "name": "Kardzhali Province" },
+        { "@type": "Country", "name": "Bulgaria" }
+      ],
+      "knowsLanguage": ["bg", "en"],
+      "url": "https://www.smartmenukj.com/",
+      "sameAs": ["https://www.instagram.com/smartmenukj/", "https://www.linkedin.com/in/krasimir-uzun-316a053bb/"],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Services",
+        "itemListElement": [
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Web Development", "alternateName": "Изработка на уебсайтове", "url": "https://www.smartmenukj.com/services.html#web" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "3D Printing", "alternateName": "3D печат", "url": "https://www.smartmenukj.com/services.html#print3d" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Smart Home & Business Automation", "alternateName": "Умен дом и автоматизация", "url": "https://www.smartmenukj.com/services.html#smarthome" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Camera & Security Systems", "alternateName": "Видеонаблюдение и камери", "url": "https://www.smartmenukj.com/services.html#cameras" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Digital Smart Menus (QR menus)", "alternateName": "Дигитални QR менюта", "url": "https://www.smartmenukj.com/services.html#menu" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "PC & Printer Service", "alternateName": "Сервиз на компютри и принтери", "url": "https://www.smartmenukj.com/services.html#pc" } }
+        ]
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://www.smartmenukj.com/#website",
+      "url": "https://www.smartmenukj.com/",
+      "name": "SmartMenuKJ",
+      "inLanguage": "en",
+      "publisher": { "@id": "https://www.smartmenukj.com/#business" }
+    }
+  ]
 }
 </script>
 </head>

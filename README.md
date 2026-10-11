@@ -97,7 +97,7 @@ A new public page needs: an entry in `PAGES`, the three `hreflang` links in its 
 **SmartMenuKJ** — Krasimir Uzun, Founder & CEO
 📱 +359 88 534 8666 · ✉️ krasimiruzun@smartmenukj.com
 📍 ul. „Dzhebelska" 2, 6600 Baykal, Kardzhali, Bulgaria
-[Instagram](https://www.instagram.com/1337_krasimir_/) · [LinkedIn](https://www.linkedin.com/in/krasimir-uzun-316a053bb/)
+[Instagram](https://www.instagram.com/smartmenukj/) · [LinkedIn](https://www.linkedin.com/in/krasimir-uzun-316a053bb/)
 
 ---
 

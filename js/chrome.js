@@ -134,7 +134,7 @@ function footerHTML() {
         <a href="index.html" class="brand" aria-label="SmartMenuKJ">${brandHTML()}</a>
         <p class="footer-tagline" data-i18n="footer.tagline">One team for every piece of technology your home, restaurant or business needs.</p>
         <div class="social-row">
-          <a href="https://www.instagram.com/1337_krasimir_/" target="_blank" rel="noopener" aria-label="Instagram">${iconSvg("ig")}</a>
+          <a href="https://www.instagram.com/smartmenukj/" target="_blank" rel="noopener" aria-label="Instagram">${iconSvg("ig")}</a>
           <a href="https://www.linkedin.com/in/krasimir-uzun-316a053bb/" target="_blank" rel="noopener" aria-label="LinkedIn">${iconSvg("li")}</a>
           <a href="tel:+359885348666" aria-label="+359 88 534 8666">${iconSvg("phone")}</a>
         </div>

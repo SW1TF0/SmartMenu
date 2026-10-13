@@ -19,6 +19,7 @@ export const PARTNERS = [
   { name: "GlobalNet", type: "partners.type.isp", logo: "/img/partners/globalnet.png", url: "" },
   { name: "Remela Service", type: "partners.type.service", logo: "/img/partners/remela.png", url: "" },
   { name: "Clara Decor", type: "partners.type.boutique", logo: "/img/partners/clara-decor.jpg", url: "" },
+  { name: "Читалище „Христо Смирненски“ – Джебел", type: "partners.type.culture", logo: "/img/partners/chitalishte-dzhebel.png", url: "" },
 ];
 
 function initials(name) {

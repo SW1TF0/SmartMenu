@@ -145,6 +145,17 @@ watchAuth((user) => {
   }
   guard.classList.add("hidden");
   content.classList.remove("hidden");
-  loadLeads();
-  loadUsers();
+  // If the Firestore rules don't recognise this admin (ADMIN_EMAILS and
+  // firebase/firestore.rules out of sync), say so instead of an empty panel.
+  const showDenied = (err, emptyEl) => {
+    console.error(err);
+    const p = document.createElement("p");
+    p.textContent = err && err.code === "permission-denied"
+      ? "No access: this account is not in the Firestore rules admin list."
+      : "Could not load data.";
+    emptyEl.replaceChildren(p);
+    emptyEl.classList.remove("hidden");
+  };
+  loadLeads().catch((err) => showDenied(err, leadsEmpty));
+  loadUsers().catch((err) => showDenied(err, usersEmpty));
 });

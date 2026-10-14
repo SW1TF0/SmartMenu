@@ -28,8 +28,12 @@ service cloud.firestore {
 
     function isAdminEmail() {
       // Keep in sync with ADMIN_EMAILS in js/firebase-config.js
-      return isSignedIn() && request.auth.token.email in [
-        "krasimiruzun@smartmenukj.com"
+      // Lower-cased to match isAdmin() in js/auth.js.
+      return isSignedIn() && request.auth.token.email.lower() in [
+        "krasimiruzun@smartmenukj.com",
+        "dobrev@smartmenukj.com",
+        "onurbenke@smartmenukj.com",
+        "serkan@smartmenukj.com"
       ];
     }
 

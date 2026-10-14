@@ -30,6 +30,7 @@ const firebaseConfig = {
 export const ADMIN_EMAILS = [
   "krasimiruzun@smartmenukj.com",
   "dobrev@smartmenukj.com",
+  "onurbenke@smartmenukj.com",
   "serkan@smartmenukj.com",
 ];
 export const app = initializeApp(firebaseConfig);

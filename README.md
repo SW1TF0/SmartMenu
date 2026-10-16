@@ -83,7 +83,7 @@ npx serve .
 
 ## Bulgarian pages (SEO)
 
-Every public page also exists at `/bg/<page>` with the Bulgarian text already in the HTML, so Google can index both languages. `tools/build-bg.mjs` generates `bg/` from the English pages and the BG strings in each page's `registerDict` (plus `js/i18n.js`), and sets the Bulgarian `<title>`, description and canonical from the `PAGES` table at the top of the script. `bg/` is git-ignored and rebuilt on every deploy — edit the English page and its BG strings, never `bg/` itself. The build fails if a page is missing a Bulgarian string.
+Every public page also exists at `/bg/<page>` with the Bulgarian text already in the HTML, so Google can index both languages. `tools/build-bg.mjs` generates `bg/` from the English pages and the BG strings in each page's `registerDict` (plus `js/i18n.js`), and sets the Bulgarian `<title>`, description and canonical from the `PAGES` table at the top of the script. `bg/` is committed (so GitHub Pages serves it however the site is published) and rebuilt on every deploy — edit the English page and its BG strings, run `node tools/build-bg.mjs` and commit `bg/` with the change; never edit `bg/` by hand. The PR check fails if `bg/` is out of date. The build fails if a page is missing a Bulgarian string.
 
 A new public page needs: an entry in `PAGES`, the three `hreflang` links in its `<head>` (copy from any page), and both URLs in `sitemap.xml`.
 

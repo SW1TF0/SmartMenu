@@ -8,7 +8,8 @@
 // text already in place, plus Bulgarian <title>/description/canonical.
 //
 // Run:  node tools/build-bg.mjs        (the deploy workflow runs it too;
-//       bg/ is generated, so it is git-ignored — never edit it by hand)
+//       bg/ is generated but committed, so GitHub Pages' branch build has it
+//       too; re-run after editing a page — never edit bg/ by hand)
 // ============================================================================
 import { readFileSync, writeFileSync, mkdirSync, rmSync } from "node:fs";
 import { dirname, join } from "node:path";

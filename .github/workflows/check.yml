@@ -15,3 +15,11 @@ jobs:
 
       - name: Build Bulgarian pages
         run: node tools/build-bg.mjs
+
+      - name: Committed bg/ is up to date
+        run: |
+          if [ -n "$(git status --porcelain -- bg)" ]; then
+            git status --short -- bg
+            echo "::error::bg/ is out of date. Run 'node tools/build-bg.mjs' and commit bg/."
+            exit 1
+          fi

@@ -7,19 +7,19 @@ permissions:
   contents: read
 
 jobs:
-  build-bg:
+  build-langs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Build Bulgarian pages
-        run: node tools/build-bg.mjs
+      - name: Build Bulgarian and Turkish pages
+        run: node tools/build-langs.mjs
 
-      - name: Committed bg/ is up to date
+      - name: Committed bg/ and tr/ are up to date
         run: |
-          if [ -n "$(git status --porcelain -- bg)" ]; then
-            git status --short -- bg
-            echo "::error::bg/ is out of date. Run 'node tools/build-bg.mjs' and commit bg/."
+          if [ -n "$(git status --porcelain -- bg tr)" ]; then
+            git status --short -- bg tr
+            echo "::error::bg/ or tr/ is out of date. Run 'node tools/build-langs.mjs' and commit bg/ and tr/."
             exit 1
           fi

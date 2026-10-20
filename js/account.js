@@ -30,7 +30,8 @@ const STATUS_CLASS = { new: "status-new", progress: "status-progress", done: "st
 
 function fmtDate(ts) {
   if (!ts || !ts.toDate) return "—";
-  return ts.toDate().toLocaleDateString(document.documentElement.lang === "bg" ? "bg-BG" : "en-GB", {
+  const locale = { bg: "bg-BG", tr: "tr-TR" }[document.documentElement.lang] || "en-GB";
+  return ts.toDate().toLocaleDateString(locale, {
     year: "numeric",
     month: "short",
     day: "numeric",

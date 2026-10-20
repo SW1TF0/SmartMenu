@@ -16,7 +16,7 @@ const NAV_ITEMS = [
 ];
 
 const THEME_KEY = "smkj_theme";
-const THEME_COLORS = { light: "#f1f0ee", dark: "#000000" };
+const THEME_COLORS = { light: "#ffffff", dark: "#000000" };
 
 function iconSvg(name) {
   const icons = {
@@ -80,8 +80,12 @@ function initTheme() {
 }
 
 // --------------------------------------------------------------- markup --
+// The SmartMenuKJ mark: a grid of tiles, one per division, with the blue
+// dot shared across the family (SmartHomeKJ uses the same dot in its house).
+export const LOGO_MARK = `<svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><g fill="currentColor"><rect x="4" y="4" width="10.5" height="10.5" rx="3"/><rect x="17.5" y="4" width="10.5" height="10.5" rx="3"/><rect x="4" y="17.5" width="10.5" height="10.5" rx="3"/></g><circle cx="22.75" cy="22.75" r="5.25" fill="#0a84ff"/></svg>`;
+
 function brandHTML() {
-  return `<span class="brand-word">SmartMenuKJ</span><span class="brand-dot" aria-hidden="true"></span>`;
+  return `${LOGO_MARK}<span class="brand-word">SmartMenuKJ</span>`;
 }
 
 function headerHTML(active) {
@@ -103,6 +107,7 @@ function headerHTML(active) {
       <div class="lang-switch" role="group" aria-label="Language">
         <button type="button" data-lang-btn="en" lang="en">EN</button>
         <button type="button" data-lang-btn="bg" lang="bg">BG</button>
+        <button type="button" data-lang-btn="tr" lang="tr">TR</button>
       </div>
       <div id="navAuthDesktop"></div>
       <button class="icon-btn nav-toggle" id="navToggle" type="button" aria-controls="navLinks" aria-expanded="false" data-i18n-aria="nav.menu">${iconSvg("menu")}</button>
@@ -160,6 +165,13 @@ function footerHTML() {
         </ul>
       </div>
       <div>
+        <h4 data-i18n="footer.divisions">Divisions</h4>
+        <ul>
+          <li><a href="https://smarthomekj.eu/" class="ext" target="_blank" rel="noopener">SmartHomeKJ</a></li>
+          <li><a href="index.html#divisions" data-i18n="footer.divisions.all">All divisions</a></li>
+        </ul>
+      </div>
+      <div>
         <h4 data-i18n="footer.legal">Legal</h4>
         <ul>
           <li><a href="privacy.html" data-i18n="footer.privacy">Privacy & Cookies</a></li>
@@ -172,7 +184,6 @@ function footerHTML() {
       <span>&copy; ${year} SmartMenuKJ &mdash; Krasimir Uzun. <span data-i18n="footer.rights">All rights reserved.</span></span>
       <span class="local-time"><span class="rec" aria-hidden="true"></span><span data-i18n="footer.localtime">Kardzhali, local time</span><b id="localTime">--:--</b></span>
     </div>
-    <div class="footer-mark" aria-hidden="true">SmartMenuKJ<i></i></div>
   </div>`;
 }
 
@@ -232,7 +243,7 @@ export function mountChrome() {
     header.innerHTML = headerHTML(active);
   }
   if (footer) {
-    footer.classList.add("site-footer", "invert");
+    footer.classList.add("site-footer");
     footer.innerHTML = footerHTML();
   }
 

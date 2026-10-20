@@ -1,9 +1,9 @@
 // ============================================================================
-// Lightweight EN / BG translation engine.
+// Lightweight EN / BG / TR translation engine.
 // Usage per page:
 //   <script type="module">
 //     import { registerDict, applyI18n, initLangSwitch } from "./js/i18n.js";
-//     registerDict({ en: {...}, bg: {...} });
+//     registerDict({ en: {...}, bg: {...}, tr: {...} });
 //     applyI18n();
 //     initLangSwitch();
 //   </script>
@@ -13,16 +13,26 @@
 // ============================================================================
 
 const STORAGE_KEY = "smkj_lang";
-let dict = { en: {}, bg: {} };
+export const LANGS = ["en", "bg", "tr"];
+let dict = { en: {}, bg: {}, tr: {} };
 let sessionLang = null;
+const isLang = (v) => LANGS.includes(v);
 
-// Public pages exist twice: /page.html (English) and /bg/page.html (Bulgarian,
-// built by tools/build-bg.mjs) so search engines index both languages. On
-// those pages the URL decides the language and the switch moves between the
-// twins; other pages (login, account, admin) still translate in place.
+// Public pages exist once per language: /page.html (English), /bg/page.html
+// (Bulgarian) and /tr/page.html (Turkish), built by tools/build-langs.mjs so
+// search engines index every language. On those pages the URL decides the
+// language and the switch moves between the twins; other pages (login,
+// account, admin) still translate in place.
 const altLinks = {};
 document.querySelectorAll('link[rel="alternate"][hreflang]').forEach((l) => (altLinks[l.hreflang] = l.href));
-const PAGE_LANG = altLinks.bg ? (document.documentElement.getAttribute("lang") === "bg" ? "bg" : "en") : null;
+const pageLangAttr = document.documentElement.getAttribute("lang");
+const PAGE_LANG = altLinks.bg ? (isLang(pageLangAttr) ? pageLangAttr : "en") : null;
+
+// The visitor's browser language, if the site speaks it.
+function browserLang() {
+  const code = (navigator.language || "").toLowerCase().slice(0, 2);
+  return isLang(code) ? code : null;
+}
 
 function twinUrl(lang) {
   const url = new URL(altLinks[lang], location.href);
@@ -32,18 +42,18 @@ function twinUrl(lang) {
 function savedLang() {
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
-    return saved === "en" || saved === "bg" ? saved : null;
+    return isLang(saved) ? saved : null;
   } catch (e) {
     return null; /* storage unavailable (private mode / blocked) */
   }
 }
 
 // A visitor who picked a language (or, on an English page, whose browser is
-// Bulgarian) is sent to that twin. Crawlers have neither, so they stay put.
+// Bulgarian or Turkish) is sent to that twin. Crawlers have neither, so they
+// stay put.
 if (PAGE_LANG) {
-  const browserBg = navigator.language && navigator.language.toLowerCase().startsWith("bg");
-  const want = savedLang() || (PAGE_LANG === "en" && browserBg ? "bg" : PAGE_LANG);
-  if (want !== PAGE_LANG) location.replace(twinUrl(want));
+  const want = savedLang() || (PAGE_LANG === "en" ? browserLang() || "en" : PAGE_LANG);
+  if (want !== PAGE_LANG && altLinks[want]) location.replace(twinUrl(want));
 }
 
 export const COMMON = {
@@ -68,6 +78,8 @@ export const COMMON = {
     "footer.services": "Services",
     "footer.company": "Company",
     "footer.legal": "Legal",
+    "footer.divisions": "Divisions",
+    "footer.divisions.all": "All divisions",
     "footer.about": "About us",
     "footer.portfolio": "Our work",
     "footer.contact": "Contact",
@@ -114,6 +126,8 @@ export const COMMON = {
     "footer.services": "Услуги",
     "footer.company": "Компания",
     "footer.legal": "Правно",
+    "footer.divisions": "Подразделения",
+    "footer.divisions.all": "Всички подразделения",
     "footer.about": "За нас",
     "footer.portfolio": "Нашите проекти",
     "footer.contact": "Контакти",
@@ -139,6 +153,54 @@ export const COMMON = {
     "ctaband.cta1": "Започни проект",
     "mobilecta.call": "Обади се",
   },
+  tr: {
+    "nav.home": "Ana Sayfa",
+    "nav.services": "Hizmetler",
+    "nav.portfolio": "Projeler",
+    "nav.about": "Hakkımızda",
+    "nav.contact": "İletişim",
+    "nav.login": "Giriş yap",
+    "nav.quote": "Teklif Al",
+    "nav.account": "Hesabım",
+    "nav.admin": "Yönetim",
+    "nav.logout": "Çıkış yap",
+    "nav.menu": "Menüyü aç",
+    "nav.close": "Menüyü kapat",
+    "brand.home": "SmartMenuKJ — ana sayfa",
+    "a11y.skip": "İçeriğe geç",
+    "theme.toDark": "Koyu moda geç",
+    "theme.toLight": "Açık moda geç",
+    "footer.tagline": "Evinizin, restoranınızın veya işletmenizin ihtiyaç duyduğu her teknoloji için tek ekip — Kırcaali'de ve tüm Bulgaristan'da kurulum.",
+    "footer.services": "Hizmetler",
+    "footer.company": "Şirket",
+    "footer.legal": "Yasal",
+    "footer.divisions": "Bölümler",
+    "footer.divisions.all": "Tüm bölümler",
+    "footer.about": "Hakkımızda",
+    "footer.portfolio": "Projelerimiz",
+    "footer.contact": "İletişim",
+    "footer.login": "Giriş / Kayıt",
+    "footer.privacy": "Gizlilik ve Çerezler",
+    "footer.terms": "Hizmet Şartları",
+    "footer.cookies": "Çerez ayarları",
+    "footer.rights": "Tüm hakları saklıdır.",
+    "footer.localtime": "Kırcaali, yerel saat",
+    "svc.web": "Web Geliştirme",
+    "svc.print3d": "3D Baskı",
+    "svc.smarthome": "Akıllı Ev ve İşletme",
+    "svc.cameras": "Kamera ve Güvenlik Sistemleri",
+    "svc.menu": "Dijital Akıllı Menüler",
+    "svc.pc": "Bilgisayar ve Yazıcı Servisi",
+    "cookie.title": "Çerezler",
+    "cookie.text": "Sitenin çalışması için zorunlu çerezler, trafiği anlamak için ise isteğe bağlı analiz çerezleri kullanıyoruz. Seçiminizi istediğiniz zaman alt bilgiden değiştirebilirsiniz.",
+    "cookie.accept": "Tümünü kabul et",
+    "cookie.reject": "Yalnızca zorunlu",
+    "cookie.learn": "Daha fazla bilgi",
+    "contact.form.name": "Ad soyad",
+    "contact.form.email": "E-posta",
+    "ctaband.cta1": "Proje başlat",
+    "mobilecta.call": "Ara",
+  },
 };
 
 export function escapeHtml(value) {
@@ -151,10 +213,7 @@ export function escapeHtml(value) {
 }
 
 export function registerDict(pageDict) {
-  dict = {
-    en: { ...COMMON.en, ...(pageDict.en || {}) },
-    bg: { ...COMMON.bg, ...(pageDict.bg || {}) },
-  };
+  dict = Object.fromEntries(LANGS.map((l) => [l, { ...COMMON[l], ...(pageDict[l] || {}) }]));
 }
 
 export function getLang() {
@@ -162,7 +221,7 @@ export function getLang() {
   if (sessionLang) return sessionLang;
   const saved = savedLang();
   if (saved) return saved;
-  return navigator.language && navigator.language.toLowerCase().startsWith("bg") ? "bg" : "en";
+  return browserLang() || "en";
 }
 
 export function t(key) {
@@ -192,7 +251,7 @@ export function setLang(lang) {
   } catch (e) {
     /* storage unavailable — the choice lasts for this page view only */
   }
-  if (PAGE_LANG && lang !== PAGE_LANG) {
+  if (PAGE_LANG && lang !== PAGE_LANG && altLinks[lang]) {
     location.href = twinUrl(lang);
     return;
   }

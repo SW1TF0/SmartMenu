@@ -1,22 +1,22 @@
 // ============================================================================
-// index.html page behaviour: the hero's LED matrix + typewriter headline
+// index.html page behaviour: the hero's service showcase + typewriter headline
 // (kept in sync — each audience word shows the service built for it) and the
 // animated stat counters.
 // ============================================================================
 import { initReveal, typeInto, prefersReducedMotion } from "./site.js";
-import { createGlyphMatrix, mountDotIcons } from "./dots.js";
+import { createIconStage, mountIcons } from "./icons.js";
 import { getLang, t } from "./i18n.js";
 
 initReveal();
-mountDotIcons();
+mountIcons();
 
 const SEQUENCE = [
-  { icon: "menu", svc: "menu", en: "restaurants.", bg: "ресторанти." },
-  { icon: "smarthome", svc: "smarthome", en: "your home.", bg: "вашия дом." },
-  { icon: "cameras", svc: "cameras", en: "your business.", bg: "вашия бизнес." },
-  { icon: "pc", svc: "pc", en: "your office.", bg: "вашия офис." },
-  { icon: "print3d", svc: "print3d", en: "your workshop.", bg: "вашето ателие." },
-  { icon: "web", svc: "web", en: "your brand.", bg: "вашата марка." },
+  { icon: "menu", svc: "menu", en: "restaurants.", bg: "ресторанти.", tr: "restoranlar için." },
+  { icon: "smarthome", svc: "smarthome", en: "your home.", bg: "вашия дом.", tr: "eviniz için." },
+  { icon: "cameras", svc: "cameras", en: "your business.", bg: "вашия бизнес.", tr: "işletmeniz için." },
+  { icon: "pc", svc: "pc", en: "your office.", bg: "вашия офис.", tr: "ofisiniz için." },
+  { icon: "print3d", svc: "print3d", en: "your workshop.", bg: "вашето ателие.", tr: "atölyeniz için." },
+  { icon: "web", svc: "web", en: "your brand.", bg: "вашата марка.", tr: "markanız için." },
 ];
 const INTERVAL = 3800;
 
@@ -24,15 +24,16 @@ const ICON_PAUSE = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="6
 const ICON_PLAY = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 5.8v12.4L18.6 12z" fill="currentColor"/></svg>';
 
 const rotator = document.getElementById("heroRotator");
-const canvas = document.getElementById("glyphMatrix");
+const stageEl = document.getElementById("iconStage");
 const device = document.querySelector(".device");
+const listButtons = document.querySelectorAll("#deviceList [data-step]");
 const label = document.getElementById("glyphLabel");
 const link = document.getElementById("glyphLink");
 const count = document.getElementById("glyphCount");
 const pauseBtn = document.getElementById("glyphPause");
 const nextBtn = document.getElementById("glyphNext");
 
-const matrix = canvas ? createGlyphMatrix(canvas) : null;
+const stage = stageEl ? createIconStage(stageEl) : null;
 const pad = (n) => String(n).padStart(2, "0");
 let index = 0;
 let timer = null;
@@ -41,8 +42,9 @@ let playing = !prefersReducedMotion();
 
 function render(i, { animate = true } = {}) {
   const item = SEQUENCE[i];
-  const word = item[getLang() === "bg" ? "bg" : "en"];
-  if (matrix) matrix.show(item.icon, { instant: !animate });
+  const word = item[getLang()] || item.en;
+  if (stage) stage.show(item.icon, { instant: !animate });
+  listButtons.forEach((btn) => btn.setAttribute("aria-current", btn.getAttribute("data-step") === String(i) ? "true" : "false"));
   if (rotator) {
     if (animate) typeInto(rotator, word);
     else {
@@ -77,8 +79,15 @@ function syncPause() {
   pauseBtn.setAttribute("aria-label", t(playing ? "hero.matrix.pause" : "hero.matrix.play"));
 }
 
-if (canvas) {
-  canvas.addEventListener("click", () => {
+listButtons.forEach((btn) =>
+  btn.addEventListener("click", () => {
+    index = Number(btn.getAttribute("data-step"));
+    render(index);
+    schedule();
+  })
+);
+if (stageEl) {
+  stageEl.addEventListener("click", () => {
     go(1);
     schedule();
   });

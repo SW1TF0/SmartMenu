@@ -85,11 +85,11 @@ document.getElementById("forgotLink").addEventListener("click", async (e) => {
   e.preventDefault();
   const email =
     (document.getElementById("signinEmail").value || "").trim() ||
-    prompt(getLang() === "bg" ? "Въведете имейл за възстановяване:" : "Enter your email to reset your password:");
+    prompt({ en: "Enter your email to reset your password:", bg: "Въведете имейл за възстановяване:", tr: "Şifre sıfırlama için e-postanızı girin:" }[getLang()]);
   if (!email) return;
   try {
     await resetPassword(email);
-    showNote(signinNote, getLang() === "bg" ? "Изпратихме имейл за възстановяване на паролата." : "Password reset email sent — check your inbox.", true);
+    showNote(signinNote, { en: "Password reset email sent — check your inbox.", bg: "Изпратихме имейл за възстановяване на паролата.", tr: "Şifre sıfırlama e-postası gönderildi — gelen kutunuzu kontrol edin." }[getLang()], true);
   } catch (err) {
     showNote(signinNote, friendlyAuthError(err, getLang()), false);
   }

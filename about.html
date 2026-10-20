@@ -8,6 +8,7 @@
 <link rel="canonical" href="https://www.smartmenukj.com/about.html" />
 <link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/about.html" />
 <link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/about.html" />
+<link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/about.html" />
 <link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/about.html" />
 <meta property="og:title" content="About — SmartMenuKJ" />
 <meta property="og:description" content="One founder, six disciplines, one goal — technology built and installed in Kardzhali, Bulgaria." />
@@ -17,13 +18,13 @@
 <meta property="og:site_name" content="SmartMenuKJ" />
 <meta property="og:locale" content="en_GB" />
 <meta property="og:locale:alternate" content="bg_BG" />
-<meta name="theme-color" content="#f1f0ee" media="(prefers-color-scheme: light)" />
+<meta property="og:locale:alternate" content="tr_TR" />
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
 <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 <link rel="manifest" href="/site.webmanifest" />
-<link rel="preload" href="fonts/handjet-dot.woff2" as="font" type="font/woff2" crossorigin />
-<link rel="preload" href="fonts/geist.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="stylesheet" href="css/style.css" />
 <script>(function(d){d.documentElement.classList.add("js");try{var t=localStorage.getItem("smkj_theme");if(t==="dark"||t==="light")d.documentElement.setAttribute("data-theme",t)}catch(e){}})(document);</script>
 </head>
@@ -68,21 +69,21 @@
       </div>
       <div class="values-grid">
         <div class="card reveal">
-          <span class="dot-icon" data-dot-icon="answers"></span>
+          <span class="icon-badge" data-icon="answers"></span>
           <div>
             <h3 data-i18n="about.v1.title">Straight answers</h3>
             <p data-i18n="about.v1.desc">If something isn't worth doing, we'll tell you — even if it costs us the sale.</p>
           </div>
         </div>
         <div class="card reveal">
-          <span class="dot-icon" data-dot-icon="quotes"></span>
+          <span class="icon-badge" data-icon="quotes"></span>
           <div>
             <h3 data-i18n="about.v2.title">Fast, real quotes</h3>
             <p data-i18n="about.v2.desc">You get a written estimate within 24 hours — not a follow-up call to schedule a call.</p>
           </div>
         </div>
         <div class="card reveal">
-          <span class="dot-icon" data-dot-icon="support"></span>
+          <span class="icon-badge" data-icon="support"></span>
           <div>
             <h3 data-i18n="about.v3.title">We stick around</h3>
             <p data-i18n="about.v3.desc">Support after launch is part of the job, not an upsell — you can always reach us directly.</p>
@@ -108,14 +109,14 @@
   </section>
 </main>
 
-<footer id="site-footer" class="site-footer invert"></footer>
+<footer id="site-footer" class="site-footer"></footer>
 
 <script type="module">
   import { mountChrome } from "./js/chrome.js";
   import { registerDict, applyI18n, initLangSwitch } from "./js/i18n.js";
   import { initCookieBanner } from "./js/cookies.js";
   import { initReveal } from "./js/site.js";
-  import { mountDotIcons } from "./js/dots.js";
+  import { mountIcons } from "./js/icons.js";
 
   registerDict({
     en: {
@@ -142,6 +143,25 @@
       "about.cta.eyebrow": "Шест услуги",
       "about.cta.title": "Искате ли да видите пълния списък с услуги?", "about.cta.btn": "Разгледай услугите",
     },
+    tr: {
+      "about.eyebrow": "SmartMenuKJ hakkında",
+      "about.title": "Bir kurucu, altı uzmanlık, tek hedef.",
+      "about.lede": "Dijital restoran menüleriyle başladık. Müşterilerimiz daha fazlasını istedikçe, onlara evet diyebilecek bir ekip kurduk.",
+      "about.founder.eyebrow": "Kurucu ve CEO",
+      "about.founder.place": "Kırcaali, Bulgaristan",
+      "about.founder.bio": "Krasimir, SmartMenuKJ'yi Kırcaali'de yerel restoranlar için dijital menüler hazırladıktan sonra kurdu. Aynı müşterilerin web sitelerine, akıllı cihazlara, kameralara ve bilgisayar desteğine de ihtiyaç duyduğunu ve bunun için beş farklı firmayla uğraşmaktan yorulduğunu gördü. Bugün ekip bunların hepsini doğrudan üstleniyor.",
+      "about.values.eyebrow": "Değerlerimiz",
+      "about.values.title": "Nasıl çalışıyoruz.",
+      "about.v1.title": "Dürüst cevaplar",
+      "about.v1.desc": "Bir şey yapmaya değmiyorsa, satışı kaybetsek bile size söyleriz.",
+      "about.v2.title": "Hızlı, gerçek teklifler",
+      "about.v2.desc": "24 saat içinde yazılı teklif alırsınız — görüşme ayarlamak için başka bir görüşme değil.",
+      "about.v3.title": "Hep yanınızdayız",
+      "about.v3.desc": "Teslimden sonraki destek işin bir parçasıdır, ek satış değil — bize her zaman doğrudan ulaşabilirsiniz.",
+      "about.cta.eyebrow": "Altı hizmet",
+      "about.cta.title": "Tüm hizmet listesini görmek ister misiniz?",
+      "about.cta.btn": "Hizmetlere göz at",
+    },
   });
 
   mountChrome();
@@ -149,7 +169,7 @@
   initLangSwitch();
   initCookieBanner();
   initReveal();
-  mountDotIcons();
+  mountIcons();
 </script>
 </body>
 </html>

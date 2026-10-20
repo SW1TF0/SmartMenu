@@ -8,6 +8,7 @@
 <link rel="canonical" href="https://www.smartmenukj.com/services.html" />
 <link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/services.html" />
 <link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/services.html" />
+<link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/services.html" />
 <link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/services.html" />
 <meta property="og:title" content="Services — SmartMenuKJ" />
 <meta property="og:description" content="Web development, 3D printing, smart home & business automation, camera systems, digital smart menus and PC/printer service — one team in Kardzhali." />
@@ -17,13 +18,13 @@
 <meta property="og:site_name" content="SmartMenuKJ" />
 <meta property="og:locale" content="en_GB" />
 <meta property="og:locale:alternate" content="bg_BG" />
-<meta name="theme-color" content="#f1f0ee" media="(prefers-color-scheme: light)" />
+<meta property="og:locale:alternate" content="tr_TR" />
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
 <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 <link rel="manifest" href="/site.webmanifest" />
-<link rel="preload" href="fonts/handjet-dot.woff2" as="font" type="font/woff2" crossorigin />
-<link rel="preload" href="fonts/geist.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="stylesheet" href="css/style.css" />
 <script>(function(d){d.documentElement.classList.add("js");try{var t=localStorage.getItem("smkj_theme");if(t==="dark"||t==="light")d.documentElement.setAttribute("data-theme",t)}catch(e){}})(document);</script>
 </head>
@@ -55,7 +56,7 @@
     <div class="container">
       <article class="svc-panel reveal">
         <div>
-          <div class="svc-head"><span class="dot-icon" data-dot-icon="web"></span><p class="eyebrow" data-i18n="svc.web">Web Development</p></div>
+          <div class="svc-head"><span class="icon-badge" data-icon="web"></span><p class="eyebrow" data-i18n="svc.web">Web Development</p></div>
           <h2 class="h-md" data-i18n="web.title">Websites and web apps that load fast and convert.</h2>
           <p class="lede" data-i18n="web.desc">Business sites, landing pages, booking systems and small e-commerce — designed around what your customers actually need to do, then kept online afterwards.</p>
           <a href="contact.html?service=web#quote" class="btn btn-primary"><span data-i18n="svcpage.cta">Get a quote for this</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
@@ -77,7 +78,7 @@
     <div class="container">
       <article class="svc-panel reveal">
         <div>
-          <div class="svc-head"><span class="dot-icon" data-dot-icon="print3d"></span><p class="eyebrow" data-i18n="svc.print3d">3D Printing</p></div>
+          <div class="svc-head"><span class="icon-badge" data-icon="print3d"></span><p class="eyebrow" data-i18n="svc.print3d">3D Printing</p></div>
           <h2 class="h-md" data-i18n="print.title">From an idea — or a broken part — to a printed original.</h2>
           <p class="lede" data-i18n="print.desc">Prototypes, replacement parts for things you can't buy anymore, custom enclosures, and small production runs, in a range of materials and colors.</p>
           <a href="contact.html?service=print3d#quote" class="btn btn-primary"><span data-i18n="svcpage.cta">Get a quote for this</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
@@ -99,10 +100,13 @@
     <div class="container">
       <article class="svc-panel reveal">
         <div>
-          <div class="svc-head"><span class="dot-icon" data-dot-icon="smarthome"></span><p class="eyebrow" data-i18n="svc.smarthome">Smart Home &amp; Business</p></div>
+          <div class="svc-head"><span class="icon-badge" data-icon="smarthome"></span><p class="eyebrow" data-i18n="svc.smarthome">Smart Home &amp; Business</p></div>
           <h2 class="h-md" data-i18n="sh.title">Your lighting, climate and access — in one app.</h2>
           <p class="lede" data-i18n="sh.desc">Retrofits for existing homes or wiring for a new build — either way, one control app for everything, with routines that run themselves.</p>
-          <a href="contact.html?service=smarthome#quote" class="btn btn-primary"><span data-i18n="svcpage.cta">Get a quote for this</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <div class="svc-actions">
+            <a href="contact.html?service=smarthome#quote" class="btn btn-primary"><span data-i18n="svcpage.cta">Get a quote for this</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            <a href="https://smarthomekj.eu/" class="link-chevron" target="_blank" rel="noopener" data-i18n="svcpage.smarthome.division">Our SmartHomeKJ division</a>
+          </div>
         </div>
         <ul class="spec-list">
           <li data-i18n="sh.f1">Smart lighting &amp; switches</li>
@@ -121,7 +125,7 @@
     <div class="container">
       <article class="svc-panel reveal">
         <div>
-          <div class="svc-head"><span class="dot-icon" data-dot-icon="cameras"></span><p class="eyebrow" data-i18n="svc.cameras">Camera &amp; Security Systems</p></div>
+          <div class="svc-head"><span class="icon-badge" data-icon="cameras"></span><p class="eyebrow" data-i18n="svc.cameras">Camera &amp; Security Systems</p></div>
           <h2 class="h-md" data-i18n="cam.title">See what matters, from anywhere.</h2>
           <p class="lede" data-i18n="cam.desc">HD and IP camera systems for homes, restaurants, offices and shops — installed cleanly, viewable from your phone, recording where you need it.</p>
           <a href="contact.html?service=cameras#quote" class="btn btn-primary"><span data-i18n="svcpage.cta">Get a quote for this</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
@@ -143,7 +147,7 @@
     <div class="container">
       <article class="svc-panel reveal">
         <div>
-          <div class="svc-head"><span class="dot-icon" data-dot-icon="menu"></span><p class="eyebrow" data-i18n="svc.menu">Digital Smart Menus</p></div>
+          <div class="svc-head"><span class="icon-badge" data-icon="menu"></span><p class="eyebrow" data-i18n="svc.menu">Digital Smart Menus</p></div>
           <h2 class="h-md" data-i18n="menu.title">A menu your customers scan — that you edit in seconds.</h2>
           <p class="lede" data-i18n="menu.desc">The original SmartMenuKJ service: a QR-code digital menu for restaurants and cafés. Change prices, mark a dish sold out, or add a daily special — no reprinting, ever.</p>
           <a href="contact.html?service=menu#quote" class="btn btn-primary"><span data-i18n="svcpage.cta">Get a quote for this</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
@@ -165,7 +169,7 @@
     <div class="container">
       <article class="svc-panel reveal">
         <div>
-          <div class="svc-head"><span class="dot-icon" data-dot-icon="pc"></span><p class="eyebrow" data-i18n="svc.pc">PC &amp; Printer Service</p></div>
+          <div class="svc-head"><span class="icon-badge" data-icon="pc"></span><p class="eyebrow" data-i18n="svc.pc">PC &amp; Printer Service</p></div>
           <h2 class="h-md" data-i18n="pc.title">Builds, upgrades and repairs — done right.</h2>
           <p class="lede" data-i18n="pc.desc">Custom PC builds tuned to what you actually use them for, honest repairs instead of upsells, and printer setup &amp; maintenance so it just works when you need it.</p>
           <a href="contact.html?service=pc#quote" class="btn btn-primary"><span data-i18n="svcpage.cta">Get a quote for this</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
@@ -191,26 +195,27 @@
           <p class="lede" data-i18n="svcpage.unsure">Tell us the problem, not the solution — we'll point you the right direction.</p>
         </div>
         <div class="hero-actions">
-          <a href="contact.html#quote" class="btn btn-primary btn-rec"><span data-i18n="ctaband.cta1">Start a project</span></a>
+          <a href="contact.html#quote" class="btn btn-primary"><span data-i18n="ctaband.cta1">Start a project</span></a>
         </div>
       </div>
     </div>
   </section>
 </main>
 
-<footer id="site-footer" class="site-footer invert"></footer>
+<footer id="site-footer" class="site-footer"></footer>
 
 <script type="module">
   import { mountChrome } from "./js/chrome.js";
   import { registerDict, applyI18n, initLangSwitch } from "./js/i18n.js";
   import { initCookieBanner } from "./js/cookies.js";
   import { initReveal } from "./js/site.js";
-  import { mountDotIcons } from "./js/dots.js";
+  import { mountIcons } from "./js/icons.js";
 
   registerDict({
     en: {
       "svcpage.eyebrow": "Full service list", "svcpage.title": "Everything runs through one team.",
       "svcpage.lede": "Pick one service to start, or combine several — most of our clients do.",
+      "svcpage.smarthome.division": "Our SmartHomeKJ division",
       "svcpage.cta": "Get a quote for this", "svcpage.unsure": "Tell us the problem, not the solution — we'll point you the right direction.",
       "svcpage.cta.eyebrow": "Free quote within 24 hours",
       "web.title": "Websites and web apps that load fast and convert.",
@@ -242,6 +247,7 @@
     bg: {
       "svcpage.eyebrow": "Пълен списък с услуги", "svcpage.title": "Всичко минава през един екип.",
       "svcpage.lede": "Изберете услуга, с която да започнете, или комбинирайте няколко — повечето клиенти го правят.",
+      "svcpage.smarthome.division": "Нашето подразделение SmartHomeKJ",
       "svcpage.cta": "Поискай оферта", "svcpage.unsure": "Кажете ни проблема, не решението — ще ви насочим в правилната посока.",
       "svcpage.cta.eyebrow": "Безплатна оферта до 24 часа",
       "web.title": "Уебсайтове и приложения, които зареждат бързо и продават.",
@@ -270,6 +276,65 @@
       "pc.f4": "Настройка и поддръжка на принтери", "pc.f5": "Бекъп и възстановяване на данни", "pc.f6": "Настройка на домашна/офис мрежа",
       "ctaband.title": "Не сте сигурни коя услуга ви трябва?", "ctaband.cta1": "Започни проект",
     },
+    tr: {
+      "svcpage.eyebrow": "Tüm hizmetler",
+      "svcpage.title": "Her şey tek bir ekipten.",
+      "svcpage.lede": "Başlamak için bir hizmet seçin ya da birkaçını birleştirin — müşterilerimizin çoğu öyle yapıyor.",
+      "svcpage.smarthome.division": "SmartHomeKJ bölümümüz",
+      "svcpage.cta": "Bunun için teklif al",
+      "svcpage.unsure": "Bize çözümü değil, sorunu anlatın — sizi doğru yöne yönlendirelim.",
+      "svcpage.cta.eyebrow": "24 saat içinde ücretsiz teklif",
+      "web.title": "Hızlı açılan ve müşteri kazandıran web siteleri ve uygulamalar.",
+      "web.desc": "Kurumsal siteler, açılış sayfaları, rezervasyon sistemleri ve küçük e-ticaret — müşterilerinizin gerçekten yapması gerekenlere göre tasarlanır, ardından yayında tutulur.",
+      "web.f1": "Özel tasarım ve marka kimliği",
+      "web.f2": "Mobil öncelikli ve hızlı",
+      "web.f3": "Temel SEO dahil",
+      "web.f4": "İletişim ve rezervasyon formları",
+      "web.f5": "Gerektiğinde bulut altyapı (Firebase)",
+      "web.f6": "Barındırma ve sürekli bakım",
+      "print.title": "Bir fikirden — ya da kırık bir parçadan — basılmış bir orijinale.",
+      "print.desc": "Prototipler, artık satın alınamayan ürünler için yedek parçalar, özel kutular ve küçük seri üretim; farklı malzeme ve renklerde.",
+      "print.f1": "3D tarama ve tersine mühendislik",
+      "print.f2": "Hızlı prototipleme",
+      "print.f3": "Küçük seri üretim",
+      "print.f4": "PLA, PETG, ABS ve TPU malzemeler",
+      "print.f5": "Fonksiyonel ve dekoratif baskılar",
+      "print.f6": "Ücretsiz tasarım danışmanlığı",
+      "sh.title": "Aydınlatma, iklim ve erişim — tek uygulamada.",
+      "sh.desc": "Mevcut evlere sonradan kurulum ya da yeni yapılar için kablolama — her iki durumda da her şey için tek kontrol uygulaması ve kendi kendine çalışan senaryolar.",
+      "sh.f1": "Akıllı aydınlatma ve anahtarlar",
+      "sh.f2": "İklim ve ısıtma kontrolü",
+      "sh.f3": "Akıllı kilitler ve erişim kontrolü",
+      "sh.f4": "Sesli asistan entegrasyonu",
+      "sh.f5": "Özel otomasyon senaryoları",
+      "sh.f6": "Her yerden kontrol",
+      "cam.title": "Önemli olanı her yerden görün.",
+      "cam.desc": "Evler, restoranlar, ofisler ve mağazalar için HD ve IP kamera sistemleri — temiz kurulum, telefondan izleme, ihtiyacınız olan yerde kayıt.",
+      "cam.f1": "HD / 4K IP kameralar",
+      "cam.f2": "Uzaktan izleme uygulaması",
+      "cam.f3": "Hareket algılama ve bildirimler",
+      "cam.f4": "Yerel veya bulut kayıt",
+      "cam.f5": "Gece görüşü",
+      "cam.f6": "Akıllı ev sisteminizle entegre",
+      "menu.title": "Müşterilerinizin okuttuğu, sizin saniyeler içinde düzenlediğiniz bir menü.",
+      "menu.desc": "SmartMenuKJ'nin ilk hizmeti: restoran ve kafeler için QR kodlu dijital menü. Fiyatları değiştirin, tükenen yemeği işaretleyin veya günün menüsünü ekleyin — yeniden baskıya hiç gerek yok.",
+      "menu.f1": "Anında QR kodlu menü",
+      "menu.f2": "Fiyat ve ürünleri canlı düzenleme",
+      "menu.f3": "Çok dilli menüler",
+      "menu.f4": "Günün menüsü ve tükendi düğmesi",
+      "menu.f5": "Her akıllı telefonda çalışır",
+      "menu.f6": "Popüler yemeklerle ilgili istatistikler",
+      "pc.title": "Toplama, yükseltme ve onarım — doğru şekilde.",
+      "pc.desc": "Gerçek kullanımınıza göre ayarlanmış özel bilgisayarlar, gereksiz satış yerine dürüst onarım ve ihtiyacınız olduğunda sorunsuz çalışan yazıcı kurulumu ve bakımı.",
+      "pc.f1": "Özel bilgisayar toplama",
+      "pc.f2": "Yükseltme ve donanım onarımı",
+      "pc.f3": "Virüs ve kötü amaçlı yazılım temizliği",
+      "pc.f4": "Yazıcı kurulumu ve bakımı",
+      "pc.f5": "Veri yedekleme ve kurtarma",
+      "pc.f6": "Ev ve ofis ağı kurulumu",
+      "ctaband.title": "Hangi hizmetin size uygun olduğundan emin değil misiniz?",
+      "ctaband.cta1": "Proje başlat",
+    },
   });
 
   mountChrome();
@@ -277,7 +342,7 @@
   initLangSwitch();
   initCookieBanner();
   initReveal();
-  mountDotIcons();
+  mountIcons();
 </script>
 </body>
 </html>

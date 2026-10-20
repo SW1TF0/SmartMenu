@@ -31,19 +31,11 @@ function iconSvg(name) {
 }
 
 // ---------------------------------------------------------------- theme --
-function storedTheme() {
-  try {
-    const v = localStorage.getItem(THEME_KEY);
-    return v === "dark" || v === "light" ? v : null;
-  } catch (e) {
-    return null;
-  }
-}
-
 export function currentTheme() {
   const attr = document.documentElement.getAttribute("data-theme");
   if (attr === "dark" || attr === "light") return attr;
-  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  // The site opens in white whatever the OS setting; dark is opt-in only.
+  return "light";
 }
 
 function syncThemeUI() {
@@ -70,11 +62,6 @@ function setTheme(theme) {
 function initTheme() {
   const btn = document.getElementById("themeToggle");
   if (btn) btn.addEventListener("click", () => setTheme(currentTheme() === "dark" ? "light" : "dark"));
-  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
-    if (storedTheme()) return;
-    syncThemeUI();
-    document.dispatchEvent(new CustomEvent("smkj:theme", { detail: { theme: currentTheme() } }));
-  });
   document.addEventListener("smkj:lang", syncThemeUI);
   syncThemeUI();
 }

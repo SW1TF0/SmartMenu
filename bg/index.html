@@ -18,13 +18,12 @@
 <meta property="og:locale" content="bg_BG" />
 <meta property="og:locale:alternate" content="en_GB" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="theme-color" content="#f1f0ee" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
 <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 <link rel="manifest" href="/site.webmanifest" />
-<link rel="preload" href="../fonts/handjet-dot.woff2" as="font" type="font/woff2" crossorigin />
-<link rel="preload" href="../fonts/geist.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="../fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="stylesheet" href="../css/style.css" />
 <script>(function(d){d.documentElement.classList.add("js");try{var t=localStorage.getItem("smkj_theme");if(t==="dark"||t==="light")d.documentElement.setAttribute("data-theme",t)}catch(e){}})(document);</script>
 <script type="application/ld+json">
@@ -84,24 +83,36 @@
 <main id="main">
   <!-- HERO -->
   <section class="hero">
-    <div class="container hero-grid">
+    <div class="container">
       <div class="hero-copy">
-        <p class="eyebrow live" data-i18n="hero.eyebrow">Кърджали, България</p>
-        <h1 class="h-xl hero-title"><span data-i18n="hero.title.pre">Технологии, изградени и монтирани — за </span><span class="rotator" id="heroRotator" aria-hidden="true">restaurants.</span><span class="caret" aria-hidden="true"></span><span class="sr-only" data-i18n="hero.title.sr">ресторанти, домове, бизнеси, офиси, ателиета и марки.</span></h1>
+        <p class="eyebrow" data-i18n="hero.eyebrow">Кърджали, България</p>
+        <h1 class="h-xl hero-title"><span data-i18n="hero.title.pre">Технологии, изградени и монтирани — за </span><span class="rotator" id="heroRotator" aria-hidden="true">restaurants.</span><span class="sr-only" data-i18n="hero.title.sr">ресторанти, домове, бизнеси, офиси, ателиета и марки.</span></h1>
         <p class="lede" data-i18n="hero.lede">Един екип за уебсайтове, 3D-принтирани части, автоматизация на дома и бизнеса, камери, дигитални менюта и сервиз на компютри и принтери. От идеята до монтажа.</p>
         <div class="hero-actions">
-          <a href="contact.html#quote" class="btn btn-primary btn-rec"><span data-i18n="hero.cta1">Безплатна оферта</span></a>
-          <a href="services.html" class="btn btn-ghost"><span data-i18n="hero.cta2">Разгледай услугите</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <a href="contact.html#quote" class="btn btn-primary"><span data-i18n="hero.cta1">Безплатна оферта</span></a>
+          <a href="services.html" class="link-chevron" data-i18n="hero.cta2">Разгледай услугите</a>
         </div>
       </div>
 
-      <div class="device">
-        <div class="device-bar"><span>SmartMenuKJ</span><span id="glyphCount">01/06</span></div>
-        <canvas id="glyphMatrix" width="396" height="396" aria-hidden="true"></canvas>
-        <div class="device-caption">
-          <a id="glyphLink" href="services.html#menu"><span class="rec" aria-hidden="true"></span><span class="label" id="glyphLabel" data-i18n="svc.menu">Дигитални умни менюта</span></a>
-          <button class="icon-btn" id="glyphPause" type="button" aria-label="Pause"></button>
-          <button class="icon-btn" id="glyphNext" type="button" data-i18n-aria="hero.matrix.next" aria-label="Покажи следващата услуга"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+      <div class="showcase">
+        <div class="device">
+          <div class="device-stage">
+            <div class="device-bar"><span>SmartMenuKJ</span><span id="glyphCount">01/06</span></div>
+            <div class="icon-stage" id="iconStage" aria-hidden="true"></div>
+            <div class="device-caption">
+              <a id="glyphLink" href="services.html#menu"><span class="label" id="glyphLabel" data-i18n="svc.menu">Дигитални умни менюта</span></a>
+              <button class="icon-btn" id="glyphPause" type="button" aria-label="Pause"></button>
+              <button class="icon-btn" id="glyphNext" type="button" data-i18n-aria="hero.matrix.next" aria-label="Покажи следващата услуга"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+            </div>
+          </div>
+          <ul class="device-list" id="deviceList">
+            <li><button type="button" data-step="0"><span data-icon="menu"></span><span data-i18n="svc.menu">Дигитални умни менюта</span></button></li>
+            <li><button type="button" data-step="1"><span data-icon="smarthome"></span><span data-i18n="svc.smarthome">Умен дом и бизнес</span></button></li>
+            <li><button type="button" data-step="2"><span data-icon="cameras"></span><span data-i18n="svc.cameras">Камери и сигурност</span></button></li>
+            <li><button type="button" data-step="3"><span data-icon="pc"></span><span data-i18n="svc.pc">Сервиз на PC и принтери</span></button></li>
+            <li><button type="button" data-step="4"><span data-icon="print3d"></span><span data-i18n="svc.print3d">3D Печат</span></button></li>
+            <li><button type="button" data-step="5"><span data-icon="web"></span><span data-i18n="svc.web">Уеб разработка</span></button></li>
+          </ul>
         </div>
       </div>
     </div>
@@ -132,37 +143,73 @@
       </div>
       <div class="widget-grid">
         <a href="services.html#menu" class="card widget widget-wide span-2 reveal">
-          <div class="widget-head"><span class="widget-tag"><span class="dot-red" aria-hidden="true"></span><span data-i18n="svchome.original">Откъдето започна всичко</span></span><span class="arrow-dot" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
+          <div class="widget-head"><span class="widget-tag"><span data-i18n="svchome.original">Откъдето започна всичко</span></span><span class="arrow-dot" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
           <div class="widget-body"><h3 data-i18n="svc.menu">Дигитални умни менюта</h3><p data-i18n="svchome.menu.desc">QR менюта за ресторанти и кафенета — винаги актуални, лесни за управление.</p></div>
-          <span class="dot-icon widget-art" data-dot-icon="menu"></span>
+          <span class="icon-badge widget-art" data-icon="menu"></span>
         </a>
         <a href="services.html#web" class="card widget reveal">
-          <div class="widget-head"><span class="dot-icon" data-dot-icon="web"></span><span class="arrow-dot" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
+          <div class="widget-head"><span class="icon-badge" data-icon="web"></span><span class="arrow-dot" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
           <div class="widget-body"><h3 data-i18n="svc.web">Уеб разработка</h3><p data-i18n="svchome.web.desc">Бързи, модерни бизнес сайтове и уеб приложения — проектирани, изградени и поддържани.</p></div>
         </a>
         <a href="services.html#print3d" class="card widget reveal">
-          <div class="widget-head"><span class="dot-icon" data-dot-icon="print3d"></span><span class="arrow-dot" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
+          <div class="widget-head"><span class="icon-badge" data-icon="print3d"></span><span class="arrow-dot" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
           <div class="widget-body"><h3 data-i18n="svc.print3d">3D Печат</h3><p data-i18n="svchome.print3d.desc">Индивидуални части, прототипи, резервни детайли и малки серии.</p></div>
         </a>
         <a href="services.html#smarthome" class="card widget reveal">
-          <div class="widget-head"><span class="dot-icon" data-dot-icon="smarthome"></span><span class="arrow-dot" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
+          <div class="widget-head"><span class="icon-badge" data-icon="smarthome"></span><span class="arrow-dot" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
           <div class="widget-body"><h3 data-i18n="svc.smarthome">Умен дом и бизнес</h3><p data-i18n="svchome.smarthome.desc">Осветление, климат, достъп и автоматизация — от едно приложение.</p></div>
         </a>
         <a href="services.html#cameras" class="card widget reveal">
-          <div class="widget-head"><span class="dot-icon" data-dot-icon="cameras"></span><span class="arrow-dot" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
+          <div class="widget-head"><span class="icon-badge" data-icon="cameras"></span><span class="arrow-dot" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
           <div class="widget-body"><h3 data-i18n="svc.cameras">Камери и сигурност</h3><p data-i18n="svchome.cameras.desc">HD/IP камери, отдалечено наблюдение и мониторинг за дома и бизнеса.</p></div>
         </a>
         <a href="services.html#pc" class="card widget widget-wide span-2 reveal">
           <div class="widget-head"><span class="arrow-dot" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
           <div class="widget-body"><h3 data-i18n="svc.pc">Сервиз на PC и принтери</h3><p data-i18n="svchome.pc.desc">Сглобяване, ъпгрейд, ремонт и поддръжка на компютри и принтери.</p></div>
-          <span class="dot-icon widget-art" data-dot-icon="pc"></span>
+          <span class="icon-badge widget-art" data-icon="pc"></span>
         </a>
       </div>
     </div>
   </section>
 
+  <!-- DIVISIONS — SmartMenuKJ is the parent company; each division has its own
+       site. To add one, copy the SmartHomeKJ card (and its strings below). -->
+  <section class="section section-alt" id="divisions">
+    <div class="container">
+      <div class="sys-bar reveal"><p class="eyebrow" data-i18n="div.eyebrow">Нашите подразделения</p></div>
+      <div class="section-head reveal">
+        <h2 class="h-lg" data-i18n="div.title">Една компания. Специализирани подразделения.</h2>
+        <p class="lede" data-i18n="div.lede">SmartMenuKJ е компанията майка. Всяко подразделение се фокусира върху една област, със собствен екип, магазин и уебсайт.</p>
+      </div>
+      <div class="division-grid">
+        <a href="https://smarthomekj.eu/" class="card division invert reveal" target="_blank" rel="noopener">
+          <div>
+            <span class="division-brand"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3 3 13.5V29h9.5v-8h7v8H29V13.5L16 3Z" fill="currentColor"/><circle cx="16" cy="14.5" r="2.6" fill="#0a84ff"/></svg>SmartHomeKJ</span>
+            <h3 data-i18n="div.home.title">Умен дом под ключ.</h3>
+            <p data-i18n="div.home.desc">Проект, монтаж и поддръжка на осветление, отопление, камери и енергия — плюс онлайн магазин за умни устройства.</p>
+          </div>
+          <div class="division-foot">
+            <span class="card-link"><span data-i18n="div.home.cta">Към SmartHomeKJ</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+            <span class="division-url">smarthomekj.eu</span>
+          </div>
+        </a>
+        <div class="card division is-soon reveal">
+          <div>
+            <span class="division-brand" data-i18n="div.soon.tag">Още подразделения</span>
+            <h3 data-i18n="div.soon.title">Очаквайте скоро.</h3>
+            <p data-i18n="div.soon.desc">Предстоят нови подразделения за другите ни услуги. Дотогава всяка услуга е достъпна директно от SmartMenuKJ.</p>
+          </div>
+          <div class="division-foot">
+            <span class="division-soon-icons"><span data-icon="web"></span><span data-icon="cameras"></span><span data-icon="menu"></span><span data-icon="print3d"></span></span>
+            <a href="services.html" class="link-chevron" data-i18n="hero.cta2">Разгледай услугите</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- PROCESS -->
-  <section class="section section-alt">
+  <section class="section">
     <div class="container">
       <div class="sys-bar reveal"><p class="eyebrow" data-i18n="process.eyebrow">Как работим</p><span class="sys-meta">04</span></div>
       <div class="section-head reveal">
@@ -213,23 +260,23 @@
       <div class="sys-bar reveal"><p class="eyebrow" data-i18n="worktease.eyebrow">Избрани проекти</p><span class="sys-meta">03</span></div>
       <div class="section-head reveal">
         <h2 class="h-lg" data-i18n="worktease.title">Примери за нашата работа.</h2>
-        <div class="head-action"><a href="portfolio.html" class="btn btn-ghost"><span data-i18n="worktease.cta">Всички проекти</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+        <div class="head-action"><a href="portfolio.html" class="link-chevron" data-i18n="worktease.cta">Всички проекти</a></div>
       </div>
       <div class="grid grid-3">
         <article class="card work reveal">
-          <div class="work-screen"><span class="dot-icon" data-dot-icon="menu"></span></div>
+          <div class="work-screen"><span class="icon-badge" data-icon="menu"></span></div>
           <span class="pill accent" data-i18n="svc.menu">Дигитални умни менюта</span>
           <h3 data-i18n="worktease.1.title">QR меню за кафене в Кърджали</h3>
           <p data-i18n="worktease.1.desc">Редакция на менюто на живо, сезонни оферти и мигновено зареждаща страница за телефони.</p>
         </article>
         <article class="card work reveal">
-          <div class="work-screen"><span class="dot-icon" data-dot-icon="smarthome"></span></div>
+          <div class="work-screen"><span class="icon-badge" data-icon="smarthome"></span></div>
           <span class="pill accent" data-i18n="svc.smarthome">Умен дом и бизнес</span>
           <h3 data-i18n="worktease.2.title">Автоматизация на цял дом</h3>
           <p data-i18n="worktease.2.desc">Осветление, отопление и контрол на достъпа в едно приложение за семеен дом.</p>
         </article>
         <article class="card work reveal">
-          <div class="work-screen"><span class="dot-icon" data-dot-icon="print3d"></span></div>
+          <div class="work-screen"><span class="icon-badge" data-icon="print3d"></span></div>
           <span class="pill accent" data-i18n="svc.print3d">3D Печат</span>
           <h3 data-i18n="worktease.3.title">Резервни части при поискване</h3>
           <p data-i18n="worktease.3.desc">Възпроизведохме спряна от производство скоба и отпечатахме цяла серия.</p>
@@ -260,7 +307,7 @@
           <p class="lede" data-i18n="ctaband.lede">Кажете ни какво ви трябва — ще отговорим с ясна оферта до един ден.</p>
         </div>
         <div class="hero-actions">
-          <a href="contact.html#quote" class="btn btn-primary btn-rec"><span data-i18n="ctaband.cta1">Започни проект</span></a>
+          <a href="contact.html#quote" class="btn btn-primary"><span data-i18n="ctaband.cta1">Започни проект</span></a>
           <a href="tel:+359885348666" class="btn btn-ghost"><span data-i18n="ctaband.cta2">Обади се +359 88 534 8666</span></a>
         </div>
       </div>
@@ -268,7 +315,7 @@
   </section>
 </main>
 
-<footer id="site-footer" class="site-footer invert"></footer>
+<footer id="site-footer" class="site-footer"></footer>
 
 <script type="module">
   import { mountChrome } from "../js/chrome.js";
@@ -311,6 +358,10 @@
       "ctaband.eyebrow": "Free quote within 24 hours",
       "ctaband.title": "Have something to build?", "ctaband.lede": "Tell us what you need — we'll reply with a clear quote within a day.",
       "ctaband.cta1": "Start a project", "ctaband.cta2": "Call +359 88 534 8666",
+      "div.eyebrow": "Our divisions", "div.title": "One company. Specialist divisions.",
+      "div.lede": "SmartMenuKJ is the parent company. Each division focuses on one field, with its own team, shop and website.",
+      "div.home.title": "Smart homes, turnkey.", "div.home.desc": "Design, installation and support for lighting, heating, cameras and energy — plus an online shop for smart devices.", "div.home.cta": "Visit SmartHomeKJ",
+      "div.soon.tag": "More divisions", "div.soon.title": "Coming soon.", "div.soon.desc": "New divisions for our other services are on the way. Until then, every service is available directly from SmartMenuKJ.",
       "partners.eyebrow": "Partners", "partners.title": "Working alongside good people.",
       "partners.lede": "Local businesses in Kardzhali we work with and build for.",
       "partners.type.auto": "Car dealership", "partners.type.isp": "Internet provider", "partners.type.service": "Service & repair", "partners.type.boutique": "Boutique", "partners.type.culture": "Community centre",
@@ -349,6 +400,10 @@
       "ctaband.eyebrow": "Безплатна оферта до 24 часа",
       "ctaband.title": "Имате нужда от нещо?", "ctaband.lede": "Кажете ни какво ви трябва — ще отговорим с ясна оферта до един ден.",
       "ctaband.cta1": "Започни проект", "ctaband.cta2": "Обади се +359 88 534 8666",
+      "div.eyebrow": "Нашите подразделения", "div.title": "Една компания. Специализирани подразделения.",
+      "div.lede": "SmartMenuKJ е компанията майка. Всяко подразделение се фокусира върху една област, със собствен екип, магазин и уебсайт.",
+      "div.home.title": "Умен дом под ключ.", "div.home.desc": "Проект, монтаж и поддръжка на осветление, отопление, камери и енергия — плюс онлайн магазин за умни устройства.", "div.home.cta": "Към SmartHomeKJ",
+      "div.soon.tag": "Още подразделения", "div.soon.title": "Очаквайте скоро.", "div.soon.desc": "Предстоят нови подразделения за другите ни услуги. Дотогава всяка услуга е достъпна директно от SmartMenuKJ.",
       "partners.eyebrow": "Партньори", "partners.title": "Работим с добри хора.",
       "partners.lede": "Местни бизнеси в Кърджали, с които и за които работим.",
       "partners.type.auto": "Автокъща", "partners.type.isp": "Интернет доставчик", "partners.type.service": "Сервиз и ремонт", "partners.type.boutique": "Бутик", "partners.type.culture": "Читалище",

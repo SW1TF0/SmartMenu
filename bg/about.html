@@ -17,13 +17,12 @@
 <meta property="og:site_name" content="SmartMenuKJ" />
 <meta property="og:locale" content="bg_BG" />
 <meta property="og:locale:alternate" content="en_GB" />
-<meta name="theme-color" content="#f1f0ee" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
 <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 <link rel="manifest" href="/site.webmanifest" />
-<link rel="preload" href="../fonts/handjet-dot.woff2" as="font" type="font/woff2" crossorigin />
-<link rel="preload" href="../fonts/geist.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="../fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="stylesheet" href="../css/style.css" />
 <script>(function(d){d.documentElement.classList.add("js");try{var t=localStorage.getItem("smkj_theme");if(t==="dark"||t==="light")d.documentElement.setAttribute("data-theme",t)}catch(e){}})(document);</script>
 </head>
@@ -68,21 +67,21 @@
       </div>
       <div class="values-grid">
         <div class="card reveal">
-          <span class="dot-icon" data-dot-icon="answers"></span>
+          <span class="icon-badge" data-icon="answers"></span>
           <div>
             <h3 data-i18n="about.v1.title">Честни отговори</h3>
             <p data-i18n="about.v1.desc">Ако нещо не си струва да се прави, ще ви кажем — дори това да ни струва продажбата.</p>
           </div>
         </div>
         <div class="card reveal">
-          <span class="dot-icon" data-dot-icon="quotes"></span>
+          <span class="icon-badge" data-icon="quotes"></span>
           <div>
             <h3 data-i18n="about.v2.title">Бързи, реални оферти</h3>
             <p data-i18n="about.v2.desc">Получавате писмена оферта до 24 часа — не обаждане за уговаряне на друго обаждане.</p>
           </div>
         </div>
         <div class="card reveal">
-          <span class="dot-icon" data-dot-icon="support"></span>
+          <span class="icon-badge" data-icon="support"></span>
           <div>
             <h3 data-i18n="about.v3.title">Оставаме до вас</h3>
             <p data-i18n="about.v3.desc">Поддръжката след старта е част от работата, не допълнителна услуга — винаги можете да се свържете директно с нас.</p>
@@ -108,14 +107,14 @@
   </section>
 </main>
 
-<footer id="site-footer" class="site-footer invert"></footer>
+<footer id="site-footer" class="site-footer"></footer>
 
 <script type="module">
   import { mountChrome } from "../js/chrome.js";
   import { registerDict, applyI18n, initLangSwitch } from "../js/i18n.js";
   import { initCookieBanner } from "../js/cookies.js";
   import { initReveal } from "../js/site.js";
-  import { mountDotIcons } from "../js/dots.js";
+  import { mountIcons } from "../js/icons.js";
 
   registerDict({
     en: {
@@ -149,7 +148,7 @@
   initLangSwitch();
   initCookieBanner();
   initReveal();
-  mountDotIcons();
+  mountIcons();
 </script>
 </body>
 </html>

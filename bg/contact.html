@@ -17,13 +17,12 @@
 <meta property="og:site_name" content="SmartMenuKJ" />
 <meta property="og:locale" content="bg_BG" />
 <meta property="og:locale:alternate" content="en_GB" />
-<meta name="theme-color" content="#f1f0ee" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
 <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 <link rel="manifest" href="/site.webmanifest" />
-<link rel="preload" href="../fonts/handjet-dot.woff2" as="font" type="font/woff2" crossorigin />
-<link rel="preload" href="../fonts/geist.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="../fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="stylesheet" href="../css/style.css" />
 <script>(function(d){d.documentElement.classList.add("js");try{var t=localStorage.getItem("smkj_theme");if(t==="dark"||t==="light")d.documentElement.setAttribute("data-theme",t)}catch(e){}})(document);</script>
 </head>
@@ -99,7 +98,7 @@
             <label for="fMsg" data-i18n="contact.form.message">Разкажете ни за проекта</label>
             <textarea id="fMsg" name="message" required maxlength="4900"></textarea>
           </div>
-          <button type="submit" class="btn btn-primary btn-block btn-rec"><span data-i18n="contact.form.submit">Изпрати запитване</span></button>
+          <button type="submit" class="btn btn-primary btn-block"><span data-i18n="contact.form.submit">Изпрати запитване</span></button>
           <p class="form-fine" data-i18n-html="contact.form.fine">Използваме данните ви само за отговор на това запитване. Вижте нашата <a href="privacy.html">политика за поверителност</a>.</p>
           <div id="quoteNote" class="form-note" role="status" aria-live="polite"></div>
         </form>
@@ -108,7 +107,7 @@
   </section>
 </main>
 
-<footer id="site-footer" class="site-footer invert"></footer>
+<footer id="site-footer" class="site-footer"></footer>
 
 <script type="module">
   import { mountChrome } from "../js/chrome.js";

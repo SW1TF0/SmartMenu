@@ -28,11 +28,15 @@ document.querySelectorAll('link[rel="alternate"][hreflang]').forEach((l) => (alt
 const pageLangAttr = document.documentElement.getAttribute("lang");
 const PAGE_LANG = altLinks.bg ? (isLang(pageLangAttr) ? pageLangAttr : "en") : null;
 
-// The visitor's browser language, if the site speaks it.
-function browserLang() {
-  const code = (navigator.language || "").toLowerCase().slice(0, 2);
-  return isLang(code) ? code : null;
+// The language a first-time visitor gets: Bulgarian, except for Turkish
+// browsers, which get Turkish. English is only shown when picked.
+function defaultLang() {
+  return (navigator.language || "").toLowerCase().startsWith("tr") ? "tr" : "bg";
 }
+
+// Search engine crawlers are left on the URL they asked for, so the English
+// pages stay indexed.
+const isCrawler = /bot|crawl|spider|slurp|lighthouse/i.test(navigator.userAgent || "");
 
 function twinUrl(lang) {
   const url = new URL(altLinks[lang], location.href);
@@ -48,11 +52,11 @@ function savedLang() {
   }
 }
 
-// A visitor who picked a language (or, on an English page, whose browser is
-// Bulgarian or Turkish) is sent to that twin. Crawlers have neither, so they
-// stay put.
-if (PAGE_LANG) {
-  const want = savedLang() || (PAGE_LANG === "en" ? browserLang() || "en" : PAGE_LANG);
+// A visitor who picked a language is sent to that twin. Anyone else landing
+// on an English page (e.g. smartmenukj.com/) is sent to the default
+// language, so the site opens in Bulgarian.
+if (PAGE_LANG && !isCrawler) {
+  const want = savedLang() || (PAGE_LANG === "en" ? defaultLang() : PAGE_LANG);
   if (want !== PAGE_LANG && altLinks[want]) location.replace(twinUrl(want));
 }
 
@@ -221,7 +225,7 @@ export function getLang() {
   if (sessionLang) return sessionLang;
   const saved = savedLang();
   if (saved) return saved;
-  return browserLang() || "en";
+  return defaultLang();
 }
 
 export function t(key) {

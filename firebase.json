@@ -16,7 +16,7 @@
     "cleanUrls": true,
     "trailingSlash": false,
     "predeploy": [
-      "node tools/build-bg.mjs"
+      "node tools/build-langs.mjs"
     ]
   }
 }

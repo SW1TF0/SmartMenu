@@ -24,8 +24,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Build Bulgarian pages
-        run: node tools/build-bg.mjs
+      - name: Build Bulgarian and Turkish pages
+        run: node tools/build-langs.mjs
 
       - name: Configure Pages
         uses: actions/configure-pages@v5

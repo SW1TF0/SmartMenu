@@ -1,28 +1,30 @@
 // ============================================================================
-// Builds the Bulgarian twin of every public page into bg/ (bg/index.html,
-// bg/services.html, …) so search engines can index the Bulgarian text.
+// Builds the Bulgarian and Turkish twins of every public page into bg/ and
+// tr/ (bg/index.html, tr/services.html, …) so search engines can index the
+// text in every language.
 //
 // The English pages stay the single source of truth: this script reads each
-// page, takes the BG strings from js/i18n.js (COMMON) plus the page's own
-// registerDict({...}) block, and writes the same markup with the Bulgarian
-// text already in place, plus Bulgarian <title>/description/canonical.
+// page, takes the strings for the language from js/i18n.js (COMMON) plus the
+// page's own registerDict({...}) block, and writes the same markup with the
+// translated text already in place, plus a translated
+// <title>/description/canonical.
 //
-// Run:  node tools/build-bg.mjs        (the deploy workflow runs it too;
-//       bg/ is generated but committed, so GitHub Pages' branch build has it
-//       too; re-run after editing a page — never edit bg/ by hand)
+// Run:  node tools/build-langs.mjs     (the deploy workflow runs it too;
+//       bg/ and tr/ are generated but committed, so GitHub Pages' branch
+//       build has them too; re-run after editing a page — never edit bg/ or
+//       tr/ by hand)
 // ============================================================================
 import { readFileSync, writeFileSync, mkdirSync, rmSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const OUT = join(ROOT, "bg");
 const SITE = "https://www.smartmenukj.com";
 
-// Pages that get a Bulgarian twin, with their Bulgarian <title>, description
-// and social-card text. Login/account/admin are not indexed, so they keep the
-// in-place language switch instead.
-const PAGES = {
+// Pages that get a twin in each language, with their translated <title>,
+// description and social-card text. Login/account/admin are not indexed, so
+// they keep the in-place language switch instead.
+const BG_PAGES = {
   "index.html": {
     path: "/bg/",
     title: "SmartMenuKJ — Изработка на сайтове, 3D печат, умен дом, видеонаблюдение и компютърен сервиз в Кърджали",
@@ -70,7 +72,63 @@ const PAGES = {
   },
 };
 
-// Root-level files a /bg/ page must still reach one level up.
+const TR_PAGES = {
+  "index.html": {
+    path: "/tr/",
+    title: "SmartMenuKJ — Kırcaali'de Web Sitesi, 3D Baskı, Akıllı Ev, Kamera ve Bilgisayar Servisi",
+    description: "SmartMenuKJ Kırcaali'de web siteleri, 3D baskı, akıllı ev ve otomasyon, güvenlik kamerası kurulumu, restoranlar için QR dijital menüler ve bilgisayar/yazıcı servisi sunar. 24 saat içinde ücretsiz teklif.",
+    ogTitle: "SmartMenuKJ — Kırcaali'de tasarlanan ve kurulan teknoloji",
+    ogDescription: "Web siteleri, 3D baskı, akıllı ev, kamera sistemleri, dijital menüler ve bilgisayar servisi — Kırcaali'de tek ekip.",
+  },
+  "services.html": {
+    path: "/tr/services.html",
+    title: "Kırcaali'de Hizmetler — web siteleri, 3D baskı, akıllı ev, kameralar, QR menüler ve bilgisayar onarımı | SmartMenuKJ",
+    description: "SmartMenuKJ'nin Kırcaali'deki tüm hizmetleri: web sitesi yapımı, 3D baskı parçalar, akıllı ev ve otomasyon, güvenlik kameraları, restoranlar için QR menüler, bilgisayar ve yazıcı onarımı.",
+    ogTitle: "Hizmetler — SmartMenuKJ, Kırcaali",
+    ogDescription: "Web siteleri, 3D baskı, akıllı ev, kamera sistemleri, dijital menüler ve bilgisayar/yazıcı servisi — Kırcaali'de tek ekip.",
+  },
+  "portfolio.html": {
+    path: "/tr/portfolio.html",
+    title: "Projeler — Kırcaali'de web siteleri, 3D baskı, akıllı ev ve kameralar | SmartMenuKJ",
+    description: "SmartMenuKJ projelerinden örnekler: Kırcaali ve Bulgaristan'daki müşteriler için web siteleri, 3D baskı parçalar, akıllı ev, kamera sistemleri, QR menüler ve bilgisayar servisi.",
+    ogTitle: "Projeler — SmartMenuKJ",
+    ogDescription: "Neler yapıyoruz: web, 3D baskı, akıllı ev, kameralar, dijital menüler ve bilgisayar servisi.",
+  },
+  "about.html": {
+    path: "/tr/about.html",
+    title: "Hakkımızda — SmartMenuKJ, Kırcaali'de teknoloji şirketi",
+    description: "SmartMenuKJ, Krasimir Uzun tarafından kurulan Kırcaalili bir teknoloji şirketidir: web siteleri, 3D baskı, akıllı ev, kamera sistemleri, dijital menüler ve bilgisayar/yazıcı servisi.",
+    ogTitle: "Hakkımızda — SmartMenuKJ",
+    ogDescription: "Bir kurucu, altı uzmanlık, tek hedef — Kırcaali'de tasarlanan ve kurulan teknoloji.",
+  },
+  "contact.html": {
+    path: "/tr/contact.html",
+    title: "İletişim ve ücretsiz teklif — SmartMenuKJ, Kırcaali",
+    description: "Web sitesi, 3D baskı, akıllı ev, güvenlik kamerası, QR menü veya bilgisayar/yazıcı onarımı için SmartMenuKJ'den ücretsiz teklif isteyin. 24 saat içinde yanıt. Tel. +359 88 534 8666.",
+    ogTitle: "İletişim — SmartMenuKJ",
+    ogDescription: "İhtiyacınızı anlatın — tekliflerin çoğu 24 saat içinde gönderilir. Bağlayıcılığı yoktur.",
+  },
+  "privacy.html": {
+    path: "/tr/privacy.html",
+    title: "Gizlilik ve Çerezler — SmartMenuKJ",
+    description: "SmartMenuKJ'nin kişisel verileri ve çerezleri nasıl topladığı, kullandığı ve sakladığı ile GDPR kapsamındaki haklarınız.",
+  },
+  "terms.html": {
+    path: "/tr/terms.html",
+    title: "Hizmet Şartları — SmartMenuKJ",
+    description: "SmartMenuKJ'nin teklifler, ödemeler, kurulum, hesaplar ve sorumluluk ile ilgili hizmet şartları.",
+  },
+};
+
+// Every language that gets twins: output folder, Open Graph locale and the
+// per-page head text.
+const LANGS = {
+  bg: { name: "Bulgarian", ogLocale: "bg_BG", pages: BG_PAGES },
+  tr: { name: "Turkish", ogLocale: "tr_TR", pages: TR_PAGES },
+};
+const OG_LOCALES = { en: "en_GB", ...Object.fromEntries(Object.entries(LANGS).map(([l, c]) => [l, c.ogLocale])) };
+
+// Root-level files a translated page must still reach one level up.
 const ASSET_PREFIXES = ["css/", "js/", "img/", "fonts/", "./js/"];
 const ROOT_ONLY_PAGES = ["login.html", "account.html", "admin.html"];
 
@@ -87,7 +145,7 @@ async function loadCommon() {
 // with any constants the script declares before it (e.g. MAIL).
 function pageDict(html, file) {
   const start = html.indexOf("registerDict(");
-  if (start < 0) return { en: {}, bg: {} };
+  if (start < 0) return {};
   const scriptStart = html.lastIndexOf('<script type="module">', start);
   const prelude = html
     .slice(scriptStart + '<script type="module">'.length, start)
@@ -134,10 +192,10 @@ function closeTagEnd(html, name, from) {
 
 // Replaces the text of every data-i18n / data-i18n-html element and the
 // placeholder / aria-label of data-i18n-ph / data-i18n-aria elements.
-function translateBody(html, bg, file, missing) {
+function translateBody(html, strings, file, missing) {
   const lookup = (key) => {
-    if (!(key in bg)) missing.add(`${file}: ${key}`);
-    return bg[key];
+    if (!(key in strings)) missing.add(`${file}: ${key}`);
+    return strings[key];
   };
 
   // Attributes first — they never change element boundaries.
@@ -166,7 +224,7 @@ function translateBody(html, bg, file, missing) {
   return out + html.slice(pos);
 }
 
-function setHead(html, meta) {
+function setHead(html, meta, lang) {
   const url = SITE + meta.path;
   const sub = (re, value) => {
     if (!re.test(html)) return;
@@ -178,10 +236,13 @@ function setHead(html, meta) {
   sub(/(<meta property="og:url" content=")[^"]*(")/, url);
   if (meta.ogTitle) sub(/(<meta property="og:title" content=")[^"]*(")/, escAttr(meta.ogTitle));
   if (meta.ogDescription) sub(/(<meta property="og:description" content=")[^"]*(")/, escAttr(meta.ogDescription));
-  sub(/(<meta property="og:locale" content=")[^"]*(")/, "bg_BG");
-  sub(/(<meta property="og:locale:alternate" content=")[^"]*(")/, "en_GB");
-  sub(/("inLanguage":\s*")en(")/, "bg");
-  return html.replace(/<html lang="en"/, '<html lang="bg"');
+  sub(/(<meta property="og:locale" content=")[^"]*(")/, OG_LOCALES[lang]);
+  // The alternates are every other language, in the order the page lists them.
+  const others = Object.keys(OG_LOCALES).filter((l) => l !== lang);
+  let n = 0;
+  html = html.replace(/(<meta property="og:locale:alternate" content=")[^"]*(")/g, (_, a, b) => `${a}${OG_LOCALES[others[n++]] || ""}${b}`);
+  sub(/("inLanguage":\s*")en(")/, lang);
+  return html.replace(/<html lang="en"/, `<html lang="${lang}"`);
 }
 
 // Points root-relative assets and the root-only pages one level up.
@@ -196,19 +257,24 @@ function rebase(html) {
 // ------------------------------------------------------------------- main --
 const COMMON = await loadCommon();
 const missing = new Set();
-rmSync(OUT, { recursive: true, force: true });
-mkdirSync(OUT, { recursive: true });
+const sources = Object.fromEntries(Object.keys(BG_PAGES).map((file) => [file, readFileSync(join(ROOT, file), "utf8")]));
 
-for (const [file, meta] of Object.entries(PAGES)) {
-  const src = readFileSync(join(ROOT, file), "utf8");
-  if (!src.includes('hreflang="bg"')) throw new Error(`${file}: add the hreflang alternate links to the <head>`);
-  const bg = { ...COMMON.bg, ...pageDict(src, file).bg };
-  const html = rebase(setHead(translateBody(src, bg, file, missing), meta));
-  writeFileSync(join(OUT, file), html);
+for (const [lang, { pages }] of Object.entries(LANGS)) {
+  const out = join(ROOT, lang);
+  rmSync(out, { recursive: true, force: true });
+  mkdirSync(out, { recursive: true });
+
+  for (const [file, meta] of Object.entries(pages)) {
+    const src = sources[file];
+    if (!src.includes(`hreflang="${lang}"`)) throw new Error(`${file}: add the hreflang alternate links to the <head>`);
+    const strings = { ...COMMON[lang], ...(pageDict(src, file)[lang] || {}) };
+    const html = rebase(setHead(translateBody(src, strings, `${lang}/${file}`, missing), meta, lang));
+    writeFileSync(join(out, file), html);
+  }
 }
 
 if (missing.size) {
-  console.error(`Missing Bulgarian strings (left in English):\n  ${[...missing].join("\n  ")}`);
+  console.error(`Missing translations (left in English):\n  ${[...missing].join("\n  ")}`);
   process.exit(1);
 }
-console.log(`Built ${Object.keys(PAGES).length} Bulgarian pages into bg/`);
+for (const [lang, { name, pages }] of Object.entries(LANGS)) console.log(`Built ${Object.keys(pages).length} ${name} pages into ${lang}/`);

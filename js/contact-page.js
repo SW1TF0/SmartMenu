@@ -16,15 +16,20 @@ if (presetService && serviceSelect && serviceSelect.querySelector(`option[value=
 
 wireContactForm(form, {
   onSuccess: () => {
-    note.textContent = getLang() === "bg" ? "Благодарим ви! Ще се свържем с вас скоро." : "Thanks! We'll get back to you shortly.";
+    note.textContent = {
+      en: "Thanks! We'll get back to you shortly.",
+      bg: "Благодарим ви! Ще се свържем с вас скоро.",
+      tr: "Teşekkürler! En kısa sürede size dönüş yapacağız.",
+    }[getLang()];
     note.className = "form-note show ok";
   },
   onError: (err) => {
     console.error("Lead submission failed:", err);
-    note.textContent =
-      getLang() === "bg"
-        ? "Запитването не беше изпратено. Опитайте отново или ни се обадете на +359 88 534 8666."
-        : "Your request didn't go through. Please try again, or call us on +359 88 534 8666.";
+    note.textContent = {
+      en: "Your request didn't go through. Please try again, or call us on +359 88 534 8666.",
+      bg: "Запитването не беше изпратено. Опитайте отново или ни се обадете на +359 88 534 8666.",
+      tr: "Talebiniz gönderilemedi. Lütfen tekrar deneyin veya bizi +359 88 534 8666 numarasından arayın.",
+    }[getLang()];
     note.className = "form-note show err";
   },
 });

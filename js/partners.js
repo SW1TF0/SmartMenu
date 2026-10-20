@@ -4,10 +4,10 @@
 // To add or change a partner, edit an entry:
 //   name   — the partner's name, shown as written (not translated)
 //   type   — an i18n key for the small label under the name; add new keys to
-//            the "partners.type.*" entries in index.html (EN + BG)
+//            the "partners.type.*" entries in index.html (EN + BG + TR)
 //   logo   — optional path to a logo in img/partners/. It sits on a white
 //            plate in both themes, so a white-background JPG/PNG is fine.
-//            Without a logo, the initials are drawn in the dot-matrix font.
+//            Without a logo, the partner's initials are shown.
 //   url    — optional link to the partner's site (opens in a new tab)
 // Add `placeholder: true` to a stand-in entry to give it a dashed outline.
 // ============================================================================

@@ -4,8 +4,9 @@
     <loc>https://www.smartmenukj.com/</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/" />
     <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/" />
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -13,8 +14,19 @@
     <loc>https://www.smartmenukj.com/bg/</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/" />
     <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/" />
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://www.smartmenukj.com/tr/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/" />
+    <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/" />
+    <lastmod>2026-10-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -22,8 +34,9 @@
     <loc>https://www.smartmenukj.com/services.html</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/services.html" />
     <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/services.html" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/services.html" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/services.html" />
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -31,8 +44,19 @@
     <loc>https://www.smartmenukj.com/bg/services.html</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/services.html" />
     <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/services.html" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/services.html" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/services.html" />
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.smartmenukj.com/tr/services.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/services.html" />
+    <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/services.html" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/services.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/services.html" />
+    <lastmod>2026-10-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -40,8 +64,9 @@
     <loc>https://www.smartmenukj.com/contact.html</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/contact.html" />
     <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/contact.html" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/contact.html" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/contact.html" />
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -49,8 +74,19 @@
     <loc>https://www.smartmenukj.com/bg/contact.html</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/contact.html" />
     <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/contact.html" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/contact.html" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/contact.html" />
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.smartmenukj.com/tr/contact.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/contact.html" />
+    <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/contact.html" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/contact.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/contact.html" />
+    <lastmod>2026-10-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -58,8 +94,9 @@
     <loc>https://www.smartmenukj.com/portfolio.html</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/portfolio.html" />
     <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/portfolio.html" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/portfolio.html" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/portfolio.html" />
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -67,8 +104,19 @@
     <loc>https://www.smartmenukj.com/bg/portfolio.html</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/portfolio.html" />
     <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/portfolio.html" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/portfolio.html" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/portfolio.html" />
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.smartmenukj.com/tr/portfolio.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/portfolio.html" />
+    <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/portfolio.html" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/portfolio.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/portfolio.html" />
+    <lastmod>2026-10-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -76,8 +124,9 @@
     <loc>https://www.smartmenukj.com/about.html</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/about.html" />
     <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/about.html" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/about.html" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/about.html" />
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -85,8 +134,19 @@
     <loc>https://www.smartmenukj.com/bg/about.html</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/about.html" />
     <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/about.html" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/about.html" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/about.html" />
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.smartmenukj.com/tr/about.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/about.html" />
+    <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/about.html" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/about.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/about.html" />
+    <lastmod>2026-10-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -94,8 +154,9 @@
     <loc>https://www.smartmenukj.com/privacy.html</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/privacy.html" />
     <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/privacy.html" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/privacy.html" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/privacy.html" />
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-20</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
@@ -103,8 +164,19 @@
     <loc>https://www.smartmenukj.com/bg/privacy.html</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/privacy.html" />
     <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/privacy.html" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/privacy.html" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/privacy.html" />
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-20</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://www.smartmenukj.com/tr/privacy.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/privacy.html" />
+    <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/privacy.html" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/privacy.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/privacy.html" />
+    <lastmod>2026-10-20</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
@@ -112,8 +184,9 @@
     <loc>https://www.smartmenukj.com/terms.html</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/terms.html" />
     <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/terms.html" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/terms.html" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/terms.html" />
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-20</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
@@ -121,8 +194,19 @@
     <loc>https://www.smartmenukj.com/bg/terms.html</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/terms.html" />
     <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/terms.html" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/terms.html" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/terms.html" />
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-20</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://www.smartmenukj.com/tr/terms.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/terms.html" />
+    <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/terms.html" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/terms.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/terms.html" />
+    <lastmod>2026-10-20</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>

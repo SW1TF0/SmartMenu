@@ -85,9 +85,20 @@ export function friendlyAuthError(err, lang = "en") {
       "auth/too-many-requests": "Твърде много опити. Изчакайте малко и опитайте пак.",
       "auth/popup-closed-by-user": "Прозорецът на Google беше затворен.",
     },
+    tr: {
+      "auth/email-already-in-use": "Bu e-posta zaten kayıtlı — giriş yapmayı deneyin.",
+      "auth/invalid-email": "Bu e-posta adresi geçersiz görünüyor.",
+      "auth/weak-password": "Şifre en az 6 karakter olmalıdır.",
+      "auth/user-not-found": "Bu e-postayla kayıtlı hesap bulunamadı.",
+      "auth/wrong-password": "Şifre yanlış. Tekrar deneyin.",
+      "auth/invalid-credential": "E-posta veya şifre yanlış.",
+      "auth/too-many-requests": "Çok fazla deneme. Lütfen biraz bekleyip tekrar deneyin.",
+      "auth/popup-closed-by-user": "Google girişi tamamlanmadan kapatıldı.",
+    },
   };
   const dict = map[lang] || map.en;
-  return dict[code] || (lang === "bg" ? "Възникна грешка. Опитайте отново." : "Something went wrong. Please try again.");
+  const fallback = { en: "Something went wrong. Please try again.", bg: "Възникна грешка. Опитайте отново.", tr: "Bir sorun oluştu. Lütfen tekrar deneyin." };
+  return dict[code] || fallback[lang] || fallback.en;
 }
 
 export function watchAuth(callback) {

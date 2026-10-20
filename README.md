@@ -12,13 +12,13 @@ Plain HTML/CSS/JS — no build step, no framework, no npm install. Firebase is l
 
 ## Design system
 
-The look is shared with the SmartHomeKJ division ([smarthomekj.eu](https://smarthomekj.eu)): quiet white and light-grey surfaces, large bold headlines, one blue accent and rounded tiles.
+The look is shared with the SmartHomeKJ division ([smarthomekj.eu](https://smarthomekj.eu)) and kept Apple-like and monochrome: quiet white and light-grey surfaces, large bold headlines, near-black icon tiles, one blue accent and rounded tiles. No decorative colour or gradients.
 
 - **Themes** — light (white `#ffffff`, light-grey `#f5f5f7` bands and tiles) and black dark. The site follows the visitor's OS setting; the header toggle overrides it (saved as `smkj_theme`). All colours are tokens at the top of `css/style.css`; `.invert` re-scopes them for black surfaces (stats band, CTA, SmartHomeKJ card, cookie card), and `.section-alt` flips tiles to white on grey bands.
-- **Blue (`--accent`) is for actions** — buttons, links, the active state and step numbers. Gradient text (blue → purple → pink) is used sparingly for the hero word, stats and the 404.
+- **Blue (`--accent`) is only for actions** — buttons, links and focus rings. Everything else is black, white and greys; secondary headline lines (like the hero's rotating word) are grey.
 - **Type** — `Inter` (OFL), self-hosted in `fonts/` as Latin, Latin Extended (Turkish) and Cyrillic subsets — no Google Fonts requests, which matters for GDPR.
 - **Logo** — a grid of three tiles plus the blue dot shared with SmartHomeKJ (`LOGO_MARK` in `js/chrome.js`, also `favicon.svg`).
-- **Service icons** — app-style rounded squares in each service's colour (`js/icons.js`, `ICONS`). Use `<span class="icon-badge" data-icon="web"></span>` and call `mountIcons()`. The home hero's showcase cycles through the same icons.
+- **Service icons** — app-style near-black rounded squares with white line pictograms, inverted in dark mode (`js/icons.js`, `ICONS`). Use `<span class="icon-badge" data-icon="web"></span>` and call `mountIcons()`. The home hero's showcase cycles through the same icons.
 
 ## Divisions
 

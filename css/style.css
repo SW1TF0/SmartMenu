@@ -893,3 +893,116 @@ td select { padding: 7px 10px; border-radius: 10px; border: 1px solid var(--line
 .hidden { display: none !important; }
 .spinner { width: 18px; height: 18px; border-radius: 50%; border: 2px solid color-mix(in srgb, currentColor 20%, transparent); border-top-color: currentColor; animation: spin 0.7s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
+
+/* ------------------------------------------------------------ phones -- */
+/* Kept last so it wins over the desktop rules above. Phone screens get
+   smaller headings, tighter sections and shorter tiles; nothing reflows
+   while the hero headline types. */
+@media (max-width: 600px) {
+  .h-xl { font-size: clamp(32px, 9.4vw, 40px); letter-spacing: -0.034em; }
+  .h-lg { font-size: clamp(28px, 8vw, 32px); }
+  .h-md { font-size: clamp(24px, 6.6vw, 28px); }
+  .lede { font-size: 17px; line-height: 1.4; }
+  h3 { font-size: 19px; }
+  .eyebrow { font-size: 14px; margin-bottom: 10px; }
+
+  .section { padding: 56px 0; }
+  .section-head { gap: 12px; margin-bottom: 32px; }
+  .section-last { padding-bottom: 64px; }
+
+  /* Hero: the typed word sits on its own line and never wraps, so the
+     text below it doesn't jump as it types. */
+  .hero { padding: 36px 0 44px; }
+  .hero-copy .eyebrow { font-size: 15px; }
+  .hero-title { margin-bottom: 16px; }
+  .rotator { white-space: nowrap; }
+  .hero-actions { gap: 12px 20px; margin-top: 24px; }
+  .hero-actions .link-chevron { font-size: 17px; }
+  .showcase { margin-top: 36px; }
+  .device { padding: 8px; border-radius: 28px; gap: 8px; }
+  .device-stage { padding: 14px; gap: 8px; border-radius: 22px; }
+  .icon-stage { min-height: 136px; }
+  .icon-stage .icon-badge { width: 104px; }
+  .device-caption { padding-left: 14px; }
+  .device-caption a { font-size: 14px; }
+  .device-list { gap: 2px; }
+  .device-list button { gap: 6px; padding: 10px 4px; border-radius: 14px; font-size: 12px; line-height: 1.2; }
+  .device-list .icon-badge { width: 32px; height: 32px; border-radius: 9px; }
+
+  .card { padding: 24px; border-radius: 24px; }
+  .widget { min-height: 0; gap: 20px; padding: 24px; }
+  .widget-head .icon-badge { width: 48px; height: 48px; }
+  .widget h3 { font-size: 20px; }
+  .widget p { font-size: 15px; }
+  .widget-wide { gap: 20px; }
+
+  .work { padding: 8px 8px 22px; }
+  .work > :not(.work-screen) { margin-left: 14px; margin-right: 14px; }
+  .work-screen, .proj-thumb { aspect-ratio: 2 / 1; margin-bottom: 16px; border-radius: 16px; }
+  .work-screen .icon-badge, .proj-thumb .icon-badge { width: 72px; }
+
+  .step { padding: 22px 24px; }
+  .step::before { width: 34px; height: 34px; margin-bottom: 16px; font-size: 15px; }
+  .step h3 { font-size: 19px; }
+  .step p { font-size: 15px; }
+
+  .stats-dark { padding: 64px 0; }
+  .stats-dark .eyebrow { margin-bottom: 32px; }
+  .stats-dark-grid { gap: 32px 16px; }
+  .stats-dark-item b { font-size: 48px; }
+  .stats-dark-item span { font-size: 14px; }
+
+  .pullquote-wrap blockquote { font-size: 22px; margin-bottom: 28px; }
+
+  .division { min-height: 0; gap: 28px; padding: 26px 24px; }
+  .division h3 { font-size: 26px; margin: 14px 0 10px; }
+  .division p { font-size: 16px; }
+
+  /* Partners two per row with smaller logo plates. */
+  .partner-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .partner { gap: 12px; padding: 8px 8px 16px; border-radius: 22px; }
+  .partner > .partner-meta { padding: 0 6px; }
+  .partner-mark { aspect-ratio: 4 / 3; border-radius: 14px; }
+  .partner-initials { font-size: 30px; }
+  .partner-name { font-size: 14px; line-height: 1.3; }
+  .partner-type { font-size: 12.5px; }
+
+  .cta-band { padding: 44px 22px; gap: 24px; border-radius: 28px; }
+  .cta-band h2 { margin-bottom: 12px; }
+  .cta-band .hero-actions { width: 100%; flex-direction: column; align-items: stretch; }
+
+  .page-hero { padding: 36px 0 32px; }
+  .page-hero h1 { margin-bottom: 14px; }
+  .crumbs { margin-bottom: 16px; }
+  .chip-row { margin-top: 24px; }
+  .chip-row .pill { padding: 8px 13px; font-size: 13px; }
+
+  .svc-panel { gap: 24px; padding: 26px 22px; }
+  .svc-head { gap: 12px; margin-bottom: 16px; }
+  .svc-head .icon-badge { width: 52px; height: 52px; }
+  .svc-panel .lede { margin-bottom: 22px; font-size: 16px; }
+  .svc-actions .btn { flex: 1 1 auto; }
+  .spec-list li { padding: 12px 0; font-size: 15px; }
+
+  .founder-card { gap: 22px; padding: 28px 24px; }
+  .founder-photo { width: 120px; font-size: 44px; }
+  .values-grid .card { min-height: 0; gap: 20px; }
+
+  .info-card, .form-card { padding: 24px 22px; }
+  .info-card h2, .form-card h2 { font-size: 26px; margin-bottom: 16px; }
+  .info-row { gap: 14px; }
+  .info-row a, .info-row .info-value { font-size: 15px; }
+  .legal-card { padding: 26px 22px; }
+  .legal h2 { margin-top: 32px; font-size: 20px; }
+
+  .auth-shell { padding: 28px var(--gutter) 56px; align-items: flex-start; }
+  .auth-card { padding: 28px 22px; }
+  .auth-title { font-size: 30px; margin-bottom: 20px; }
+  .dash-stat b { font-size: 34px; }
+
+  .site-footer { padding-top: 40px; }
+  .footer-grid { gap: 28px 20px; padding-bottom: 28px; }
+
+  /* Shorter, quicker reveal so tiles don't trail behind the scroll. */
+  .js .reveal { transform: translateY(16px); transition-duration: 0.6s; }
+}

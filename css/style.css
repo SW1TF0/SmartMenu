@@ -1005,4 +1005,96 @@ td select { padding: 7px 10px; border-radius: 10px; border: 1px solid var(--line
 
   /* Shorter, quicker reveal so tiles don't trail behind the scroll. */
   .js .reveal { transform: translateY(16px); transition-duration: 0.6s; }
+
+  /* ---- Short phone pages: everything stays reachable, but long stacks
+     become compact rows or sideways-swipe rows, and purely decorative
+     blocks are left out. Desktop is untouched. ---- */
+  .section { padding: 40px 0; }
+  .section-head { gap: 8px; margin-bottom: 20px; }
+  .section .section-head .lede { display: none; }
+  .sys-bar { margin-bottom: 4px; }
+
+  /* Hero: the service carousel and the marquee repeat the list below. */
+  .hero { padding: 28px 0 32px; }
+  .hero .lede { font-size: 16px; }
+  .hero-actions { margin-top: 20px; }
+  .showcase, .marquee { display: none; }
+
+  /* Home services: one compact row per service (icon, name, one line). */
+  .widget-grid { gap: 8px; }
+  .widget-grid .widget {
+    display: grid; grid-template-columns: 44px minmax(0, 1fr); grid-template-areas: "icon body";
+    align-items: center; gap: 0 14px; padding: 14px 16px; border-radius: 18px;
+  }
+  .widget-grid .widget-head { grid-area: icon; }
+  .widget-grid .widget-wide .widget-head, .widget-grid .arrow-dot { display: none; }
+  .widget-grid .widget-art { grid-area: icon; align-self: center; }
+  .widget-grid .icon-badge { width: 44px; height: 44px; }
+  .widget-grid .widget-body { grid-area: body; align-self: center; }
+  .widget-grid h3 { margin-bottom: 2px; font-size: 17px; }
+  .widget-grid p { font-size: 14px; line-height: 1.35; }
+
+  /* Sideways-swipe rows instead of tall stacks. The next card peeks in so
+     it's clear there is more. */
+  .steps, .grid-3, .partner-grid, .values-grid {
+    display: flex; gap: 12px; overflow-x: auto; overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory; scroll-padding: 0 var(--gutter);
+    margin: 0 calc(var(--gutter) * -1); padding: 0 var(--gutter) 4px;
+    scrollbar-width: none;
+  }
+  .steps::-webkit-scrollbar, .grid-3::-webkit-scrollbar, .partner-grid::-webkit-scrollbar, .values-grid::-webkit-scrollbar { display: none; }
+  .steps > *, .grid-3 > *, .values-grid > * { flex: 0 0 78%; scroll-snap-align: start; }
+  .partner-grid > * { flex: 0 0 44%; scroll-snap-align: start; }
+  /* Cards scrolled in from the side must not wait for a vertical reveal. */
+  .steps .reveal, .grid-3 .reveal, .partner-grid .reveal, .values-grid .reveal { opacity: 1; transform: none; }
+
+  .step { padding: 18px 20px; }
+  .step::before { width: 30px; height: 30px; margin-bottom: 10px; font-size: 14px; }
+  .work-screen, .proj-thumb { aspect-ratio: 3 / 1; margin-bottom: 12px; }
+  .work-screen .icon-badge, .proj-thumb .icon-badge { width: 48px; }
+  .work { padding-bottom: 18px; }
+  .work p { font-size: 14px; }
+  .partner-mark { aspect-ratio: 3 / 2; }
+
+  /* Divisions: the live division only; "coming soon" is left out. */
+  .division.is-soon { display: none; }
+  .division { gap: 18px; padding: 22px 20px; }
+  .division h3 { font-size: 22px; margin: 12px 0 8px; }
+  .division p { font-size: 15px; }
+
+  /* Stats in one row of four. */
+  .stats-dark { padding: 36px 0; }
+  .stats-dark .eyebrow { margin-bottom: 18px; }
+  .stats-dark-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+  .stats-dark-item b { font-size: 26px; }
+  .stats-dark-item span { margin-top: 6px; font-size: 11.5px; line-height: 1.3; }
+
+  /* The founder quote also lives on the About page. */
+  .section:has(.pullquote-wrap) { display: none; }
+
+  .cta-band { padding: 28px 20px; gap: 18px; }
+  .section-cta { padding-top: 8px; }
+
+  /* Service pages: feature lists as two short columns. */
+  .svc-panel { gap: 16px; padding: 22px 20px; }
+  .svc-panel h2 { margin-bottom: 10px; font-size: 22px; }
+  .svc-head { margin-bottom: 10px; }
+  .svc-head .icon-badge { width: 40px; height: 40px; }
+  .svc-panel .lede { margin-bottom: 16px; font-size: 15px; }
+  .spec-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 12px; }
+  .spec-list li { gap: 8px; padding: 8px 0; font-size: 13.5px; line-height: 1.3; }
+  .spec-list li:nth-last-child(2):nth-child(odd) { border-bottom: 0; }
+
+  .page-hero { padding: 28px 0 20px; }
+  .founder-card { gap: 16px; padding: 22px 20px; }
+  .founder-photo { width: 88px; font-size: 32px; }
+
+  /* Footer: the service links repeat the menu; the rest sits in three
+     short columns. */
+  .site-footer { padding-top: 28px; }
+  .footer-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px 14px; padding-bottom: 20px; }
+  .footer-grid > :nth-child(2), .footer-tagline { display: none; }
+  .footer-grid > :first-child { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .footer-grid .social-row { margin: 0; }
+  .footer-grid li { margin-bottom: 7px; }
 }

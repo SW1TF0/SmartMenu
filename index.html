@@ -27,7 +27,7 @@
 <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3" />
 <link rel="manifest" href="/site.webmanifest" />
 <link rel="preload" href="fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
-<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/style.css?v=20261101" />
 <script>(function(d){d.documentElement.classList.add("js");try{var t=localStorage.getItem("smkj_theme");if(t==="dark"||t==="light")d.documentElement.setAttribute("data-theme",t)}catch(e){}})(document);</script>
 <script type="application/ld+json">
 {
@@ -321,10 +321,10 @@
 <footer id="site-footer" class="site-footer"></footer>
 
 <script type="module">
-  import { mountChrome } from "./js/chrome.js";
-  import { registerDict, applyI18n, initLangSwitch } from "./js/i18n.js";
-  import { initCookieBanner } from "./js/cookies.js";
-  import { PARTNERS, renderPartners } from "./js/partners.js";
+  import { mountChrome } from "./js/chrome.js?v=20261101";
+  import { registerDict, applyI18n, initLangSwitch } from "./js/i18n.js?v=20261101";
+  import { initCookieBanner } from "./js/cookies.js?v=20261101";
+  import { PARTNERS, renderPartners } from "./js/partners.js?v=20261101";
 
   registerDict({
     en: {
@@ -496,6 +496,6 @@
   initLangSwitch();
   initCookieBanner();
 </script>
-<script type="module" src="js/home.js"></script>
+<script type="module" src="js/home.js?v=20261101"></script>
 </body>
 </html>

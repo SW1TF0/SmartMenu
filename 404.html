@@ -12,7 +12,7 @@
 <link rel="icon" href="/favicon-32x32.png?v=3" type="image/png" sizes="32x32" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3" />
 <link rel="manifest" href="/site.webmanifest" />
-<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/style.css?v=20261101" />
 <script>(function(d){d.documentElement.classList.add("js");try{var t=localStorage.getItem("smkj_theme");if(t==="dark"||t==="light")d.documentElement.setAttribute("data-theme",t)}catch(e){}})(document);</script>
 </head>
 <body>
@@ -38,8 +38,8 @@
 <footer id="site-footer" class="site-footer"></footer>
 
 <script type="module">
-  import { mountChrome } from "./js/chrome.js";
-  import { registerDict, applyI18n, initLangSwitch } from "./js/i18n.js";
+  import { mountChrome } from "./js/chrome.js?v=20261101";
+  import { registerDict, applyI18n, initLangSwitch } from "./js/i18n.js?v=20261101";
   registerDict({
     en: { "404.eyebrow": "Error 404", "404.title": "This page took a wrong turn.", "404.desc": "The page you're looking for doesn't exist or has moved.", "404.home": "Back to home" },
     bg: { "404.eyebrow": "Грешка 404", "404.title": "Тази страница зави в грешна посока.", "404.desc": "Страницата, която търсите, не съществува или е преместена.", "404.home": "Обратно към началото" },

@@ -1,32 +1,23 @@
 // ============================================================================
-// index.html page behaviour: the hero's service showcase + typewriter headline
-// (kept in sync — each audience word shows the service built for it) and the
+// index.html page behaviour: the hero's service showcase (it cycles through
+// the services shown to the current audience, in their order) and the
 // animated stat counters.
 // ============================================================================
-import { initReveal, typeInto, prefersReducedMotion } from "./site.js?v=20261101";
+import { initReveal, prefersReducedMotion } from "./site.js?v=20261101";
 import { createIconStage, mountIcons } from "./icons.js?v=20261101";
-import { getLang, t } from "./i18n.js?v=20261101";
+import { getAudience, t } from "./i18n.js?v=20261101";
 
 initReveal();
 mountIcons();
 
-const SEQUENCE = [
-  { icon: "menu", svc: "menu", en: "restaurants.", bg: "ресторанти.", tr: "restoranlar için." },
-  { icon: "smarthome", svc: "smarthome", en: "your home.", bg: "вашия дом.", tr: "eviniz için." },
-  { icon: "cameras", svc: "cameras", en: "your business.", bg: "вашия бизнес.", tr: "işletmeniz için." },
-  { icon: "pc", svc: "pc", en: "your office.", bg: "вашия офис.", tr: "ofisiniz için." },
-  { icon: "print3d", svc: "print3d", en: "your workshop.", bg: "вашето ателие.", tr: "atölyeniz için." },
-  { icon: "web", svc: "web", en: "your brand.", bg: "вашата марка.", tr: "markanız için." },
-];
 const INTERVAL = 3800;
 
 const ICON_PAUSE = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="6" width="3.4" height="12" rx="1" fill="currentColor"/><rect x="13.6" y="6" width="3.4" height="12" rx="1" fill="currentColor"/></svg>';
 const ICON_PLAY = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 5.8v12.4L18.6 12z" fill="currentColor"/></svg>';
 
-const rotator = document.getElementById("heroRotator");
 const stageEl = document.getElementById("iconStage");
 const device = document.querySelector(".device");
-const listButtons = document.querySelectorAll("#deviceList [data-step]");
+const list = document.getElementById("deviceList");
 const label = document.getElementById("glyphLabel");
 const link = document.getElementById("glyphLink");
 const count = document.getElementById("glyphCount");
@@ -35,33 +26,39 @@ const nextBtn = document.getElementById("glyphNext");
 
 const stage = stageEl ? createIconStage(stageEl) : null;
 const pad = (n) => String(n).padStart(2, "0");
+let items = [];
 let index = 0;
 let timer = null;
 let hovering = false;
 let playing = !prefersReducedMotion();
 
+// The list entries for the current audience, in their current order.
+function visibleItems() {
+  if (!list) return [];
+  const audience = getAudience();
+  return [...list.querySelectorAll("li[data-svc]")].filter((li) => {
+    const only = li.getAttribute("data-for");
+    return !only || only === audience;
+  });
+}
+
 function render(i, { animate = true } = {}) {
-  const item = SEQUENCE[i];
-  const word = item[getLang()] || item.en;
-  if (stage) stage.show(item.icon, { instant: !animate });
-  listButtons.forEach((btn) => btn.setAttribute("aria-current", btn.getAttribute("data-step") === String(i) ? "true" : "false"));
-  if (rotator) {
-    if (animate) typeInto(rotator, word);
-    else {
-      rotator._typeToken = (rotator._typeToken || 0) + 1;
-      rotator.textContent = word;
-    }
-  }
+  const item = items[i];
+  if (!item) return;
+  const svc = item.getAttribute("data-svc");
+  if (stage) stage.show(svc, { instant: !animate });
+  list.querySelectorAll("li[data-svc] button").forEach((btn) => btn.setAttribute("aria-current", btn.closest("li") === item ? "true" : "false"));
   if (label) {
-    label.setAttribute("data-i18n", `svc.${item.svc}`);
-    label.textContent = t(`svc.${item.svc}`);
+    label.setAttribute("data-i18n", `svc.${svc}`);
+    label.textContent = t(`svc.${svc}`);
   }
-  if (link) link.setAttribute("href", `services.html#${item.svc}`);
-  if (count) count.textContent = `${pad(i + 1)}/${pad(SEQUENCE.length)}`;
+  if (link) link.setAttribute("href", `services.html#${svc}`);
+  if (count) count.textContent = `${pad(i + 1)}/${pad(items.length)}`;
 }
 
 function go(step) {
-  index = (index + step + SEQUENCE.length) % SEQUENCE.length;
+  if (!items.length) return;
+  index = (index + step + items.length) % items.length;
   render(index);
 }
 
@@ -79,13 +76,24 @@ function syncPause() {
   pauseBtn.setAttribute("aria-label", t(playing ? "hero.matrix.pause" : "hero.matrix.play"));
 }
 
-listButtons.forEach((btn) =>
-  btn.addEventListener("click", () => {
-    index = Number(btn.getAttribute("data-step"));
+// Starts again from the first service (after the Home / Business switch).
+function restart() {
+  items = visibleItems();
+  index = 0;
+  render(0, { animate: false });
+  schedule();
+}
+
+if (list) {
+  list.addEventListener("click", (e) => {
+    const item = e.target.closest("li[data-svc]");
+    const at = items.indexOf(item);
+    if (at < 0) return;
+    index = at;
     render(index);
     schedule();
-  })
-);
+  });
+}
 if (stageEl) {
   stageEl.addEventListener("click", () => {
     go(1);
@@ -115,10 +123,10 @@ document.addEventListener("smkj:lang", () => {
   render(index, { animate: false });
   syncPause();
 });
+document.addEventListener("smkj:audience", restart);
 
-render(0, { animate: false });
+restart();
 syncPause();
-schedule();
 
 // ---------------------------------------------------------- stat counters --
 function animateCount(el) {

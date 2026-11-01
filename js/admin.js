@@ -38,6 +38,11 @@ function fmtDate(ts) {
   return ts.toDate().toLocaleString("en-GB", { year: "numeric", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
 }
 
+// "For home" / "For business" — leads from before the switch existed have none.
+function audienceLabel(audience) {
+  return audience === "personal" ? "Home" : audience === "business" ? "Business" : "—";
+}
+
 function statusOptions(current) {
   return STATUSES.map((s) => `<option value="${s}" ${s === current ? "selected" : ""}>${s}</option>`).join("");
 }
@@ -63,9 +68,10 @@ async function loadLeads() {
       const email = l.email ? String(l.email) : "";
       return `<tr data-id="${id}">
       <td>${escapeHtml(fmtDate(l.createdAt))}</td>
-      <td>${escapeHtml(l.name || "")}</td>
+      <td>${escapeHtml(l.name || "")}${l.company ? `<br><span class="text-faint">${escapeHtml(l.company)}</span>` : ""}</td>
       <td>${email ? `<a href="mailto:${escapeHtml(email)}">${escapeHtml(email)}</a>` : ""}</td>
       <td>${escapeHtml(l.phone || "—")}</td>
+      <td>${escapeHtml(audienceLabel(l.audience))}</td>
       <td>${escapeHtml(l.service || "general")}</td>
       <td style="max-width:260px;">${escapeHtml(String(l.message || "").slice(0, 140))}</td>
       <td><select class="status-select" data-id="${id}" aria-label="Status">${statusOptions(l.status)}</select></td>
@@ -112,8 +118,10 @@ function csvCell(value) {
 }
 
 function exportLeadsCsv() {
-  const rows = [["Date", "Name", "Email", "Phone", "Service", "Message", "Status"]];
-  leadsCache.forEach((l) => rows.push([fmtDate(l.createdAt), l.name, l.email, l.phone, l.service, l.message, l.status]));
+  const rows = [["Date", "Name", "Company", "Email", "Phone", "Type", "Service", "Message", "Status"]];
+  leadsCache.forEach((l) =>
+    rows.push([fmtDate(l.createdAt), l.name, l.company, l.email, l.phone, audienceLabel(l.audience), l.service, l.message, l.status])
+  );
   const csv = rows.map((r) => r.map(csvCell).join(",")).join("\n");
   const blob = new Blob(["﻿" + csv], { type: "text/csv;charset=utf-8;" });
   const url = URL.createObjectURL(blob);

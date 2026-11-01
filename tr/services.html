@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="tr">
+<html lang="tr" data-aud-page>
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,6 +10,8 @@
 <link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/services.html" />
 <link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/services.html" />
 <link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/services.html" />
+<!-- Before any stylesheet: theme, audience (Home / Business) and the redirect to the visitor's language, so nothing flashes or loads twice. -->
+<script>(function(d,w){var h=d.documentElement,n=w.navigator||{};h.classList.add("js");function g(k){try{return w.localStorage.getItem(k)}catch(e){return null}}function s(k,v){try{w.localStorage.setItem(k,v)}catch(e){}}var t=g("smkj_theme");if(t==="dark"||t==="light")h.setAttribute("data-theme",t);var A={},L=d.querySelectorAll('link[rel="alternate"][hreflang]');for(var i=0;i<L.length;i++)A[L[i].getAttribute("hreflang")]=L[i].href;if(A.bg&&!/bot|crawl|spider|slurp|lighthouse/i.test(n.userAgent||"")){var p=h.getAttribute("lang");if(p!=="bg"&&p!=="tr")p="en";var l=g("smkj_lang");if(l!=="en"&&l!=="bg"&&l!=="tr")l=null;var o=l||(p==="en"?((n.language||"").toLowerCase().indexOf("tr")===0?"tr":"bg"):p);if(o!==p&&A[o]){var u=new URL(A[o],location.href);location.replace(u.pathname+location.search+location.hash);return}}var a=null;try{a=new URLSearchParams(location.search).get("for")}catch(e){}if(a==="personal"||a==="business")s("smkj_audience",a);else a=g("smkj_audience");if(a!=="personal")a="business";h.setAttribute("data-audience",a);if(a==="personal"&&h.hasAttribute("data-aud-page")){h.classList.add("aud-pending");setTimeout(function(){h.classList.remove("aud-pending")},1500)}})(document,window);</script>
 <meta property="og:title" content="Hizmetler — SmartMenuKJ, Kırcaali" />
 <meta property="og:description" content="Web siteleri, 3D baskı, akıllı ev, kamera sistemleri, dijital menüler ve bilgisayar/yazıcı servisi — Kırcaali'de tek ekip." />
 <meta property="og:image" content="https://www.smartmenukj.com/og-image.png" />
@@ -26,8 +28,12 @@
 <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3" />
 <link rel="manifest" href="/site.webmanifest" />
 <link rel="preload" href="../fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="../fonts/inter-latin-ext.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="stylesheet" href="../css/style.css?v=20261101" />
-<script>(function(d){d.documentElement.classList.add("js");try{var t=localStorage.getItem("smkj_theme");if(t==="dark"||t==="light")d.documentElement.setAttribute("data-theme",t)}catch(e){}})(document);</script>
+<link rel="modulepreload" href="../js/i18n.js?v=20261101" />
+<link rel="modulepreload" href="../js/chrome.js?v=20261101" />
+<link rel="modulepreload" href="../js/motion.js?v=20261101" />
+<script type="speculationrules">{"prefetch":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":["/login.html","/account.html","/admin.html"]}}]},"eagerness":"moderate"}]}</script>
 </head>
 <body>
 
@@ -38,113 +44,32 @@
   <section class="page-hero">
     <div class="container">
       <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html" data-i18n="nav.home">Ana Sayfa</a><span aria-hidden="true">/</span><span data-i18n="nav.services">Hizmetler</span></nav>
+      <div class="hero-seg">
+        <div class="seg" role="group" data-seg="hero" data-i18n-aria="aud.aria" aria-label="Hizmetleri göster">
+          <span class="seg-pill" aria-hidden="true"></span>
+          <button type="button" data-audience-btn="personal" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 11L12 4l8.5 7"/><path d="M5.8 9.6V20h12.4V9.6"/><path d="M10 20v-5.2h4V20"/></svg><span data-i18n="aud.personal">Ev için</span></button>
+          <button type="button" data-audience-btn="business" aria-pressed="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2.5"/><path d="M8.5 7V5.5A1.5 1.5 0 0 1 10 4h4a1.5 1.5 0 0 1 1.5 1.5V7M3 12.5h18"/></svg><span data-i18n="aud.business">İşletmeler için</span></button>
+        </div>
+      </div>
       <p class="eyebrow" data-i18n="svcpage.eyebrow">Tüm hizmetler</p>
       <h1 class="h-lg" data-i18n="svcpage.title">Her şey tek bir ekipten.</h1>
       <p class="lede" data-i18n="svcpage.lede">Başlamak için bir hizmet seçin ya da birkaçını birleştirin — müşterilerimizin çoğu öyle yapıyor.</p>
-      <div class="chip-row">
-        <a href="#web" class="pill" data-i18n="svc.web">Web Geliştirme</a>
-        <a href="#print3d" class="pill" data-i18n="svc.print3d">3D Baskı</a>
-        <a href="#smarthome" class="pill" data-i18n="svc.smarthome">Akıllı Ev ve İşletme</a>
-        <a href="#cameras" class="pill" data-i18n="svc.cameras">Kamera ve Güvenlik Sistemleri</a>
-        <a href="#menu" class="pill" data-i18n="svc.menu">Dijital Akıllı Menüler</a>
-        <a href="#pc" class="pill" data-i18n="svc.pc">Bilgisayar ve Yazıcı Servisi</a>
+      <div class="chip-row" data-reorder>
+        <a href="#menu" class="pill" data-i18n="svc.menu" data-for="business">Dijital Akıllı Menüler</a>
+        <a href="#web" class="pill" data-i18n="svc.web" data-order-personal="5">Web Geliştirme</a>
+        <a href="#cameras" class="pill" data-i18n="svc.cameras" data-order-personal="3">Kamera ve Güvenlik Sistemleri</a>
+        <a href="#smarthome" class="pill" data-i18n="svc.smarthome" data-order-personal="2">Akıllı Ev ve İşletme</a>
+        <a href="#print3d" class="pill" data-i18n="svc.print3d" data-order-personal="4">3D Baskı</a>
+        <a href="#pc" class="pill" data-i18n="svc.pc" data-order-personal="1">Bilgisayar ve Yazıcı Servisi</a>
       </div>
     </div>
   </section>
 
-  <!-- WEB -->
-  <section class="svc" id="web">
-    <div class="container">
-      <article class="svc-panel reveal">
-        <div>
-          <div class="svc-head"><span class="icon-badge" data-icon="web"></span><p class="eyebrow" data-i18n="svc.web">Web Geliştirme</p></div>
-          <h2 class="h-md" data-i18n="web.title">Hızlı açılan ve müşteri kazandıran web siteleri ve uygulamalar.</h2>
-          <p class="lede" data-i18n="web.desc">Kurumsal siteler, açılış sayfaları, rezervasyon sistemleri ve küçük e-ticaret — müşterilerinizin gerçekten yapması gerekenlere göre tasarlanır, ardından yayında tutulur.</p>
-          <a href="contact.html?service=web#quote" class="btn btn-primary"><span data-i18n="svcpage.cta">Bunun için teklif al</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-        </div>
-        <ul class="spec-list">
-          <li data-i18n="web.f1">Özel tasarım ve marka kimliği</li>
-          <li data-i18n="web.f2">Mobil öncelikli ve hızlı</li>
-          <li data-i18n="web.f3">Temel SEO dahil</li>
-          <li data-i18n="web.f4">İletişim ve rezervasyon formları</li>
-          <li data-i18n="web.f5">Gerektiğinde bulut altyapı (Firebase)</li>
-          <li data-i18n="web.f6">Barındırma ve sürekli bakım</li>
-        </ul>
-      </article>
-    </div>
-  </section>
-
-  <!-- 3D PRINTING -->
-  <section class="svc" id="print3d">
-    <div class="container">
-      <article class="svc-panel reveal">
-        <div>
-          <div class="svc-head"><span class="icon-badge" data-icon="print3d"></span><p class="eyebrow" data-i18n="svc.print3d">3D Baskı</p></div>
-          <h2 class="h-md" data-i18n="print.title">Bir fikirden — ya da kırık bir parçadan — basılmış bir orijinale.</h2>
-          <p class="lede" data-i18n="print.desc">Prototipler, artık satın alınamayan ürünler için yedek parçalar, özel kutular ve küçük seri üretim; farklı malzeme ve renklerde.</p>
-          <a href="contact.html?service=print3d#quote" class="btn btn-primary"><span data-i18n="svcpage.cta">Bunun için teklif al</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-        </div>
-        <ul class="spec-list">
-          <li data-i18n="print.f1">3D tarama ve tersine mühendislik</li>
-          <li data-i18n="print.f2">Hızlı prototipleme</li>
-          <li data-i18n="print.f3">Küçük seri üretim</li>
-          <li data-i18n="print.f4">PLA, PETG, ABS ve TPU malzemeler</li>
-          <li data-i18n="print.f5">Fonksiyonel ve dekoratif baskılar</li>
-          <li data-i18n="print.f6">Ücretsiz tasarım danışmanlığı</li>
-        </ul>
-      </article>
-    </div>
-  </section>
-
-  <!-- SMART HOME -->
-  <section class="svc" id="smarthome">
-    <div class="container">
-      <article class="svc-panel reveal">
-        <div>
-          <div class="svc-head"><span class="icon-badge" data-icon="smarthome"></span><p class="eyebrow" data-i18n="svc.smarthome">Akıllı Ev ve İşletme</p></div>
-          <h2 class="h-md" data-i18n="sh.title">Aydınlatma, iklim ve erişim — tek uygulamada.</h2>
-          <p class="lede" data-i18n="sh.desc">Mevcut evlere sonradan kurulum ya da yeni yapılar için kablolama — her iki durumda da her şey için tek kontrol uygulaması ve kendi kendine çalışan senaryolar.</p>
-          <div class="svc-actions">
-            <a href="contact.html?service=smarthome#quote" class="btn btn-primary"><span data-i18n="svcpage.cta">Bunun için teklif al</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-            <a href="https://smarthomekj.eu/" class="link-chevron" target="_blank" rel="noopener" data-i18n="svcpage.smarthome.division">SmartHomeKJ bölümümüz</a>
-          </div>
-        </div>
-        <ul class="spec-list">
-          <li data-i18n="sh.f1">Akıllı aydınlatma ve anahtarlar</li>
-          <li data-i18n="sh.f2">İklim ve ısıtma kontrolü</li>
-          <li data-i18n="sh.f3">Akıllı kilitler ve erişim kontrolü</li>
-          <li data-i18n="sh.f4">Sesli asistan entegrasyonu</li>
-          <li data-i18n="sh.f5">Özel otomasyon senaryoları</li>
-          <li data-i18n="sh.f6">Her yerden kontrol</li>
-        </ul>
-      </article>
-    </div>
-  </section>
-
-  <!-- CAMERAS -->
-  <section class="svc" id="cameras">
-    <div class="container">
-      <article class="svc-panel reveal">
-        <div>
-          <div class="svc-head"><span class="icon-badge" data-icon="cameras"></span><p class="eyebrow" data-i18n="svc.cameras">Kamera ve Güvenlik Sistemleri</p></div>
-          <h2 class="h-md" data-i18n="cam.title">Önemli olanı her yerden görün.</h2>
-          <p class="lede" data-i18n="cam.desc">Evler, restoranlar, ofisler ve mağazalar için HD ve IP kamera sistemleri — temiz kurulum, telefondan izleme, ihtiyacınız olan yerde kayıt.</p>
-          <a href="contact.html?service=cameras#quote" class="btn btn-primary"><span data-i18n="svcpage.cta">Bunun için teklif al</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-        </div>
-        <ul class="spec-list">
-          <li data-i18n="cam.f1">HD / 4K IP kameralar</li>
-          <li data-i18n="cam.f2">Uzaktan izleme uygulaması</li>
-          <li data-i18n="cam.f3">Hareket algılama ve bildirimler</li>
-          <li data-i18n="cam.f4">Yerel veya bulut kayıt</li>
-          <li data-i18n="cam.f5">Gece görüşü</li>
-          <li data-i18n="cam.f6">Akıllı ev sisteminizle entegre</li>
-        </ul>
-      </article>
-    </div>
-  </section>
-
+  <!-- SERVICES — HTML order is the business order; data-order-personal is
+       the order for home visitors (js/i18n.js). -->
+  <div data-reorder>
   <!-- SMART MENU -->
-  <section class="svc" id="menu">
+  <section class="svc" id="menu" data-for="business">
     <div class="container">
       <article class="svc-panel reveal">
         <div>
@@ -164,9 +89,115 @@
       </article>
     </div>
   </section>
-
+  <!-- WEB -->
+  <section class="svc" id="web" data-order-personal="5">
+    <div class="container">
+      <article class="svc-panel reveal">
+        <div>
+          <div class="svc-head"><span class="icon-badge" data-icon="web"></span><p class="eyebrow" data-i18n="svc.web">Web Geliştirme</p></div>
+          <h2 class="h-md" data-i18n="web.title">Hızlı açılan ve müşteri kazandıran web siteleri ve uygulamalar.</h2>
+          <p class="lede" data-i18n="web.desc">Kurumsal siteler, açılış sayfaları, rezervasyon sistemleri ve küçük e-ticaret — müşterilerinizin gerçekten yapması gerekenlere göre tasarlanır, ardından yayında tutulur.</p>
+          <a href="contact.html?service=web#quote" class="btn btn-primary"><span data-i18n="svcpage.cta">Bunun için teklif al</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+        <ul class="spec-list">
+          <li data-i18n="web.f1">Özel tasarım ve marka kimliği</li>
+          <li data-i18n="web.f2">Mobil öncelikli ve hızlı</li>
+          <li data-i18n="web.f3">Temel SEO dahil</li>
+          <li data-i18n="web.f4">İletişim ve rezervasyon formları</li>
+          <li data-i18n="web.f5">Gerektiğinde bulut altyapı (Firebase)</li>
+          <li data-i18n="web.f6">Barındırma ve sürekli bakım</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+  <!-- CAMERAS -->
+  <section class="svc" id="cameras" data-order-personal="3">
+    <div class="container">
+      <article class="svc-panel reveal">
+        <div>
+          <div class="svc-head"><span class="icon-badge" data-icon="cameras"></span><p class="eyebrow" data-i18n="svc.cameras">Kamera ve Güvenlik Sistemleri</p></div>
+          <h2 class="h-md" data-i18n="cam.title">Önemli olanı her yerden görün.</h2>
+          <p class="lede" data-i18n="cam.desc">Restoranlar, ofisler, mağazalar ve depolar için HD ve IP kamera sistemleri — temiz kurulum, telefondan izleme, ihtiyacınız olan yerde kayıt.</p>
+          <a href="contact.html?service=cameras#quote" class="btn btn-primary"><span data-i18n="svcpage.cta">Bunun için teklif al</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+        <ul class="spec-list">
+          <li data-i18n="cam.f1">HD / 4K IP kameralar</li>
+          <li data-i18n="cam.f2">Uzaktan izleme uygulaması</li>
+          <li data-i18n="cam.f3">Hareket algılama ve bildirimler</li>
+          <li data-i18n="cam.f4">Yerel veya bulut kayıt</li>
+          <li data-i18n="cam.f5">Gece görüşü</li>
+          <li data-i18n="cam.f6">Erişim kontrolü ve tuş takımları</li>
+        </ul>
+        <ul class="svc-products">
+          <li data-for="business"><img src="../img/products/outdoor-camera.webp" alt="" width="400" height="400" loading="lazy" decoding="async" /><span data-i18n="prod.outdoorcam">Dış mekân kamerası</span></li>
+          <li data-for="business"><img src="../img/products/solar-camera.webp" alt="" width="400" height="400" loading="lazy" decoding="async" /><span data-i18n="prod.solarcam">Güneş enerjili 4G kamera</span></li>
+          <li data-for="business"><img src="../img/products/card-reader.webp" alt="" width="400" height="400" loading="lazy" decoding="async" /><span data-i18n="prod.reader">Kart ve şifre okuyucu</span></li>
+          <li data-for="business"><img src="../img/products/alarm-siren.webp" alt="" width="400" height="400" loading="lazy" decoding="async" /><span data-i18n="prod.siren">Alarm sireni</span></li>
+          <li data-for="personal"><img src="../img/products/indoor-camera.webp" alt="" width="400" height="400" loading="lazy" decoding="async" /><span data-i18n="prod.indoorcam">İç mekân kamerası</span></li>
+          <li data-for="personal"><img src="../img/products/outdoor-camera.webp" alt="" width="400" height="400" loading="lazy" decoding="async" /><span data-i18n="prod.outdoorcam">Dış mekân kamerası</span></li>
+          <li data-for="personal"><img src="../img/products/door-window-sensor.webp" alt="" width="400" height="400" loading="lazy" decoding="async" /><span data-i18n="prod.sensor">Kapı ve pencere sensörü</span></li>
+          <li data-for="personal"><img src="../img/products/alarm-siren.webp" alt="" width="400" height="400" loading="lazy" decoding="async" /><span data-i18n="prod.siren">Alarm sireni</span></li>
+        </ul>
+      </article>
+    </div>
+  </section>
+  <!-- SMART HOME -->
+  <section class="svc" id="smarthome" data-order-personal="2">
+    <div class="container">
+      <article class="svc-panel reveal">
+        <div>
+          <div class="svc-head"><span class="icon-badge" data-icon="smarthome"></span><p class="eyebrow" data-i18n="svc.smarthome">Akıllı Ev ve İşletme</p></div>
+          <h2 class="h-md" data-i18n="sh.title">Aydınlatma, iklim ve erişim — mekânınız için otomatik.</h2>
+          <p class="lede" data-i18n="sh.desc">Ofisler, mağazalar, restoranlar ve oteller: programlı aydınlatma ve ısıtma, yalnızca personele açık kapılar ve mesai sonrası kapanan elektrik — hepsi tek uygulamadan.</p>
+          <div class="svc-actions">
+            <a href="contact.html?service=smarthome#quote" class="btn btn-primary"><span data-i18n="svcpage.cta">Bunun için teklif al</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            <a href="https://smarthomekj.eu/" class="link-chevron" target="_blank" rel="noopener" data-i18n="svcpage.smarthome.division">SmartHomeKJ bölümümüz</a>
+          </div>
+        </div>
+        <ul class="spec-list">
+          <li data-i18n="sh.f1">Aydınlatma kontrolü ve programlama</li>
+          <li data-i18n="sh.f2">İklim ve ısıtma kontrolü</li>
+          <li data-i18n="sh.f3">Akıllı kilitler ve erişim kontrolü</li>
+          <li data-i18n="sh.f4">Enerji izleme</li>
+          <li data-i18n="sh.f5">Özel otomasyon senaryoları</li>
+          <li data-i18n="sh.f6">Her yerden kontrol</li>
+        </ul>
+        <ul class="svc-products">
+          <li data-for="business"><img src="../img/products/switch-module.webp" alt="" width="400" height="400" loading="lazy" decoding="async" /><span data-i18n="prod.switchmod">Akıllı anahtar modülü</span></li>
+          <li data-for="business"><img src="../img/products/smart-hub.webp" alt="" width="400" height="400" loading="lazy" decoding="async" /><span data-i18n="prod.hub">Akıllı ev merkezi</span></li>
+          <li data-for="business"><img src="../img/products/radiator-thermostats.webp" alt="" width="400" height="400" loading="lazy" decoding="async" /><span data-i18n="prod.thermo">Radyatör termostatları</span></li>
+          <li data-for="business"><img src="../img/products/access-keypad.webp" alt="" width="400" height="400" loading="lazy" decoding="async" /><span data-i18n="prod.keypad">Erişim tuş takımı</span></li>
+          <li data-for="personal"><img src="../img/products/smart-bulb.webp" alt="" width="400" height="400" loading="lazy" decoding="async" /><span data-i18n="prod.bulb">Akıllı ampul</span></li>
+          <li data-for="personal"><img src="../img/products/smart-plug.webp" alt="" width="400" height="400" loading="lazy" decoding="async" /><span data-i18n="prod.plug">Akıllı priz</span></li>
+          <li data-for="personal"><img src="../img/products/radiator-thermostats.webp" alt="" width="400" height="400" loading="lazy" decoding="async" /><span data-i18n="prod.thermo">Radyatör termostatları</span></li>
+          <li data-for="personal"><img src="../img/products/robot-vacuum.webp" alt="" width="400" height="400" loading="lazy" decoding="async" /><span data-i18n="prod.vacuum">Robot süpürge</span></li>
+        </ul>
+      </article>
+    </div>
+  </section>
+  <!-- 3D PRINTING -->
+  <section class="svc" id="print3d" data-order-personal="4">
+    <div class="container">
+      <article class="svc-panel reveal">
+        <div>
+          <div class="svc-head"><span class="icon-badge" data-icon="print3d"></span><p class="eyebrow" data-i18n="svc.print3d">3D Baskı</p></div>
+          <h2 class="h-md" data-i18n="print.title">Bir fikirden — ya da kırık bir parçadan — basılmış bir orijinale.</h2>
+          <p class="lede" data-i18n="print.desc">Prototipler, artık satın alınamayan ürünler için yedek parçalar, özel kutular ve küçük seri üretim; farklı malzeme ve renklerde.</p>
+          <a href="contact.html?service=print3d#quote" class="btn btn-primary"><span data-i18n="svcpage.cta">Bunun için teklif al</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+        <ul class="spec-list">
+          <li data-i18n="print.f1">3D tarama ve tersine mühendislik</li>
+          <li data-i18n="print.f2">Hızlı prototipleme</li>
+          <li data-i18n="print.f3">Küçük seri üretim</li>
+          <li data-i18n="print.f4">PLA, PETG, ABS ve TPU malzemeler</li>
+          <li data-i18n="print.f5">Fonksiyonel ve dekoratif baskılar</li>
+          <li data-i18n="print.f6">Ücretsiz tasarım danışmanlığı</li>
+        </ul>
+      </article>
+    </div>
+  </section>
   <!-- PC & PRINTER -->
-  <section class="svc" id="pc">
+  <section class="svc" id="pc" data-order-personal="1">
     <div class="container">
       <article class="svc-panel reveal">
         <div>
@@ -186,6 +217,7 @@
       </article>
     </div>
   </section>
+  </div>
 
   <section class="section">
     <div class="container">
@@ -214,109 +246,177 @@
 
   registerDict({
     en: {
-      "svcpage.eyebrow": "Full service list", "svcpage.title": "Everything runs through one team.",
+      "svcpage.eyebrow": "Full service list", "svcpage.eyebrow@personal": "Services for your home",
+      "svcpage.title": "Everything runs through one team.", "svcpage.title@personal": "Everything at home, handled by one team.",
       "svcpage.lede": "Pick one service to start, or combine several — most of our clients do.",
+      "svcpage.lede@personal": "Repairs, upgrades and smart devices — tell us what's going on and we'll take it from there.",
       "svcpage.smarthome.division": "Our SmartHomeKJ division",
-      "svcpage.cta": "Get a quote for this", "svcpage.unsure": "Tell us the problem, not the solution — we'll point you the right direction.",
+      "svcpage.cta": "Get a quote for this",
+      "svcpage.unsure": "Tell us the problem, not the solution — we'll point you the right direction.",
+      "svcpage.unsure@personal": "Describe the problem in your own words — we'll suggest the simplest fix.",
       "svcpage.cta.eyebrow": "Free quote within 24 hours",
       "web.title": "Websites and web apps that load fast and convert.",
+      "web.title@personal": "A personal website, done properly.",
       "web.desc": "Business sites, landing pages, booking systems and small e-commerce — designed around what your customers actually need to do, then kept online afterwards.",
+      "web.desc@personal": "A portfolio, a small craft shop, a wedding or event page — designed to look good on every phone, with your own domain and email, and kept online for you.",
       "web.f1": "Custom design & branding", "web.f2": "Mobile-first & fast-loading", "web.f3": "SEO fundamentals built in",
       "web.f4": "Contact & booking forms", "web.f5": "Cloud backends (Firebase) when needed", "web.f6": "Hosting & ongoing maintenance",
+      "web.f1@personal": "Portfolio & personal sites", "web.f3@personal": "Your own domain & email",
+      "web.f4@personal": "Event & wedding pages", "web.f5@personal": "Small online shops",
       "print.title": "From an idea — or a broken part — to a printed original.",
+      "print.title@personal": "Broken part? We'll print a new one.",
       "print.desc": "Prototypes, replacement parts for things you can't buy anymore, custom enclosures, and small production runs, in a range of materials and colors.",
+      "print.desc@personal": "Knobs, clips, brackets, covers and holders for things you can't get parts for anymore — measured, modelled and printed in a durable material.",
       "print.f1": "3D scanning & reverse engineering", "print.f2": "Rapid prototyping", "print.f3": "Small-batch production",
       "print.f4": "PLA, PETG, ABS & TPU materials", "print.f5": "Functional & decorative prints", "print.f6": "Free design consultation",
-      "sh.title": "Your lighting, climate and access — in one app.",
-      "sh.desc": "Retrofits for existing homes or wiring for a new build — either way, one control app for everything, with routines that run themselves.",
-      "sh.f1": "Smart lighting & switches", "sh.f2": "Climate & heating control", "sh.f3": "Smart locks & access control",
-      "sh.f4": "Voice assistant integration", "sh.f5": "Custom automation routines", "sh.f6": "Control from anywhere",
+      "print.f1@personal": "Replacement parts from a sample", "print.f2@personal": "Gifts, figures & keepsakes",
+      "print.f3@personal": "Hobby & model parts", "print.f5@personal": "Holders, hooks & organisers",
+      "sh.title": "Lighting, climate and access — automated for your premises.",
+      "sh.title@personal": "Lights, heating and plugs that run themselves.",
+      "sh.desc": "Offices, shops, restaurants and hotels: lights and heating on timetables, staff-only access and power that switches off after hours — all from one app.",
+      "sh.desc@personal": "Start with a few bulbs or plan the whole house. We fit the devices, set up schedules and scenes, and connect everything to one app on your phone.",
+      "sh.f1": "Lighting control & timetables", "sh.f2": "Climate & heating control", "sh.f3": "Smart locks & access control",
+      "sh.f4": "Energy monitoring", "sh.f5": "Custom automation routines", "sh.f6": "Control from anywhere",
+      "sh.f1@personal": "Smart bulbs & switches", "sh.f2@personal": "Room-by-room heating", "sh.f3@personal": "Door & window sensors",
+      "sh.f4@personal": "Voice assistant integration", "sh.f5@personal": "Scenes for mornings, nights & holidays",
       "cam.title": "See what matters, from anywhere.",
-      "cam.desc": "HD and IP camera systems for homes, restaurants, offices and shops — installed cleanly, viewable from your phone, recording where you need it.",
+      "cam.title@personal": "Keep an eye on home, from anywhere.",
+      "cam.desc": "HD and IP camera systems for restaurants, offices, shops and warehouses — installed cleanly, viewable from your phone, recording where you need it.",
+      "cam.desc@personal": "Indoor and outdoor cameras that alert your phone when something moves — installed neatly, set up for your family, with privacy in mind.",
       "cam.f1": "HD / 4K IP cameras", "cam.f2": "Remote viewing app", "cam.f3": "Motion detection & alerts",
-      "cam.f4": "Local or cloud recording", "cam.f5": "Night vision coverage", "cam.f6": "Ties into your smart home setup",
+      "cam.f4": "Local or cloud recording", "cam.f5": "Night vision coverage", "cam.f6": "Access control & keypads",
+      "cam.f1@personal": "Indoor & outdoor cameras", "cam.f2@personal": "Live view on every family phone", "cam.f3@personal": "Alerts for people, not leaves",
+      "cam.f4@personal": "Private local recording", "cam.f6@personal": "Door sensors & sirens",
       "menu.title": "A menu your customers scan — that you edit in seconds.",
       "menu.desc": "The original SmartMenuKJ service: a QR-code digital menu for restaurants and cafés. Change prices, mark a dish sold out, or add a daily special — no reprinting, ever.",
       "menu.f1": "Instant QR-code menu", "menu.f2": "Live price & item editing", "menu.f3": "Multi-language menus",
       "menu.f4": "Daily specials & sold-out toggle", "menu.f5": "Works on any smartphone", "menu.f6": "Insights on popular dishes",
       "pc.title": "Builds, upgrades and repairs — done right.",
+      "pc.title@personal": "Your computer and printer, fixed properly.",
       "pc.desc": "Custom PC builds tuned to what you actually use them for, honest repairs instead of upsells, and printer setup & maintenance so it just works when you need it.",
+      "pc.desc@personal": "A slow laptop, a PC that won't start, a printer that refuses to print — we find the real cause, fix it, and tell you honestly when it isn't worth repairing.",
       "pc.f1": "Custom PC builds", "pc.f2": "Upgrades & hardware repairs", "pc.f3": "Virus & malware removal",
       "pc.f4": "Printer setup & maintenance", "pc.f5": "Data backup & recovery", "pc.f6": "Home & office network setup",
-      "ctaband.title": "Not sure which service fits?", "ctaband.cta1": "Start a project",
+      "pc.f1@personal": "Laptop & desktop repairs", "pc.f2@personal": "SSD & memory upgrades", "pc.f4@personal": "Printer setup & repairs",
+      "pc.f5@personal": "Photo & file recovery", "pc.f6@personal": "Home Wi-Fi that reaches every room",
+      "ctaband.title": "Not sure which service fits?", "ctaband.title@personal": "Not sure what you need?",
+      "ctaband.cta1": "Start a project",
     },
     bg: {
-      "svcpage.eyebrow": "Пълен списък с услуги", "svcpage.title": "Всичко минава през един екип.",
+      "svcpage.eyebrow": "Пълен списък с услуги", "svcpage.eyebrow@personal": "Услуги за дома",
+      "svcpage.title": "Всичко минава през един екип.", "svcpage.title@personal": "Всичко за дома — от един екип.",
       "svcpage.lede": "Изберете услуга, с която да започнете, или комбинирайте няколко — повечето клиенти го правят.",
+      "svcpage.lede@personal": "Ремонти, ъпгрейди и умни устройства — кажете ни какво се случва и ние поемаме оттам.",
       "svcpage.smarthome.division": "Нашето подразделение SmartHomeKJ",
-      "svcpage.cta": "Поискай оферта", "svcpage.unsure": "Кажете ни проблема, не решението — ще ви насочим в правилната посока.",
+      "svcpage.cta": "Поискай оферта",
+      "svcpage.unsure": "Кажете ни проблема, не решението — ще ви насочим в правилната посока.",
+      "svcpage.unsure@personal": "Опишете проблема със свои думи — ще предложим най-простото решение.",
       "svcpage.cta.eyebrow": "Безплатна оферта до 24 часа",
       "web.title": "Уебсайтове и приложения, които зареждат бързо и продават.",
+      "web.title@personal": "Личен сайт, направен както трябва.",
       "web.desc": "Бизнес сайтове, landing страници, системи за резервации и малки онлайн магазини — проектирани около това, от което наистина се нуждаят клиентите ви.",
+      "web.desc@personal": "Портфолио, малък магазин за ръчна изработка, страница за сватба или събитие — изглежда добре на всеки телефон, с ваш домейн и имейл, и го поддържаме онлайн.",
       "web.f1": "Индивидуален дизайн и брандинг", "web.f2": "Mobile-first и бързо зареждане", "web.f3": "Вградени SEO основи",
       "web.f4": "Форми за контакт и резервации", "web.f5": "Облачен бекенд (Firebase) при нужда", "web.f6": "Хостинг и поддръжка",
+      "web.f1@personal": "Портфолио и лични сайтове", "web.f3@personal": "Ваш домейн и имейл",
+      "web.f4@personal": "Страници за събития и сватби", "web.f5@personal": "Малки онлайн магазини",
       "print.title": "От идея — или счупена част — до отпечатан оригинал.",
+      "print.title@personal": "Счупена част? Ще отпечатаме нова.",
       "print.desc": "Прототипи, резервни части за неща, които вече не се продават, индивидуални кутии и малки серии, в различни материали и цветове.",
+      "print.desc@personal": "Копчета, щипки, скоби, капачета и държачи за неща, за които вече няма резервни части — измерени, моделирани и отпечатани в здрав материал.",
       "print.f1": "3D сканиране и реверс инженеринг", "print.f2": "Бързо прототипиране", "print.f3": "Малки серийни партиди",
       "print.f4": "PLA, PETG, ABS и TPU материали", "print.f5": "Функционални и декоративни модели", "print.f6": "Безплатна консултация",
-      "sh.title": "Осветление, климат и достъп — в едно приложение.",
-      "sh.desc": "Реновация на съществуващ дом или окабеляване за нов — във всеки случай, едно приложение за всичко, с рутини, които се изпълняват сами.",
-      "sh.f1": "Умно осветление и ключове", "sh.f2": "Контрол на климат и отопление", "sh.f3": "Умни брави и контрол на достъп",
-      "sh.f4": "Интеграция с гласови асистенти", "sh.f5": "Персонализирани автоматизации", "sh.f6": "Контрол отвсякъде",
+      "print.f1@personal": "Резервни части по мостра", "print.f2@personal": "Подаръци, фигурки и сувенири",
+      "print.f3@personal": "Части за хоби и модели", "print.f5@personal": "Държачи, куки и органайзери",
+      "sh.title": "Осветление, климат и достъп — автоматизирани за вашия обект.",
+      "sh.title@personal": "Осветление, отопление и контакти, които работят сами.",
+      "sh.desc": "Офиси, магазини, ресторанти и хотели: осветление и отопление по график, достъп само за персонала и ток, който се изключва след работно време — от едно приложение.",
+      "sh.desc@personal": "Започнете с няколко крушки или планирайте цялата къща. Монтираме устройствата, настройваме графици и сценарии и свързваме всичко в едно приложение на телефона ви.",
+      "sh.f1": "Управление и график на осветлението", "sh.f2": "Контрол на климат и отопление", "sh.f3": "Умни брави и контрол на достъп",
+      "sh.f4": "Мониторинг на енергията", "sh.f5": "Персонализирани автоматизации", "sh.f6": "Контрол отвсякъде",
+      "sh.f1@personal": "Умни крушки и ключове", "sh.f2@personal": "Отопление стая по стая", "sh.f3@personal": "Сензори за врати и прозорци",
+      "sh.f4@personal": "Интеграция с гласови асистенти", "sh.f5@personal": "Сценарии за сутрин, нощ и отпуск",
       "cam.title": "Виждате важното — от всяко място.",
-      "cam.desc": "HD и IP камерни системи за домове, ресторанти, офиси и магазини — монтирани чисто, гледани от телефона ви, записващи където е нужно.",
+      "cam.title@personal": "Наглеждайте дома отвсякъде.",
+      "cam.desc": "HD и IP камерни системи за ресторанти, офиси, магазини и складове — монтирани чисто, гледани от телефона ви, записващи където е нужно.",
+      "cam.desc@personal": "Вътрешни и външни камери, които пращат известие на телефона ви при движение — монтирани прилежно, настроени за семейството ви и с мисъл за личното пространство.",
       "cam.f1": "HD / 4K IP камери", "cam.f2": "Приложение за отдалечено гледане", "cam.f3": "Детекция на движение и известия",
-      "cam.f4": "Локален или облачен запис", "cam.f5": "Нощно виждане", "cam.f6": "Свързва се с умния ви дом",
+      "cam.f4": "Локален или облачен запис", "cam.f5": "Нощно виждане", "cam.f6": "Контрол на достъпа и клавиатури",
+      "cam.f1@personal": "Вътрешни и външни камери", "cam.f2@personal": "Гледане на живо от всеки телефон вкъщи", "cam.f3@personal": "Известия за хора, не за листа",
+      "cam.f4@personal": "Личен локален запис", "cam.f6@personal": "Сензори за врати и сирени",
       "menu.title": "Меню, което клиентите сканират — а вие редактирате за секунди.",
       "menu.desc": "Оригиналната услуга на SmartMenuKJ: дигитално QR меню за ресторанти и кафенета. Сменете цена, скрийте изчерпано ястие или добавете дневна оферта — без нов печат.",
       "menu.f1": "Мигновено QR меню", "menu.f2": "Редакция на цени и артикули на живо", "menu.f3": "Многоезични менюта",
       "menu.f4": "Дневни оферти и превключвател „изчерпано“", "menu.f5": "Работи на всеки телефон", "menu.f6": "Статистика за популярни ястия",
       "pc.title": "Сглобяване, ъпгрейд и ремонт — направени правилно.",
+      "pc.title@personal": "Компютърът и принтерът ви — оправени както трябва.",
       "pc.desc": "Индивидуални компютърни конфигурации според реалната им употреба, честни ремонти без излишни продажби, и поддръжка на принтери.",
+      "pc.desc@personal": "Бавен лаптоп, компютър, който не тръгва, принтер, който отказва да печата — откриваме истинската причина, оправяме я и честно ви казваме, когато ремонтът не си струва.",
       "pc.f1": "Индивидуално сглобяване на PC", "pc.f2": "Ъпгрейди и хардуерни ремонти", "pc.f3": "Премахване на вируси и malware",
       "pc.f4": "Настройка и поддръжка на принтери", "pc.f5": "Бекъп и възстановяване на данни", "pc.f6": "Настройка на домашна/офис мрежа",
-      "ctaband.title": "Не сте сигурни коя услуга ви трябва?", "ctaband.cta1": "Започни проект",
+      "pc.f1@personal": "Ремонт на лаптопи и компютри", "pc.f2@personal": "Ъпгрейд с SSD и памет", "pc.f4@personal": "Настройка и ремонт на принтери",
+      "pc.f5@personal": "Възстановяване на снимки и файлове", "pc.f6@personal": "Домашен Wi-Fi във всяка стая",
+      "ctaband.title": "Не сте сигурни коя услуга ви трябва?", "ctaband.title@personal": "Не знаете от какво имате нужда?",
+      "ctaband.cta1": "Започни проект",
     },
     tr: {
-      "svcpage.eyebrow": "Tüm hizmetler",
-      "svcpage.title": "Her şey tek bir ekipten.",
+      "svcpage.eyebrow": "Tüm hizmetler", "svcpage.eyebrow@personal": "Ev hizmetleri",
+      "svcpage.title": "Her şey tek bir ekipten.", "svcpage.title@personal": "Evdeki her şey, tek bir ekiple.",
       "svcpage.lede": "Başlamak için bir hizmet seçin ya da birkaçını birleştirin — müşterilerimizin çoğu öyle yapıyor.",
+      "svcpage.lede@personal": "Onarımlar, yükseltmeler ve akıllı cihazlar — ne olduğunu anlatın, gerisini biz halledelim.",
       "svcpage.smarthome.division": "SmartHomeKJ bölümümüz",
       "svcpage.cta": "Bunun için teklif al",
       "svcpage.unsure": "Bize çözümü değil, sorunu anlatın — sizi doğru yöne yönlendirelim.",
+      "svcpage.unsure@personal": "Sorunu kendi sözlerinizle anlatın — en basit çözümü önerelim.",
       "svcpage.cta.eyebrow": "24 saat içinde ücretsiz teklif",
       "web.title": "Hızlı açılan ve müşteri kazandıran web siteleri ve uygulamalar.",
+      "web.title@personal": "Kişisel bir web sitesi, doğru şekilde.",
       "web.desc": "Kurumsal siteler, açılış sayfaları, rezervasyon sistemleri ve küçük e-ticaret — müşterilerinizin gerçekten yapması gerekenlere göre tasarlanır, ardından yayında tutulur.",
+      "web.desc@personal": "Bir portfolyo, küçük bir el işi mağazası, düğün ya da etkinlik sayfası — her telefonda iyi görünecek şekilde tasarlanır, kendi alan adınız ve e-postanızla yayında tutulur.",
       "web.f1": "Özel tasarım ve marka kimliği",
       "web.f2": "Mobil öncelikli ve hızlı",
       "web.f3": "Temel SEO dahil",
       "web.f4": "İletişim ve rezervasyon formları",
       "web.f5": "Gerektiğinde bulut altyapı (Firebase)",
       "web.f6": "Barındırma ve sürekli bakım",
+      "web.f1@personal": "Portfolyo ve kişisel siteler", "web.f3@personal": "Kendi alan adınız ve e-postanız",
+      "web.f4@personal": "Etkinlik ve düğün sayfaları", "web.f5@personal": "Küçük online mağazalar",
       "print.title": "Bir fikirden — ya da kırık bir parçadan — basılmış bir orijinale.",
+      "print.title@personal": "Kırık parça mı? Yenisini basarız.",
       "print.desc": "Prototipler, artık satın alınamayan ürünler için yedek parçalar, özel kutular ve küçük seri üretim; farklı malzeme ve renklerde.",
+      "print.desc@personal": "Artık yedek parçası bulunmayan eşyalar için düğmeler, klipsler, braketler, kapaklar ve tutucular — ölçülür, modellenir ve dayanıklı bir malzemeyle basılır.",
       "print.f1": "3D tarama ve tersine mühendislik",
       "print.f2": "Hızlı prototipleme",
       "print.f3": "Küçük seri üretim",
       "print.f4": "PLA, PETG, ABS ve TPU malzemeler",
       "print.f5": "Fonksiyonel ve dekoratif baskılar",
       "print.f6": "Ücretsiz tasarım danışmanlığı",
-      "sh.title": "Aydınlatma, iklim ve erişim — tek uygulamada.",
-      "sh.desc": "Mevcut evlere sonradan kurulum ya da yeni yapılar için kablolama — her iki durumda da her şey için tek kontrol uygulaması ve kendi kendine çalışan senaryolar.",
-      "sh.f1": "Akıllı aydınlatma ve anahtarlar",
+      "print.f1@personal": "Örnekten yedek parça", "print.f2@personal": "Hediyeler, figürler ve hatıralar",
+      "print.f3@personal": "Hobi ve maket parçaları", "print.f5@personal": "Tutucular, askılar ve düzenleyiciler",
+      "sh.title": "Aydınlatma, iklim ve erişim — mekânınız için otomatik.",
+      "sh.title@personal": "Kendi kendine çalışan aydınlatma, ısıtma ve prizler.",
+      "sh.desc": "Ofisler, mağazalar, restoranlar ve oteller: programlı aydınlatma ve ısıtma, yalnızca personele açık kapılar ve mesai sonrası kapanan elektrik — hepsi tek uygulamadan.",
+      "sh.desc@personal": "Birkaç ampulle başlayın ya da tüm evi planlayın. Cihazları takar, programları ve senaryoları kurar, her şeyi telefonunuzdaki tek uygulamaya bağlarız.",
+      "sh.f1": "Aydınlatma kontrolü ve programlama",
       "sh.f2": "İklim ve ısıtma kontrolü",
       "sh.f3": "Akıllı kilitler ve erişim kontrolü",
-      "sh.f4": "Sesli asistan entegrasyonu",
+      "sh.f4": "Enerji izleme",
       "sh.f5": "Özel otomasyon senaryoları",
       "sh.f6": "Her yerden kontrol",
+      "sh.f1@personal": "Akıllı ampuller ve anahtarlar", "sh.f2@personal": "Oda oda ısıtma", "sh.f3@personal": "Kapı ve pencere sensörleri",
+      "sh.f4@personal": "Sesli asistan entegrasyonu", "sh.f5@personal": "Sabah, gece ve tatil senaryoları",
       "cam.title": "Önemli olanı her yerden görün.",
-      "cam.desc": "Evler, restoranlar, ofisler ve mağazalar için HD ve IP kamera sistemleri — temiz kurulum, telefondan izleme, ihtiyacınız olan yerde kayıt.",
+      "cam.title@personal": "Evinize her yerden göz kulak olun.",
+      "cam.desc": "Restoranlar, ofisler, mağazalar ve depolar için HD ve IP kamera sistemleri — temiz kurulum, telefondan izleme, ihtiyacınız olan yerde kayıt.",
+      "cam.desc@personal": "Hareket olduğunda telefonunuza bildirim gönderen iç ve dış kameralar — özenle kurulur, aileniz için ayarlanır, mahremiyet gözetilir.",
       "cam.f1": "HD / 4K IP kameralar",
       "cam.f2": "Uzaktan izleme uygulaması",
       "cam.f3": "Hareket algılama ve bildirimler",
       "cam.f4": "Yerel veya bulut kayıt",
       "cam.f5": "Gece görüşü",
-      "cam.f6": "Akıllı ev sisteminizle entegre",
+      "cam.f6": "Erişim kontrolü ve tuş takımları",
+      "cam.f1@personal": "İç ve dış kameralar", "cam.f2@personal": "Ailedeki her telefondan canlı izleme", "cam.f3@personal": "Yapraklar için değil, insanlar için bildirim",
+      "cam.f4@personal": "Özel yerel kayıt", "cam.f6@personal": "Kapı sensörleri ve sirenler",
       "menu.title": "Müşterilerinizin okuttuğu, sizin saniyeler içinde düzenlediğiniz bir menü.",
       "menu.desc": "SmartMenuKJ'nin ilk hizmeti: restoran ve kafeler için QR kodlu dijital menü. Fiyatları değiştirin, tükenen yemeği işaretleyin veya günün menüsünü ekleyin — yeniden baskıya hiç gerek yok.",
       "menu.f1": "Anında QR kodlu menü",
@@ -326,14 +426,19 @@
       "menu.f5": "Her akıllı telefonda çalışır",
       "menu.f6": "Popüler yemeklerle ilgili istatistikler",
       "pc.title": "Toplama, yükseltme ve onarım — doğru şekilde.",
+      "pc.title@personal": "Bilgisayarınız ve yazıcınız, düzgünce onarılır.",
       "pc.desc": "Gerçek kullanımınıza göre ayarlanmış özel bilgisayarlar, gereksiz satış yerine dürüst onarım ve ihtiyacınız olduğunda sorunsuz çalışan yazıcı kurulumu ve bakımı.",
+      "pc.desc@personal": "Yavaşlayan bir dizüstü, açılmayan bir bilgisayar, yazdırmayan bir yazıcı — gerçek nedeni bulur, onarır ve onarıma değmediğinde bunu dürüstçe söyleriz.",
       "pc.f1": "Özel bilgisayar toplama",
       "pc.f2": "Yükseltme ve donanım onarımı",
       "pc.f3": "Virüs ve kötü amaçlı yazılım temizliği",
       "pc.f4": "Yazıcı kurulumu ve bakımı",
       "pc.f5": "Veri yedekleme ve kurtarma",
       "pc.f6": "Ev ve ofis ağı kurulumu",
+      "pc.f1@personal": "Dizüstü ve masaüstü onarımı", "pc.f2@personal": "SSD ve bellek yükseltme", "pc.f4@personal": "Yazıcı kurulumu ve onarımı",
+      "pc.f5@personal": "Fotoğraf ve dosya kurtarma", "pc.f6@personal": "Her odaya ulaşan ev Wi-Fi'ı",
       "ctaband.title": "Hangi hizmetin size uygun olduğundan emin değil misiniz?",
+      "ctaband.title@personal": "Neye ihtiyacınız olduğundan emin değil misiniz?",
       "ctaband.cta1": "Proje başlat",
     },
   });

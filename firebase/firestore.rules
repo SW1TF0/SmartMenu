@@ -5,8 +5,11 @@ rules_version = '2';
 // ----------------------------------------------------------------------------
 // Collections:
 //   users  { uid, name, email, createdAt }   — one doc per account, id = uid
-//   leads  { name, email, phone, service, message, uid, status, createdAt }
-//          — contact form + service quote requests. Anyone can create one;
+//   leads  { name, email, phone, service, message, audience, company, uid,
+//            status, createdAt }
+//          — contact form + service quote requests. audience is "personal"
+//            ("For home") or "business"; company is optional. Anyone can
+//            create one;
 //            the submitter (if signed in) and admins can read; only admins
 //            can update (status) or delete.
 //
@@ -60,6 +63,8 @@ service cloud.firestore {
                     && request.resource.data.email is string && request.resource.data.email.size() > 0 && request.resource.data.email.size() < 200
                     && request.resource.data.message is string && request.resource.data.message.size() > 0 && request.resource.data.message.size() < 5000
                     && request.resource.data.status == "new"
+                    && (!("audience" in request.resource.data) || request.resource.data.audience in ["personal", "business"])
+                    && (!("company" in request.resource.data) || (request.resource.data.company is string && request.resource.data.company.size() < 200))
                     && (request.resource.data.uid == null || (isSignedIn() && request.resource.data.uid == request.auth.uid));
       allow read: if isAdmin() || (isSignedIn() && resource.data.uid == request.auth.uid);
       allow update, delete: if isAdmin();

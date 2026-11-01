@@ -6,6 +6,8 @@
    28px rounded tiles and a frosted-glass header. No decorative colour.
    Always opens in the white theme; the header toggle switches to a black dark
    theme (data-theme), regardless of the visitor's OS setting.
+   Pages come in a "For business" and a "For home" version (data-audience on
+   <html>, see js/i18n.js); [data-for] elements belong to one of them.
    ============================================================================ */
 
 @font-face {
@@ -65,6 +67,16 @@
   --gutter: clamp(16px, 4vw, 22px);
   --header-h: 52px;
   --ease: cubic-bezier(0.28, 0.11, 0.32, 1);
+  --ease-out: cubic-bezier(0.32, 0.72, 0, 1);
+  /* Segmented controls (the Home / Business switch). */
+  --seg-track: rgba(118, 118, 128, 0.12);
+  --seg-pill: #ffffff;
+  --seg-shadow: 0 1px 2px rgba(0, 0, 0, 0.06), 0 3px 10px -2px rgba(0, 0, 0, 0.14);
+  /* Behind product photos (transparent WebP). */
+  --plate: #f5f5f7;
+  /* A filled circle with a check cut out — used as a mask, so it takes the
+     colour of its background (var(--ink)) in either theme. */
+  --check: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cmask id='m'%3E%3Crect width='24' height='24' fill='%23fff'/%3E%3Cpath d='M7 12.5l3.2 3L17 9' fill='none' stroke='%23000' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/mask%3E%3Ccircle cx='12' cy='12' r='12' mask='url(%23m)'/%3E%3C/svg%3E");
   color-scheme: light;
 }
 
@@ -86,6 +98,10 @@
   --ok: #30d158;
   --shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
   --chev: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 6l4 4 4-4' fill='none' stroke='%23f5f5f7' stroke-width='1.6'/%3E%3C/svg%3E");
+  --seg-track: rgba(118, 118, 128, 0.24);
+  --seg-pill: #5b5b60;
+  --seg-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  --plate: radial-gradient(circle at 50% 45%, #3a3a3c 0%, #242426 58%, #1c1c1e 100%);
   color-scheme: dark;
 }
 
@@ -132,7 +148,6 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: clip;
-  transition: background-color 0.3s ease, color 0.3s ease;
 }
 [id] { scroll-margin-top: calc(var(--header-h) + 20px); }
 ::selection { background: color-mix(in srgb, var(--accent) 22%, transparent); }
@@ -191,6 +206,39 @@ figure { margin: 0; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }
+
+/* -------------------------------------------------------- transitions -- */
+/* Driven by js/motion.js. Light/dark: the new theme grows out of the toggle
+   as a circle. Nothing else animates meanwhile, so the edge stays crisp —
+   except the toggle's own sun/moon. */
+:root.vt-theme *, :root.vt-theme *::before, :root.vt-theme *::after { transition: none !important; }
+:root.vt-theme .ti-sun, :root.vt-theme .ti-moon { transition: transform 0.5s var(--ease-out), opacity 0.25s ease !important; }
+:root.vt-theme::view-transition-old(root), :root.vt-theme::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+/* Browsers without view transitions get a short colour fade instead. */
+:root.theme-fade, :root.theme-fade *, :root.theme-fade *::before, :root.theme-fade *::after {
+  transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease, fill 0.4s ease, stroke 0.4s ease, opacity 0.3s ease, transform 0.5s var(--ease-out) !important;
+}
+
+/* Home / Business: the page cross-fades and rises slightly while the header
+   and the switch's pill stay put (the pill slides). */
+:root.vt-swap::view-transition-old(root) { animation: vt-out 0.14s ease-in both; }
+:root.vt-swap::view-transition-new(root) { animation: vt-in 0.4s var(--ease-out) 0.11s both; }
+:root.vt-swap .site-header { view-transition-name: site-header; }
+:root.vt-swap [data-seg="hero"] { view-transition-name: seg-hero; }
+:root.vt-swap [data-seg="form"] { view-transition-name: seg-form; }
+:root.vt-swap::view-transition-old(site-header), :root.vt-swap::view-transition-old(seg-hero), :root.vt-swap::view-transition-old(seg-form) { display: none; }
+:root.vt-swap::view-transition-new(site-header), :root.vt-swap::view-transition-new(seg-hero), :root.vt-swap::view-transition-new(seg-form) { animation: none; }
+@keyframes vt-out { to { opacity: 0; } }
+@keyframes vt-in { from { opacity: 0; transform: translateY(10px); } }
+main { transition: opacity 0.22s ease; }
+main.is-swapping { opacity: 0; transition-duration: 0.15s; }
+
+/* ---------------------------------------------------------- audiences -- */
+:root[data-audience="personal"] [data-for="business"],
+:root:not([data-audience="personal"]) [data-for="personal"] { display: none !important; }
+/* A returning "For home" visitor: the page is held back for a moment while
+   the home version is filled in, instead of flashing the business one. */
+.aud-pending main { opacity: 0; }
 
 /* ------------------------------------------------------------- layout -- */
 .container { width: 100%; max-width: calc(var(--max) + var(--gutter) * 2); margin: 0 auto; padding: 0 var(--gutter); }
@@ -313,7 +361,14 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .nav-actions .icon-btn { width: 32px; height: 32px; }
 .nav-actions .icon-btn svg { width: 16px; height: 16px; }
 .nav-toggle { display: none; }
-.nav-cta-mobile { display: none; }
+.nav-cta-mobile, .nav-aud { display: none; }
+
+/* Theme toggle: a moon in the light theme, a sun in the dark one. */
+.ti { overflow: visible; }
+.ti-sun, .ti-moon { transform-box: fill-box; transform-origin: center; transition: transform 0.5s var(--ease-out), opacity 0.25s ease; }
+.ti-sun { opacity: 0; transform: rotate(-90deg) scale(0.4); }
+:root[data-theme="dark"] .ti-sun { opacity: 1; transform: none; }
+:root[data-theme="dark"] .ti-moon { opacity: 0; transform: rotate(90deg) scale(0.4); }
 
 .lang-switch { display: inline-flex; padding: 2px; border-radius: 999px; background: var(--widget-2); }
 .lang-switch button {
@@ -323,6 +378,37 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
 }
 .lang-switch button.active { background: var(--paper); color: var(--ink); box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12); }
+
+/* Home / Business switch (segmented control). The pill's position follows
+   <html data-audience>, so it is right before any script runs. */
+.seg {
+  position: relative; isolation: isolate;
+  display: inline-grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding: 3px; border-radius: 999px; background: var(--seg-track);
+}
+.seg-pill {
+  position: absolute; z-index: -1; top: 3px; bottom: 3px; left: 3px; width: calc(50% - 3px);
+  border-radius: 999px; background: var(--seg-pill); box-shadow: var(--seg-shadow);
+  transition: transform 0.5s var(--ease-out);
+}
+:root:not([data-audience="personal"]) .seg-pill { transform: translateX(100%); }
+.seg button {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 40px; padding: 0 20px; border: 0; border-radius: 999px; background: none; cursor: pointer;
+  font: 500 15px/1.1 var(--font-sans); letter-spacing: -0.012em; white-space: nowrap;
+  color: var(--ink-2); transition: color 0.3s ease;
+}
+.seg button svg { width: 17px; height: 17px; flex: none; }
+.seg button:hover,
+:root[data-audience="personal"] .seg [data-audience-btn="personal"],
+:root:not([data-audience="personal"]) .seg [data-audience-btn="business"] { color: var(--ink); }
+.seg button:active { transform: scale(0.97); }
+.seg-sm button { min-height: 34px; padding: 0 14px; font-size: 14px; }
+.seg-sm button svg { width: 15px; height: 15px; }
+@media (max-width: 400px) {
+  .seg button { padding: 0 12px; gap: 6px; }
+  .seg button svg { display: none; }
+}
 
 .avatar-mini {
   width: 20px; height: 20px; border-radius: 50%;
@@ -347,15 +433,14 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
     padding: 12px 2px;
     font: 600 28px/1.15 var(--font-sans); letter-spacing: -0.028em;
     color: var(--ink);
-    opacity: 0; transform: translateY(-8px);
   }
   .nav-links > a.active { color: var(--ink-3); }
-  .nav-links.open > a, .nav-links.open .nav-cta-mobile { animation: navIn 0.45s var(--ease) forwards; }
-  .nav-links.open > a:nth-child(2) { animation-delay: 0.04s; }
-  .nav-links.open > a:nth-child(3) { animation-delay: 0.08s; }
-  .nav-links.open > a:nth-child(4) { animation-delay: 0.12s; }
-  .nav-links.open > a:nth-child(5) { animation-delay: 0.16s; }
-  .nav-cta-mobile { display: block; margin-top: 28px; opacity: 0; transform: translateY(-8px); animation-delay: 0.2s !important; }
+  /* Items slide in one after another (--i is set in js/chrome.js). */
+  .nav-links > * { opacity: 0; transform: translateY(-8px); }
+  .nav-links.open > * { animation: navIn 0.45s var(--ease-out) forwards; animation-delay: calc(var(--i, 0) * 0.04s); }
+  .nav-aud { display: block; margin: 2px 0 14px; }
+  .nav-aud .seg { display: grid; width: 100%; }
+  .nav-cta-mobile { display: block; margin-top: 28px; }
   .nav-cta-mobile .flex { flex-direction: column; align-items: stretch; gap: 10px; }
   .nav-cta-mobile .btn { min-height: 50px; font-size: 17px; }
   .nav-cta-mobile .btn-ghost { border-color: var(--accent); color: var(--accent); }
@@ -374,17 +459,20 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .hero { position: relative; padding: clamp(56px, 9vw, 104px) 0 clamp(48px, 7vw, 88px); overflow: hidden; text-align: center; }
 .hero-copy { position: relative; max-width: 980px; margin: 0 auto; }
 .hero-copy .eyebrow { font-size: clamp(17px, 1.6vw, 19px); }
-.hero-title { margin: 0 auto 24px; }
-.rotator { display: block; min-height: 1.04em; }
-.rotator, .hero-title .caret { vertical-align: baseline; }
-.hero-title .rotator { color: var(--ink-3); }
-.caret {
-  display: inline-block; width: 0.06em; height: 0.82em; margin-left: 0.04em;
-  background: var(--ink-3); border-radius: 0.03em; vertical-align: -0.06em;
-  animation: caret 1.05s steps(1) infinite;
+.hero-title { margin: 0 auto 24px; max-width: 16ch; }
+.hero .lede { margin: 0 auto; max-width: 36ch; }
+.hero-seg { display: flex; justify-content: center; margin: 0 0 clamp(28px, 4vw, 40px); }
+
+/* Three short promises under the hero buttons. */
+.trust-row {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 28px;
+  margin: 30px 0 0; font: 500 15px/1.3 var(--font-sans); letter-spacing: -0.01em; color: var(--ink-2);
 }
-@keyframes caret { 50% { opacity: 0; } }
-.hero .lede { margin: 0 auto; max-width: 34ch; }
+.trust-row li { display: inline-flex; align-items: center; gap: 8px; }
+.trust-row li::before, .spec-list li::before {
+  content: ""; width: 18px; height: 18px; flex: none; background: var(--ink);
+  -webkit-mask: var(--check) center / contain no-repeat; mask: var(--check) center / contain no-repeat;
+}
 .hero-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 14px 24px; margin-top: 34px; }
 .hero-actions .link-chevron { font-size: 19px; }
 @media (max-width: 520px) { .hero-actions .btn { flex: 1 1 auto; } }
@@ -436,22 +524,6 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   .device-list button { flex-direction: column; gap: 8px; padding: 12px 6px; text-align: center; font-size: 12.5px; }
 }
 
-/* ------------------------------------------------------------ marquee -- */
-.marquee {
-  overflow: hidden;
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
-  mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
-}
-.marquee-track { display: flex; width: max-content; animation: marquee 42s linear infinite; }
-.marquee:hover .marquee-track { animation-play-state: paused; }
-.marquee-item {
-  display: inline-flex; align-items: center; gap: 28px; padding-right: 28px; white-space: nowrap;
-  font: 600 15px/1 var(--font-sans); letter-spacing: -0.012em; color: var(--ink-3);
-}
-.marquee-item::after { content: ""; width: 4px; height: 4px; border-radius: 50%; background: var(--line-strong); }
-@keyframes marquee { to { transform: translateX(-50%); } }
-@media (prefers-reduced-motion: reduce) { .marquee-track { animation: none; } }
-
 /* ---------------------------------------------------------- tiles/cards -- */
 .card {
   position: relative; display: block;
@@ -461,7 +533,8 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 }
 .card p { margin-bottom: 0; }
 .card p + p { margin-top: 0.8em; }
-a.card:hover { transform: scale(1.015); box-shadow: var(--shadow); }
+@media (hover: hover) { a.card:hover { transform: scale(1.015); box-shadow: var(--shadow); } }
+a.card:active { transform: scale(0.985); transition-duration: 0.15s; }
 .card h3 { margin-bottom: 8px; }
 .card .icon {
   width: 52px; height: 52px; margin-bottom: 22px;
@@ -505,8 +578,12 @@ a.card:hover { transform: scale(1.015); box-shadow: var(--shadow); }
   transition: background-color 0.25s ease, color 0.25s ease, transform 0.4s var(--ease);
 }
 .arrow-dot svg { width: 16px; height: 16px; }
-a.card:hover .arrow-dot { background: var(--ink); color: var(--paper); transform: rotate(-45deg); }
+@media (hover: hover) { a.card:hover .arrow-dot { background: var(--ink); color: var(--paper); transform: rotate(-45deg); } }
 .widget-foot { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; }
+/* Outlined tiles: links to the other version of the site, or a call to
+   action in a row of cards. */
+.card.outline { background: transparent; box-shadow: inset 0 0 0 1.5px var(--line); }
+@media (hover: hover) { a.card.outline:hover { box-shadow: inset 0 0 0 1.5px var(--line-strong), var(--shadow); } }
 
 .card .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
 .card .tags span, .pill {
@@ -535,7 +612,7 @@ a.card:hover .card-link svg { transform: translateX(3px); }
 
 /* Scroll reveal — only hidden when JS is running (html.js), so content can
    never get stuck invisible without scripts. */
-.js .reveal { opacity: 0; transform: translateY(32px); transition: opacity 1s var(--ease), transform 1s var(--ease); }
+.js .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s var(--ease), transform 0.6s var(--ease-out); }
 .js .reveal.in { opacity: 1; transform: none; }
 
 /* -------------------------------------------------------------- steps -- */
@@ -621,6 +698,27 @@ a.card:hover .card-link svg { transform: translateX(3px); }
 .partner-type { font: 400 14px/1.4 var(--font-sans); color: var(--ink-3); }
 .partner.is-placeholder { outline: 1px dashed var(--line-strong); outline-offset: -1px; }
 
+/* ----------------------------------------------------------- products -- */
+/* Real devices we install (img/products/, transparent WebP) on a light
+   plate; in the dark theme the plate glows softly so black devices still
+   stand out. */
+.product-grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 1100px) { .product-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.product { display: flex; flex-direction: column; gap: 4px; height: 100%; padding: 10px 10px 20px; border-radius: var(--r-lg); background: var(--widget); }
+.product-plate { display: grid; place-items: center; aspect-ratio: 1; margin-bottom: 12px; border-radius: 20px; background: var(--plate); overflow: hidden; }
+.product-plate img { width: 84%; height: 84%; object-fit: contain; transition: transform 0.6s var(--ease-out); }
+@media (hover: hover) { .product:hover .product-plate img { transform: scale(1.06); } }
+.product-name { padding: 0 8px; font: 600 16px/1.25 var(--font-sans); letter-spacing: -0.018em; color: var(--ink); }
+.product-use { padding: 0 8px; font: 400 14px/1.35 var(--font-sans); color: var(--ink-3); }
+.product-foot { margin: 32px 0 0; text-align: center; }
+
+/* The same devices as small chips inside a service panel. */
+.svc-products { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.svc-products li { display: flex; align-items: center; gap: 12px; padding: 8px 14px 8px 8px; border-radius: 18px; background: var(--paper); }
+.svc-products img { width: 56px; height: 56px; flex: none; padding: 5px; border-radius: 13px; background: var(--plate); object-fit: contain; }
+.svc-products span { font: 500 14px/1.25 var(--font-sans); letter-spacing: -0.01em; color: var(--ink); }
+@media (max-width: 900px) { .svc-products { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
 /* ----------------------------------------------------------- CTA band -- */
 .cta-band {
   position: relative; overflow: hidden; isolation: isolate; text-align: center;
@@ -687,6 +785,9 @@ a.card:hover .card-link svg { transform: translateX(3px); }
   box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 18%, transparent);
 }
 .field textarea { resize: vertical; min-height: 140px; }
+/* "This request is for: Home | Business" at the top of the quote form. */
+.field-aud { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; margin-bottom: 22px; }
+.field-label { font: 500 14px/1.3 var(--font-sans); color: var(--ink-2); }
 .field-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 16px; }
 @media (max-width: 560px) { .field-row { grid-template-columns: minmax(0, 1fr); } }
 .checkbox-row { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; color: var(--ink-2); }
@@ -723,6 +824,7 @@ a.card:hover .card-link svg { transform: translateX(3px); }
 .page-hero { padding: clamp(56px, 9vw, 112px) 0 clamp(40px, 6vw, 72px); text-align: center; }
 .page-hero h1 { margin: 0 auto 22px; max-width: 18ch; }
 .page-hero .lede { margin: 0 auto; }
+.page-hero .hero-seg { margin-bottom: 26px; }
 .crumbs { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 22px; font: 400 13px/1 var(--font-sans); color: var(--ink-3); }
 .crumbs a { color: var(--link); }
 .crumbs a:hover { text-decoration: underline; }
@@ -745,10 +847,7 @@ a.card:hover .card-link svg { transform: translateX(3px); }
 .spec-list { align-self: center; }
 .spec-list li { display: flex; align-items: center; gap: 14px; padding: 15px 0; border-bottom: 1px solid var(--line); color: var(--ink); font-size: 17px; }
 .spec-list li:last-child { border-bottom: 0; }
-.spec-list li::before {
-  content: ""; width: 20px; height: 20px; border-radius: 50%; flex: none;
-  background: var(--ink) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7 12.5l3.2 3L17 9' fill='none' stroke='%23fff' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 14px no-repeat;
-}
+.spec-list li::before { width: 20px; height: 20px; }
 
 /* -------------------------------------------------------------- about -- */
 .founder-card { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 32px clamp(32px, 5vw, 64px); align-items: center; padding: clamp(30px, 5vw, 60px); border-radius: var(--r-lg); }
@@ -910,12 +1009,9 @@ td select { padding: 7px 10px; border-radius: 10px; border: 1px solid var(--line
   .section-head { gap: 12px; margin-bottom: 32px; }
   .section-last { padding-bottom: 64px; }
 
-  /* Hero: the typed word sits on its own line and never wraps, so the
-     text below it doesn't jump as it types. */
   .hero { padding: 36px 0 44px; }
   .hero-copy .eyebrow { font-size: 15px; }
   .hero-title { margin-bottom: 16px; }
-  .rotator { white-space: nowrap; }
   .hero-actions { gap: 12px 20px; margin-top: 24px; }
   .hero-actions .link-chevron { font-size: 17px; }
   .showcase { margin-top: 36px; }
@@ -1004,7 +1100,7 @@ td select { padding: 7px 10px; border-radius: 10px; border: 1px solid var(--line
   .footer-grid { gap: 28px 20px; padding-bottom: 28px; }
 
   /* Shorter, quicker reveal so tiles don't trail behind the scroll. */
-  .js .reveal { transform: translateY(16px); transition-duration: 0.6s; }
+  .js .reveal { transform: translateY(12px); transition-duration: 0.45s; }
 
   /* ---- Short phone pages: everything stays reachable, but long stacks
      become compact rows or sideways-swipe rows, and purely decorative
@@ -1014,11 +1110,15 @@ td select { padding: 7px 10px; border-radius: 10px; border: 1px solid var(--line
   .section .section-head .lede { display: none; }
   .sys-bar { margin-bottom: 4px; }
 
-  /* Hero: the service carousel and the marquee repeat the list below. */
-  .hero { padding: 28px 0 32px; }
+  /* Hero: the service carousel repeats the list below. */
+  .hero { padding: 24px 0 32px; }
   .hero .lede { font-size: 16px; }
   .hero-actions { margin-top: 20px; }
-  .showcase, .marquee { display: none; }
+  .hero-seg { margin-bottom: 22px; }
+  .trust-row { gap: 8px 16px; margin-top: 20px; font-size: 13px; }
+  .trust-row li { gap: 6px; }
+  .trust-row li::before { width: 15px; height: 15px; }
+  .showcase { display: none; }
 
   /* Home services: one compact row per service (icon, name, one line). */
   .widget-grid { gap: 8px; }
@@ -1036,17 +1136,26 @@ td select { padding: 7px 10px; border-radius: 10px; border: 1px solid var(--line
 
   /* Sideways-swipe rows instead of tall stacks. The next card peeks in so
      it's clear there is more. */
-  .steps, .grid-3, .partner-grid, .values-grid {
+  .steps, .grid-3, .partner-grid, .values-grid, .product-grid {
     display: flex; gap: 12px; overflow-x: auto; overscroll-behavior-x: contain;
     scroll-snap-type: x mandatory; scroll-padding: 0 var(--gutter);
     margin: 0 calc(var(--gutter) * -1); padding: 0 var(--gutter) 4px;
     scrollbar-width: none;
   }
-  .steps::-webkit-scrollbar, .grid-3::-webkit-scrollbar, .partner-grid::-webkit-scrollbar, .values-grid::-webkit-scrollbar { display: none; }
+  .steps::-webkit-scrollbar, .grid-3::-webkit-scrollbar, .partner-grid::-webkit-scrollbar, .values-grid::-webkit-scrollbar, .product-grid::-webkit-scrollbar { display: none; }
   .steps > *, .grid-3 > *, .values-grid > * { flex: 0 0 78%; scroll-snap-align: start; }
-  .partner-grid > * { flex: 0 0 44%; scroll-snap-align: start; }
+  .partner-grid > *, .product-grid > * { flex: 0 0 44%; scroll-snap-align: start; }
   /* Cards scrolled in from the side must not wait for a vertical reveal. */
-  .steps .reveal, .grid-3 .reveal, .partner-grid .reveal, .values-grid .reveal { opacity: 1; transform: none; }
+  .steps .reveal, .grid-3 .reveal, .partner-grid .reveal, .values-grid .reveal, .product-grid .reveal { opacity: 1; transform: none; }
+  .product { padding: 6px 6px 14px; border-radius: 20px; }
+  .product-plate { margin-bottom: 8px; border-radius: 15px; }
+  .product-name { padding: 0 6px; font-size: 14px; }
+  .product-use { padding: 0 6px; font-size: 12.5px; }
+  .product-foot { margin-top: 18px; }
+  .svc-products { gap: 8px; }
+  .svc-products li { gap: 8px; padding: 5px 8px 5px 5px; border-radius: 14px; }
+  .svc-products img { width: 40px; height: 40px; padding: 3px; border-radius: 10px; }
+  .svc-products span { font-size: 12.5px; }
 
   .step { padding: 18px 20px; }
   .step::before { width: 30px; height: 30px; margin-bottom: 10px; font-size: 14px; }

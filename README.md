@@ -14,11 +14,25 @@ Plain HTML/CSS/JS — no build step, no framework, no npm install. Firebase is l
 
 The look is shared with the SmartHomeKJ division ([smarthomekj.eu](https://smarthomekj.eu)) and kept Apple-like and monochrome: quiet white and light-grey surfaces, large bold headlines, near-black icon tiles, one blue accent and rounded tiles. No decorative colour or gradients.
 
-- **Themes** — the site always opens in the white theme (white `#ffffff`, light-grey `#f5f5f7` bands and tiles), whatever the visitor's OS setting. The header toggle switches to a black dark theme (saved as `smkj_theme`). All colours are tokens at the top of `css/style.css`; `.invert` re-scopes them for black surfaces (stats band, CTA, SmartHomeKJ card, cookie card), and `.section-alt` flips tiles to white on grey bands.
-- **Blue (`--accent`) is only for actions** — buttons, links and focus rings. Everything else is black, white and greys; secondary headline lines (like the hero's rotating word) are grey.
+- **Themes** — the site always opens in the white theme (white `#ffffff`, light-grey `#f5f5f7` bands and tiles), whatever the visitor's OS setting. The header toggle (a moon, or a sun in the dark theme) switches to a black dark theme (saved as `smkj_theme`); the new theme grows out of the toggle as a circle (`js/motion.js`, View Transitions API, with a short colour fade in browsers without it). All colours are tokens at the top of `css/style.css`; `.invert` re-scopes them for black surfaces (stats band, CTA, SmartHomeKJ card, cookie card), and `.section-alt` flips tiles to white on grey bands.
+- **Blue (`--accent`) is only for actions** — buttons, links and focus rings. Everything else is black, white and greys.
 - **Type** — `Inter` (OFL), self-hosted in `fonts/` as Latin, Latin Extended (Turkish) and Cyrillic subsets — no Google Fonts requests, which matters for GDPR.
 - **Logo** — a grid of three tiles plus the blue dot shared with SmartHomeKJ (`LOGO_MARK` in `js/chrome.js`, also `favicon.svg`).
 - **Service icons** — app-style near-black rounded squares with white line pictograms, inverted in dark mode (`js/icons.js`, `ICONS`). Use `<span class="icon-badge" data-icon="web"></span>` and call `mountIcons()`. The home hero's showcase cycles through the same icons.
+- **Product photos** — the devices we install, as transparent WebP in `img/products/` (400×400, made from the PNGs in the repo root). They sit on a light plate that glows softly in the dark theme so black devices stay visible. Used by the home page's "Hardware we install" section and the smart home and camera panels on the services page.
+- **Motion** — short and quiet: scroll reveals of 0.6 s (0.45 s on phones), card hover/press feedback, the theme circle and the Home / Business cross-fade. Everything is instant for visitors who prefer reduced motion.
+
+## For home / For business
+
+Every page with services has two versions: **For business** (the default, and what the HTML itself contains, so search engines index it) and **For home**. A switch at the top of the home, services, work and contact pages — and at the top of the phone menu — flips between them with a cross-fade; the choice is saved (`smkj_audience`) and used on every page. Links can preset it with `?for=personal` or `?for=business`.
+
+- **Text** — add `"key@personal": "…"` next to `"key"` in a page's `registerDict` (EN, BG and TR — the build fails if one is missing). Home visitors see it; everyone else sees `"key"`.
+- **Whole blocks** — `data-for="business"` or `data-for="personal"` shows an element to one version only (e.g. QR menus are business-only).
+- **Order** — on a container with `data-reorder`, the HTML order is the business order; give children `data-order-personal="1"`, `"2"`, … for the home order (children without a number go last).
+- **Links into the other version** — a link to business-only content (e.g. `services.html#menu`) shows the business version for that visit without changing the saved choice. A link with `data-set-audience="business"` switches in place.
+- **Quote requests** record which version they came from (`audience`: `personal` / `business`) and, for businesses, a `company` name; both show in the admin panel and its CSV export.
+
+The inline script at the top of every page's `<head>` sets the theme and version before anything is drawn and sends first-time visitors to their language (see below) before any CSS or JS loads. Keep it identical on every page.
 
 ## Divisions
 
@@ -31,7 +45,7 @@ SmartMenuKJ is the parent company; each division has its own site. The home page
 ## Project structure
 
 ```
-index.html         Home — hero, services overview, process, work teaser, partners
+index.html         Home — hero with the Home/Business switch, services, products, divisions, process, work teaser, partners
 services.html       All six services in detail, each with its own quote CTA
 about.html          Company story + founder bio
 portfolio.html      Filterable sample-work showcase
@@ -40,20 +54,24 @@ login.html          Sign in / register (email+password and Google)
 account.html        Signed-in customer dashboard — profile + their own requests
 admin.html          Admin dashboard — all leads + users, CSV export (gated)
 privacy.html, terms.html, 404.html
-css/style.css       Design system (tokens, themes, components)
+css/style.css       Design system (tokens, themes, transitions, components)
+img/products/       Product photos (transparent WebP)
 fonts/              Self-hosted Inter woff2 subsets + OFL licence
 js/
   firebase-config.js  Firebase project config + ADMIN_EMAILS
   auth.js             Auth helpers (register/login/Google/logout/reset)
-  chrome.js           Shared header/nav + footer, theme toggle, Kardzhali clock
-  i18n.js             EN/BG/TR translation engine (data-i18n attributes) + escapeHtml
+  chrome.js           Shared header/nav + footer, theme toggle, Home/Business switch, Kardzhali clock
+  i18n.js             EN/BG/TR translation engine (data-i18n attributes), Home/Business versions, escapeHtml
+  motion.js           Theme circle reveal + Home/Business cross-fade
   icons.js            App-style service icons + the hero's icon stage
-  site.js             Scroll-reveal + typewriter helper
-  home.js             Home hero (service showcase + typing headline) and stat counters
+  site.js             Scroll-reveal
+  home.js             Home hero service showcase and stat counters
   partners.js         Partner list for the home page — edit PARTNERS to add names, logos, links
   cookies.js          GDPR cookie consent banner
   contact.js, contact-page.js   Lead-form submission
   account.js, admin.js, login.js  Page-specific logic
+tools/build-langs.mjs      Builds the BG/TR pages (and checks strings and asset versions)
+tools/stamp-version.mjs    Stamps ?v= on every CSS/JS reference
 firebase/firestore.rules   Security rules
 firebase.json, .firebaserc  Firebase project config (project: smartmenukj)
 ```
@@ -88,13 +106,26 @@ npx serve .
 
 Every public page also exists at `/bg/<page>` and `/tr/<page>` with the translated text already in the HTML, so Google can index all three languages. `tools/build-langs.mjs` generates `bg/` and `tr/` from the English pages and the BG/TR strings in each page's `registerDict` (plus `js/i18n.js`), and sets the translated `<title>`, description and canonical from the `BG_PAGES` / `TR_PAGES` tables at the top of the script. `bg/` and `tr/` are committed (so GitHub Pages serves them however the site is published) and rebuilt on every deploy — edit the English page and its BG/TR strings, run `node tools/build-langs.mjs` and commit `bg/` and `tr/` with the change; never edit them by hand. The PR check fails if either is out of date. The build fails if a page is missing a Bulgarian or Turkish string.
 
-The site opens in Bulgarian: a first-time visitor landing on an English URL (including `smartmenukj.com/`) is sent to the `/bg/` twin, or to `/tr/` if their browser is Turkish. English is shown only when picked; the EN/BG/TR switch in the header saves the choice (`smkj_lang`). Crawlers are not redirected, so the English pages stay indexed, and `x-default` in hreflang/sitemap points to the Bulgarian pages.
+The site opens in Bulgarian: a first-time visitor landing on an English URL (including `smartmenukj.com/`) is sent to the `/bg/` twin, or to `/tr/` if their browser is Turkish — by the inline `<head>` script, before the English page's CSS and JS load. The Bulgarian and Turkish pages also preload the Cyrillic / Latin Extended font subset. English is shown only when picked; the EN/BG/TR switch in the header saves the choice (`smkj_lang`). Crawlers are not redirected, so the English pages stay indexed, and `x-default` in hreflang/sitemap points to the Bulgarian pages.
 
 A new public page needs: an entry in `BG_PAGES` and `TR_PAGES`, the four `hreflang` links in its `<head>` (copy from any page), and its three URLs in `sitemap.xml`.
 
+## Speed
+
+- Pages are prefetched when a visitor hovers over or presses a link (Speculation Rules in each public page's `<head>`), so the next page opens almost instantly. Login, account and admin are left out.
+- The shared modules (`i18n.js`, `chrome.js`, `motion.js`) are preloaded from the `<head>` instead of being discovered at the end of the page.
+- Product photos are small WebP files loaded lazily.
+
 ## Deploying
 
-**Bump the asset version on every CSS/JS change.** GitHub Pages lets browsers reuse files for 10 minutes, so right after a deploy a returning visitor can get new HTML with old CSS/JS and see a broken page. Every stylesheet link, `<script src>` and relative module import carries `?v=YYYYMMDD` — replace the old value with a new one **everywhere at once** (all `*.html` and `js/*.js`). Mixed versions of the same module load it twice (e.g. Firebase would initialise twice).
+**Re-stamp the asset version on every CSS/JS change.** GitHub Pages lets browsers reuse files for 10 minutes, so right after a deploy a returning visitor could get new HTML with old CSS/JS and see a broken page. Every stylesheet link, `<script src>`, module preload and relative import carries `?v=YYYYMMDD`. Run
+
+```bash
+node tools/stamp-version.mjs   # today's date everywhere (all *.html and js/*.js)
+node tools/build-langs.mjs     # copies it into bg/ and tr/
+```
+
+and commit everything. The build refuses to run if the versions don't all match — a module imported under two different URLs loads twice (Firebase would initialise twice).
 
 - **Firebase Hosting:** `firebase deploy --project smartmenukj` (deploys hosting + rules; the `predeploy` hook builds `bg/` and `tr/`).
 - **GitHub Pages (keeps the existing `www.smartmenukj.com` domain):** push to `main`; the workflow builds `bg/` and `tr/` and the `CNAME` file is already in place.

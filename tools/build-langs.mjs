@@ -13,10 +13,17 @@
 //       bg/ and tr/ are generated but committed, so GitHub Pages' branch
 //       build has them too; re-run after editing a page — never edit bg/ or
 //       tr/ by hand)
+//
+// It also refuses to build when:
+//   - a page is missing a Bulgarian or Turkish string,
+//   - a "For home" string ("key@personal") exists in one language but not
+//     the others,
+//   - the ?v= asset versions don't all match (see tools/stamp-version.mjs).
 // ============================================================================
 import { readFileSync, writeFileSync, mkdirSync, rmSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { ASSET_REF, sourceFiles } from "./stamp-version.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SITE = "https://www.smartmenukj.com";
@@ -127,6 +134,10 @@ const LANGS = {
   tr: { name: "Turkish", ogLocale: "tr_TR", pages: TR_PAGES },
 };
 const OG_LOCALES = { en: "en_GB", ...Object.fromEntries(Object.entries(LANGS).map(([l, c]) => [l, c.ogLocale])) };
+
+// The Inter subset each language needs on top of the Latin one, preloaded so
+// the headline doesn't render in a fallback font first.
+const FONT_PRELOADS = { bg: "fonts/inter-cyrillic.woff2", tr: "fonts/inter-latin-ext.woff2" };
 
 // Root-level files a translated page must still reach one level up.
 const ASSET_PREFIXES = ["css/", "js/", "img/", "fonts/", "./js/"];
@@ -242,6 +253,10 @@ function setHead(html, meta, lang) {
   let n = 0;
   html = html.replace(/(<meta property="og:locale:alternate" content=")[^"]*(")/g, (_, a, b) => `${a}${OG_LOCALES[others[n++]] || ""}${b}`);
   sub(/("inLanguage":\s*")en(")/, lang);
+  const font = FONT_PRELOADS[lang];
+  if (font) {
+    html = html.replace(/(<link rel="preload" href="fonts\/inter-latin\.woff2"[^>]*>\n)/, `$1<link rel="preload" href="${font}" as="font" type="font/woff2" crossorigin />\n`);
+  }
   return html.replace(/<html lang="en"/, `<html lang="${lang}"`);
 }
 
@@ -254,10 +269,44 @@ function rebase(html) {
   });
 }
 
+// Every "key@personal" string must exist in all three languages, or home
+// visitors would see the business text in one of them.
+function checkAudienceParity(dicts, file, problems) {
+  const langs = ["en", ...Object.keys(LANGS)];
+  const keys = new Set(langs.flatMap((l) => Object.keys(dicts[l] || {}).filter((k) => k.endsWith("@personal"))));
+  for (const key of keys) {
+    for (const l of langs) if (!(dicts[l] && key in dicts[l])) problems.add(`${file}: ${key} has no ${l} string`);
+  }
+}
+
+// One ?v= for every stylesheet, module script and import.
+function checkAssetVersions() {
+  const versions = new Map();
+  for (const file of sourceFiles()) {
+    for (const m of readFileSync(join(ROOT, file), "utf8").matchAll(ASSET_REF)) {
+      const v = m[3] ? m[3].slice(3) : "(none)";
+      if (!versions.has(v)) versions.set(v, `${file}: ${m[2]}`);
+    }
+  }
+  if (versions.size > 1) {
+    console.error(`Mixed asset versions — run node tools/stamp-version.mjs:\n  ${[...versions].map(([v, at]) => `?v=${v} (e.g. ${at})`).join("\n  ")}`);
+    process.exit(1);
+  }
+}
+
 // ------------------------------------------------------------------- main --
+checkAssetVersions();
 const COMMON = await loadCommon();
 const missing = new Set();
 const sources = Object.fromEntries(Object.keys(BG_PAGES).map((file) => [file, readFileSync(join(ROOT, file), "utf8")]));
+
+const parity = new Set();
+checkAudienceParity(COMMON, "js/i18n.js", parity);
+for (const [file, src] of Object.entries(sources)) checkAudienceParity(pageDict(src, file), file, parity);
+if (parity.size) {
+  console.error(`"For home" strings missing in some languages:\n  ${[...parity].join("\n  ")}`);
+  process.exit(1);
+}
 
 for (const [lang, { pages }] of Object.entries(LANGS)) {
   const out = join(ROOT, lang);

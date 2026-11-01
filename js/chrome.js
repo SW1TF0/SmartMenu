@@ -1,11 +1,16 @@
 // ============================================================================
 // Shared site chrome: header (nav) + footer, injected into every page so the
 // nav/footer markup only needs to be maintained in one place. Also owns the
-// light/dark theme toggle and the live Kardzhali clock in the footer.
+// light/dark theme toggle, the Home / Business switch (any
+// [data-audience-btn] button or [data-set-audience] link on the page) and the
+// live Kardzhali clock in the footer.
 // Expects <header id="site-header" data-active="PAGE"></header> and
-// <footer id="site-footer"></footer> placeholders in the page HTML.
+// <footer id="site-footer"></footer> placeholders in the page HTML. Pages with
+// a Home / Business version have <html data-aud-page>; they also get the
+// switch at the top of the mobile menu.
 // ============================================================================
-import { t, escapeHtml } from "./i18n.js";
+import { t, escapeHtml, getAudience, setAudience } from "./i18n.js?v=20261101";
+import { themeTransition, swapTransition } from "./motion.js?v=20261101";
 
 const NAV_ITEMS = [
   { key: "index.html", label: "nav.home" },
@@ -22,7 +27,10 @@ function iconSvg(name) {
   const icons = {
     menu: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M5 9h14M5 15h14"/></svg>',
     close: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></svg>',
-    theme: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg>',
+    // Moon in the light theme, sun in the dark one; css/style.css morphs them.
+    theme: '<svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g class="ti-sun"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v1.9M12 19.5v1.9M2.6 12h1.9M19.5 12h1.9M5.35 5.35l1.35 1.35M17.3 17.3l1.35 1.35M5.35 18.65l1.35-1.35M17.3 6.7l1.35-1.35"/></g><path class="ti-moon" d="M20.2 14.4A8.3 8.3 0 0 1 9.6 3.8a8.3 8.3 0 1 0 10.6 10.6z"/></svg>',
+    home: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 11L12 4l8.5 7"/><path d="M5.8 9.6V20h12.4V9.6"/><path d="M10 20v-5.2h4V20"/></svg>',
+    business: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2.5"/><path d="M8.5 7V5.5A1.5 1.5 0 0 1 10 4h4a1.5 1.5 0 0 1 1.5 1.5V7M3 12.5h18"/></svg>',
     ig: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.2c3.2 0 3.6 0 4.85.07 3.25.15 4.77 1.69 4.92 4.92.06 1.25.07 1.63.07 4.81 0 3.19-.01 3.56-.07 4.81-.15 3.23-1.66 4.77-4.92 4.92-1.25.06-1.62.07-4.85.07-3.2 0-3.58-.01-4.83-.07-3.26-.15-4.77-1.7-4.92-4.92-.06-1.25-.07-1.62-.07-4.81 0-3.18.02-3.56.07-4.81.15-3.23 1.67-4.77 4.92-4.92C8.42 2.21 8.8 2.2 12 2.2zm0 1.8c-3.14 0-3.5 0-4.74.07-2.32.1-3.4 1.2-3.5 3.5-.06 1.24-.07 1.6-.07 4.74s.01 3.5.07 4.74c.1 2.3 1.18 3.4 3.5 3.5 1.24.06 1.6.07 4.74.07s3.5-.01 4.74-.07c2.31-.1 3.4-1.19 3.5-3.5.06-1.24.07-1.6.07-4.74s-.01-3.5-.07-4.74c-.1-2.3-1.19-3.4-3.5-3.5C15.5 4 15.14 4 12 4zm0 3.35a4.8 4.8 0 110 9.6 4.8 4.8 0 010-9.6zm0 1.8a3 3 0 100 6 3 3 0 000-6zm5-2a1.12 1.12 0 110 2.25A1.12 1.12 0 0117 7.15z"/></svg>',
     li: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.94 8.5H3.56V20.4h3.38V8.5zM5.25 3.6a1.96 1.96 0 100 3.92 1.96 1.96 0 000-3.92zM20.44 20.4h-3.37v-6.1c0-1.45-.03-3.32-2.02-3.32-2.03 0-2.34 1.58-2.34 3.22v6.2H9.34V8.5h3.24v1.63h.05c.45-.86 1.56-1.78 3.22-1.78 3.44 0 4.07 2.27 4.07 5.21v6.84z"/></svg>',
     phone: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014.1 2h3a2 2 0 012 1.7c.1.9.3 1.8.6 2.7a2 2 0 01-.4 2.1L8.1 9.7a16 16 0 006.2 6.2l1.2-1.2a2 2 0 012.1-.4c.9.3 1.8.5 2.7.6a2 2 0 011.7 2z"/></svg>',
@@ -61,9 +69,84 @@ function setTheme(theme) {
 
 function initTheme() {
   const btn = document.getElementById("themeToggle");
-  if (btn) btn.addEventListener("click", () => setTheme(currentTheme() === "dark" ? "light" : "dark"));
+  if (btn) {
+    btn.addEventListener("click", () => {
+      const next = currentTheme() === "dark" ? "light" : "dark";
+      // The new theme grows out of the toggle.
+      const box = btn.getBoundingClientRect();
+      themeTransition(() => setTheme(next), { x: box.left + box.width / 2, y: box.top + box.height / 2 });
+    });
+  }
   document.addEventListener("smkj:lang", syncThemeUI);
   syncThemeUI();
+}
+
+// ------------------------------------------------------------ audience --
+// The "For home | For business" segmented control. `slot` names the copy
+// (hero, menu, form) so each one can keep its pill sliding during the
+// page cross-fade.
+export function audienceSwitchHTML(slot) {
+  return `<div class="seg" role="group" data-seg="${slot}" data-i18n-aria="aud.aria" aria-label="${escapeHtml(t("aud.aria"))}">
+    <span class="seg-pill" aria-hidden="true"></span>
+    <button type="button" data-audience-btn="personal" aria-pressed="${getAudience() === "personal"}">${iconSvg("home")}<span data-i18n="aud.personal">${escapeHtml(t("aud.personal"))}</span></button>
+    <button type="button" data-audience-btn="business" aria-pressed="${getAudience() === "business"}">${iconSvg("business")}<span data-i18n="aud.business">${escapeHtml(t("aud.business"))}</span></button>
+  </div>`;
+}
+
+// The id in the URL's #hash, if that element is only shown to the other
+// audience: returns { target, audience } so the page can switch to it.
+function hiddenHashTarget() {
+  if (location.hash.length < 2) return null;
+  let target = null;
+  try {
+    target = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+  } catch (e) {
+    return null;
+  }
+  const holder = target && target.closest("[data-for]");
+  if (!holder) return null;
+  const audience = holder.getAttribute("data-for");
+  return audience !== getAudience() ? { target, audience } : null;
+}
+
+function initAudience() {
+  // A link to business-only content (e.g. services.html#menu) shows the
+  // business version for this page view, without changing the saved choice.
+  const deep = hiddenHashTarget();
+  if (deep) {
+    document.documentElement.setAttribute("data-audience", deep.audience);
+    document.addEventListener("smkj:lang", () => deep.target.scrollIntoView({ behavior: "instant", block: "start" }), { once: true });
+  }
+  window.addEventListener("hashchange", () => {
+    const hit = hiddenHashTarget();
+    if (!hit) return;
+    swapTransition(() => {
+      setAudience(hit.audience, { store: false });
+      hit.target.scrollIntoView({ behavior: "instant", block: "start" });
+    });
+  });
+
+  document.addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-audience-btn]");
+    if (btn) {
+      const audience = btn.getAttribute("data-audience-btn");
+      if (audience !== getAudience()) swapTransition(() => setAudience(audience));
+      return;
+    }
+    // Links such as "Running a business? Switch" carry the audience in
+    // data-set-audience (and ?for= for when scripts don't run).
+    const link = e.target.closest("[data-set-audience]");
+    if (!link) return;
+    const url = new URL(link.href, location.href);
+    const page = (path) => path.replace(/index\.html$/, "");
+    if (page(url.pathname) !== page(location.pathname)) return;
+    e.preventDefault();
+    const target = url.hash.length > 1 ? document.getElementById(decodeURIComponent(url.hash.slice(1))) : null;
+    swapTransition(() => {
+      setAudience(link.getAttribute("data-set-audience"));
+      if (target) target.scrollIntoView({ behavior: "instant", block: "start" });
+    });
+  });
 }
 
 // --------------------------------------------------------------- markup --
@@ -76,16 +159,22 @@ function brandHTML() {
 }
 
 function headerHTML(active) {
+  // On pages with a Home / Business version the mobile menu starts with the
+  // switch. --i staggers the menu items as it opens.
+  const audPage = document.documentElement.hasAttribute("data-aud-page");
+  let i = 0;
+  const aud = audPage ? `<div class="nav-aud" style="--i:${i++}">${audienceSwitchHTML("menu")}</div>` : "";
   const links = NAV_ITEMS.map(
     (item) =>
-      `<a href="${item.key}" data-i18n="${item.label}"${active === item.key ? ' class="active" aria-current="page"' : ""}>${item.label}</a>`
+      `<a href="${item.key}" data-i18n="${item.label}" style="--i:${i++}"${active === item.key ? ' class="active" aria-current="page"' : ""}>${t(item.label)}</a>`
   ).join("");
   return `
   <div class="container nav">
     <a href="index.html" class="brand" data-i18n-aria="brand.home" aria-label="SmartMenuKJ">${brandHTML()}</a>
     <nav class="nav-links" id="navLinks" aria-label="Main">
+      ${aud}
       ${links}
-      <div class="nav-cta-mobile">
+      <div class="nav-cta-mobile" style="--i:${i}">
         <div id="navAuthMobile"></div>
       </div>
     </nav>
@@ -243,6 +332,7 @@ export function mountChrome() {
 
   initMobileNav();
   initTheme();
+  initAudience();
   startClock();
 
   const scrollHeader = () => {
@@ -269,7 +359,7 @@ export function mountChrome() {
   // Firebase loads lazily so the header, footer and translations still render
   // when the SDK is slow, offline or blocked; the nav starts signed-out.
   renderAuth(null, false);
-  import("./auth.js")
+  import("./auth.js?v=20261101")
     .then(({ watchAuth, isAdmin, logout }) =>
       watchAuth((user) => {
         const admin = isAdmin(user);

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="tr">
+<html lang="tr" data-aud-page>
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,6 +10,8 @@
 <link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/portfolio.html" />
 <link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/portfolio.html" />
 <link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/portfolio.html" />
+<!-- Before any stylesheet: theme, audience (Home / Business) and the redirect to the visitor's language, so nothing flashes or loads twice. -->
+<script>(function(d,w){var h=d.documentElement,n=w.navigator||{};h.classList.add("js");function g(k){try{return w.localStorage.getItem(k)}catch(e){return null}}function s(k,v){try{w.localStorage.setItem(k,v)}catch(e){}}var t=g("smkj_theme");if(t==="dark"||t==="light")h.setAttribute("data-theme",t);var A={},L=d.querySelectorAll('link[rel="alternate"][hreflang]');for(var i=0;i<L.length;i++)A[L[i].getAttribute("hreflang")]=L[i].href;if(A.bg&&!/bot|crawl|spider|slurp|lighthouse/i.test(n.userAgent||"")){var p=h.getAttribute("lang");if(p!=="bg"&&p!=="tr")p="en";var l=g("smkj_lang");if(l!=="en"&&l!=="bg"&&l!=="tr")l=null;var o=l||(p==="en"?((n.language||"").toLowerCase().indexOf("tr")===0?"tr":"bg"):p);if(o!==p&&A[o]){var u=new URL(A[o],location.href);location.replace(u.pathname+location.search+location.hash);return}}var a=null;try{a=new URLSearchParams(location.search).get("for")}catch(e){}if(a==="personal"||a==="business")s("smkj_audience",a);else a=g("smkj_audience");if(a!=="personal")a="business";h.setAttribute("data-audience",a);if(a==="personal"&&h.hasAttribute("data-aud-page")){h.classList.add("aud-pending");setTimeout(function(){h.classList.remove("aud-pending")},1500)}})(document,window);</script>
 <meta property="og:title" content="Projeler — SmartMenuKJ" />
 <meta property="og:description" content="Neler yapıyoruz: web, 3D baskı, akıllı ev, kameralar, dijital menüler ve bilgisayar servisi." />
 <meta property="og:image" content="https://www.smartmenukj.com/og-image.png" />
@@ -26,8 +28,12 @@
 <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3" />
 <link rel="manifest" href="/site.webmanifest" />
 <link rel="preload" href="../fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
-<link rel="stylesheet" href="../css/style.css" />
-<script>(function(d){d.documentElement.classList.add("js");try{var t=localStorage.getItem("smkj_theme");if(t==="dark"||t==="light")d.documentElement.setAttribute("data-theme",t)}catch(e){}})(document);</script>
+<link rel="preload" href="../fonts/inter-latin-ext.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="stylesheet" href="../css/style.css?v=20261101" />
+<link rel="modulepreload" href="../js/i18n.js?v=20261101" />
+<link rel="modulepreload" href="../js/chrome.js?v=20261101" />
+<link rel="modulepreload" href="../js/motion.js?v=20261101" />
+<script type="speculationrules">{"prefetch":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":["/login.html","/account.html","/admin.html"]}}]},"eagerness":"moderate"}]}</script>
 </head>
 <body>
 
@@ -38,6 +44,13 @@
   <section class="page-hero">
     <div class="container">
       <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html" data-i18n="nav.home">Ana Sayfa</a><span aria-hidden="true">/</span><span data-i18n="nav.portfolio">Projeler</span></nav>
+      <div class="hero-seg">
+        <div class="seg" role="group" data-seg="hero" data-i18n-aria="aud.aria" aria-label="Hizmetleri göster">
+          <span class="seg-pill" aria-hidden="true"></span>
+          <button type="button" data-audience-btn="personal" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 11L12 4l8.5 7"/><path d="M5.8 9.6V20h12.4V9.6"/><path d="M10 20v-5.2h4V20"/></svg><span data-i18n="aud.personal">Ev için</span></button>
+          <button type="button" data-audience-btn="business" aria-pressed="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2.5"/><path d="M8.5 7V5.5A1.5 1.5 0 0 1 10 4h4a1.5 1.5 0 0 1 1.5 1.5V7M3 12.5h18"/></svg><span data-i18n="aud.business">İşletmeler için</span></button>
+        </div>
+      </div>
       <p class="eyebrow" data-i18n="folio.eyebrow">Projelerimiz</p>
       <h1 class="h-lg" data-i18n="folio.title">Yaptığımız projelerden örnekler.</h1>
       <p class="lede" data-i18n="folio.lede">Altı hizmetin tamamından bir kesit. Ayrıntılı vaka çalışmaları ve müşteri isimleri talep üzerine paylaşılır.</p>
@@ -46,52 +59,52 @@
 
   <section class="svc">
     <div class="container">
-      <div class="filter-row reveal" role="group" data-i18n-aria="folio.filter.label" aria-label="Projeleri hizmete göre filtrele">
-        <button type="button" class="tab-btn active" data-filter="all" aria-pressed="true" data-i18n="folio.filter.all">Tümü</button>
-        <button type="button" class="tab-btn" data-filter="web" aria-pressed="false" data-i18n="svc.web">Web Geliştirme</button>
-        <button type="button" class="tab-btn" data-filter="print3d" aria-pressed="false" data-i18n="svc.print3d">3D Baskı</button>
-        <button type="button" class="tab-btn" data-filter="smarthome" aria-pressed="false" data-i18n="svc.smarthome">Akıllı Ev ve İşletme</button>
-        <button type="button" class="tab-btn" data-filter="cameras" aria-pressed="false" data-i18n="svc.cameras">Kamera ve Güvenlik Sistemleri</button>
+      <div class="filter-row reveal" role="group" data-i18n-aria="folio.filter.label" aria-label="Projeleri hizmete göre filtrele" data-reorder>
+        <button type="button" class="tab-btn active" data-filter="all" aria-pressed="true" data-i18n="folio.filter.all" data-order-personal="0">Tümü</button>
         <button type="button" class="tab-btn" data-filter="menu" aria-pressed="false" data-i18n="svc.menu">Dijital Akıllı Menüler</button>
-        <button type="button" class="tab-btn" data-filter="pc" aria-pressed="false" data-i18n="svc.pc">Bilgisayar ve Yazıcı Servisi</button>
+        <button type="button" class="tab-btn" data-filter="web" aria-pressed="false" data-i18n="svc.web" data-order-personal="5">Web Geliştirme</button>
+        <button type="button" class="tab-btn" data-filter="cameras" aria-pressed="false" data-i18n="svc.cameras" data-order-personal="3">Kamera ve Güvenlik Sistemleri</button>
+        <button type="button" class="tab-btn" data-filter="smarthome" aria-pressed="false" data-i18n="svc.smarthome" data-order-personal="2">Akıllı Ev ve İşletme</button>
+        <button type="button" class="tab-btn" data-filter="print3d" aria-pressed="false" data-i18n="svc.print3d" data-order-personal="4">3D Baskı</button>
+        <button type="button" class="tab-btn" data-filter="pc" aria-pressed="false" data-i18n="svc.pc" data-order-personal="1">Bilgisayar ve Yazıcı Servisi</button>
       </div>
 
-      <div class="grid grid-3" id="projGrid">
-        <article class="card work reveal" data-cat="menu">
+      <div class="grid grid-3" id="projGrid" data-reorder>
+        <article class="card work reveal" data-cat="menu" data-order-personal="6">
           <div class="proj-thumb"><span class="icon-badge" data-icon="menu"></span></div>
           <span class="pill accent" data-i18n="svc.menu">Dijital Akıllı Menüler</span>
           <h3 data-i18n="folio.p1.title">Kafe için dijital menü ve QR sistemi</h3>
           <p data-i18n="folio.p1.desc">Kırcaali'deki bir kafe için canlı özel ürünler ve anında fiyat güncellemeli eksiksiz QR menü kurulumu.</p>
         </article>
-        <article class="card work reveal" data-cat="smarthome">
-          <div class="proj-thumb"><span class="icon-badge" data-icon="smarthome"></span></div>
-          <span class="pill accent" data-i18n="svc.smarthome">Akıllı Ev ve İşletme</span>
-          <h3 data-i18n="folio.p2.title">Tüm evin otomasyona geçişi</h3>
-          <p data-i18n="folio.p2.desc">Bir aile evi için aydınlatma, ısıtma ve erişim kontrolü tek uygulamada.</p>
-        </article>
-        <article class="card work reveal" data-cat="print3d">
-          <div class="proj-thumb"><span class="icon-badge" data-icon="print3d"></span></div>
-          <span class="pill accent" data-i18n="svc.print3d">3D Baskı</span>
-          <h3 data-i18n="folio.p3.title">Üretimi durmuş cihaz parçası, yeniden basıldı</h3>
-          <p data-i18n="folio.p3.desc">Kırık bir braketi tersine mühendislikle çıkarıp tam bir yedek seriyi 3D yazıcıda bastık.</p>
-        </article>
-        <article class="card work reveal" data-cat="web">
+        <article class="card work reveal" data-cat="web" data-order-personal="5">
           <div class="proj-thumb"><span class="icon-badge" data-icon="web"></span></div>
           <span class="pill accent" data-i18n="svc.web">Web Geliştirme</span>
           <h3 data-i18n="folio.p4.title">Yerel bir hizmet işletmesi için rezervasyon sitesi</h3>
           <p data-i18n="folio.p4.desc">Online rezervasyon formu ve otomatik onay e-postaları olan hızlı, mobil öncelikli bir site.</p>
         </article>
-        <article class="card work reveal" data-cat="cameras">
+        <article class="card work reveal" data-cat="cameras" data-order-personal="4">
           <div class="proj-thumb"><span class="icon-badge" data-icon="cameras"></span></div>
           <span class="pill accent" data-i18n="svc.cameras">Kamera ve Güvenlik Sistemleri</span>
           <h3 data-i18n="folio.p5.title">Mağaza kamerası ve uzaktan izleme</h3>
           <p data-i18n="folio.p5.desc">Telefon bildirimli ve iki haftalık yerel kayıtlı dört kameralı IP sistemi.</p>
         </article>
-        <article class="card work reveal" data-cat="pc">
+        <article class="card work reveal" data-cat="pc" data-order-personal="3">
           <div class="proj-thumb"><span class="icon-badge" data-icon="pc"></span></div>
           <span class="pill accent" data-i18n="svc.pc">Bilgisayar ve Yazıcı Servisi</span>
           <h3 data-i18n="folio.p6.title">Küçük ofis ağı ve bilgisayar yenileme</h3>
           <p data-i18n="folio.p6.desc">Beş iş istasyonunu yükselttik, ortak bir yazıcı kurduk ve ofis Wi-Fi'ını düzenledik.</p>
+        </article>
+        <article class="card work reveal" data-cat="print3d" data-order-personal="2">
+          <div class="proj-thumb"><span class="icon-badge" data-icon="print3d"></span></div>
+          <span class="pill accent" data-i18n="svc.print3d">3D Baskı</span>
+          <h3 data-i18n="folio.p3.title">Üretimi durmuş cihaz parçası, yeniden basıldı</h3>
+          <p data-i18n="folio.p3.desc">Kırık bir braketi tersine mühendislikle çıkarıp tam bir yedek seriyi 3D yazıcıda bastık.</p>
+        </article>
+        <article class="card work reveal" data-cat="smarthome" data-order-personal="1">
+          <div class="proj-thumb"><span class="icon-badge" data-icon="smarthome"></span></div>
+          <span class="pill accent" data-i18n="svc.smarthome">Akıllı Ev ve İşletme</span>
+          <h3 data-i18n="folio.p2.title">Tüm evin otomasyona geçişi</h3>
+          <p data-i18n="folio.p2.desc">Bir aile evi için aydınlatma, ısıtma ve erişim kontrolü tek uygulamada.</p>
         </article>
       </div>
     </div>
@@ -115,11 +128,11 @@
 <footer id="site-footer" class="site-footer"></footer>
 
 <script type="module">
-  import { mountChrome } from "../js/chrome.js";
-  import { registerDict, applyI18n, initLangSwitch } from "../js/i18n.js";
-  import { initCookieBanner } from "../js/cookies.js";
-  import { initReveal } from "../js/site.js";
-  import { mountIcons } from "../js/icons.js";
+  import { mountChrome } from "../js/chrome.js?v=20261101";
+  import { registerDict, applyI18n, initLangSwitch } from "../js/i18n.js?v=20261101";
+  import { initCookieBanner } from "../js/cookies.js?v=20261101";
+  import { initReveal } from "../js/site.js?v=20261101";
+  import { mountIcons } from "../js/icons.js?v=20261101";
 
   registerDict({
     en: {

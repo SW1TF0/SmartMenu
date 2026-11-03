@@ -54,16 +54,23 @@
       <p class="eyebrow" data-i18n="svcpage.eyebrow">Tüm hizmetler</p>
       <h1 class="h-lg" data-i18n="svcpage.title">Her şey tek bir ekipten.</h1>
       <p class="lede" data-i18n="svcpage.lede">Başlamak için bir hizmet seçin ya da birkaçını birleştirin — müşterilerimizin çoğu öyle yapıyor.</p>
-      <div class="chip-row" data-reorder>
-        <a href="#menu" class="pill" data-i18n="svc.menu" data-for="business">Dijital Akıllı Menüler</a>
-        <a href="#web" class="pill" data-i18n="svc.web" data-order-personal="5">Web Geliştirme</a>
-        <a href="#cameras" class="pill" data-i18n="svc.cameras" data-order-personal="3">Kamera ve Güvenlik Sistemleri</a>
-        <a href="#smarthome" class="pill" data-i18n="svc.smarthome" data-order-personal="2">Akıllı Ev ve İşletme</a>
-        <a href="#print3d" class="pill" data-i18n="svc.print3d" data-order-personal="4">3D Baskı</a>
-        <a href="#pc" class="pill" data-i18n="svc.pc" data-order-personal="1">Bilgisayar ve Yazıcı Servisi</a>
-      </div>
     </div>
   </section>
+
+  <!-- Service shortcuts: stay under the header while scrolling; the
+       current service is highlighted (initSectionNav in js/site.js). -->
+  <nav class="svc-nav" data-i18n-aria="nav.services" aria-label="Hizmetler">
+    <div class="container">
+        <div class="chip-row" data-reorder>
+          <a href="#menu" class="pill" data-i18n="svc.menu" data-for="business">Dijital Akıllı Menüler</a>
+          <a href="#web" class="pill" data-i18n="svc.web" data-order-personal="5">Web Geliştirme</a>
+          <a href="#cameras" class="pill" data-i18n="svc.cameras" data-order-personal="3">Kamera ve Güvenlik Sistemleri</a>
+          <a href="#smarthome" class="pill" data-i18n="svc.smarthome" data-order-personal="2">Akıllı Ev ve İşletme</a>
+          <a href="#print3d" class="pill" data-i18n="svc.print3d" data-order-personal="4">3D Baskı</a>
+          <a href="#pc" class="pill" data-i18n="svc.pc" data-order-personal="1">Bilgisayar ve Yazıcı Servisi</a>
+        </div>
+    </div>
+  </nav>
 
   <!-- SERVICES — HTML order is the business order; data-order-personal is
        the order for home visitors (js/i18n.js). -->
@@ -241,7 +248,7 @@
   import { mountChrome } from "../js/chrome.js?v=20261103";
   import { registerDict, applyI18n, initLangSwitch } from "../js/i18n.js?v=20261103";
   import { initCookieBanner } from "../js/cookies.js?v=20261103";
-  import { initReveal } from "../js/site.js?v=20261103";
+  import { initReveal, initSectionNav } from "../js/site.js?v=20261103";
   import { mountIcons } from "../js/icons.js?v=20261103";
 
   registerDict({
@@ -448,6 +455,7 @@
   initLangSwitch();
   initCookieBanner();
   initReveal();
+  initSectionNav(document.querySelector(".svc-nav"));
   mountIcons();
 </script>
 </body>

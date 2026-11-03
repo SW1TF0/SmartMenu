@@ -1036,8 +1036,8 @@ a.card:active { transform: translateY(-1px) scale(0.99); }
 
 /* Project tiles look like a small app window: a title bar with three dots
    over a faint dot grid. */
-.work-screen { background-color: var(--paper); background-image: radial-gradient(circle, color-mix(in srgb, var(--ink) 9%, transparent) 1px, transparent 1.4px); background-size: 16px 16px; background-position: center; }
-.work-screen::before {
+.work-screen, .proj-thumb { background-color: var(--paper); background-image: radial-gradient(circle, color-mix(in srgb, var(--ink) 9%, transparent) 1px, transparent 1.4px); background-size: 16px 16px; background-position: center; }
+.work-screen::before, .proj-thumb::before {
   content: ""; position: absolute; top: 0; left: 0; right: 0; height: 28px;
   background:
     radial-gradient(circle, var(--line-strong) 3.5px, transparent 4px) 14px 50% / 12px 12px no-repeat,
@@ -1046,8 +1046,8 @@ a.card:active { transform: translateY(-1px) scale(0.99); }
     var(--paper);
   border-bottom: 1px solid color-mix(in srgb, var(--ink) 6%, transparent);
 }
-.work-screen .icon-badge { transition: transform 0.6s var(--ease-out); }
-@media (hover: hover) { .work:hover .work-screen .icon-badge { transform: translateY(-4px) scale(1.04); } }
+.work-screen .icon-badge, .proj-thumb .icon-badge { transition: transform 0.6s var(--ease-out); }
+@media (hover: hover) { .work:hover .work-screen .icon-badge, .work:hover .proj-thumb .icon-badge { transform: translateY(-4px) scale(1.04); } }
 
 /* Steps: the number sits in an outlined ring, the first one filled. */
 .step::before { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--ink); }
@@ -1125,6 +1125,46 @@ a.card:active { transform: translateY(-1px) scale(0.99); }
 .faq summary:hover::after { background: var(--ink); color: var(--paper); }
 .faq details[open] summary::after { transform: rotate(45deg); }
 .faq details p { margin: -6px 0 22px; max-width: 62ch; font-size: 17px; }
+
+/* Header: a soft shadow once the page has scrolled under it. */
+.site-header { transition: box-shadow 0.3s ease; }
+.site-header.scrolled { box-shadow: 0 6px 24px -12px rgba(0, 0, 0, 0.18); }
+
+/* A soft light that follows the pointer across tiles (set in js/chrome.js). */
+:root { --spot: rgba(255, 255, 255, 0.95); }
+:root[data-theme="dark"], .invert { --spot: rgba(255, 255, 255, 0.07); }
+@media (hover: hover) and (pointer: fine) {
+  .card:hover, .product:hover, .step:hover {
+    background-image: radial-gradient(260px circle at var(--mx, 50%) var(--my, 50%), var(--spot), transparent 70%);
+  }
+  .card.outline:hover { background-image: none; }
+}
+
+/* Services page: the service shortcuts stay under the header. */
+.svc-nav {
+  position: sticky; top: var(--header-h); z-index: 50;
+  padding: 10px 0; margin-bottom: 8px;
+  transition: box-shadow 0.3s ease;
+}
+.svc-nav::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: color-mix(in srgb, var(--paper) 80%, transparent);
+  -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px);
+  opacity: 0; transition: opacity 0.3s ease;
+}
+.svc-nav.is-stuck::before { opacity: 1; }
+.svc-nav.is-stuck { box-shadow: 0 1px 0 color-mix(in srgb, var(--ink) 7%, transparent); }
+.svc-nav .chip-row { margin: 0; }
+.svc[id] { scroll-margin-top: calc(var(--header-h) + 64px); }
+.chip-row .pill[aria-current="true"] { background: var(--ink); color: var(--paper); }
+@media (max-width: 960px) {
+  .svc-nav .chip-row {
+    flex-wrap: nowrap; justify-content: flex-start; overflow-x: auto; scrollbar-width: none;
+    margin: 0 calc(var(--gutter) * -1); padding: 0 var(--gutter);
+  }
+  .svc-nav .chip-row::-webkit-scrollbar { display: none; }
+  .svc-nav .pill { flex: none; }
+}
 
 /* ------------------------------------------------------------ phones -- */
 /* Kept last so it wins over the desktop rules above. Phone screens get

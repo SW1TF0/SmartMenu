@@ -63,3 +63,38 @@ export function initReveal() {
     { passive: true }
   );
 }
+
+// Service shortcuts on the services page: the chip of the service on screen
+// is marked as current, and on phones the row scrolls it into view.
+export function initSectionNav(nav) {
+  if (!nav || !("IntersectionObserver" in window)) return;
+  const links = [...nav.querySelectorAll('a[href^="#"]')];
+  const byId = new Map(links.map((a) => [a.getAttribute("href").slice(1), a]));
+  const row = nav.querySelector(".chip-row");
+  const setCurrent = (id) => {
+    links.forEach((a) => a.removeAttribute("aria-current"));
+    const a = byId.get(id);
+    if (!a) return;
+    a.setAttribute("aria-current", "true");
+    if (row && row.scrollWidth > row.clientWidth) {
+      row.scrollTo({ left: a.offsetLeft - row.clientWidth / 2 + a.offsetWidth / 2, behavior: prefersReducedMotion() ? "auto" : "smooth" });
+    }
+  };
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) setCurrent(e.target.id);
+      });
+    },
+    { rootMargin: "-45% 0px -50% 0px" }
+  );
+  byId.forEach((_, id) => {
+    const el = document.getElementById(id);
+    if (el) io.observe(el);
+  });
+  // A thin line under the row once it is stuck under the header.
+  const sentinel = document.createElement("div");
+  sentinel.style.height = "1px";
+  nav.before(sentinel);
+  new IntersectionObserver(([e]) => nav.classList.toggle("is-stuck", !e.isIntersecting && e.boundingClientRect.top < 0)).observe(sentinel);
+}

@@ -341,6 +341,21 @@ export function mountChrome() {
   document.addEventListener("scroll", scrollHeader, { passive: true });
   scrollHeader();
 
+  // A soft light follows the pointer across tiles (mouse only).
+  if (window.matchMedia("(hover: hover) and (pointer: fine)").matches && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    document.addEventListener(
+      "pointermove",
+      (e) => {
+        const t = e.target.closest && e.target.closest(".card, .product, .step");
+        if (!t) return;
+        const r = t.getBoundingClientRect();
+        t.style.setProperty("--mx", `${e.clientX - r.left}px`);
+        t.style.setProperty("--my", `${e.clientY - r.top}px`);
+      },
+      { passive: true }
+    );
+  }
+
   const renderAuth = (user, admin, logout) => {
     const html = authNavHTML(user, admin);
     ["navAuthDesktop", "navAuthMobile"].forEach((id) => {

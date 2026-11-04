@@ -1227,6 +1227,91 @@ a.card:active { transform: translateY(-1px) scale(0.99); }
 .toast.show { opacity: 1; transform: translate(-50%, 0); }
 @media (max-width: 760px) { body:has(.mobile-cta-bar) .toast { bottom: calc(84px + env(safe-area-inset-bottom)); } }
 
+/* --------------------------------------------------------- mini screens -- */
+/* Wordless drawings inside project tiles (js/mockups.js). Built from the
+   theme tokens, so they follow light and dark; blue marks what is "on". */
+.has-mock { align-items: stretch; justify-content: stretch; padding: 40px 18px 14px; }
+.has-mock > .icon-badge { position: absolute; z-index: 2; left: 12px; bottom: 12px; width: 34px !important; border-radius: 10px; box-shadow: 0 8px 18px -8px rgba(0, 0, 0, 0.4); }
+.mk { position: relative; z-index: 1; flex: 1; display: flex; align-items: center; justify-content: center; gap: 16px; min-width: 0; --mk-bg: var(--widget); --mk-fg: color-mix(in srgb, var(--ink) 16%, transparent); --mk-strong: color-mix(in srgb, var(--ink) 55%, transparent); }
+.mk i { display: block; }
+.mk-line { height: 6px; border-radius: 3px; background: var(--mk-fg); }
+.mk-line.strong { background: var(--mk-strong); }
+.mk-line.faint { opacity: 0.6; }
+.mk-line.big { height: 10px; border-radius: 5px; background: var(--mk-strong); }
+.w12 { width: 12%; } .w40 { width: 40%; } .w55 { width: 55%; } .w60 { width: 60%; } .w70 { width: 70%; }
+
+/* QR menu: a phone with a list of dishes, and the QR code beside it. */
+.mk-phone { width: 34%; max-width: 120px; aspect-ratio: 9 / 15; padding: 12px 9px; border-radius: 16px; background: var(--mk-bg); box-shadow: inset 0 0 0 2px var(--mk-fg), 0 14px 30px -18px rgba(0, 0, 0, 0.5); display: flex; flex-direction: column; gap: 7px; overflow: hidden; }
+.mk-notch { width: 30%; height: 4px; margin: 0 auto 3px; border-radius: 2px; background: var(--mk-fg); }
+.mk-row { display: flex; align-items: center; gap: 5px; }
+.mk-thumb { width: 14px; height: 14px; flex: none; border-radius: 4px; background: var(--mk-fg); }
+.mk-col { flex: 1; display: grid; gap: 3px; }
+.mk-col .mk-line { height: 4px; }
+.mk-price { width: 14px; height: 7px; border-radius: 4px; background: color-mix(in srgb, var(--accent) 70%, transparent); }
+.mk-qr { width: 22%; max-width: 74px; aspect-ratio: 1; padding: 6px; border-radius: 10px; background: #fff; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08); display: grid; grid-template-columns: repeat(9, 1fr); gap: 1px; }
+.mk-qr i { aspect-ratio: 1; border-radius: 1px; }
+.mk-qr i.on { background: #1d1d1f; }
+
+/* Website: a browser page. */
+.mk-browser { width: 88%; height: 100%; padding: 8px 10px; border-radius: 10px; background: var(--mk-bg); box-shadow: inset 0 0 0 1px var(--mk-fg); display: grid; grid-template-rows: auto 1fr auto; gap: 8px; }
+.mk-nav { display: flex; align-items: center; gap: 6px; }
+.mk-nav .mk-line { height: 4px; }
+.mk-dot { width: 10px; height: 10px; border-radius: 3px; background: var(--mk-strong); margin-right: auto; }
+.mk-pill { width: 22px; height: 8px; border-radius: 4px; background: var(--accent); }
+.mk-hero { display: grid; align-content: center; justify-items: center; gap: 6px; }
+.mk-btn { width: 30%; height: 10px; margin-top: 3px; border-radius: 5px; background: var(--accent); }
+.mk-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.mk-cards i { height: 18px; border-radius: 5px; background: var(--mk-fg); }
+
+/* Cameras: four live views. */
+.mk-cams { width: 92%; height: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+.mk-cam { position: relative; border-radius: 7px; overflow: hidden; background: linear-gradient(160deg, #3a3a3c, #1c1c1e); }
+.mk-cam::before { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 45%; background: linear-gradient(transparent, rgba(255, 255, 255, 0.06)); clip-path: polygon(0 60%, 35% 20%, 55% 55%, 75% 35%, 100% 70%, 100% 100%, 0 100%); }
+.mk-cam2 { background: linear-gradient(200deg, #48484a, #242426); }
+.mk-cam3 { background: linear-gradient(120deg, #2c2c2e, #3a3a3c); }
+.mk-rec { position: absolute; top: 6px; left: 6px; width: 6px; height: 6px; border-radius: 50%; background: #ff453a; animation: live 2.4s var(--ease) infinite; }
+.mk-time { position: absolute; top: 6px; right: 6px; width: 26px; height: 5px; border-radius: 3px; background: rgba(255, 255, 255, 0.35); }
+
+/* Smart home: a thermostat and four switches. */
+.mk-home { width: 92%; height: 100%; display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 14px; }
+.mk-dial { width: clamp(60px, 7vw, 84px); aspect-ratio: 1; border-radius: 50%; display: grid; place-items: center; background: var(--mk-bg); box-shadow: inset 0 0 0 5px color-mix(in srgb, var(--accent) 80%, transparent), inset 0 0 0 7px var(--mk-bg), inset 0 0 0 8px var(--mk-fg); }
+.mk-dial b { font: 700 clamp(15px, 1.6vw, 19px)/1 var(--font-sans); letter-spacing: -0.03em; color: var(--ink); }
+.mk-tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.mk-tile { display: flex; justify-content: space-between; align-items: center; padding: 8px; border-radius: 9px; background: var(--mk-bg); box-shadow: inset 0 0 0 1px var(--mk-fg); }
+.mk-ic { width: 12px; height: 12px; border-radius: 4px; background: var(--mk-fg); }
+.mk-switch { position: relative; width: 20px; height: 11px; border-radius: 6px; background: var(--mk-fg); }
+.mk-switch::after { content: ""; position: absolute; top: 2px; left: 2px; width: 7px; height: 7px; border-radius: 50%; background: #fff; }
+.mk-tile.on .mk-ic { background: var(--mk-strong); }
+.mk-tile.on .mk-switch { background: var(--accent); }
+.mk-tile.on .mk-switch::after { left: 11px; }
+
+/* 3D printing: a part growing layer by layer. */
+.mk-print { position: relative; width: 60%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 0; }
+.mk-gantry { position: absolute; top: 0; left: 0; right: 0; height: 6px; border-radius: 3px; background: var(--mk-fg); }
+.mk-head { position: absolute; top: 3px; left: 50%; width: 16px; height: 16px; margin-left: -8px; border-radius: 4px; background: var(--mk-strong); animation: mkHead 2.6s ease-in-out infinite alternate; }
+.mk-head::after { content: ""; position: absolute; left: 50%; bottom: -5px; margin-left: -2px; border: 2px solid transparent; border-top: 4px solid var(--mk-strong); }
+@keyframes mkHead { from { transform: translateX(-26px); } to { transform: translateX(26px); } }
+.mk-part { display: flex; flex-direction: column-reverse; align-items: center; gap: 2px; margin-bottom: 2px; }
+.mk-part i { height: 4px; border-radius: 2px; background: var(--mk-strong); }
+.mk-part i:nth-child(1) { width: 70px; } .mk-part i:nth-child(2) { width: 68px; } .mk-part i:nth-child(3) { width: 64px; }
+.mk-part i:nth-child(4) { width: 58px; } .mk-part i:nth-child(5) { width: 52px; } .mk-part i:nth-child(6) { width: 46px; }
+.mk-part i:nth-child(7) { width: 40px; opacity: 0.8; } .mk-part i:nth-child(8) { width: 34px; opacity: 0.55; } .mk-part i:nth-child(9) { width: 28px; background: var(--accent); }
+.mk-bed { width: 100%; height: 6px; border-radius: 3px; background: var(--mk-fg); }
+.mk-progress { width: 100%; height: 5px; margin-top: 8px; border-radius: 3px; background: var(--mk-fg); overflow: hidden; }
+.mk-progress i { width: 68%; height: 100%; border-radius: 3px; background: var(--accent); }
+
+/* PC & network: devices around a router, all green. */
+.mk-net { position: relative; width: 80%; height: 100%; }
+.mk-wires { position: absolute; inset: 0; width: 100%; height: 100%; }
+.mk-wires path { fill: none; stroke: var(--mk-fg); stroke-width: 1.2; vector-effect: non-scaling-stroke; stroke-dasharray: 3 3; }
+.mk-hub, .mk-node { position: absolute; z-index: 1; transform: translate(-50%, -50%); border-radius: 8px; background: var(--mk-bg); box-shadow: inset 0 0 0 1.5px var(--mk-fg); }
+.mk-hub { left: 50%; top: 50%; width: 38px; height: 22px; background: var(--mk-strong); box-shadow: none; }
+.mk-node { width: 30px; height: 22px; }
+.mk-n1 { left: 14%; top: 23%; } .mk-n2 { left: 14%; top: 77%; } .mk-n3 { left: 86%; top: 23%; } .mk-n4 { left: 86%; top: 77%; } .mk-n5 { left: 50%; top: 10%; width: 24px; height: 16px; }
+.mk-ok { position: absolute; right: -3px; top: -3px; width: 8px; height: 8px; border-radius: 50%; background: var(--live); box-shadow: 0 0 0 2px var(--paper); }
+
+@media (prefers-reduced-motion: reduce) { .mk-head, .mk-rec { animation: none; } }
+
 /* ------------------------------------------------------------ phones -- */
 /* Kept last so it wins over the desktop rules above. Phone screens get
    smaller headings, tighter sections and shorter tiles; nothing reflows
@@ -1440,6 +1525,11 @@ a.card:active { transform: translateY(-1px) scale(0.99); }
   .footer-grid > :first-child { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
   .footer-grid .social-row { margin: 0; }
   .footer-grid li { margin-bottom: 7px; }
+
+  /* Mini screens are too small here: the plain icon instead. */
+  .has-mock { align-items: center; justify-content: center; padding: 28px 0 0; }
+  .has-mock .mk { display: none; }
+  .has-mock > .icon-badge { position: relative; left: auto; bottom: auto; width: 48px !important; border-radius: 26%; }
 
   /* FAQ: compact rows. */
   .faq { padding: 2px 18px; border-radius: 20px; }

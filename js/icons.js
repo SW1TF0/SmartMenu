@@ -6,6 +6,7 @@
 // createIconStage() shows one large icon at a time and cross-fades between
 // them.
 // ============================================================================
+import { mountMockups } from "./mockups.js?v=20261104";
 
 export const ICONS = {
   web: {
@@ -59,6 +60,7 @@ export function mountIcons(root = document) {
     paintIcon(el, el.getAttribute("data-icon"));
     el.dataset.iconMounted = "1";
   });
+  mountMockups(root);
 }
 
 // ----------------------------------------------------------------------------

@@ -9,8 +9,8 @@
 // a Home / Business version have <html data-aud-page>; they also get the
 // switch at the top of the mobile menu.
 // ============================================================================
-import { t, escapeHtml, getAudience, setAudience } from "./i18n.js?v=20261101";
-import { themeTransition, swapTransition } from "./motion.js?v=20261101";
+import { t, escapeHtml, getAudience, setAudience } from "./i18n.js?v=20261104";
+import { themeTransition, swapTransition } from "./motion.js?v=20261104";
 
 const NAV_ITEMS = [
   { key: "index.html", label: "nav.home" },
@@ -258,7 +258,10 @@ function footerHTML() {
     </div>
     <div class="footer-bottom">
       <span>&copy; ${year} SmartMenuKJ &mdash; Krasimir Uzun. <span data-i18n="footer.rights">All rights reserved.</span></span>
-      <span class="local-time"><span class="rec" aria-hidden="true"></span><span data-i18n="footer.localtime">Kardzhali, local time</span><b id="localTime">--:--</b></span>
+      <span class="footer-bottom-end">
+        <span class="local-time"><span class="rec" aria-hidden="true"></span><span data-i18n="footer.localtime">Kardzhali, local time</span><b id="localTime">--:--</b></span>
+        <a href="#main" class="to-top" data-i18n="footer.top">Back to top</a>
+      </span>
     </div>
   </div>`;
 }
@@ -341,6 +344,21 @@ export function mountChrome() {
   document.addEventListener("scroll", scrollHeader, { passive: true });
   scrollHeader();
 
+  // A soft light follows the pointer across tiles (mouse only).
+  if (window.matchMedia("(hover: hover) and (pointer: fine)").matches && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    document.addEventListener(
+      "pointermove",
+      (e) => {
+        const t = e.target.closest && e.target.closest(".card, .product, .step");
+        if (!t) return;
+        const r = t.getBoundingClientRect();
+        t.style.setProperty("--mx", `${e.clientX - r.left}px`);
+        t.style.setProperty("--my", `${e.clientY - r.top}px`);
+      },
+      { passive: true }
+    );
+  }
+
   const renderAuth = (user, admin, logout) => {
     const html = authNavHTML(user, admin);
     ["navAuthDesktop", "navAuthMobile"].forEach((id) => {
@@ -359,7 +377,7 @@ export function mountChrome() {
   // Firebase loads lazily so the header, footer and translations still render
   // when the SDK is slow, offline or blocked; the nav starts signed-out.
   renderAuth(null, false);
-  import("./auth.js?v=20261101")
+  import("./auth.js?v=20261104")
     .then(({ watchAuth, isAdmin, logout }) =>
       watchAuth((user) => {
         const admin = isAdmin(user);

@@ -4,8 +4,8 @@
 // records whether it came from the "For home" or "For business" version of
 // the site (audience) and, for businesses, the company name.
 // ============================================================================
-import { db, auth } from "./firebase-config.js?v=20261101";
-import { getAudience } from "./i18n.js?v=20261101";
+import { db, auth } from "./firebase-config.js?v=20261104";
+import { getAudience } from "./i18n.js?v=20261104";
 import {
   collection,
   addDoc,

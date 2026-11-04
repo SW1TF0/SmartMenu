@@ -29,10 +29,10 @@
 <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3" />
 <link rel="manifest" href="/site.webmanifest" />
 <link rel="preload" href="fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
-<link rel="stylesheet" href="css/style.css?v=20261101" />
-<link rel="modulepreload" href="js/i18n.js?v=20261101" />
-<link rel="modulepreload" href="js/chrome.js?v=20261101" />
-<link rel="modulepreload" href="js/motion.js?v=20261101" />
+<link rel="stylesheet" href="css/style.css?v=20261104" />
+<link rel="modulepreload" href="js/i18n.js?v=20261104" />
+<link rel="modulepreload" href="js/chrome.js?v=20261104" />
+<link rel="modulepreload" href="js/motion.js?v=20261104" />
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -354,6 +354,23 @@
     </div>
   </section>
 
+  <!-- FAQ — short answers to what people ask before calling. -->
+  <section class="section section-alt" id="faq">
+    <div class="container">
+      <div class="sys-bar reveal"><p class="eyebrow" data-i18n="faq.eyebrow">Questions</p></div>
+      <div class="section-head reveal">
+        <h2 class="h-lg" data-i18n="faq.title">Good to know before you call.</h2>
+      </div>
+      <div class="faq reveal">
+        <details name="faq"><summary data-i18n="faq.1.q">Is the quote really free?</summary><p data-i18n="faq.1.a">Yes. Tell us what you need and you get a written quote within 24 hours, with no obligation to go ahead.</p></details>
+        <details name="faq"><summary data-i18n="faq.2.q">Do you only work in Kardzhali?</summary><p data-i18n="faq.2.a">We are based in Kardzhali and install across the region. Websites, menus and remote support work anywhere in Bulgaria.</p></details>
+        <details name="faq"><summary data-i18n="faq.3.q">Can I combine several services?</summary><p data-i18n="faq.3.a">Yes, and most clients do: for example cameras plus a website, or a QR menu plus office IT. You keep one point of contact for all of it.</p></details>
+        <details name="faq"><summary data-i18n="faq.4.q">Who installs the equipment?</summary><p data-i18n="faq.4.a">Our own team. We plan the job, install and set everything up on site, and show you how to use it.</p></details>
+        <details name="faq"><summary data-i18n="faq.5.q">What happens after the job is done?</summary><p data-i18n="faq.5.a">We stay on call. Support after launch is part of the work, so you can always reach us directly if something needs a change or a fix.</p></details>
+      </div>
+    </div>
+  </section>
+
   <!-- CTA -->
   <section class="section section-cta">
     <div class="container">
@@ -375,10 +392,10 @@
 <footer id="site-footer" class="site-footer"></footer>
 
 <script type="module">
-  import { mountChrome } from "./js/chrome.js?v=20261101";
-  import { registerDict, applyI18n, initLangSwitch } from "./js/i18n.js?v=20261101";
-  import { initCookieBanner } from "./js/cookies.js?v=20261101";
-  import { PARTNERS, renderPartners } from "./js/partners.js?v=20261101";
+  import { mountChrome } from "./js/chrome.js?v=20261104";
+  import { registerDict, applyI18n, initLangSwitch } from "./js/i18n.js?v=20261104";
+  import { initCookieBanner } from "./js/cookies.js?v=20261104";
+  import { PARTNERS, renderPartners } from "./js/partners.js?v=20261104";
 
   registerDict({
     en: {
@@ -452,6 +469,12 @@
       "div.soon.tag": "More divisions", "div.soon.title": "Coming soon.", "div.soon.desc": "New divisions for our other services are on the way. Until then, every service is available directly from SmartMenuKJ.",
       "partners.eyebrow": "Partners", "partners.title": "Working alongside good people.",
       "partners.lede": "Local businesses in Kardzhali we work with and build for.",
+      "faq.eyebrow": "Questions", "faq.title": "Good to know before you call.",
+      "faq.1.q": "Is the quote really free?", "faq.1.a": "Yes. Tell us what you need and you get a written quote within 24 hours, with no obligation to go ahead.",
+      "faq.2.q": "Do you only work in Kardzhali?", "faq.2.a": "We are based in Kardzhali and install across the region. Websites, menus and remote support work anywhere in Bulgaria.",
+      "faq.3.q": "Can I combine several services?", "faq.3.a": "Yes, and most clients do: for example cameras plus a website, or a QR menu plus office IT. You keep one point of contact for all of it.",
+      "faq.4.q": "Who installs the equipment?", "faq.4.a": "Our own team. We plan the job, install and set everything up on site, and show you how to use it.",
+      "faq.5.q": "What happens after the job is done?", "faq.5.a": "We stay on call. Support after launch is part of the work, so you can always reach us directly if something needs a change or a fix.",
       "partners.type.auto": "Car dealership", "partners.type.isp": "Internet provider", "partners.type.service": "Service & repair", "partners.type.boutique": "Boutique", "partners.type.culture": "Community centre",
     },
     bg: {
@@ -525,6 +548,12 @@
       "div.soon.tag": "Още подразделения", "div.soon.title": "Очаквайте скоро.", "div.soon.desc": "Предстоят нови подразделения за другите ни услуги. Дотогава всяка услуга е достъпна директно от SmartMenuKJ.",
       "partners.eyebrow": "Партньори", "partners.title": "Работим с добри хора.",
       "partners.lede": "Местни бизнеси в Кърджали, с които и за които работим.",
+      "faq.eyebrow": "Въпроси", "faq.title": "Добре е да знаете, преди да се обадите.",
+      "faq.1.q": "Наистина ли офертата е безплатна?", "faq.1.a": "Да. Кажете ни какво ви трябва и до 24 часа получавате писмена оферта, без ангажимент да продължите.",
+      "faq.2.q": "Работите ли само в Кърджали?", "faq.2.a": "Базирани сме в Кърджали и монтираме в целия регион. Сайтове, менюта и отдалечена поддръжка правим навсякъде в България.",
+      "faq.3.q": "Мога ли да комбинирам няколко услуги?", "faq.3.a": "Да, повечето клиенти го правят: например камери и сайт или QR меню и офис IT. За всичко имате един човек за контакт.",
+      "faq.4.q": "Кой монтира техниката?", "faq.4.a": "Нашият собствен екип. Планираме работата, монтираме и настройваме всичко на място и ви показваме как се ползва.",
+      "faq.5.q": "Какво става след като работата приключи?", "faq.5.a": "Оставаме на линия. Поддръжката след старта е част от работата, така че винаги можете да ни потърсите директно за промяна или ремонт.",
       "partners.type.auto": "Автокъща", "partners.type.isp": "Интернет доставчик", "partners.type.service": "Сервиз и ремонт", "partners.type.boutique": "Бутик", "partners.type.culture": "Читалище",
     },
     tr: {
@@ -629,6 +658,12 @@
       "partners.eyebrow": "İş ortakları",
       "partners.title": "İyi insanlarla birlikte çalışıyoruz.",
       "partners.lede": "Birlikte çalıştığımız ve hizmet verdiğimiz Kırcaali'deki yerel işletmeler.",
+      "faq.eyebrow": "Sorular", "faq.title": "Aramadan önce bilmeniz gerekenler.",
+      "faq.1.q": "Teklif gerçekten ücretsiz mi?", "faq.1.a": "Evet. İhtiyacınızı anlatın, 24 saat içinde yazılı bir teklif alın; devam etme zorunluluğu yoktur.",
+      "faq.2.q": "Sadece Kırcaali'de mi çalışıyorsunuz?", "faq.2.a": "Kırcaali merkezliyiz ve tüm bölgede kurulum yapıyoruz. Web siteleri, menüler ve uzaktan destek Bulgaristan'ın her yerinde mümkündür.",
+      "faq.3.q": "Birkaç hizmeti birleştirebilir miyim?", "faq.3.a": "Evet, çoğu müşterimiz öyle yapıyor: örneğin kamera ve web sitesi ya da QR menü ve ofis BT. Hepsi için tek bir muhatabınız olur.",
+      "faq.4.q": "Cihazları kim kuruyor?", "faq.4.a": "Kendi ekibimiz. İşi planlıyor, yerinde kurup ayarlıyor ve nasıl kullanılacağını gösteriyoruz.",
+      "faq.5.q": "İş bittikten sonra ne oluyor?", "faq.5.a": "Ulaşılabilir olmaya devam ediyoruz. Kurulum sonrası destek işin bir parçasıdır; bir değişiklik veya onarım için bize her zaman doğrudan ulaşabilirsiniz.",
       "partners.type.auto": "Otomobil bayisi",
       "partners.type.isp": "İnternet sağlayıcı",
       "partners.type.service": "Servis ve onarım",
@@ -645,6 +680,6 @@
   initLangSwitch();
   initCookieBanner();
 </script>
-<script type="module" src="js/home.js?v=20261101"></script>
+<script type="module" src="js/home.js?v=20261104"></script>
 </body>
 </html>

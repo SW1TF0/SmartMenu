@@ -3,9 +3,9 @@
 // the services shown to the current audience, in their order) and the
 // animated stat counters.
 // ============================================================================
-import { initReveal, prefersReducedMotion } from "./site.js?v=20261101";
-import { createIconStage, mountIcons } from "./icons.js?v=20261101";
-import { getAudience, t } from "./i18n.js?v=20261101";
+import { initReveal, prefersReducedMotion } from "./site.js?v=20261104";
+import { createIconStage, mountIcons } from "./icons.js?v=20261104";
+import { getAudience, t } from "./i18n.js?v=20261104";
 
 initReveal();
 mountIcons();
@@ -162,4 +162,23 @@ if (counters.length && "IntersectionObserver" in window && !prefersReducedMotion
     { threshold: 0.4 }
   );
   counters.forEach((c) => io.observe(c));
+}
+
+// ------------------------------------------------------ FAQ rich results --
+// Google can show the FAQ answers right in search results. The questions are
+// read from the page itself, so every language gets its own copy.
+const faq = document.querySelectorAll("#faq details");
+if (faq.length) {
+  const ld = document.createElement("script");
+  ld.type = "application/ld+json";
+  ld.textContent = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [...faq].map((d) => ({
+      "@type": "Question",
+      name: d.querySelector("summary").textContent.trim(),
+      acceptedAnswer: { "@type": "Answer", text: d.querySelector("p").textContent.trim() },
+    })),
+  });
+  document.head.appendChild(ld);
 }

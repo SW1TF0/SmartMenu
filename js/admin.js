@@ -5,9 +5,9 @@
 // Lead and user fields are written by the public, so every value is escaped
 // before it is put into the page.
 // ============================================================================
-import { db } from "./firebase-config.js?v=20261101";
-import { watchAuth, isAdmin } from "./auth.js?v=20261101";
-import { escapeHtml } from "./i18n.js?v=20261101";
+import { db } from "./firebase-config.js?v=20261104";
+import { watchAuth, isAdmin } from "./auth.js?v=20261104";
+import { escapeHtml } from "./i18n.js?v=20261104";
 import {
   collection,
   getDocs,

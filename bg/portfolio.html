@@ -191,19 +191,35 @@
   initReveal();
   mountIcons();
 
+  // Filter by service. The choice goes into the address (?type=web), so a
+  // filtered list can be shared or bookmarked.
   const filterButtons = document.querySelectorAll(".filter-row .tab-btn");
-  filterButtons.forEach((btn) =>
-    btn.addEventListener("click", () => {
-      filterButtons.forEach((b) => {
-        b.classList.toggle("active", b === btn);
-        b.setAttribute("aria-pressed", b === btn ? "true" : "false");
-      });
-      const filter = btn.getAttribute("data-filter");
-      document.querySelectorAll("#projGrid .card").forEach((card) => {
-        card.style.display = filter === "all" || card.getAttribute("data-cat") === filter ? "" : "none";
-      });
-    })
-  );
+  const applyFilter = (filter, { push = true } = {}) => {
+    if (![...filterButtons].some((b) => b.getAttribute("data-filter") === filter)) filter = "all";
+    filterButtons.forEach((b) => {
+      const on = b.getAttribute("data-filter") === filter;
+      b.classList.toggle("active", on);
+      b.setAttribute("aria-pressed", on ? "true" : "false");
+    });
+    document.querySelectorAll("#projGrid .card").forEach((card) => {
+      const show = filter === "all" || card.getAttribute("data-cat") === filter;
+      card.style.display = show ? "" : "none";
+      if (show) {
+        card.classList.remove("pop");
+        void card.offsetWidth;
+        card.classList.add("pop");
+      }
+    });
+    if (push) {
+      const url = new URL(location.href);
+      if (filter === "all") url.searchParams.delete("type");
+      else url.searchParams.set("type", filter);
+      history.replaceState(null, "", url);
+    }
+  };
+  filterButtons.forEach((btn) => btn.addEventListener("click", () => applyFilter(btn.getAttribute("data-filter"))));
+  const startType = new URLSearchParams(location.search).get("type");
+  if (startType) applyFilter(startType, { push: false });
 </script>
 </body>
 </html>

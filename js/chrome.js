@@ -258,7 +258,10 @@ function footerHTML() {
     </div>
     <div class="footer-bottom">
       <span>&copy; ${year} SmartMenuKJ &mdash; Krasimir Uzun. <span data-i18n="footer.rights">All rights reserved.</span></span>
-      <span class="local-time"><span class="rec" aria-hidden="true"></span><span data-i18n="footer.localtime">Kardzhali, local time</span><b id="localTime">--:--</b></span>
+      <span class="footer-bottom-end">
+        <span class="local-time"><span class="rec" aria-hidden="true"></span><span data-i18n="footer.localtime">Kardzhali, local time</span><b id="localTime">--:--</b></span>
+        <a href="#main" class="to-top" data-i18n="footer.top">Back to top</a>
+      </span>
     </div>
   </div>`;
 }
@@ -340,6 +343,21 @@ export function mountChrome() {
   };
   document.addEventListener("scroll", scrollHeader, { passive: true });
   scrollHeader();
+
+  // A soft light follows the pointer across tiles (mouse only).
+  if (window.matchMedia("(hover: hover) and (pointer: fine)").matches && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    document.addEventListener(
+      "pointermove",
+      (e) => {
+        const t = e.target.closest && e.target.closest(".card, .product, .step");
+        if (!t) return;
+        const r = t.getBoundingClientRect();
+        t.style.setProperty("--mx", `${e.clientX - r.left}px`);
+        t.style.setProperty("--my", `${e.clientY - r.top}px`);
+      },
+      { passive: true }
+    );
+  }
 
   const renderAuth = (user, admin, logout) => {
     const html = authNavHTML(user, admin);

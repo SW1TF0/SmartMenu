@@ -38,7 +38,7 @@ export function renderPartners(el, partners = PARTNERS) {
   el.innerHTML = partners
     .map((p) => {
       const mark = p.logo
-        ? `<img src="${escapeHtml(p.logo)}" alt="" loading="lazy" decoding="async" />`
+        ? `<img src="${escapeHtml(p.logo)}" alt="" width="240" height="150" loading="lazy" decoding="async" />`
         : `<span class="partner-initials" aria-hidden="true">${escapeHtml(initials(p.name))}</span>`;
       const inner = `
         <div class="partner-mark${p.logo ? " has-logo" : ""}">${mark}</div>

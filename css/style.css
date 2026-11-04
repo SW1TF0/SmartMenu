@@ -1447,3 +1447,18 @@ a.card:active { transform: translateY(-1px) scale(0.99); }
   .faq summary::after { width: 24px; height: 24px; font-size: 17px; }
   .faq details p { margin: -2px 0 14px; font-size: 14px; }
 }
+
+/* ------------------------------------------------------------- print -- */
+/* Printing (privacy policy, terms, a service page): just the content, in
+   black on white, with link addresses written out. */
+@media print {
+  .site-header, .site-footer, .mobile-cta-bar, .cookie-banner, .skip-link, .svc-nav, .hero-seg, .showcase, .cta-band, .section-cta, .to-top, .toast, .copy-btn { display: none !important; }
+  :root, :root[data-theme="dark"] { --paper: #fff; --paper-2: #fff; --widget: #fff; --widget-2: #f2f2f2; --ink: #000; --ink-2: #333; --ink-3: #555; }
+  body { background: #fff; color: #000; font-size: 12pt; }
+  .js .reveal, .js .reveal.in { opacity: 1 !important; transform: none !important; }
+  .section, .page-hero { padding: 16pt 0; }
+  .card, .svc-panel, .legal-card { box-shadow: none !important; border: 1px solid #ddd; break-inside: avoid; }
+  .icon-badge, .trust-row li::before, .spec-list li::before, .step::before { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .svc-panel .btn, .svc-actions { display: none !important; }
+  .legal a[href^="http"]::after, .legal a[href^="mailto"]::after { content: " (" attr(href) ")"; font-size: 0.85em; color: #555; }
+}

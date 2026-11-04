@@ -163,3 +163,22 @@ if (counters.length && "IntersectionObserver" in window && !prefersReducedMotion
   );
   counters.forEach((c) => io.observe(c));
 }
+
+// ------------------------------------------------------ FAQ rich results --
+// Google can show the FAQ answers right in search results. The questions are
+// read from the page itself, so every language gets its own copy.
+const faq = document.querySelectorAll("#faq details");
+if (faq.length) {
+  const ld = document.createElement("script");
+  ld.type = "application/ld+json";
+  ld.textContent = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [...faq].map((d) => ({
+      "@type": "Question",
+      name: d.querySelector("summary").textContent.trim(),
+      acceptedAnswer: { "@type": "Answer", text: d.querySelector("p").textContent.trim() },
+    })),
+  });
+  document.head.appendChild(ld);
+}

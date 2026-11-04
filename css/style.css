@@ -1199,6 +1199,34 @@ a.card:active { transform: translateY(-1px) scale(0.99); }
 .to-top:hover { color: var(--ink); }
 .to-top:hover::after { transform: translateY(-2px); }
 
+/* FAQ: answers slide open (browsers that can animate to auto height). */
+:root { interpolate-size: allow-keywords; }
+.faq details::details-content {
+  height: 0; overflow: clip;
+  transition: height 0.35s var(--ease-out), content-visibility 0.35s allow-discrete;
+}
+.faq details[open]::details-content { height: auto; }
+
+/* Contact: copy buttons beside the phone number and email. */
+.info-row .copy-btn { margin-left: auto; width: 34px; height: 34px; color: var(--ink-3); }
+.info-row .copy-btn:hover { color: var(--ink); }
+.info-row .copy-btn svg { width: 16px; height: 16px; }
+
+/* Portfolio: filtered tiles pop back in. */
+@keyframes pop { from { opacity: 0; transform: translateY(10px) scale(0.98); } }
+.card.pop { animation: pop 0.45s var(--ease-out); }
+
+/* Toast ("Copied"). */
+.toast {
+  position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom)); z-index: 400;
+  transform: translate(-50%, 20px); opacity: 0; pointer-events: none;
+  padding: 11px 18px; border-radius: 999px;
+  background: var(--ink); color: var(--paper); font: 500 14px/1.2 var(--font-sans);
+  box-shadow: var(--shadow); transition: opacity 0.25s ease, transform 0.35s var(--ease-out);
+}
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+@media (max-width: 760px) { body:has(.mobile-cta-bar) .toast { bottom: calc(84px + env(safe-area-inset-bottom)); } }
+
 /* ------------------------------------------------------------ phones -- */
 /* Kept last so it wins over the desktop rules above. Phone screens get
    smaller headings, tighter sections and shorter tiles; nothing reflows

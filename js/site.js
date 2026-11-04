@@ -98,3 +98,20 @@ export function initSectionNav(nav) {
   nav.before(sentinel);
   new IntersectionObserver(([e]) => nav.classList.toggle("is-stuck", !e.isIntersecting && e.boundingClientRect.top < 0)).observe(sentinel);
 }
+
+// A short message at the bottom of the screen ("Copied", ...).
+let toastTimer = 0;
+export function toast(text) {
+  let el = document.getElementById("toast");
+  if (!el) {
+    el = document.createElement("div");
+    el.id = "toast";
+    el.className = "toast";
+    el.setAttribute("role", "status");
+    document.body.appendChild(el);
+  }
+  el.textContent = text;
+  el.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove("show"), 1800);
+}

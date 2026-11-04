@@ -12,8 +12,11 @@
 //     day, status picker per row, select several for bulk status / delete
 //   - a click opens the full request: call / email / Viber / WhatsApp,
 //     a ready reply e-mail, an internal note, status, delete, ← / →
+//   - a board view (New / In progress / Done columns, drag a card to move it)
+//   - "Needs attention": new requests waiting over a day + due reminders
 //   - refreshes itself every minute and flags requests that just arrived
-// Internal notes live in their own collection (leadNotes/{leadId}), readable
+// Internal notes and reminders live in their own collection
+// (leadNotes/{leadId}: { text, remindAt "YYYY-MM-DD" | null }), readable
 // by admins only — lead docs are also readable by the customer who sent them.
 // ============================================================================
 import { db } from "./firebase-config.js?v=20261104";
@@ -67,6 +70,7 @@ const BASE_TITLE = document.title;
 let leads = null; // null = not loaded yet
 let users = null;
 let notes = {}; // leadId -> text
+let reminders = {}; // leadId -> "YYYY-MM-DD"
 let notesBlocked = false; // the published rules don't know leadNotes yet
 let leadsError = null;
 let usersError = null;
@@ -77,6 +81,24 @@ const freshIds = new Set();
 const selected = new Set();
 let visibleIds = []; // the list as shown, for ← / → in the dialog
 const filters = { status: "all", type: "all", service: "all", week: false, q: "", sort: "new" };
+
+// The admin's own view choices are remembered in this browser only.
+const PREFS_KEY = "smkj_admin_prefs";
+let view = "list";
+try {
+  const p = JSON.parse(localStorage.getItem(PREFS_KEY) || "{}");
+  if (p.view === "board") view = "board";
+  if (p.sort === "old") filters.sort = "old";
+} catch (e) {
+  /* storage unavailable — defaults */
+}
+function savePrefs() {
+  try {
+    localStorage.setItem(PREFS_KEY, JSON.stringify({ view, sort: filters.sort }));
+  } catch (e) {
+    /* storage unavailable */
+  }
+}
 
 // ------------------------------------------------------------- helpers --
 const fill = (str, vars) => str.replace(/\{(\w+)\}/g, (_, k) => (vars[k] == null ? "" : vars[k]));
@@ -94,6 +116,21 @@ function fmtDate(ts, withTime = true) {
   if (withTime) Object.assign(opts, { hour: "2-digit", minute: "2-digit" });
   return ts.toDate().toLocaleString(locale(), opts);
 }
+
+// Local calendar dates as "YYYY-MM-DD" (what <input type="date"> uses).
+const isoDay = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+const todayIso = () => isoDay(new Date());
+const plusDays = (n) => {
+  const d = new Date();
+  d.setDate(d.getDate() + n);
+  return isoDay(d);
+};
+const fmtDay = (iso) => {
+  const [y, m, d] = iso.split("-").map(Number);
+  return new Date(y, m - 1, d).toLocaleDateString(locale(), { weekday: "short", day: "numeric", month: "short" });
+};
+// Whole days a "new" request has waited (0 under a day).
+const waitingDays = (l) => (statusOf(l) === "new" && millis(l.createdAt) ? Math.floor((Date.now() - millis(l.createdAt)) / DAY) : 0);
 
 const startOfToday = () => {
   const n = new Date();
@@ -271,6 +308,8 @@ function renderStats() {
   document.title = waiting ? `(${waiting}) ${BASE_TITLE}` : BASE_TITLE;
 }
 
+const BELL = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15zM10 20.5h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/></svg>`;
+
 function leadRow(l) {
   const id = escapeHtml(l.id);
   const s = statusOf(l);
@@ -282,6 +321,12 @@ function leadRow(l) {
   const typeTag = l.audience ? `<span class="adm-tag">${escapeHtml(audienceLabel(l.audience))}</span>` : "";
   const note = notes[l.id]
     ? `<span class="adm-tag adm-tag-note" title="${escapeHtml(t("adm.hasNote"))}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14v11l-5 5H5z M14 20v-5h5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg><span class="sr-only">${escapeHtml(t("adm.hasNote"))}</span></span>`
+    : "";
+  const wait = waitingDays(l);
+  const waitTag = wait >= 1 ? `<span class="adm-tag adm-tag-wait">${escapeHtml(tr("adm.waiting", { n: wait }))}</span>` : "";
+  const rem = reminders[l.id];
+  const remTag = rem
+    ? `<span class="adm-tag adm-tag-remind${rem <= todayIso() ? " due" : ""}">${BELL}${escapeHtml(fmtDay(rem))}</span>`
     : "";
   const sel = selected.has(l.id);
   return `<li class="adm-lead s-${s}${sel ? " is-selected" : ""}${freshIds.has(l.id) ? " is-fresh" : ""}" data-id="${id}">
@@ -297,7 +342,7 @@ function leadRow(l) {
         ${l.company ? `<span class="adm-lead-company">${escapeHtml(l.company)}</span>` : ""}
       </div>
       <div class="adm-lead-meta">
-        <span class="adm-tag adm-tag-svc">${escapeHtml(serviceLabel(l.service))}</span>${typeTag}${note}
+        <span class="adm-tag adm-tag-svc">${escapeHtml(serviceLabel(l.service))}</span>${typeTag}${waitTag}${remTag}${note}
         ${contact.join("")}
       </div>
       <p class="adm-lead-msg">${msg ? escapeHtml(msg.slice(0, 220)) : `<span class="text-faint">${escapeHtml(t("adm.noMessage"))}</span>`}</p>
@@ -321,7 +366,11 @@ function emptyBlock(text, withClear) {
 function renderLeads() {
   renderStats();
   renderOverview();
+  renderAttention();
   syncFilterUI();
+  const boardOn = view === "board" && leads !== null && !leadsError;
+  leadsList.hidden = boardOn;
+  $("leadsBoard").hidden = !boardOn;
   if (leadsError) {
     leadsList.innerHTML = "";
     leadsSummary.textContent = "";
@@ -348,12 +397,18 @@ function renderLeads() {
     : "";
   if (!shown.length) {
     leadsList.innerHTML = "";
+    $("leadsBoard").innerHTML = "";
     leadsEmpty.innerHTML = emptyBlock(leads.length ? t("adm.empty.filtered") : t("adm.empty.leads"), leads.length > 0);
     leadsEmpty.classList.remove("hidden");
     renderBulk();
     return;
   }
   leadsEmpty.classList.add("hidden");
+  if (view === "board") {
+    renderBoard(shown);
+    renderBulk();
+    return;
+  }
   let lastGroup = null;
   leadsList.innerHTML = shown
     .map((l) => {
@@ -365,6 +420,131 @@ function renderLeads() {
     .join("");
   renderBulk();
 }
+
+// ---------------------------------------------------------------- board --
+// Three columns; the status filter does not apply here (the columns are it).
+function boardCard(l) {
+  const id = escapeHtml(l.id);
+  const wait = waitingDays(l);
+  const rem = reminders[l.id];
+  const msg = String(l.message || "").trim();
+  return `<li class="adm-card s-${statusOf(l)}${freshIds.has(l.id) ? " is-fresh" : ""}" draggable="true" data-card="${id}" tabindex="0">
+    <div class="adm-card-top"><span class="adm-lead-name">${l.name ? escapeHtml(l.name) : escapeHtml(t("adm.unknownName"))}</span><time class="adm-lead-date">${escapeHtml(shortDate(l.createdAt))}</time></div>
+    ${l.company ? `<div class="adm-lead-company">${escapeHtml(l.company)}</div>` : ""}
+    <p class="adm-card-msg">${escapeHtml(msg.slice(0, 120)) || `<span class="text-faint">${escapeHtml(t("adm.noMessage"))}</span>`}</p>
+    <div class="adm-lead-meta">
+      <span class="adm-tag adm-tag-svc">${escapeHtml(serviceLabel(l.service))}</span>
+      ${wait >= 1 ? `<span class="adm-tag adm-tag-wait">${escapeHtml(tr("adm.waiting", { n: wait }))}</span>` : ""}
+      ${rem ? `<span class="adm-tag adm-tag-remind${rem <= todayIso() ? " due" : ""}">${BELL}${escapeHtml(fmtDay(rem))}</span>` : ""}
+      ${notes[l.id] ? `<span class="adm-tag adm-tag-note" title="${escapeHtml(t("adm.hasNote"))}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14v11l-5 5H5z M14 20v-5h5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></span>` : ""}
+    </div>
+  </li>`;
+}
+
+function renderBoard(shown) {
+  const source = filters.status === "all" ? shown : shownLeadsIgnoringStatus();
+  visibleIds = [];
+  $("leadsBoard").innerHTML = STATUSES.map((s) => {
+    const items = source.filter((l) => statusOf(l) === s);
+    items.forEach((l) => visibleIds.push(l.id));
+    return `<section class="adm-col s-${s}" data-col="${s}">
+      <header class="adm-col-head"><i class="dot dot-${s}"></i><span>${escapeHtml(statusLabel(s))}</span><span class="adm-count">${items.length}</span></header>
+      <ul class="adm-col-list" role="list">${items.map(boardCard).join("") || `<li class="adm-col-empty">${escapeHtml(t("adm.board.empty"))}</li>`}</ul>
+    </section>`;
+  }).join("");
+}
+
+function shownLeadsIgnoringStatus() {
+  const keep = filters.status;
+  filters.status = "all";
+  const out = shownLeads();
+  filters.status = keep;
+  return out;
+}
+
+const board = $("leadsBoard");
+board.addEventListener("click", (e) => {
+  const card = e.target.closest("[data-card]");
+  if (card) openLead(card.getAttribute("data-card"));
+});
+board.addEventListener("keydown", (e) => {
+  const card = e.target.closest("[data-card]");
+  if (card && (e.key === "Enter" || e.key === " ")) {
+    e.preventDefault();
+    openLead(card.getAttribute("data-card"));
+  }
+});
+let dragId = null;
+board.addEventListener("dragstart", (e) => {
+  const card = e.target.closest("[data-card]");
+  if (!card) return;
+  dragId = card.getAttribute("data-card");
+  e.dataTransfer.effectAllowed = "move";
+  e.dataTransfer.setData("text/plain", dragId);
+  requestAnimationFrame(() => card.classList.add("dragging"));
+});
+board.addEventListener("dragend", () => {
+  dragId = null;
+  board.querySelectorAll(".dragging, .drop-over").forEach((el) => el.classList.remove("dragging", "drop-over"));
+});
+board.addEventListener("dragover", (e) => {
+  const col = e.target.closest("[data-col]");
+  if (!col || !dragId) return;
+  e.preventDefault();
+  board.querySelectorAll(".drop-over").forEach((el) => el !== col && el.classList.remove("drop-over"));
+  col.classList.add("drop-over");
+});
+board.addEventListener("drop", (e) => {
+  const col = e.target.closest("[data-col]");
+  if (!col || !dragId) return;
+  e.preventDefault();
+  const id = dragId;
+  dragId = null;
+  setStatus(id, col.getAttribute("data-col"));
+});
+
+function setView(v) {
+  view = v;
+  document.querySelectorAll("[data-view]").forEach((b) => b.setAttribute("aria-pressed", String(b.getAttribute("data-view") === v)));
+  content.classList.toggle("view-board", v === "board");
+  savePrefs();
+  renderLeads();
+}
+document.querySelectorAll("[data-view]").forEach((b) => b.addEventListener("click", () => setView(b.getAttribute("data-view"))));
+
+// ------------------------------------------------------------ attention --
+// New requests that have waited more than a day, and reminders due today or
+// earlier — oldest problems first.
+function renderAttention() {
+  const box = $("admAttention");
+  if (!leads) return box.classList.add("hidden");
+  const today = todayIso();
+  const items = [];
+  leads.forEach((l) => {
+    const rem = reminders[l.id];
+    if (rem && rem <= today && statusOf(l) !== "done")
+      items.push({ l, rank: 0, key: rem, text: rem < today ? tr("adm.att.overdue", { date: fmtDay(rem) }) : t("adm.att.remind"), kind: "remind" });
+    else if (waitingDays(l) >= 1) items.push({ l, rank: 1, key: String(millis(l.createdAt)), text: tr("adm.att.waiting", { n: waitingDays(l) }), kind: "wait" });
+  });
+  if (!items.length) return box.classList.add("hidden");
+  items.sort((a, b) => a.rank - b.rank || a.key.localeCompare(b.key));
+  box.classList.remove("hidden");
+  $("attCount").textContent = items.length;
+  $("attList").innerHTML = items
+    .slice(0, 6)
+    .map(
+      ({ l, text, kind }) => `<li><button type="button" class="adm-att-item ${kind}" data-att="${escapeHtml(l.id)}">
+        <span class="adm-att-icon">${kind === "remind" ? BELL : `<i class="dot dot-new"></i>`}</span>
+        <span class="adm-att-main"><b>${escapeHtml(l.name || t("adm.unknownName"))}</b><span>${escapeHtml(serviceLabel(l.service))}</span></span>
+        <span class="adm-att-why">${escapeHtml(text)}</span>
+      </button></li>`
+    )
+    .join("");
+}
+$("attList").addEventListener("click", (e) => {
+  const b = e.target.closest("[data-att]");
+  if (b) openLead(b.getAttribute("data-att"));
+});
 
 async function setStatus(id, status) {
   const lead = leads && leads.find((l) => l.id === id);
@@ -390,8 +570,9 @@ async function deleteLeads(ids) {
   const gone = ids.filter((_, i) => results[i].status === "fulfilled");
   // Notes are best-effort: a missing rule must not block the delete.
   gone.forEach((id) => {
-    if (notes[id] && !notesBlocked) deleteDoc(doc(db, "leadNotes", id)).catch(() => {});
+    if ((notes[id] || reminders[id]) && !notesBlocked) deleteDoc(doc(db, "leadNotes", id)).catch(() => {});
     delete notes[id];
+    delete reminders[id];
     selected.delete(id);
   });
   leads = leads.filter((l) => !gone.includes(l.id));
@@ -534,6 +715,11 @@ function renderDialog() {
     noteState.className = notesBlocked ? "adm-note-state warn" : "adm-note-state";
   }
   noteEl.disabled = notesBlocked;
+  remindEl.value = reminders[l.id] || "";
+  remindEl.min = todayIso();
+  remindEl.disabled = notesBlocked;
+  document.querySelectorAll("[data-remind]").forEach((b) => (b.disabled = notesBlocked));
+  $("dlgRemindClear").hidden = !reminders[l.id];
 
   const i = visibleIds.indexOf(l.id);
   $("dlgPos").textContent = i > -1 ? tr("adm.pos", { i: i + 1, n: visibleIds.length }) : "";
@@ -561,6 +747,7 @@ dialog.addEventListener("keydown", (e) => {
   if (/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)) return;
   if (e.key === "ArrowLeft") step(-1);
   if (e.key === "ArrowRight") step(1);
+  if (/^[123]$/.test(e.key) && openLeadId && !e.metaKey && !e.ctrlKey && !e.altKey) setStatus(openLeadId, STATUSES[Number(e.key) - 1]);
 });
 
 dialog.addEventListener("close", () => {
@@ -588,8 +775,9 @@ async function saveNote(id, text) {
   noteState.textContent = t("adm.note.saving");
   noteState.className = "adm-note-state";
   try {
-    await setDoc(doc(db, "leadNotes", id), { text, updatedAt: serverTimestamp() });
-    notes[id] = text;
+    await setDoc(doc(db, "leadNotes", id), { text, remindAt: reminders[id] || null, updatedAt: serverTimestamp() });
+    if (text) notes[id] = text;
+    else delete notes[id];
     if (noteEl.dataset.for === id) {
       noteState.textContent = t("adm.note.saved");
       noteState.className = "adm-note-state ok";
@@ -597,6 +785,7 @@ async function saveNote(id, text) {
     const row = leadsList.querySelector(`[data-id="${CSS.escape(id)}"]`);
     const lead = leads.find((l) => l.id === id);
     if (row && lead) row.outerHTML = leadRow(lead);
+    if (view === "board") renderLeads();
   } catch (err) {
     console.error(err);
     if (denied(err)) notesBlocked = true;
@@ -604,6 +793,32 @@ async function saveNote(id, text) {
     noteState.className = "adm-note-state warn";
   }
 }
+
+async function setReminder(id, iso) {
+  const before = reminders[id];
+  if (iso) reminders[id] = iso;
+  else delete reminders[id];
+  try {
+    await setDoc(doc(db, "leadNotes", id), { text: notes[id] || "", remindAt: iso || null, updatedAt: serverTimestamp() });
+    toast(iso ? tr("adm.remind.set", { date: fmtDay(iso) }) : t("adm.remind.cleared"));
+  } catch (err) {
+    console.error(err);
+    if (before) reminders[id] = before;
+    else delete reminders[id];
+    if (denied(err)) notesBlocked = true;
+    toast(denied(err) ? t("adm.note.rules") : t("adm.saveFailed"), "err");
+  }
+  renderLeads();
+  if (openLeadId === id) renderDialog();
+}
+const remindEl = $("dlgRemind");
+remindEl.addEventListener("change", () => openLeadId && setReminder(openLeadId, remindEl.value || null));
+document.querySelectorAll("[data-remind]").forEach((b) =>
+  b.addEventListener("click", () => {
+    const n = Number(b.getAttribute("data-remind"));
+    if (openLeadId) setReminder(openLeadId, n ? plusDays(n) : null);
+  })
+);
 
 function flushNote() {
   clearTimeout(noteTimer);
@@ -682,6 +897,7 @@ leadType.addEventListener("change", () => {
 });
 leadSort.addEventListener("change", () => {
   filters.sort = leadSort.value;
+  savePrefs();
   renderLeads();
 });
 leadSearch.addEventListener("input", () => {
@@ -864,9 +1080,11 @@ async function loadAll({ quiet = false } = {}) {
   }
   if (n.status === "fulfilled") {
     notes = {};
+    reminders = {};
     n.value.docs.forEach((d) => {
-      const text = d.data().text;
+      const { text, remindAt } = d.data();
       if (text) notes[d.id] = String(text);
+      if (typeof remindAt === "string" && /^\d{4}-\d{2}-\d{2}$/.test(remindAt)) reminders[d.id] = remindAt;
     });
   } else if (denied(n.reason)) {
     notesBlocked = true; // rules not published yet — the rest still works
@@ -924,6 +1142,6 @@ watchAuth((user) => {
   who.classList.remove("hidden");
   if (loadedFor === user.uid) return;
   loadedFor = user.uid;
-  renderLeads(); // skeleton while loading
+  setView(view); // also draws the skeleton while loading
   loadAll();
 });

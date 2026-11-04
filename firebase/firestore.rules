@@ -12,7 +12,8 @@ rules_version = '2';
 //            create one;
 //            the submitter (if signed in) and admins can read; only admins
 //            can update (status) or delete.
-//   leadNotes { text, updatedAt }                — admin-only internal note
+//   leadNotes { text, remindAt, updatedAt }      — admin-only internal note
+//          and reminder date ("YYYY-MM-DD")
 //          on a lead, id = the lead's id. Kept out of the lead doc because
 //          the customer who sent a lead can read that doc.
 //
@@ -78,7 +79,10 @@ service cloud.firestore {
       allow read, delete: if isAdmin();
       allow create, update: if isAdmin()
                             && request.resource.data.text is string
-                            && request.resource.data.text.size() < 5000;
+                            && request.resource.data.text.size() < 5000
+                            && (!("remindAt" in request.resource.data)
+                                || request.resource.data.remindAt == null
+                                || (request.resource.data.remindAt is string && request.resource.data.remindAt.size() == 10));
     }
   }
 }

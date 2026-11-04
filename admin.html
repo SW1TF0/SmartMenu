@@ -90,6 +90,14 @@
         </div>
 
         <div id="tabLeads" class="adm-panel active" role="tabpanel" aria-labelledby="tabBtnLeads">
+          <section id="admAttention" class="adm-attention hidden" aria-labelledby="attTitle">
+            <header class="adm-att-head">
+              <h2 id="attTitle"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5l9 16H3z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 10v4.2M12 17h.01" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg><span data-i18n="adm.att.title">Needs attention</span></h2>
+              <span id="attCount" class="adm-count"></span>
+            </header>
+            <ul id="attList" class="adm-att-list" role="list"></ul>
+          </section>
+
           <div id="admOverview" class="adm-overview hidden">
             <figure class="adm-chart">
               <figcaption><span data-i18n="adm.chart.weeks">Requests per week</span><span class="adm-chart-sub" data-i18n="adm.chart.weeksSub">last 12 weeks</span></figcaption>
@@ -115,6 +123,14 @@
               <button type="button" class="adm-chip" data-status="done" aria-pressed="false"><i class="dot dot-done"></i><span data-i18n="status.done">Done</span> <span class="adm-chip-n" data-n="done"></span></button>
             </div>
             <div class="adm-toolbar-end">
+              <div class="adm-view" role="group" data-i18n-aria="adm.view" aria-label="View">
+                <button type="button" data-view="list" aria-pressed="true" data-i18n-aria="adm.view.list" aria-label="List" title="List">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>
+                </button>
+                <button type="button" data-view="board" aria-pressed="false" data-i18n-aria="adm.view.board" aria-label="Board" title="Board">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="4.5" width="5" height="15" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.7"/><rect x="9.5" y="4.5" width="5" height="10" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.7"/><rect x="15.5" y="4.5" width="5" height="12.5" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.7"/></svg>
+                </button>
+              </div>
               <select id="leadSort" class="adm-select" data-i18n-aria="adm.sort" aria-label="Sort">
                 <option value="new" data-i18n="adm.sort.new">Newest first</option>
                 <option value="old" data-i18n="adm.sort.old">Oldest first</option>
@@ -133,6 +149,7 @@
 
           <p id="leadsSummary" class="adm-summary" aria-live="polite"></p>
           <ul id="leadsList" class="adm-list" role="list"></ul>
+          <div id="leadsBoard" class="adm-board" hidden></div>
           <div id="leadsEmpty" class="adm-empty hidden"></div>
 
           <div id="bulkBar" class="adm-bulk" role="region" data-i18n-aria="adm.bulk.region" aria-label="Selected requests" hidden>
@@ -203,7 +220,17 @@
         <p id="dlgNoteState" class="adm-note-state" aria-live="polite"></p>
       </div>
       <div class="adm-dialog-section">
-        <p class="adm-dialog-label" data-i18n="adm.th.status">Status</p>
+        <p class="adm-dialog-label"><span data-i18n="adm.remind">Reminder</span> <span class="adm-note-hint" data-i18n="adm.remind.hint">shows under “Needs attention” on that day</span></p>
+        <div class="adm-remind">
+          <input id="dlgRemind" type="date" class="adm-date" data-i18n-aria="adm.remind" aria-label="Reminder" />
+          <button type="button" class="adm-btn" data-remind="1" data-i18n="adm.remind.tomorrow">Tomorrow</button>
+          <button type="button" class="adm-btn" data-remind="3" data-i18n="adm.remind.3days">In 3 days</button>
+          <button type="button" class="adm-btn" data-remind="7" data-i18n="adm.remind.week">In a week</button>
+          <button type="button" class="adm-btn adm-btn-quiet" data-remind="0" id="dlgRemindClear" data-i18n="adm.remind.clear">Clear</button>
+        </div>
+      </div>
+      <div class="adm-dialog-section">
+        <p class="adm-dialog-label"><span data-i18n="adm.th.status">Status</span> <span class="adm-note-hint adm-kbd-hint" data-i18n="adm.status.keys">keys 1 · 2 · 3</span></p>
         <div id="dlgStatus" class="adm-status-seg" role="group" data-i18n-aria="adm.th.status" aria-label="Status"></div>
       </div>
       <footer class="adm-dialog-foot">

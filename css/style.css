@@ -1166,6 +1166,39 @@ a.card:active { transform: translateY(-1px) scale(0.99); }
   .svc-nav .pill { flex: none; }
 }
 
+/* Moving between pages: a short cross-fade instead of a hard cut
+   (browsers that support cross-document view transitions). */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+}
+
+/* Inner pages: their header text rises in on load, like the home hero. */
+.js .page-hero .container > * { animation: heroIn 0.8s var(--ease-out) backwards; }
+.js .page-hero .container > :nth-child(2) { animation-delay: 0.05s; }
+.js .page-hero .container > :nth-child(3) { animation-delay: 0.1s; }
+.js .page-hero .container > :nth-child(4) { animation-delay: 0.16s; }
+.js .page-hero .container > :nth-child(5) { animation-delay: 0.22s; }
+.js .page-hero .container > :nth-child(n+6) { animation-delay: 0.28s; }
+
+/* Forms: clear feedback once a field has been touched. */
+.field input:user-invalid, .field textarea:user-invalid, .field select:user-invalid {
+  border-color: var(--red); box-shadow: 0 0 0 4px color-mix(in srgb, var(--red) 12%, transparent);
+}
+.field:focus-within label { color: var(--ink); }
+
+/* Contact: the direct-contact card stays beside the form while scrolling. */
+@media (min-width: 901px) {
+  .contact-grid .info-card { position: sticky; top: calc(var(--header-h) + 20px); }
+}
+.info-row a.ext::after { color: var(--ink-3); }
+
+/* Footer: "back to top". */
+.footer-bottom-end { display: inline-flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+.to-top { color: var(--ink-2); display: inline-flex; align-items: center; gap: 6px; }
+.to-top::after { content: "\2191"; transition: transform 0.25s var(--ease); }
+.to-top:hover { color: var(--ink); }
+.to-top:hover::after { transform: translateY(-2px); }
+
 /* ------------------------------------------------------------ phones -- */
 /* Kept last so it wins over the desktop rules above. Phone screens get
    smaller headings, tighter sections and shorter tiles; nothing reflows

@@ -258,7 +258,10 @@ function footerHTML() {
     </div>
     <div class="footer-bottom">
       <span>&copy; ${year} SmartMenuKJ &mdash; Krasimir Uzun. <span data-i18n="footer.rights">All rights reserved.</span></span>
-      <span class="local-time"><span class="rec" aria-hidden="true"></span><span data-i18n="footer.localtime">Kardzhali, local time</span><b id="localTime">--:--</b></span>
+      <span class="footer-bottom-end">
+        <span class="local-time"><span class="rec" aria-hidden="true"></span><span data-i18n="footer.localtime">Kardzhali, local time</span><b id="localTime">--:--</b></span>
+        <a href="#main" class="to-top" data-i18n="footer.top">Back to top</a>
+      </span>
     </div>
   </div>`;
 }

@@ -12,6 +12,9 @@ rules_version = '2';
 //            create one;
 //            the submitter (if signed in) and admins can read; only admins
 //            can update (status) or delete.
+//   leadNotes { text, updatedAt }                — admin-only internal note
+//          on a lead, id = the lead's id. Kept out of the lead doc because
+//          the customer who sent a lead can read that doc.
 //
 // Admin check supports EITHER strategy described in js/firebase-config.js:
 //   1) email allowlist (isAdminEmail) — matches ADMIN_EMAILS in code
@@ -68,6 +71,14 @@ service cloud.firestore {
                     && (request.resource.data.uid == null || (isSignedIn() && request.resource.data.uid == request.auth.uid));
       allow read: if isAdmin() || (isSignedIn() && resource.data.uid == request.auth.uid);
       allow update, delete: if isAdmin();
+    }
+
+    // Internal notes on leads (admin.html). Admins only.
+    match /leadNotes/{leadId} {
+      allow read, delete: if isAdmin();
+      allow create, update: if isAdmin()
+                            && request.resource.data.text is string
+                            && request.resource.data.text.size() < 5000;
     }
   }
 }

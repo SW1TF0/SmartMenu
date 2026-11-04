@@ -6,210 +6,33 @@
 // before it is put into the page.
 //
 // The panel speaks the admin's language (BG / TR / EN, from the header
-// switch). Leads show as a searchable, filterable list; a click opens the
-// full request with call / email / copy actions, the status and delete.
+// switch; strings in js/admin-i18n.js). What it does:
+//   - overview: requests per week + by service (a service bar filters)
+//   - leads list: search, status / type / service filters, sort, grouped by
+//     day, status picker per row, select several for bulk status / delete
+//   - a click opens the full request: call / email / Viber / WhatsApp,
+//     a ready reply e-mail, an internal note, status, delete, ← / →
+//   - refreshes itself every minute and flags requests that just arrived
+// Internal notes live in their own collection (leadNotes/{leadId}), readable
+// by admins only — lead docs are also readable by the customer who sent them.
 // ============================================================================
 import { db } from "./firebase-config.js?v=20261104";
 import { watchAuth, isAdmin } from "./auth.js?v=20261104";
 import { escapeHtml, registerDict, applyI18n, t, getLang } from "./i18n.js?v=20261104";
+import { ADMIN_DICT } from "./admin-i18n.js?v=20261104";
 import {
   collection,
   getDocs,
   doc,
+  setDoc,
   updateDoc,
   deleteDoc,
   orderBy,
   query,
+  serverTimestamp,
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-registerDict({
-  en: {
-    "adm.eyebrow": "Admin",
-    "adm.title": "Dashboard",
-    "adm.who": "Signed in as {email}",
-    "adm.loading": "Loading…",
-    "adm.refresh": "Refresh",
-    "adm.updated": "Updated {time}",
-    "adm.guard.title": "Admins only",
-    "adm.guard.desc": "Sign in with an admin account to view this page.",
-    "adm.stat.new": "New",
-    "adm.stat.newHint": "waiting for a reply",
-    "adm.stat.progress": "In progress",
-    "adm.stat.progressHint": "being handled",
-    "adm.stat.week": "Last 7 days",
-    "adm.stat.weekHint": "new requests",
-    "adm.stat.total": "All requests",
-    "adm.stat.usersHint": "registered users",
-    "adm.tab.leads": "Requests",
-    "adm.tab.users": "Users",
-    "adm.search.leads": "Search name, phone, email…",
-    "adm.search.users": "Search name or email…",
-    "adm.filter.status": "Filter by status",
-    "adm.filter.all": "All",
-    "adm.filter.type": "Filter by type",
-    "adm.filter.allTypes": "All types",
-    "adm.filter.week": "Last 7 days",
-    "adm.type.personal": "Home",
-    "adm.type.business": "Business",
-    "adm.export": "Export CSV",
-    "adm.th.date": "Date",
-    "adm.th.name": "Name",
-    "adm.th.company": "Company",
-    "adm.th.email": "Email",
-    "adm.th.phone": "Phone",
-    "adm.th.type": "Type",
-    "adm.th.service": "Service",
-    "adm.th.message": "Message",
-    "adm.th.status": "Status",
-    "adm.th.registered": "Registered",
-    "adm.call": "Call",
-    "adm.email": "Email",
-    "adm.copy": "Copy",
-    "adm.copied": "Copied",
-    "adm.close": "Close",
-    "adm.delete": "Delete",
-    "adm.deleteConfirm": "Delete this request from {name} permanently? This can't be undone.",
-    "adm.deleted": "Request deleted",
-    "adm.saved": "Status: {status}",
-    "adm.saveFailed": "Couldn't save — check your connection and try again.",
-    "adm.showing": "{n} of {total}",
-    "adm.clear": "Clear filters",
-    "adm.empty.leads": "No requests yet. New ones from the contact form will appear here.",
-    "adm.empty.users": "No registered users yet.",
-    "adm.empty.filtered": "Nothing matches these filters.",
-    "adm.err.denied": "No access: this account is not in the Firestore rules admin list. Add it to firebase/firestore.rules and publish the rules in the Firebase console.",
-    "adm.err.load": "Could not load data. Check your connection and refresh.",
-    "adm.noMessage": "(no message)",
-    "adm.justNow": "just now",
-    "adm.today": "Today",
-    "adm.yesterday": "Yesterday",
-    "adm.unknownName": "(no name)",
-  },
-  bg: {
-    "adm.eyebrow": "Админ",
-    "adm.title": "Табло",
-    "adm.who": "Влезли сте като {email}",
-    "adm.loading": "Зареждане…",
-    "adm.refresh": "Обнови",
-    "adm.updated": "Обновено {time}",
-    "adm.guard.title": "Само за администратори",
-    "adm.guard.desc": "Влезте с администраторски профил, за да видите тази страница.",
-    "adm.stat.new": "Нови",
-    "adm.stat.newHint": "чакат отговор",
-    "adm.stat.progress": "В процес",
-    "adm.stat.progressHint": "в работа",
-    "adm.stat.week": "Последните 7 дни",
-    "adm.stat.weekHint": "нови запитвания",
-    "adm.stat.total": "Всички запитвания",
-    "adm.stat.usersHint": "регистрирани потребители",
-    "adm.tab.leads": "Запитвания",
-    "adm.tab.users": "Потребители",
-    "adm.search.leads": "Търси име, телефон, имейл…",
-    "adm.search.users": "Търси по име или имейл…",
-    "adm.filter.status": "Филтър по статус",
-    "adm.filter.all": "Всички",
-    "adm.filter.type": "Филтър по тип",
-    "adm.filter.allTypes": "Всички типове",
-    "adm.filter.week": "Последните 7 дни",
-    "adm.type.personal": "Дом",
-    "adm.type.business": "Бизнес",
-    "adm.export": "Експорт CSV",
-    "adm.th.date": "Дата",
-    "adm.th.name": "Име",
-    "adm.th.company": "Фирма",
-    "adm.th.email": "Имейл",
-    "adm.th.phone": "Телефон",
-    "adm.th.type": "Тип",
-    "adm.th.service": "Услуга",
-    "adm.th.message": "Съобщение",
-    "adm.th.status": "Статус",
-    "adm.th.registered": "Регистриран",
-    "adm.call": "Обади се",
-    "adm.email": "Имейл",
-    "adm.copy": "Копирай",
-    "adm.copied": "Копирано",
-    "adm.close": "Затвори",
-    "adm.delete": "Изтрий",
-    "adm.deleteConfirm": "Да изтрия ли запитването от {name} завинаги? Това не може да се върне.",
-    "adm.deleted": "Запитването е изтрито",
-    "adm.saved": "Статус: {status}",
-    "adm.saveFailed": "Не успях да запазя — проверете връзката и опитайте пак.",
-    "adm.showing": "{n} от {total}",
-    "adm.clear": "Изчисти филтрите",
-    "adm.empty.leads": "Още няма запитвания. Новите от формата за контакт ще се появят тук.",
-    "adm.empty.users": "Още няма регистрирани потребители.",
-    "adm.empty.filtered": "Нищо не отговаря на тези филтри.",
-    "adm.err.denied": "Няма достъп: този профил не е в списъка с админи във Firestore правилата. Добавете го във firebase/firestore.rules и публикувайте правилата във Firebase конзолата.",
-    "adm.err.load": "Данните не се заредиха. Проверете връзката и обновете.",
-    "adm.noMessage": "(без съобщение)",
-    "adm.justNow": "току-що",
-    "adm.today": "Днес",
-    "adm.yesterday": "Вчера",
-    "adm.unknownName": "(без име)",
-  },
-  tr: {
-    "adm.eyebrow": "Yönetim",
-    "adm.title": "Panel",
-    "adm.who": "{email} olarak giriş yapıldı",
-    "adm.loading": "Yükleniyor…",
-    "adm.refresh": "Yenile",
-    "adm.updated": "Güncellendi {time}",
-    "adm.guard.title": "Yalnızca yöneticiler",
-    "adm.guard.desc": "Bu sayfayı görmek için yönetici hesabıyla giriş yapın.",
-    "adm.stat.new": "Yeni",
-    "adm.stat.newHint": "yanıt bekliyor",
-    "adm.stat.progress": "İşlemde",
-    "adm.stat.progressHint": "ilgileniliyor",
-    "adm.stat.week": "Son 7 gün",
-    "adm.stat.weekHint": "yeni talep",
-    "adm.stat.total": "Tüm talepler",
-    "adm.stat.usersHint": "kayıtlı kullanıcı",
-    "adm.tab.leads": "Talepler",
-    "adm.tab.users": "Kullanıcılar",
-    "adm.search.leads": "Ad, telefon, e-posta ara…",
-    "adm.search.users": "Ad veya e-posta ara…",
-    "adm.filter.status": "Duruma göre filtrele",
-    "adm.filter.all": "Tümü",
-    "adm.filter.type": "Türe göre filtrele",
-    "adm.filter.allTypes": "Tüm türler",
-    "adm.filter.week": "Son 7 gün",
-    "adm.type.personal": "Ev",
-    "adm.type.business": "İşletme",
-    "adm.export": "CSV dışa aktar",
-    "adm.th.date": "Tarih",
-    "adm.th.name": "Ad",
-    "adm.th.company": "Şirket",
-    "adm.th.email": "E-posta",
-    "adm.th.phone": "Telefon",
-    "adm.th.type": "Tür",
-    "adm.th.service": "Hizmet",
-    "adm.th.message": "Mesaj",
-    "adm.th.status": "Durum",
-    "adm.th.registered": "Kayıt",
-    "adm.call": "Ara",
-    "adm.email": "E-posta",
-    "adm.copy": "Kopyala",
-    "adm.copied": "Kopyalandı",
-    "adm.close": "Kapat",
-    "adm.delete": "Sil",
-    "adm.deleteConfirm": "{name} kişisinin talebi kalıcı olarak silinsin mi? Bu geri alınamaz.",
-    "adm.deleted": "Talep silindi",
-    "adm.saved": "Durum: {status}",
-    "adm.saveFailed": "Kaydedilemedi — bağlantınızı kontrol edip tekrar deneyin.",
-    "adm.showing": "{n} / {total}",
-    "adm.clear": "Filtreleri temizle",
-    "adm.empty.leads": "Henüz talep yok. İletişim formundan gelenler burada görünecek.",
-    "adm.empty.users": "Henüz kayıtlı kullanıcı yok.",
-    "adm.empty.filtered": "Bu filtrelere uyan bir şey yok.",
-    "adm.err.denied": "Erişim yok: bu hesap Firestore kurallarındaki yönetici listesinde değil. firebase/firestore.rules dosyasına ekleyip kuralları Firebase konsolunda yayınlayın.",
-    "adm.err.load": "Veriler yüklenemedi. Bağlantınızı kontrol edip yenileyin.",
-    "adm.noMessage": "(mesaj yok)",
-    "adm.justNow": "az önce",
-    "adm.today": "Bugün",
-    "adm.yesterday": "Dün",
-    "adm.unknownName": "(adsız)",
-  },
-});
+registerDict(ADMIN_DICT);
 applyI18n();
 
 const $ = (id) => document.getElementById(id);
@@ -227,20 +50,33 @@ const usersEmpty = $("usersEmpty");
 const usersSummary = $("usersSummary");
 const leadSearch = $("leadSearch");
 const leadType = $("leadType");
+const leadSort = $("leadSort");
 const userSearch = $("userSearch");
 const dialog = $("leadDialog");
 const toastEl = $("admToast");
+const bulkBar = $("bulkBar");
+const noteEl = $("dlgNote");
+const noteState = $("dlgNoteState");
 
 const STATUSES = ["new", "progress", "done"];
-const WEEK = 7 * 24 * 60 * 60 * 1000;
+const DAY = 24 * 60 * 60 * 1000;
+const WEEK = 7 * DAY;
+const AUTO_REFRESH = 60 * 1000;
+const BASE_TITLE = document.title;
 
 let leads = null; // null = not loaded yet
 let users = null;
+let notes = {}; // leadId -> text
+let notesBlocked = false; // the published rules don't know leadNotes yet
 let leadsError = null;
 let usersError = null;
 let lastLoaded = null;
 let openLeadId = null;
-const filters = { status: "all", type: "all", week: false, q: "" };
+let knownIds = null; // lead ids seen so far — to flag ones that just arrived
+const freshIds = new Set();
+const selected = new Set();
+let visibleIds = []; // the list as shown, for ← / → in the dialog
+const filters = { status: "all", type: "all", service: "all", week: false, q: "", sort: "new" };
 
 // ------------------------------------------------------------- helpers --
 const fill = (str, vars) => str.replace(/\{(\w+)\}/g, (_, k) => (vars[k] == null ? "" : vars[k]));
@@ -249,6 +85,8 @@ const locale = () => ({ bg: "bg-BG", tr: "tr-TR" })[getLang()] || "en-GB";
 const millis = (ts) => (ts && ts.toMillis ? ts.toMillis() : 0);
 const statusOf = (l) => (STATUSES.includes(l.status) ? l.status : "new");
 const statusLabel = (s) => t(`status.${s}`);
+const serviceKey = (l) => l.service || "general";
+const denied = (err) => err && err.code === "permission-denied";
 
 function fmtDate(ts, withTime = true) {
   if (!ts || !ts.toDate) return "—";
@@ -257,18 +95,34 @@ function fmtDate(ts, withTime = true) {
   return ts.toDate().toLocaleString(locale(), opts);
 }
 
+const startOfToday = () => {
+  const n = new Date();
+  return new Date(n.getFullYear(), n.getMonth(), n.getDate()).getTime();
+};
+
 // "14:05" today, "Yesterday", otherwise "3 Nov" (with the year when it differs).
 function shortDate(ts) {
   if (!ts || !ts.toDate) return "—";
   const d = ts.toDate();
-  const now = new Date();
-  const startToday = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
-  const time = d.toLocaleTimeString(locale(), { hour: "2-digit", minute: "2-digit" });
-  if (d.getTime() >= startToday) return time;
-  if (d.getTime() >= startToday - 86400000) return t("adm.yesterday");
+  const today = startOfToday();
+  if (d.getTime() >= today) return d.toLocaleTimeString(locale(), { hour: "2-digit", minute: "2-digit" });
+  if (d.getTime() >= today - DAY) return t("adm.yesterday");
   const opts = { day: "numeric", month: "short" };
-  if (d.getFullYear() !== now.getFullYear()) opts.year = "numeric";
+  if (d.getFullYear() !== new Date().getFullYear()) opts.year = "numeric";
   return d.toLocaleDateString(locale(), opts);
+}
+
+// The day group a lead falls in: today, yesterday, earlier this week, then by month.
+function groupOf(ts) {
+  const ms = millis(ts);
+  if (!ms) return { key: "none", label: t("adm.group.older") };
+  const today = startOfToday();
+  if (ms >= today) return { key: "today", label: t("adm.group.today") };
+  if (ms >= today - DAY) return { key: "yesterday", label: t("adm.group.yesterday") };
+  if (ms >= today - 6 * DAY) return { key: "week", label: t("adm.group.week") };
+  const d = new Date(ms);
+  const label = d.toLocaleDateString(locale(), { month: "long", year: "numeric" });
+  return { key: `m${d.getFullYear()}-${d.getMonth()}`, label: label.charAt(0).toUpperCase() + label.slice(1) };
 }
 
 // "For home" / "For business" — leads from before the switch existed have none.
@@ -279,10 +133,22 @@ function audienceLabel(audience) {
 function serviceLabel(service) {
   const key = service && service !== "general" ? `svc.${service}` : "contact.form.svc.general";
   const label = t(key);
-  return label === key ? service || "—" : label;
+  if (label !== key) return label;
+  return !service || service === "general" ? t("adm.svc.general") : service;
 }
 
 const telHref = (phone) => "tel:" + String(phone).replace(/[^\d+]/g, "");
+
+// International form for Viber / WhatsApp. Bulgarian numbers are usually
+// written 0888…; turn them into +359888…. Returns digits without "+".
+function intlDigits(phone) {
+  let p = String(phone || "").replace(/[^\d+]/g, "");
+  if (p.startsWith("00")) p = "+" + p.slice(2);
+  if (p.startsWith("0")) p = "+359" + p.slice(1);
+  if (!p.startsWith("+")) p = "+" + p;
+  const digits = p.slice(1);
+  return digits.length >= 9 ? digits : null;
+}
 
 function initials(name) {
   const parts = String(name || "").replace(/[^\p{L}\p{N}\s]/gu, "").trim().split(/\s+/).filter(Boolean);
@@ -295,25 +161,87 @@ function toast(msg, kind = "ok") {
   toastEl.textContent = msg;
   toastEl.className = `adm-toast show ${kind}`;
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => toastEl.classList.remove("show"), 2600);
+  toastTimer = setTimeout(() => toastEl.classList.remove("show"), kind === "err" ? 5000 : 2600);
 }
 
 function errorText(err) {
-  return err && err.code === "permission-denied" ? t("adm.err.denied") : t("adm.err.load");
+  return denied(err) ? t("adm.err.denied") : t("adm.err.load");
 }
+
+// ----------------------------------------------------------- overview --
+function renderOverview() {
+  const box = $("admOverview");
+  if (!leads || !leads.length) {
+    box.classList.add("hidden");
+    return;
+  }
+  box.classList.remove("hidden");
+
+  // Requests per week: 12 columns, oldest left, this week on the right.
+  const today = startOfToday();
+  const dow = (new Date(today).getDay() + 6) % 7; // Monday = 0
+  const thisWeek = today - dow * DAY;
+  const weeks = Array.from({ length: 12 }, (_, i) => ({ start: thisWeek - (11 - i) * WEEK, n: 0 }));
+  leads.forEach((l) => {
+    const ms = millis(l.createdAt);
+    const idx = 11 - Math.floor((thisWeek + WEEK - 1 - ms) / WEEK);
+    if (ms && idx >= 0 && idx < 12) weeks[idx].n++;
+  });
+  const max = Math.max(1, ...weeks.map((w) => w.n));
+  const label = (w) => new Date(w.start).toLocaleDateString(locale(), { day: "numeric", month: "short" });
+  $("chartWeeks").innerHTML = weeks
+    .map((w, i) => {
+      const tip = tr("adm.chart.weekOf", { date: label(w), n: w.n });
+      const h = w.n ? Math.max(6, (w.n / max) * 100) : 0;
+      return `<span class="adm-wk${i === 11 ? " now" : ""}" style="--h:${h}%" tabindex="0" aria-label="${escapeHtml(tip)}" data-tip="${escapeHtml(tip)}"><i></i>${w.n ? `<b>${w.n}</b>` : ""}</span>`;
+    })
+    .join("");
+  $("chartWeeks").setAttribute("aria-label", t("adm.chart.weeks"));
+  $("chartWeeksAxis").innerHTML = `<span>${escapeHtml(label(weeks[0]))}</span><span>${escapeHtml(label(weeks[6]))}</span><span>${escapeHtml(label(weeks[11]))}</span>`;
+
+  // By service: horizontal bars, biggest first. A click filters the list.
+  const counts = {};
+  leads.forEach((l) => (counts[serviceKey(l)] = (counts[serviceKey(l)] || 0) + 1));
+  const rows = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+  const top = Math.max(...rows.map((r) => r[1]));
+  $("chartServices").innerHTML = rows
+    .map(
+      ([svc, n]) => `<button type="button" class="adm-bar${filters.service === svc ? " active" : ""}" data-service="${escapeHtml(svc)}" aria-pressed="${filters.service === svc}">
+        <span class="adm-bar-label">${escapeHtml(serviceLabel(svc))}</span>
+        <span class="adm-bar-track"><i style="width:${(n / top) * 100}%"></i></span>
+        <span class="adm-bar-n">${n}</span>
+      </button>`
+    )
+    .join("");
+}
+
+$("chartServices").addEventListener("click", (e) => {
+  const b = e.target.closest("[data-service]");
+  if (!b) return;
+  const svc = b.getAttribute("data-service");
+  filters.service = filters.service === svc ? "all" : svc;
+  renderLeads();
+});
 
 // -------------------------------------------------------------- leads --
 function matchesLead(l) {
   if (filters.status !== "all" && statusOf(l) !== filters.status) return false;
   if (filters.type !== "all" && l.audience !== filters.type) return false;
+  if (filters.service !== "all" && serviceKey(l) !== filters.service) return false;
   if (filters.week && millis(l.createdAt) < Date.now() - WEEK) return false;
   if (filters.q) {
-    const hay = [l.name, l.company, l.email, l.phone, l.message, serviceLabel(l.service)].join(" ").toLowerCase();
+    const hay = [l.name, l.company, l.email, l.phone, l.message, serviceLabel(l.service), notes[l.id]].join(" ").toLowerCase();
     const digits = filters.q.replace(/\D/g, "");
     const phoneHit = digits.length >= 3 && String(l.phone || "").replace(/\D/g, "").includes(digits);
     if (!hay.includes(filters.q) && !phoneHit) return false;
   }
   return true;
+}
+
+function shownLeads() {
+  const list = leads.filter(matchesLead);
+  if (filters.sort === "old") list.reverse();
+  return list;
 }
 
 function renderStats() {
@@ -330,13 +258,17 @@ function renderStats() {
     const s = el.getAttribute("data-n");
     el.textContent = leads ? (s === "all" ? all.length : count(s)) : "";
   });
+  const plain = filters.type === "all" && filters.service === "all";
   document.querySelectorAll("[data-stat-filter]").forEach((el) => {
     const f = el.getAttribute("data-stat-filter");
     const on =
-      f === "week" ? filters.week : f === "all" ? !filters.week && filters.status === "all" : !filters.week && filters.status === f;
+      plain && (f === "week" ? filters.week : f === "all" ? !filters.week && filters.status === "all" : !filters.week && filters.status === f);
     el.classList.toggle("active", on);
     el.setAttribute("aria-pressed", on ? "true" : "false");
   });
+  // The browser tab shows how many requests still wait for a reply.
+  const waiting = leads ? count("new") : 0;
+  document.title = waiting ? `(${waiting}) ${BASE_TITLE}` : BASE_TITLE;
 }
 
 function leadRow(l) {
@@ -348,8 +280,16 @@ function leadRow(l) {
   if (l.phone) contact.push(`<a href="${escapeHtml(telHref(l.phone))}" class="adm-contact" data-stop>${escapeHtml(l.phone)}</a>`);
   if (l.email) contact.push(`<a href="mailto:${escapeHtml(l.email)}" class="adm-contact" data-stop>${escapeHtml(l.email)}</a>`);
   const typeTag = l.audience ? `<span class="adm-tag">${escapeHtml(audienceLabel(l.audience))}</span>` : "";
-  return `<li class="adm-lead s-${s}" data-id="${id}">
+  const note = notes[l.id]
+    ? `<span class="adm-tag adm-tag-note" title="${escapeHtml(t("adm.hasNote"))}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14v11l-5 5H5z M14 20v-5h5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg><span class="sr-only">${escapeHtml(t("adm.hasNote"))}</span></span>`
+    : "";
+  const sel = selected.has(l.id);
+  return `<li class="adm-lead s-${s}${sel ? " is-selected" : ""}${freshIds.has(l.id) ? " is-fresh" : ""}" data-id="${id}">
     <button type="button" class="adm-lead-open" data-open="${id}" aria-label="${escapeHtml((l.name || "") + " — " + statusLabel(s))}"></button>
+    <label class="adm-check" data-stop>
+      <input type="checkbox" data-select="${id}" ${sel ? "checked" : ""} />
+      <span class="sr-only">${escapeHtml(t("adm.select"))}: ${escapeHtml(l.name || "")}</span>
+    </label>
     <span class="adm-avatar" aria-hidden="true">${escapeHtml(initials(l.name))}</span>
     <div class="adm-lead-main">
       <div class="adm-lead-top">
@@ -357,7 +297,7 @@ function leadRow(l) {
         ${l.company ? `<span class="adm-lead-company">${escapeHtml(l.company)}</span>` : ""}
       </div>
       <div class="adm-lead-meta">
-        <span class="adm-tag adm-tag-svc">${escapeHtml(serviceLabel(l.service))}</span>${typeTag}
+        <span class="adm-tag adm-tag-svc">${escapeHtml(serviceLabel(l.service))}</span>${typeTag}${note}
         ${contact.join("")}
       </div>
       <p class="adm-lead-msg">${msg ? escapeHtml(msg.slice(0, 220)) : `<span class="text-faint">${escapeHtml(t("adm.noMessage"))}</span>`}</p>
@@ -380,29 +320,50 @@ function emptyBlock(text, withClear) {
 
 function renderLeads() {
   renderStats();
+  renderOverview();
+  syncFilterUI();
   if (leadsError) {
     leadsList.innerHTML = "";
     leadsSummary.textContent = "";
     leadsEmpty.innerHTML = `<p class="adm-error">${escapeHtml(errorText(leadsError))}</p>`;
     leadsEmpty.classList.remove("hidden");
+    renderBulk();
     return;
   }
   if (leads === null) {
-    leadsList.innerHTML = Array.from({ length: 4 }, () => `<li class="adm-lead adm-skel" aria-hidden="true"><span class="adm-avatar"></span><div class="adm-lead-main"><i></i><i></i><i></i></div></li>`).join("");
+    leadsList.innerHTML = Array.from({ length: 4 }, () => `<li class="adm-lead adm-skel" aria-hidden="true"><span></span><span class="adm-avatar"></span><div class="adm-lead-main"><i></i><i></i><i></i></div></li>`).join("");
     leadsEmpty.classList.add("hidden");
     return;
   }
-  const shown = leads.filter(matchesLead);
-  const filtered = filters.status !== "all" || filters.type !== "all" || filters.week || !!filters.q;
-  leadsSummary.textContent = filtered && leads.length ? tr("adm.showing", { n: shown.length, total: leads.length }) : "";
+  // Drop selections that no longer exist.
+  [...selected].forEach((id) => leads.some((l) => l.id === id) || selected.delete(id));
+  const shown = shownLeads();
+  visibleIds = shown.map((l) => l.id);
+  const filtered = filters.status !== "all" || filters.type !== "all" || filters.service !== "all" || filters.week || !!filters.q;
+  const parts = [];
+  if (filtered && leads.length) parts.push(tr("adm.showing", { n: shown.length, total: leads.length }));
+  if (filters.service !== "all") parts.push(tr("adm.filter.service", { s: serviceLabel(filters.service) }));
+  leadsSummary.innerHTML = parts.length
+    ? `${escapeHtml(parts.join(" · "))} <button type="button" class="adm-linkbtn" data-clear-filters>${escapeHtml(t("adm.clear"))}</button>`
+    : "";
   if (!shown.length) {
     leadsList.innerHTML = "";
     leadsEmpty.innerHTML = emptyBlock(leads.length ? t("adm.empty.filtered") : t("adm.empty.leads"), leads.length > 0);
     leadsEmpty.classList.remove("hidden");
+    renderBulk();
     return;
   }
   leadsEmpty.classList.add("hidden");
-  leadsList.innerHTML = shown.map(leadRow).join("");
+  let lastGroup = null;
+  leadsList.innerHTML = shown
+    .map((l) => {
+      const g = groupOf(l.createdAt);
+      const head = g.key !== lastGroup ? `<li class="adm-group" role="presentation">${escapeHtml(g.label)}</li>` : "";
+      lastGroup = g.key;
+      return head + leadRow(l);
+    })
+    .join("");
+  renderBulk();
 }
 
 async function setStatus(id, status) {
@@ -420,27 +381,116 @@ async function setStatus(id, status) {
     lead.status = before;
     renderLeads();
     if (openLeadId === id) renderDialog();
-    toast(err && err.code === "permission-denied" ? t("adm.err.denied") : t("adm.saveFailed"), "err");
+    toast(denied(err) ? t("adm.err.denied") : t("adm.saveFailed"), "err");
   }
+}
+
+async function deleteLeads(ids) {
+  const results = await Promise.allSettled(ids.map((id) => deleteDoc(doc(db, "leads", id))));
+  const gone = ids.filter((_, i) => results[i].status === "fulfilled");
+  // Notes are best-effort: a missing rule must not block the delete.
+  gone.forEach((id) => {
+    if (notes[id] && !notesBlocked) deleteDoc(doc(db, "leadNotes", id)).catch(() => {});
+    delete notes[id];
+    selected.delete(id);
+  });
+  leads = leads.filter((l) => !gone.includes(l.id));
+  const failed = results.find((r) => r.status === "rejected");
+  if (failed) console.error(failed.reason);
+  return { gone, failed: failed && failed.reason };
 }
 
 async function removeLead(id) {
   const lead = leads && leads.find((l) => l.id === id);
   if (!lead) return;
   if (!confirm(tr("adm.deleteConfirm", { name: lead.name || lead.email || "—" }))) return;
-  try {
-    await deleteDoc(doc(db, "leads", id));
-    leads = leads.filter((l) => l.id !== id);
+  const { gone, failed } = await deleteLeads([id]);
+  if (gone.length) {
     if (dialog.open) dialog.close();
-    renderLeads();
     toast(t("adm.deleted"));
-  } catch (err) {
-    console.error(err);
-    toast(err && err.code === "permission-denied" ? t("adm.err.denied") : t("adm.saveFailed"), "err");
-  }
+  } else toast(denied(failed) ? t("adm.err.denied") : t("adm.saveFailed"), "err");
+  renderLeads();
 }
 
+// --------------------------------------------------------------- bulk --
+function renderBulk() {
+  const n = selected.size;
+  bulkBar.hidden = n === 0;
+  content.classList.toggle("has-selection", n > 0);
+  $("bulkCount").textContent = tr("adm.bulk.count", { n });
+}
+
+leadsList.addEventListener("change", (e) => {
+  const box = e.target.closest("[data-select]");
+  if (box) {
+    const id = box.getAttribute("data-select");
+    box.checked ? selected.add(id) : selected.delete(id);
+    box.closest(".adm-lead").classList.toggle("is-selected", box.checked);
+    renderBulk();
+    return;
+  }
+  const sel = e.target.closest("[data-status-for]");
+  if (sel) setStatus(sel.getAttribute("data-status-for"), sel.value);
+});
+
+// Shift-click a checkbox to select the whole range since the last one.
+let lastChecked = null;
+leadsList.addEventListener("click", (e) => {
+  const box = e.target.closest("[data-select]");
+  if (!box) return;
+  const id = box.getAttribute("data-select");
+  if (e.shiftKey && lastChecked && lastChecked !== id) {
+    const a = visibleIds.indexOf(lastChecked);
+    const b = visibleIds.indexOf(id);
+    if (a > -1 && b > -1) {
+      visibleIds.slice(Math.min(a, b), Math.max(a, b) + 1).forEach((x) => (box.checked ? selected.add(x) : selected.delete(x)));
+      queueMicrotask(renderLeads);
+    }
+  }
+  lastChecked = id;
+});
+
+document.querySelectorAll("[data-bulk-status]").forEach((b) =>
+  b.addEventListener("click", async () => {
+    const status = b.getAttribute("data-bulk-status");
+    const ids = [...selected].filter((id) => {
+      const l = leads.find((x) => x.id === id);
+      return l && statusOf(l) !== status;
+    });
+    const results = await Promise.allSettled(ids.map((id) => updateDoc(doc(db, "leads", id), { status })));
+    let ok = 0;
+    results.forEach((r, i) => {
+      if (r.status !== "fulfilled") return console.error(r.reason);
+      leads.find((x) => x.id === ids[i]).status = status;
+      ok++;
+    });
+    selected.clear();
+    renderLeads();
+    if (ok === ids.length) toast(tr("adm.bulk.saved", { n: ok }));
+    else toast(t("adm.saveFailed"), "err");
+  })
+);
+$("bulkDelete").addEventListener("click", async () => {
+  const ids = [...selected];
+  if (!ids.length || !confirm(tr("adm.bulk.deleteConfirm", { n: ids.length }))) return;
+  const { gone, failed } = await deleteLeads(ids);
+  renderLeads();
+  if (failed) toast(denied(failed) ? t("adm.err.denied") : t("adm.saveFailed"), "err");
+  else toast(tr("adm.bulk.deleted", { n: gone.length }));
+});
+$("bulkClear").addEventListener("click", () => {
+  selected.clear();
+  renderLeads();
+});
+
 // ------------------------------------------------------------- dialog --
+function replyMailto(l) {
+  const first = String(l.name || "").trim().split(/\s+/)[0] || "";
+  const subject = t("adm.reply.subject");
+  const body = tr("adm.reply.body", { name: first, service: serviceLabel(l.service) });
+  return `mailto:${l.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}
+
 function renderDialog() {
   const l = leads && leads.find((x) => x.id === openLeadId);
   if (!l) return;
@@ -449,30 +499,75 @@ function renderDialog() {
   $("dlgName").textContent = l.name || t("adm.unknownName");
   $("dlgCompany").textContent = l.company || "";
   $("dlgCompany").classList.toggle("hidden", !l.company);
+
   const rows = [];
   if (l.phone)
     rows.push(`<div class="adm-crow"><span class="adm-crow-label">${escapeHtml(t("adm.th.phone"))}</span><span class="adm-crow-value">${escapeHtml(l.phone)}</span>
       <span class="adm-crow-actions"><a class="adm-btn adm-btn-primary" href="${escapeHtml(telHref(l.phone))}">${escapeHtml(t("adm.call"))}</a><button type="button" class="adm-btn" data-copy="${escapeHtml(l.phone)}">${escapeHtml(t("adm.copy"))}</button></span></div>`);
   if (l.email)
     rows.push(`<div class="adm-crow"><span class="adm-crow-label">${escapeHtml(t("adm.th.email"))}</span><span class="adm-crow-value">${escapeHtml(l.email)}</span>
-      <span class="adm-crow-actions"><a class="adm-btn adm-btn-primary" href="mailto:${escapeHtml(l.email)}">${escapeHtml(t("adm.email"))}</a><button type="button" class="adm-btn" data-copy="${escapeHtml(l.email)}">${escapeHtml(t("adm.copy"))}</button></span></div>`);
+      <span class="adm-crow-actions"><button type="button" class="adm-btn" data-copy="${escapeHtml(l.email)}">${escapeHtml(t("adm.copy"))}</button></span></div>`);
   $("dlgContact").innerHTML = rows.join("");
+
+  // Reply: a pre-filled e-mail, and Viber / WhatsApp chats for mobile numbers.
+  const reply = [];
+  if (l.email)
+    reply.push(`<a class="adm-reply-btn" href="${escapeHtml(replyMailto(l))}"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5.5" width="17" height="13" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M4.5 7l7.5 6 7.5-6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>${escapeHtml(t("adm.reply.email"))}</a>`);
+  const intl = intlDigits(l.phone);
+  if (intl) {
+    reply.push(`<a class="adm-reply-btn" href="viber://chat?number=%2B${intl}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5c4.7 0 8 2.6 8 7.2s-3.3 7.1-8 7.1c-.8 0-1.6-.1-2.3-.2L6.5 20v-3.1C4.6 15.6 4 13.4 4 10.7 4 6.1 7.3 3.5 12 3.5z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>${escapeHtml(t("adm.reply.viber"))}</a>`);
+    reply.push(`<a class="adm-reply-btn" href="https://wa.me/${intl}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l1.2-4A8 8 0 1 1 8 18.8z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>${escapeHtml(t("adm.reply.whatsapp"))}</a>`);
+  }
+  $("dlgReply").innerHTML = reply.join("");
+
   const msg = String(l.message || "").trim();
   $("dlgMessage").textContent = msg || t("adm.noMessage");
   $("dlgStatus").innerHTML = STATUSES.map(
     (v) => `<button type="button" class="s-${v}${v === s ? " active" : ""}" data-set-status="${v}" aria-pressed="${v === s}"><i class="dot dot-${v}"></i>${escapeHtml(statusLabel(v))}</button>`
   ).join("");
+
+  // Keep what the admin is typing; only fill the note when switching leads.
+  if (noteEl.dataset.for !== l.id) {
+    noteEl.dataset.for = l.id;
+    noteEl.value = notes[l.id] || "";
+    noteState.textContent = notesBlocked ? t("adm.note.rules") : "";
+    noteState.className = notesBlocked ? "adm-note-state warn" : "adm-note-state";
+  }
+  noteEl.disabled = notesBlocked;
+
+  const i = visibleIds.indexOf(l.id);
+  $("dlgPos").textContent = i > -1 ? tr("adm.pos", { i: i + 1, n: visibleIds.length }) : "";
+  $("dlgPrev").disabled = i <= 0;
+  $("dlgNext").disabled = i < 0 || i >= visibleIds.length - 1;
 }
 
 function openLead(id) {
   openLeadId = id;
+  if (freshIds.delete(id)) leadsList.querySelector(`[data-id="${CSS.escape(id)}"]`)?.classList.remove("is-fresh");
   renderDialog();
   if (!dialog.open) dialog.showModal();
 }
 
+function step(dir) {
+  const i = visibleIds.indexOf(openLeadId);
+  const next = visibleIds[i + dir];
+  if (i < 0 || !next) return;
+  flushNote();
+  openLead(next);
+}
+$("dlgPrev").addEventListener("click", () => step(-1));
+$("dlgNext").addEventListener("click", () => step(1));
+dialog.addEventListener("keydown", (e) => {
+  if (/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)) return;
+  if (e.key === "ArrowLeft") step(-1);
+  if (e.key === "ArrowRight") step(1);
+});
+
 dialog.addEventListener("close", () => {
+  flushNote();
   const id = openLeadId;
   openLeadId = null;
+  noteEl.dataset.for = "";
   const row = id && leadsList.querySelector(`[data-open="${CSS.escape(id)}"]`);
   if (row) row.focus({ preventScroll: true });
 });
@@ -484,6 +579,51 @@ dialog.addEventListener("click", (e) => {
 });
 $("dlgDelete").addEventListener("click", () => openLeadId && removeLead(openLeadId));
 
+// --------------------------------------------------------------- notes --
+// Saved by themselves a moment after typing stops, and when the dialog closes.
+let noteTimer = null;
+let notePending = null; // { id, text }
+
+async function saveNote(id, text) {
+  noteState.textContent = t("adm.note.saving");
+  noteState.className = "adm-note-state";
+  try {
+    await setDoc(doc(db, "leadNotes", id), { text, updatedAt: serverTimestamp() });
+    notes[id] = text;
+    if (noteEl.dataset.for === id) {
+      noteState.textContent = t("adm.note.saved");
+      noteState.className = "adm-note-state ok";
+    }
+    const row = leadsList.querySelector(`[data-id="${CSS.escape(id)}"]`);
+    const lead = leads.find((l) => l.id === id);
+    if (row && lead) row.outerHTML = leadRow(lead);
+  } catch (err) {
+    console.error(err);
+    if (denied(err)) notesBlocked = true;
+    noteState.textContent = denied(err) ? t("adm.note.rules") : t("adm.note.failed");
+    noteState.className = "adm-note-state warn";
+  }
+}
+
+function flushNote() {
+  clearTimeout(noteTimer);
+  if (!notePending) return;
+  const { id, text } = notePending;
+  notePending = null;
+  if ((notes[id] || "") !== text) saveNote(id, text);
+}
+
+noteEl.addEventListener("input", () => {
+  const id = noteEl.dataset.for;
+  if (!id) return;
+  notePending = { id, text: noteEl.value.trim() };
+  noteState.textContent = "";
+  clearTimeout(noteTimer);
+  noteTimer = setTimeout(flushNote, 900);
+});
+noteEl.addEventListener("blur", flushNote);
+
+// ---------------------------------------------------- shared listeners --
 document.addEventListener("click", async (e) => {
   const copy = e.target.closest("[data-copy]");
   if (copy) {
@@ -502,26 +642,22 @@ leadsList.addEventListener("click", (e) => {
   const row = e.target.closest(".adm-lead[data-id]");
   if (row) openLead(row.getAttribute("data-id"));
 });
-leadsList.addEventListener("change", (e) => {
-  const sel = e.target.closest("[data-status-for]");
-  if (sel) setStatus(sel.getAttribute("data-status-for"), sel.value);
-});
 
 // ------------------------------------------------------------ filters --
 function syncFilterUI() {
   document.querySelectorAll(".adm-chip[data-status]").forEach((b) => {
-    const on = b.getAttribute("data-status") === filters.status;
+    const on = b.getAttribute("data-status") === filters.status && !filters.week;
     b.classList.toggle("active", on);
     b.setAttribute("aria-pressed", on ? "true" : "false");
   });
   leadType.value = filters.type;
+  leadSort.value = filters.sort;
   if (leadSearch.value.trim().toLowerCase() !== filters.q) leadSearch.value = filters.q;
 }
 
 function clearFilters() {
-  Object.assign(filters, { status: "all", type: "all", week: false, q: "" });
+  Object.assign(filters, { status: "all", type: "all", service: "all", week: false, q: "" });
   leadSearch.value = "";
-  syncFilterUI();
   renderLeads();
 }
 
@@ -529,22 +665,23 @@ document.querySelectorAll(".adm-chip[data-status]").forEach((b) =>
   b.addEventListener("click", () => {
     filters.status = b.getAttribute("data-status");
     filters.week = false;
-    syncFilterUI();
     renderLeads();
   })
 );
 document.querySelectorAll("[data-stat-filter]").forEach((b) =>
   b.addEventListener("click", () => {
     const f = b.getAttribute("data-stat-filter");
-    filters.week = f === "week";
-    filters.status = f === "new" || f === "progress" ? f : "all";
+    Object.assign(filters, { type: "all", service: "all", week: f === "week", status: f === "new" || f === "progress" ? f : "all" });
     selectTab("tabLeads");
-    syncFilterUI();
     renderLeads();
   })
 );
 leadType.addEventListener("change", () => {
   filters.type = leadType.value;
+  renderLeads();
+});
+leadSort.addEventListener("change", () => {
+  filters.sort = leadSort.value;
   renderLeads();
 });
 leadSearch.addEventListener("input", () => {
@@ -591,20 +728,35 @@ function renderUsers() {
     return;
   }
   usersEmpty.classList.add("hidden");
+  // How many requests each account has sent (leads carry the sender's uid).
+  const perUser = {};
+  (leads || []).forEach((l) => l.uid && (perUser[l.uid] = (perUser[l.uid] || 0) + 1));
   usersList.innerHTML = shown
-    .map(
-      (u) => `<li class="adm-user">
+    .map((u) => {
+      const n = perUser[u.uid] || 0;
+      return `<li class="adm-user">
       <span class="adm-avatar" aria-hidden="true">${escapeHtml(initials(u.name || u.email))}</span>
       <div class="adm-user-main">
         <span class="adm-lead-name">${u.name ? escapeHtml(u.name) : `<span class="text-faint">${escapeHtml(t("adm.unknownName"))}</span>`}</span>
         ${u.email ? `<a href="mailto:${escapeHtml(u.email)}" class="adm-contact">${escapeHtml(u.email)}</a>` : ""}
       </div>
-      <time class="adm-lead-date" title="${escapeHtml(fmtDate(u.createdAt))}">${escapeHtml(fmtDate(u.createdAt, false))}</time>
-    </li>`
-    )
+      <div class="adm-user-side">
+        ${n ? `<button type="button" class="adm-tag adm-tag-link" data-user-leads="${escapeHtml(u.email || "")}">${escapeHtml(t("adm.tab.leads"))}: ${n}</button>` : ""}
+        <time class="adm-lead-date" title="${escapeHtml(fmtDate(u.createdAt))}">${escapeHtml(fmtDate(u.createdAt, false))}</time>
+      </div>
+    </li>`;
+    })
     .join("");
 }
 userSearch.addEventListener("input", renderUsers);
+// "Requests: 3" on a user shows that person's requests.
+usersList.addEventListener("click", (e) => {
+  const b = e.target.closest("[data-user-leads]");
+  if (!b) return;
+  Object.assign(filters, { status: "all", type: "all", service: "all", week: false, q: b.getAttribute("data-user-leads").toLowerCase() });
+  selectTab("tabLeads");
+  renderLeads();
+});
 
 // --------------------------------------------------------------- tabs --
 const tabs = [...document.querySelectorAll(".adm-tab")];
@@ -651,13 +803,15 @@ function downloadCsv(rows, name) {
   URL.revokeObjectURL(url);
 }
 
-// Exports what the list shows (the current filters), in the panel's language.
+// Exports what the list shows (the current filters, or just the selected
+// requests), in the panel's language.
 $("exportCsv").addEventListener("click", () => {
   if (!leads) return;
   const cols = ["date", "name", "company", "email", "phone", "type", "service", "message", "status"];
-  const rows = [cols.map((c) => t(`adm.th.${c}`))];
-  leads.filter(matchesLead).forEach((l) =>
-    rows.push([fmtDate(l.createdAt), l.name, l.company, l.email, l.phone, audienceLabel(l.audience), serviceLabel(l.service), l.message, statusLabel(statusOf(l))])
+  const rows = [[...cols.map((c) => t(`adm.th.${c}`)), t("adm.note")]];
+  const list = selected.size ? shownLeads().filter((l) => selected.has(l.id)) : shownLeads();
+  list.forEach((l) =>
+    rows.push([fmtDate(l.createdAt), l.name, l.company, l.email, l.phone, audienceLabel(l.audience), serviceLabel(l.service), l.message, statusLabel(statusOf(l)), notes[l.id] || ""])
   );
   downloadCsv(rows, "leads");
 });
@@ -675,20 +829,28 @@ function renderUpdated() {
   const time = mins < 1 ? t("adm.justNow") : new Date(lastLoaded).toLocaleTimeString(locale(), { hour: "2-digit", minute: "2-digit" });
   updatedEl.textContent = tr("adm.updated", { time });
 }
-setInterval(renderUpdated, 30000);
 
 let loadingNow = false;
-async function loadAll() {
+async function loadAll({ quiet = false } = {}) {
   if (loadingNow) return;
   loadingNow = true;
-  $("admRefresh").classList.add("spinning");
-  const [l, u] = await Promise.allSettled([
+  if (!quiet) $("admRefresh").classList.add("spinning");
+  const [l, u, n] = await Promise.allSettled([
     getDocs(query(collection(db, "leads"), orderBy("createdAt", "desc"))),
     getDocs(query(collection(db, "users"), orderBy("createdAt", "desc"))),
+    notesBlocked ? Promise.reject({ code: "permission-denied" }) : getDocs(collection(db, "leadNotes")),
   ]);
   if (l.status === "fulfilled") {
     leads = l.value.docs.map((d) => ({ id: d.id, ...d.data() }));
     leadsError = null;
+    // Flag requests that arrived since the last load (not on the first one).
+    const ids = new Set(leads.map((x) => x.id));
+    if (knownIds) {
+      const fresh = [...ids].filter((id) => !knownIds.has(id));
+      fresh.forEach((id) => freshIds.add(id));
+      if (fresh.length) toast(tr("adm.fresh", { n: fresh.length }));
+    }
+    knownIds = ids;
   } else {
     console.error(l.reason);
     leadsError = l.reason;
@@ -700,15 +862,35 @@ async function loadAll() {
     console.error(u.reason);
     usersError = u.reason;
   }
+  if (n.status === "fulfilled") {
+    notes = {};
+    n.value.docs.forEach((d) => {
+      const text = d.data().text;
+      if (text) notes[d.id] = String(text);
+    });
+  } else if (denied(n.reason)) {
+    notesBlocked = true; // rules not published yet — the rest still works
+  } else console.error(n.reason);
   lastLoaded = Date.now();
   loadingNow = false;
   $("admRefresh").classList.remove("spinning");
-  renderLeads();
+  // A quiet refresh must not throw away what the admin is in the middle of.
+  const typing = document.activeElement && /INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName) && leadsList.contains(document.activeElement);
+  if (!typing) renderLeads();
   renderUsers();
   renderUpdated();
   if (openLeadId) renderDialog();
 }
-$("admRefresh").addEventListener("click", loadAll);
+$("admRefresh").addEventListener("click", () => loadAll());
+
+// Refresh every minute while the page is open and visible, and on return.
+setInterval(() => {
+  renderUpdated();
+  if (lastLoaded && document.visibilityState === "visible" && Date.now() - lastLoaded >= AUTO_REFRESH && !dialog.open) loadAll({ quiet: true });
+}, 15000);
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible" && lastLoaded && Date.now() - lastLoaded >= AUTO_REFRESH) loadAll({ quiet: true });
+});
 
 // Re-render dates, labels and counts when the language changes.
 document.addEventListener("smkj:lang", () => {
@@ -716,7 +898,10 @@ document.addEventListener("smkj:lang", () => {
   renderLeads();
   renderUsers();
   renderUpdated();
-  if (openLeadId) renderDialog();
+  if (openLeadId) {
+    renderDialog();
+    if (notesBlocked) noteState.textContent = t("adm.note.rules");
+  }
   if (who.dataset.email) who.textContent = tr("adm.who", { email: who.dataset.email });
 });
 

@@ -52,7 +52,7 @@ portfolio.html      Filterable sample-work showcase
 contact.html        Contact form / quote request (writes to Firestore `leads`)
 login.html          Sign in / register (email+password and Google)
 account.html        Signed-in customer dashboard — profile + their own requests
-admin.html          Admin dashboard — all leads + users, CSV export (gated)
+admin.html          Admin dashboard — leads (search, filters, charts, bulk status, notes) + users, CSV export (gated)
 privacy.html, terms.html, 404.html
 css/style.css       Design system (tokens, themes, transitions, components)
 img/products/       Product photos (transparent WebP)
@@ -70,6 +70,7 @@ js/
   cookies.js          GDPR cookie consent banner
   contact.js, contact-page.js   Lead-form submission
   account.js, admin.js, login.js  Page-specific logic
+  admin-i18n.js       Admin panel strings (BG / TR / EN)
 tools/build-langs.mjs      Builds the BG/TR pages (and checks strings and asset versions)
 tools/stamp-version.mjs    Stamps ?v= on every CSS/JS reference
 firebase/firestore.rules   Security rules
@@ -92,6 +93,8 @@ firebase deploy --only firestore:rules --project smartmenukj
 ### Admin access
 
 Whoever signs in with the email listed in `ADMIN_EMAILS` (`js/firebase-config.js`, currently `krasimiruzun@smartmenukj.com`) gets access to `/admin.html`. Keep that list in sync with the `isAdminEmail()` allowlist in `firebase/firestore.rules`.
+
+Internal notes on requests are stored in `leadNotes/{leadId}` (admin-only), not in the lead itself, because a customer can read their own leads. The panel works without them; notes start working once the current `firebase/firestore.rules` is published.
 
 ## Local preview
 

@@ -6,7 +6,7 @@
     <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/" />
     <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/" />
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -26,7 +26,7 @@
     <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/" />
     <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/" />
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -36,7 +36,7 @@
     <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/services.html" />
     <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/services.html" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/services.html" />
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -56,7 +56,7 @@
     <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/services.html" />
     <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/services.html" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/services.html" />
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -211,48 +211,180 @@
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://www.smartmenukj.com/bg/qr-menu-kardzhali.html</loc>
+    <loc>https://www.smartmenukj.com/qr-menu-kardzhali.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/qr-menu-kardzhali.html" />
     <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/qr-menu-kardzhali.html" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/qr-menu-kircaali.html" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/qr-menu-kardzhali.html" />
     <lastmod>2026-11-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://www.smartmenukj.com/bg/izrabotka-na-saitove-kardzhali.html</loc>
+    <loc>https://www.smartmenukj.com/bg/qr-menu-kardzhali.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/qr-menu-kardzhali.html" />
+    <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/qr-menu-kardzhali.html" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/qr-menu-kircaali.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/qr-menu-kardzhali.html" />
+    <lastmod>2026-11-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.smartmenukj.com/tr/qr-menu-kircaali.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/qr-menu-kardzhali.html" />
+    <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/qr-menu-kardzhali.html" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/qr-menu-kircaali.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/qr-menu-kardzhali.html" />
+    <lastmod>2026-11-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.smartmenukj.com/web-design-kardzhali.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/web-design-kardzhali.html" />
     <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/izrabotka-na-saitove-kardzhali.html" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/web-sitesi-kircaali.html" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/izrabotka-na-saitove-kardzhali.html" />
     <lastmod>2026-11-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://www.smartmenukj.com/bg/videonablyudenie-kardzhali.html</loc>
+    <loc>https://www.smartmenukj.com/bg/izrabotka-na-saitove-kardzhali.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/web-design-kardzhali.html" />
+    <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/izrabotka-na-saitove-kardzhali.html" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/web-sitesi-kircaali.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/izrabotka-na-saitove-kardzhali.html" />
+    <lastmod>2026-11-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.smartmenukj.com/tr/web-sitesi-kircaali.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/web-design-kardzhali.html" />
+    <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/izrabotka-na-saitove-kardzhali.html" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/web-sitesi-kircaali.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/izrabotka-na-saitove-kardzhali.html" />
+    <lastmod>2026-11-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.smartmenukj.com/cctv-kardzhali.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/cctv-kardzhali.html" />
     <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/videonablyudenie-kardzhali.html" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/guvenlik-kamerasi-kircaali.html" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/videonablyudenie-kardzhali.html" />
     <lastmod>2026-11-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://www.smartmenukj.com/bg/umen-dom-kardzhali.html</loc>
+    <loc>https://www.smartmenukj.com/bg/videonablyudenie-kardzhali.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/cctv-kardzhali.html" />
+    <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/videonablyudenie-kardzhali.html" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/guvenlik-kamerasi-kircaali.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/videonablyudenie-kardzhali.html" />
+    <lastmod>2026-11-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.smartmenukj.com/tr/guvenlik-kamerasi-kircaali.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/cctv-kardzhali.html" />
+    <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/videonablyudenie-kardzhali.html" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/guvenlik-kamerasi-kircaali.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/videonablyudenie-kardzhali.html" />
+    <lastmod>2026-11-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.smartmenukj.com/smart-home-kardzhali.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/smart-home-kardzhali.html" />
     <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/umen-dom-kardzhali.html" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/akilli-ev-kircaali.html" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/umen-dom-kardzhali.html" />
     <lastmod>2026-11-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://www.smartmenukj.com/bg/3d-pechat-kardzhali.html</loc>
+    <loc>https://www.smartmenukj.com/bg/umen-dom-kardzhali.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/smart-home-kardzhali.html" />
+    <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/umen-dom-kardzhali.html" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/akilli-ev-kircaali.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/umen-dom-kardzhali.html" />
+    <lastmod>2026-11-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.smartmenukj.com/tr/akilli-ev-kircaali.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/smart-home-kardzhali.html" />
+    <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/umen-dom-kardzhali.html" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/akilli-ev-kircaali.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/umen-dom-kardzhali.html" />
+    <lastmod>2026-11-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.smartmenukj.com/3d-printing-kardzhali.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/3d-printing-kardzhali.html" />
     <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/3d-pechat-kardzhali.html" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/3d-baski-kircaali.html" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/3d-pechat-kardzhali.html" />
     <lastmod>2026-11-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://www.smartmenukj.com/bg/kompyutaren-servis-kardzhali.html</loc>
+    <loc>https://www.smartmenukj.com/bg/3d-pechat-kardzhali.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/3d-printing-kardzhali.html" />
+    <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/3d-pechat-kardzhali.html" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/3d-baski-kircaali.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/3d-pechat-kardzhali.html" />
+    <lastmod>2026-11-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.smartmenukj.com/tr/3d-baski-kircaali.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/3d-printing-kardzhali.html" />
+    <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/3d-pechat-kardzhali.html" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/3d-baski-kircaali.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/3d-pechat-kardzhali.html" />
+    <lastmod>2026-11-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.smartmenukj.com/computer-repair-kardzhali.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/computer-repair-kardzhali.html" />
     <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/kompyutaren-servis-kardzhali.html" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/bilgisayar-servisi-kircaali.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/kompyutaren-servis-kardzhali.html" />
+    <lastmod>2026-11-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.smartmenukj.com/bg/kompyutaren-servis-kardzhali.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/computer-repair-kardzhali.html" />
+    <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/kompyutaren-servis-kardzhali.html" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/bilgisayar-servisi-kircaali.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/kompyutaren-servis-kardzhali.html" />
+    <lastmod>2026-11-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.smartmenukj.com/tr/bilgisayar-servisi-kircaali.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/computer-repair-kardzhali.html" />
+    <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/kompyutaren-servis-kardzhali.html" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/bilgisayar-servisi-kircaali.html" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/kompyutaren-servis-kardzhali.html" />
     <lastmod>2026-11-11</lastmod>
     <changefreq>monthly</changefreq>

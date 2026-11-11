@@ -115,6 +115,8 @@ A new public page needs: an entry in `BG_PAGES` and `TR_PAGES`, the four `hrefla
 
 The home page's JSON-LD has a `FAQPage` that quotes the English FAQ (`faq.N.q` / `faq.N.a`) word for word; `build-langs.mjs` swaps in the BG/TR strings, points the Service URLs at `/bg/…` and `/tr/…` and sets `inLanguage`. When a FAQ question changes or is added, change it in the JSON-LD too — the build fails if they differ.
 
+**Service landing pages (Bulgarian only for now).** `bg/qr-menu-kardzhali.html`, `bg/izrabotka-na-saitove-kardzhali.html`, `bg/videonablyudenie-kardzhali.html`, `bg/umen-dom-kardzhali.html`, `bg/3d-pechat-kardzhali.html` and `bg/kompyutaren-servis-kardzhali.html` are built from the texts in `content/bg/*.md` by `tools/build-service-pages.mjs` (`build-langs.mjs` runs it, since it rebuilds `bg/`). It uses the built `bg/services.html` as the template, adds Service, FAQPage and BreadcrumbList JSON-LD, and links the pages from `bg/services.html` ("Научете повече") and the service cards on `bg/index.html`. To change a page, edit its `.md` file and run `node tools/build-langs.mjs`; a new page also needs its URL in `sitemap.xml`. Until EN/TR versions exist, these pages have only `bg` + `x-default` hreflang, and the EN/TR switch stays on the page.
+
 ## Speed
 
 - Pages are prefetched when a visitor hovers over or presses a link (Speculation Rules in each public page's `<head>`), so the next page opens almost instantly. Login, account and admin are left out.

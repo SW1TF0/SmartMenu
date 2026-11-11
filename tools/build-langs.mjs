@@ -260,6 +260,46 @@ function setHead(html, meta, lang) {
   return html.replace(/<html lang="en"/, `<html lang="${lang}"`);
 }
 
+// Structured data in a translated page: Service URLs point to this language's
+// pages, every inLanguage is this language, and the FAQPage questions and
+// answers come from the page dictionary. The English JSON-LD must quote the
+// English FAQ strings exactly, so Google never sees answers that differ from
+// the page.
+function localizeJsonLd(html, lang, dict, file) {
+  const en = dict.en || {};
+  const tr = dict[lang] || {};
+  const keyOf = new Map(Object.entries(en).filter(([k]) => /^faq\.\d+\.[qa]$/.test(k)).map(([k, v]) => [v, k]));
+  const say = (text) => {
+    const key = keyOf.get(text);
+    if (!key) throw new Error(`${file}: FAQPage text is not an English faq.N.q/a string: ${text.slice(0, 60)}`);
+    if (!(key in tr)) throw new Error(`${lang}/${file}: no ${lang} string for ${key}`);
+    return tr[key];
+  };
+  const walk = (node) => {
+    if (Array.isArray(node)) return node.forEach(walk);
+    if (!node || typeof node !== "object") return;
+    if ("inLanguage" in node) node.inLanguage = lang;
+    if (node["@type"] === "Service" && typeof node.url === "string" && node.url.startsWith(SITE + "/")) {
+      node.url = `${SITE}/${lang}/${node.url.slice(SITE.length + 1)}`;
+    }
+    if (node["@type"] === "FAQPage") {
+      const asked = new Set(node.mainEntity.map((q) => keyOf.get(q.name)));
+      const onPage = Object.keys(en).filter((k) => /^faq\.\d+\.q$/.test(k));
+      if (onPage.some((k) => !asked.has(k))) throw new Error(`${file}: FAQPage must list every FAQ question on the page`);
+      for (const q of node.mainEntity) {
+        q.name = say(q.name);
+        q.acceptedAnswer.text = say(q.acceptedAnswer.text);
+      }
+    }
+    Object.values(node).forEach(walk);
+  };
+  return html.replace(/(<script type="application\/ld\+json">)([\s\S]*?)(<\/script>)/g, (_, a, json, b) => {
+    const data = JSON.parse(json);
+    walk(data);
+    return `${a}\n${JSON.stringify(data, null, 2).replace(/</g, "\\u003c")}\n${b}`;
+  });
+}
+
 // Points root-relative assets and the root-only pages one level up.
 function rebase(html) {
   return html.replace(/(\s(?:href|src)="|\bimport\s[^"]*"|\bfrom\s+")([^"#:/][^"]*)"/g, (all, lead, url) => {
@@ -317,7 +357,7 @@ for (const [lang, { pages }] of Object.entries(LANGS)) {
     const src = sources[file];
     if (!src.includes(`hreflang="${lang}"`)) throw new Error(`${file}: add the hreflang alternate links to the <head>`);
     const strings = { ...COMMON[lang], ...(pageDict(src, file)[lang] || {}) };
-    const html = rebase(setHead(translateBody(src, strings, `${lang}/${file}`, missing), meta, lang));
+    const html = rebase(localizeJsonLd(setHead(translateBody(src, strings, `${lang}/${file}`, missing), meta, lang), lang, pageDict(src, file), file));
     writeFileSync(join(out, file), html);
   }
 }

@@ -9,8 +9,8 @@
 // a Home / Business version have <html data-aud-page>; they also get the
 // switch at the top of the mobile menu.
 // ============================================================================
-import { t, escapeHtml, getAudience, setAudience } from "./i18n.js?v=20261111d";
-import { themeTransition, swapTransition } from "./motion.js?v=20261111d";
+import { t, escapeHtml, getAudience, setAudience } from "./i18n.js?v=20261111e";
+import { themeTransition, swapTransition } from "./motion.js?v=20261111e";
 
 const NAV_ITEMS = [
   { key: "index.html", label: "nav.home" },
@@ -215,9 +215,9 @@ const SVC_PAGES = {
 };
 const svcHref = (key) => (SVC_PAGES[document.documentElement.lang] || SVC_PAGES.en)[key];
 
-// The blog exists only in Bulgarian so far (bg/blog/): linked from Bulgarian pages only.
+// Each language has its blog at <lang>/blog/ (EN at /blog/); relative, like the other footer links.
 function blogLink() {
-  return document.documentElement.lang === "bg" ? '\n          <li><a href="blog/" data-i18n="footer.blog">Блог</a></li>' : "";
+  return '\n          <li><a href="blog/" data-i18n="footer.blog">Blog</a></li>';
 }
 
 function footerHTML() {
@@ -392,7 +392,7 @@ export function mountChrome() {
   // Firebase loads lazily so the header, footer and translations still render
   // when the SDK is slow, offline or blocked; the nav starts signed-out.
   renderAuth(null, false);
-  import("./auth.js?v=20261111d")
+  import("./auth.js?v=20261111e")
     .then(({ watchAuth, isAdmin, logout }) =>
       watchAuth((user) => {
         const admin = isAdmin(user);

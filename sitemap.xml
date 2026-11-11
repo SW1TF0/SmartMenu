@@ -391,48 +391,10 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://www.smartmenukj.com/bg/blog/</loc>
-    <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/blog/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/blog/" />
-    <lastmod>2026-11-11</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://www.smartmenukj.com/bg/blog/qr-menu-kak-raboti.html</loc>
-    <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/blog/qr-menu-kak-raboti.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/blog/qr-menu-kak-raboti.html" />
-    <lastmod>2026-11-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.smartmenukj.com/bg/blog/videonablyudenie-predi-montazh.html</loc>
-    <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/blog/videonablyudenie-predi-montazh.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/blog/videonablyudenie-predi-montazh.html" />
-    <lastmod>2026-11-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.smartmenukj.com/bg/blog/umen-dom-ot-kade-da-zapochnete.html</loc>
-    <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/blog/umen-dom-ot-kade-da-zapochnete.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/blog/umen-dom-ot-kade-da-zapochnete.html" />
-    <lastmod>2026-11-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.smartmenukj.com/bg/blog/sait-za-zavedenie-kakvo-tryabva-da-ima.html</loc>
-    <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/blog/sait-za-zavedenie-kakvo-tryabva-da-ima.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/blog/sait-za-zavedenie-kakvo-tryabva-da-ima.html" />
-    <lastmod>2026-11-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://www.smartmenukj.com/bg/blog/3d-pechat-kakvo-moje-da-se-napravi.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/blog/3d-printing-what-can-be-made.html" />
     <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/blog/3d-pechat-kakvo-moje-da-se-napravi.html" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/blog/3d-baski-neler-yapilabilir.html" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/blog/3d-pechat-kakvo-moje-da-se-napravi.html" />
     <lastmod>2026-11-11</lastmod>
     <changefreq>monthly</changefreq>
@@ -440,7 +402,199 @@
   </url>
   <url>
     <loc>https://www.smartmenukj.com/bg/blog/baven-kompyutar-7-prichini.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/blog/slow-computer-7-causes.html" />
     <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/blog/baven-kompyutar-7-prichini.html" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/blog/yavas-bilgisayar-7-neden.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/blog/baven-kompyutar-7-prichini.html" />
+    <lastmod>2026-11-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.smartmenukj.com/bg/blog/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/blog/" />
+    <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/blog/" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/blog/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/blog/" />
+    <lastmod>2026-11-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.smartmenukj.com/bg/blog/qr-menu-kak-raboti.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/blog/qr-menu-how-it-works.html" />
+    <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/blog/qr-menu-kak-raboti.html" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/blog/qr-menu-nasil-calisir.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/blog/qr-menu-kak-raboti.html" />
+    <lastmod>2026-11-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.smartmenukj.com/bg/blog/sait-za-zavedenie-kakvo-tryabva-da-ima.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/blog/small-business-website-checklist.html" />
+    <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/blog/sait-za-zavedenie-kakvo-tryabva-da-ima.html" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/blog/isletme-web-sitesi-neler-olmali.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/blog/sait-za-zavedenie-kakvo-tryabva-da-ima.html" />
+    <lastmod>2026-11-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.smartmenukj.com/bg/blog/umen-dom-ot-kade-da-zapochnete.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/blog/smart-home-where-to-start.html" />
+    <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/blog/umen-dom-ot-kade-da-zapochnete.html" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/blog/akilli-ev-nereden-baslamali.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/blog/umen-dom-ot-kade-da-zapochnete.html" />
+    <lastmod>2026-11-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.smartmenukj.com/bg/blog/videonablyudenie-predi-montazh.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/blog/cctv-before-installation.html" />
+    <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/blog/videonablyudenie-predi-montazh.html" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/blog/guvenlik-kamerasi-kurulum-oncesi.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/blog/videonablyudenie-predi-montazh.html" />
+    <lastmod>2026-11-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.smartmenukj.com/blog/3d-printing-what-can-be-made.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/blog/3d-printing-what-can-be-made.html" />
+    <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/blog/3d-pechat-kakvo-moje-da-se-napravi.html" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/blog/3d-baski-neler-yapilabilir.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/blog/3d-pechat-kakvo-moje-da-se-napravi.html" />
+    <lastmod>2026-11-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.smartmenukj.com/blog/cctv-before-installation.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/blog/cctv-before-installation.html" />
+    <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/blog/videonablyudenie-predi-montazh.html" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/blog/guvenlik-kamerasi-kurulum-oncesi.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/blog/videonablyudenie-predi-montazh.html" />
+    <lastmod>2026-11-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.smartmenukj.com/blog/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/blog/" />
+    <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/blog/" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/blog/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/blog/" />
+    <lastmod>2026-11-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.smartmenukj.com/blog/qr-menu-how-it-works.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/blog/qr-menu-how-it-works.html" />
+    <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/blog/qr-menu-kak-raboti.html" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/blog/qr-menu-nasil-calisir.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/blog/qr-menu-kak-raboti.html" />
+    <lastmod>2026-11-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.smartmenukj.com/blog/slow-computer-7-causes.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/blog/slow-computer-7-causes.html" />
+    <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/blog/baven-kompyutar-7-prichini.html" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/blog/yavas-bilgisayar-7-neden.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/blog/baven-kompyutar-7-prichini.html" />
+    <lastmod>2026-11-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.smartmenukj.com/blog/small-business-website-checklist.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/blog/small-business-website-checklist.html" />
+    <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/blog/sait-za-zavedenie-kakvo-tryabva-da-ima.html" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/blog/isletme-web-sitesi-neler-olmali.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/blog/sait-za-zavedenie-kakvo-tryabva-da-ima.html" />
+    <lastmod>2026-11-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.smartmenukj.com/blog/smart-home-where-to-start.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/blog/smart-home-where-to-start.html" />
+    <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/blog/umen-dom-ot-kade-da-zapochnete.html" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/blog/akilli-ev-nereden-baslamali.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/blog/umen-dom-ot-kade-da-zapochnete.html" />
+    <lastmod>2026-11-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.smartmenukj.com/tr/blog/3d-baski-neler-yapilabilir.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/blog/3d-printing-what-can-be-made.html" />
+    <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/blog/3d-pechat-kakvo-moje-da-se-napravi.html" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/blog/3d-baski-neler-yapilabilir.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/blog/3d-pechat-kakvo-moje-da-se-napravi.html" />
+    <lastmod>2026-11-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.smartmenukj.com/tr/blog/akilli-ev-nereden-baslamali.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/blog/smart-home-where-to-start.html" />
+    <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/blog/umen-dom-ot-kade-da-zapochnete.html" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/blog/akilli-ev-nereden-baslamali.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/blog/umen-dom-ot-kade-da-zapochnete.html" />
+    <lastmod>2026-11-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.smartmenukj.com/tr/blog/guvenlik-kamerasi-kurulum-oncesi.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/blog/cctv-before-installation.html" />
+    <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/blog/videonablyudenie-predi-montazh.html" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/blog/guvenlik-kamerasi-kurulum-oncesi.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/blog/videonablyudenie-predi-montazh.html" />
+    <lastmod>2026-11-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.smartmenukj.com/tr/blog/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/blog/" />
+    <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/blog/" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/blog/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/blog/" />
+    <lastmod>2026-11-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.smartmenukj.com/tr/blog/isletme-web-sitesi-neler-olmali.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/blog/small-business-website-checklist.html" />
+    <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/blog/sait-za-zavedenie-kakvo-tryabva-da-ima.html" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/blog/isletme-web-sitesi-neler-olmali.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/blog/sait-za-zavedenie-kakvo-tryabva-da-ima.html" />
+    <lastmod>2026-11-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.smartmenukj.com/tr/blog/qr-menu-nasil-calisir.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/blog/qr-menu-how-it-works.html" />
+    <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/blog/qr-menu-kak-raboti.html" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/blog/qr-menu-nasil-calisir.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/blog/qr-menu-kak-raboti.html" />
+    <lastmod>2026-11-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.smartmenukj.com/tr/blog/yavas-bilgisayar-7-neden.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.smartmenukj.com/blog/slow-computer-7-causes.html" />
+    <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/blog/baven-kompyutar-7-prichini.html" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/blog/yavas-bilgisayar-7-neden.html" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/blog/baven-kompyutar-7-prichini.html" />
     <lastmod>2026-11-11</lastmod>
     <changefreq>monthly</changefreq>

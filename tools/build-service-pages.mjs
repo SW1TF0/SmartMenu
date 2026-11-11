@@ -39,15 +39,24 @@ const SVC_NAMES = {
 const UI = {
   en: { dir: "", faq: "FAQ", faqTitle: "Frequently asked questions", notes: "Internal links", region: "Kardzhali and the region",
         quote: "Get a quote", call: "Call", others: "Other services in Kardzhali", ctaEyebrow: "Free quote within 24 hours", ctaTitle: "Tell us what you need.",
-        ctaLede: "We'll reply with a clear written quote within a day, with no obligation.", more: "Learn more", readMore: "Read more", city: "Kardzhali" },
+        ctaLede: "We'll reply with a clear written quote within a day, with no obligation.", more: "Learn more", readMore: "Read more", city: "Kardzhali",
+        blog: "Blog", moreBlog: "More from the blog", blogCta: "Blog: tips on QR menus, cameras and smart homes",
+        blogTitle: "Blog — tips on QR menus, CCTV and smart homes | SmartMenuKJ",
+        blogLede: "Practical notes for owners of restaurants, shops and homes in Kardzhali: how the technology we install works and how to choose.",
+        published: "Published", months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"] },
   bg: { dir: "bg/", faq: "Често задавани въпроси", faqTitle: "Често задавани въпроси", notes: "Вътрешни линкове", region: "Кърджали и региона",
         quote: "Поискай оферта", call: "Обади се", others: "Други услуги в Кърджали", ctaEyebrow: "Безплатна оферта до 24 часа", ctaTitle: "Кажете ни какво ви трябва.",
         ctaLede: "Ще ви върнем ясна писмена оферта до един ден, без ангажимент.", more: "Научете повече", readMore: "Прочетете още", city: "Kardzhali",
-        blog: "Блог", moreBlog: "Още от блога", blogCta: "Блог: съвети за QR менюта, камери и умен дом", blogLede: "Полезно за собственици на заведения, магазини и домове в Кърджали: как работят технологиите, които монтираме, и как да изберете.",
+        blog: "Блог", moreBlog: "Още от блога", blogCta: "Блог: съвети за QR менюта, камери и умен дом",
+        blogTitle: "Блог — съвети за QR менюта, видеонаблюдение и умен дом | SmartMenuKJ", blogLede: "Полезно за собственици на заведения, магазини и домове в Кърджали: как работят технологиите, които монтираме, и как да изберете.",
         published: "Публикувано", months: ["януари", "февруари", "март", "април", "май", "юни", "юли", "август", "септември", "октомври", "ноември", "декември"] },
-  tr: { dir: "tr/", faq: "Sık sorulan sorular", faqTitle: "Sık sorulan sorular", notes: "İç bağlantılar", region: "Kırcaali ve bölgesi",
+  tr: { dir: "tr/", faq: ["Sık sorulan sorular", "Sıkça sorulan sorular"], faqTitle: "Sık sorulan sorular", notes: "İç bağlantılar", region: "Kırcaali ve bölgesi",
         quote: "Teklif al", call: "Arayın", others: "Kırcaali'deki diğer hizmetlerimiz", ctaEyebrow: "24 saat içinde ücretsiz teklif", ctaTitle: "Neye ihtiyacınız olduğunu anlatın.",
-        ctaLede: "Bir gün içinde, hiçbir yükümlülük olmadan net bir yazılı teklif gönderiyoruz.", more: "Daha fazla bilgi", readMore: "Devamını okuyun", city: "Kardzhali" },
+        ctaLede: "Bir gün içinde, hiçbir yükümlülük olmadan net bir yazılı teklif gönderiyoruz.", more: "Daha fazla bilgi", readMore: "Devamını okuyun", city: "Kardzhali",
+        blog: "Blog", moreBlog: "Blogdan daha fazlası", blogCta: "Blog: QR menü, kamera ve akıllı ev ipuçları",
+        blogTitle: "Blog — QR menü, güvenlik kamerası ve akıllı ev ipuçları | SmartMenuKJ",
+        blogLede: "Kırcaali'deki restoran, mağaza ve ev sahipleri için: kurduğumuz teknolojiler nasıl çalışır ve nasıl seçilir.",
+        published: "Yayın tarihi", months: ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"] },
 };
 
 const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -108,7 +117,7 @@ function parse(md, file, lang, kind = "service") {
   let faq = [];
   for (const s of sections.slice(1)) {
     if (s.heading === ui.notes) continue;
-    if (s.heading === ui.faq) {
+    if ([].concat(ui.faq).includes(s.heading)) {
       for (const l of s.lines.map((x) => x.trim()).filter(Boolean)) {
         const q = l.match(/^\*\*(.+)\*\*$/);
         if (q) faq.push({ q: q[1], a: [] });
@@ -123,7 +132,7 @@ function parse(md, file, lang, kind = "service") {
     }
     body.push({ heading: s.heading, blocks: blocks(s.lines) });
   }
-  if (faq.length < 2) throw new Error(`${file}: the FAQ ("## ${ui.faq}") needs at least 2 questions`);
+  if (faq.length < 2) throw new Error(`${file}: the FAQ ("## ${[].concat(ui.faq)[0]}") needs at least 2 questions`);
   return { lang, file, meta, lede: intro[0].items.join(" "), rest: intro.slice(1), body, faq };
 }
 
@@ -364,7 +373,7 @@ function humanDate(iso, lang) {
   return `${d} ${UI[lang].months[m - 1]} ${y}`;
 }
 
-function renderArticle(template, a, all = []) {
+function renderArticle(template, a, all = [], twins = {}) {
   const { meta, lang } = a;
   const ui = UI[lang];
   const url = SITE + meta.url;
@@ -402,7 +411,7 @@ function renderArticle(template, a, all = []) {
   });
   const { head, tail, script } = shell(template, {
     lang, url, title: meta.title, description: meta.description, ogTitle: meta.h1,
-    alts: [[lang, meta.url]], xDefault: meta.url, jsonld, base: `/${ui.dir}`, ogType: "article",
+    alts: LANGS.filter((l) => twins[l]).map((l) => [l, twins[l]]), xDefault: twins[X_DEFAULT] || meta.url, jsonld, base: `/${ui.dir}`, ogType: "article",
   });
   const sections = a.body.map((s) => `          <h2>${esc(s.heading)}</h2>\n${renderBlocks(s.blocks)}`).join("\n\n");
   // Every article links to the others, so each one has links from the whole blog (SEO audit, M-1111-32).
@@ -460,7 +469,7 @@ ${faq}
   return head + main + tail + script;
 }
 
-function renderBlogIndex(template, lang, articles) {
+function renderBlogIndex(template, lang, articles, blogLangs = [lang]) {
   const ui = UI[lang];
   const path = `/${ui.dir}blog/`;
   const url = SITE + path;
@@ -486,8 +495,8 @@ function renderBlogIndex(template, lang, articles) {
     ],
   });
   const { head, tail, script } = shell(template, {
-    lang, url, title: `${ui.blog} — съвети за QR менюта, видеонаблюдение и умен дом | SmartMenuKJ`, description: ui.blogLede,
-    ogTitle: `${ui.blog} — SmartMenuKJ`, alts: [[lang, path]], xDefault: path, jsonld, base: `/${ui.dir}`,
+    lang, url, title: ui.blogTitle, description: ui.blogLede, ogTitle: `${ui.blog} — SmartMenuKJ`,
+    alts: blogLangs.map((l) => [l, `/${UI[l].dir}blog/`]), xDefault: blogLangs.includes(X_DEFAULT) ? `/${UI[X_DEFAULT].dir}blog/` : path, jsonld, base: `/${ui.dir}`,
   });
   const items = articles
     .map((a) => `          <h2><a href="${a.meta.url}">${esc(a.meta.h1)}</a></h2>
@@ -516,18 +525,41 @@ ${items}
 }
 
 function buildBlogs(root, templates) {
-  const all = [];
+  const byLang = {};
   for (const lang of LANGS.filter((l) => UI[l].blog)) {
     const dir = join(root, "content", lang, "blog");
     if (!existsSync(dir)) continue;
     const articles = readdirSync(dir).filter((f) => f.endsWith(".md")).sort()
       .map((f) => parse(readFileSync(join(dir, f), "utf8"), `content/${lang}/blog/${f}`, lang, "article"))
       .sort((x, y) => y.meta.date.localeCompare(x.meta.date) || x.meta.url.localeCompare(y.meta.url));
-    if (!articles.length) continue;
-    const out = join(root, UI[lang].dir, "blog");
-    mkdirSync(out, { recursive: true });
-    for (const a of articles) writeFileSync(join(root, a.meta.url.slice(1)), renderArticle(templates[lang], a, articles));
-    writeFileSync(join(out, "index.html"), renderBlogIndex(templates[lang], lang, articles));
+    if (articles.length) byLang[lang] = articles;
+  }
+  // Translations of one article share the Bulgarian URL: a BG article is its own key, EN/TR name it in `bg:`.
+  const groups = {};
+  for (const [lang, articles] of Object.entries(byLang)) {
+    for (const a of articles) {
+      const key = lang === X_DEFAULT ? a.meta.url : a.meta[X_DEFAULT];
+      if (!key) throw new Error(`${a.file}: front matter needs ${X_DEFAULT}: (the URL of the Bulgarian article)`);
+      const g = (groups[key] ??= {});
+      if (g[lang]) throw new Error(`${a.file}: two ${lang} articles for ${key}`);
+      g[lang] = a.meta.url;
+    }
+  }
+  for (const [key, g] of Object.entries(groups)) {
+    if (!g[X_DEFAULT]) throw new Error(`${key}: no Bulgarian article with this URL (named in ${Object.values(g).join(", ")})`);
+    for (const lang of Object.keys(g)) {  // the other-language URLs written in a front matter must match
+      const a = byLang[lang].find((x) => x.meta.url === g[lang]);
+      for (const l of LANGS) if (l !== lang && a.meta[l] && g[l] && a.meta[l] !== g[l]) throw new Error(`${a.file}: ${l}: ${a.meta[l]} but the ${l} article is ${g[l]}`);
+    }
+  }
+  const twinsOf = (a) => groups[a.lang === X_DEFAULT ? a.meta.url : a.meta[X_DEFAULT]];
+  const blogLangs = LANGS.filter((l) => byLang[l]);
+  const all = [];
+  for (const lang of blogLangs) {
+    const articles = byLang[lang];
+    mkdirSync(join(root, UI[lang].dir, "blog"), { recursive: true });
+    for (const a of articles) writeFileSync(join(root, a.meta.url.slice(1)), renderArticle(templates[lang], a, articles, twinsOf(a)));
+    writeFileSync(join(root, UI[lang].dir, "blog", "index.html"), renderBlogIndex(templates[lang], lang, articles, blogLangs));
     all.push(...articles);
   }
   return all;

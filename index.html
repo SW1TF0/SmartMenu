@@ -29,10 +29,10 @@
 <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3" />
 <link rel="manifest" href="/site.webmanifest" />
 <link rel="preload" href="fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
-<link rel="stylesheet" href="css/style.css?v=20261111d" />
-<link rel="modulepreload" href="js/i18n.js?v=20261111d" />
-<link rel="modulepreload" href="js/chrome.js?v=20261111d" />
-<link rel="modulepreload" href="js/motion.js?v=20261111d" />
+<link rel="stylesheet" href="css/style.css?v=20261111e" />
+<link rel="modulepreload" href="js/i18n.js?v=20261111e" />
+<link rel="modulepreload" href="js/chrome.js?v=20261111e" />
+<link rel="modulepreload" href="js/motion.js?v=20261111e" />
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -383,6 +383,9 @@
     </div>
   </section>
 
+  <section class="section" data-blog-link>
+    <div class="container"><p class="lede" style="text-align:center"><a href="blog/" class="link-chevron">Blog: tips on QR menus, cameras and smart homes</a></p></div>
+  </section>
   <!-- CTA -->
   <section class="section section-cta">
     <div class="container">
@@ -404,10 +407,10 @@
 <footer id="site-footer" class="site-footer"></footer>
 
 <script type="module">
-  import { mountChrome } from "./js/chrome.js?v=20261111d";
-  import { registerDict, applyI18n, initLangSwitch } from "./js/i18n.js?v=20261111d";
-  import { initCookieBanner } from "./js/cookies.js?v=20261111d";
-  import { PARTNERS, renderPartners } from "./js/partners.js?v=20261111d";
+  import { mountChrome } from "./js/chrome.js?v=20261111e";
+  import { registerDict, applyI18n, initLangSwitch } from "./js/i18n.js?v=20261111e";
+  import { initCookieBanner } from "./js/cookies.js?v=20261111e";
+  import { PARTNERS, renderPartners } from "./js/partners.js?v=20261111e";
 
   registerDict({
     en: {
@@ -692,6 +695,6 @@
   initLangSwitch();
   initCookieBanner();
 </script>
-<script type="module" src="js/home.js?v=20261111d"></script>
+<script type="module" src="js/home.js?v=20261111e"></script>
 </body>
 </html>

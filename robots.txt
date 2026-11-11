@@ -1,7 +1,4 @@
 User-agent: *
 Allow: /
-Disallow: /admin.html
-Disallow: /account.html
-Disallow: /login.html
 
 Sitemap: https://www.smartmenukj.com/sitemap.xml

@@ -9,8 +9,8 @@
 // a Home / Business version have <html data-aud-page>; they also get the
 // switch at the top of the mobile menu.
 // ============================================================================
-import { t, escapeHtml, getAudience, setAudience } from "./i18n.js?v=20261111c";
-import { themeTransition, swapTransition } from "./motion.js?v=20261111c";
+import { t, escapeHtml, getAudience, setAudience } from "./i18n.js?v=20261111d";
+import { themeTransition, swapTransition } from "./motion.js?v=20261111d";
 
 const NAV_ITEMS = [
   { key: "index.html", label: "nav.home" },
@@ -235,7 +235,7 @@ function footerHTML() {
         </div>
       </div>
       <div>
-        <h4 data-i18n="footer.services">Services</h4>
+        <h3 data-i18n="footer.services">Services</h3>
         <ul>
           <li><a href="${svcHref("web")}" data-i18n="svc.web">Web Development</a></li>
           <li><a href="${svcHref("print3d")}" data-i18n="svc.print3d">3D Printing</a></li>
@@ -246,7 +246,7 @@ function footerHTML() {
         </ul>
       </div>
       <div>
-        <h4 data-i18n="footer.company">Company</h4>
+        <h3 data-i18n="footer.company">Company</h3>
         <ul>
           <li><a href="about.html" data-i18n="footer.about">About us</a></li>
           <li><a href="portfolio.html" data-i18n="footer.portfolio">Our work</a></li>
@@ -255,14 +255,14 @@ function footerHTML() {
         </ul>
       </div>
       <div>
-        <h4 data-i18n="footer.divisions">Divisions</h4>
+        <h3 data-i18n="footer.divisions">Divisions</h3>
         <ul>
           <li><a href="https://smarthomekj.eu/" class="ext" target="_blank" rel="noopener">SmartHomeKJ</a></li>
           <li><a href="index.html#divisions" data-i18n="footer.divisions.all">All divisions</a></li>
         </ul>
       </div>
       <div>
-        <h4 data-i18n="footer.legal">Legal</h4>
+        <h3 data-i18n="footer.legal">Legal</h3>
         <ul>
           <li><a href="privacy.html" data-i18n="footer.privacy">Privacy & Cookies</a></li>
           <li><a href="terms.html" data-i18n="footer.terms">Terms of Service</a></li>
@@ -341,8 +341,9 @@ export function mountChrome() {
   }
 
   if (header && !header.hasAttribute("data-hide-mobile-cta") && !document.querySelector(".mobile-cta-bar")) {
-    const bar = document.createElement("div");
+    const bar = document.createElement("aside");  // a landmark, so screen readers can find it
     bar.className = "mobile-cta-bar";
+    bar.setAttribute("aria-label", t("nav.quote"));
     bar.innerHTML = mobileCtaHTML();
     document.body.appendChild(bar);
   }
@@ -391,7 +392,7 @@ export function mountChrome() {
   // Firebase loads lazily so the header, footer and translations still render
   // when the SDK is slow, offline or blocked; the nav starts signed-out.
   renderAuth(null, false);
-  import("./auth.js?v=20261111c")
+  import("./auth.js?v=20261111d")
     .then(({ watchAuth, isAdmin, logout }) =>
       watchAuth((user) => {
         const admin = isAdmin(user);

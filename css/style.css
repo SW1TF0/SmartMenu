@@ -396,7 +396,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
   min-height: 40px; padding: 0 20px; border: 0; border-radius: 999px; background: none; cursor: pointer;
   font: 500 15px/1.1 var(--font-sans); letter-spacing: -0.012em; white-space: nowrap;
-  color: var(--ink-2); transition: color 0.3s ease;
+  color: color-mix(in srgb, var(--ink-2) 85%, var(--ink)); transition: color 0.3s ease;  /* 5:1 on the grey track */
 }
 .seg button svg { width: 17px; height: 17px; flex: none; }
 .seg button:hover,
@@ -728,6 +728,9 @@ a.card:hover .card-link svg { transform: translateX(3px); }
 .cta-band h2 { margin: 0 0 18px; }
 .cta-band .lede { margin: 0 auto; }
 .cta-band .hero-actions { margin: 0; }
+/* The band uses the dark-theme tokens; white on its #0a84ff is 3.6:1, on #0071e3 4.7:1. */
+.cta-band .btn-primary { background: #0071e3; }
+.cta-band .btn-primary:hover { background: #0077ed; }
 .cta-band .btn-ghost { color: #fff; border-color: rgba(255, 255, 255, 0.5); }
 .cta-band .btn-ghost:hover { background: #fff; color: #000; border-color: #fff; }
 
@@ -736,7 +739,7 @@ a.card:hover .card-link svg { transform: translateX(3px); }
 .footer-grid { display: grid; grid-template-columns: minmax(0, 1.4fr) repeat(4, minmax(0, 1fr)); gap: 32px; padding-bottom: 36px; border-bottom: 1px solid var(--line); }
 @media (max-width: 900px) { .footer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .footer-grid > :first-child { grid-column: 1 / -1; } }
 @media (max-width: 359px) { .footer-grid { grid-template-columns: minmax(0, 1fr); } }
-.footer-grid h4 { margin-bottom: 12px; font: 600 12.5px/1.3 var(--font-sans); letter-spacing: 0; color: var(--ink); }
+.footer-grid h3, .footer-grid h4 { margin-bottom: 12px; font: 600 12.5px/1.3 var(--font-sans); letter-spacing: 0; color: var(--ink); }
 .footer-grid li { margin-bottom: 9px; }
 .footer-grid a, .footer-grid p { font-size: 12.5px; line-height: 1.45; color: var(--ink-2); }
 .footer-grid a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 2px; }
@@ -883,7 +886,7 @@ a.card:hover .card-link svg { transform: translateX(3px); }
 .form-card { padding: 32px; }
 .form-card h2 { font-size: clamp(28px, 3vw, 36px); margin-bottom: 22px; }
 .form-fine { margin: 14px 0 0; font-size: 13px; line-height: 1.5; color: var(--ink-3); }
-.form-fine a { color: var(--link); }
+.form-fine a { color: var(--link); text-decoration: underline; text-underline-offset: 2px; }
 .form-fine a:hover { text-decoration: underline; }
 .section-last { padding-bottom: clamp(72px, 10vw, 128px); }
 
@@ -898,6 +901,7 @@ a.card:hover .card-link svg { transform: translateX(3px); }
 .legal li { position: relative; padding-left: 22px; margin-bottom: 10px; }
 .legal li::before { content: ""; position: absolute; left: 4px; top: 0.66em; width: 6px; height: 6px; border-radius: 50%; background: var(--ink-3); }
 .legal a { color: var(--link); }
+.legal p a, .legal li a { text-decoration: underline; text-underline-offset: 2px; text-decoration-thickness: 1px; }
 .legal a:hover { text-decoration: underline; }
 
 /* ------------------------------------------------ account + admin -- */
@@ -1098,6 +1102,8 @@ a.card:active { transform: translateY(-1px) scale(0.99); }
 
 /* Section labels carry the brand blue — the one colour on the page. */
 .sys-bar .eyebrow, .hero-copy .eyebrow, .page-hero .eyebrow { color: var(--accent); }
+/* On the grey sections the accent blue is 4.3:1; the link blue passes 4.5:1 (WCAG AA). */
+.section-alt .sys-bar .eyebrow { color: var(--link); }
 .invert .sys-bar .eyebrow, .stats-dark .eyebrow { color: var(--ink-2); }
 
 /* A soft blue haze behind the hero showcase, so it floats. */
@@ -1553,3 +1559,8 @@ a.card:active { transform: translateY(-1px) scale(0.99); }
   .svc-panel .btn, .svc-actions { display: none !important; }
   .legal a[href^="http"]::after, .legal a[href^="mailto"]::after { content: " (" attr(href) ")"; font-size: 0.85em; color: #555; }
 }
+
+/* Bigger touch targets without changing the look (WCAG 2.5.8): an invisible hit area around small controls. */
+.lang-switch button, .crumbs a, .nav-actions .icon-btn, .to-top { position: relative; }
+.lang-switch button::before, .crumbs a::before, .to-top::before { content: ""; position: absolute; inset: -11px -2px; }
+.nav-actions .icon-btn::before { content: ""; position: absolute; inset: -6px; }

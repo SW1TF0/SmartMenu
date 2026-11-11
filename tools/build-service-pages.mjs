@@ -43,7 +43,7 @@ const UI = {
   bg: { dir: "bg/", faq: "Често задавани въпроси", faqTitle: "Често задавани въпроси", notes: "Вътрешни линкове", region: "Кърджали и региона",
         quote: "Поискай оферта", call: "Обади се", others: "Други услуги в Кърджали", ctaEyebrow: "Безплатна оферта до 24 часа", ctaTitle: "Кажете ни какво ви трябва.",
         ctaLede: "Ще ви върнем ясна писмена оферта до един ден, без ангажимент.", more: "Научете повече", readMore: "Прочетете още", city: "Kardzhali",
-        blog: "Блог", blogCta: "Блог: съвети за QR менюта, камери и умен дом", blogLede: "Полезно за собственици на заведения, магазини и домове в Кърджали: как работят технологиите, които монтираме, и как да изберете.",
+        blog: "Блог", moreBlog: "Още от блога", blogCta: "Блог: съвети за QR менюта, камери и умен дом", blogLede: "Полезно за собственици на заведения, магазини и домове в Кърджали: как работят технологиите, които монтираме, и как да изберете.",
         published: "Публикувано", months: ["януари", "февруари", "март", "април", "май", "юни", "юли", "август", "септември", "октомври", "ноември", "декември"] },
   tr: { dir: "tr/", faq: "Sık sorulan sorular", faqTitle: "Sık sorulan sorular", notes: "İç bağlantılar", region: "Kırcaali ve bölgesi",
         quote: "Teklif al", call: "Arayın", others: "Kırcaali'deki diğer hizmetlerimiz", ctaEyebrow: "24 saat içinde ücretsiz teklif", ctaTitle: "Neye ihtiyacınız olduğunu anlatın.",
@@ -364,7 +364,7 @@ function humanDate(iso, lang) {
   return `${d} ${UI[lang].months[m - 1]} ${y}`;
 }
 
-function renderArticle(template, a) {
+function renderArticle(template, a, all = []) {
   const { meta, lang } = a;
   const ui = UI[lang];
   const url = SITE + meta.url;
@@ -405,6 +405,9 @@ function renderArticle(template, a) {
     alts: [[lang, meta.url]], xDefault: meta.url, jsonld, base: `/${ui.dir}`, ogType: "article",
   });
   const sections = a.body.map((s) => `          <h2>${esc(s.heading)}</h2>\n${renderBlocks(s.blocks)}`).join("\n\n");
+  // Every article links to the others, so each one has links from the whole blog (SEO audit, M-1111-32).
+  const others = all.filter((x) => x !== a).map((x) => `            <li><a href="${x.meta.url}">${esc(x.meta.h1)}</a></li>`).join("\n");
+  const more = others ? `\n\n          <h2>${esc(ui.moreBlog)}</h2>\n          <ul>\n${others}\n          </ul>` : "";
   const faq = a.faq.map(({ q, a: ans }) => `        <details name="faq"><summary>${inline(q)}</summary><p>${inline(ans)}</p></details>`).join("\n");
   // <base href="/bg/"> is set: links are written relative to the language's top level.
   const main = `<main id="main">
@@ -421,7 +424,7 @@ function renderArticle(template, a) {
     <div class="container">
       <article class="card legal-card">
         <div class="legal">
-${a.rest.length ? renderBlocks(a.rest) + "\n\n" : ""}${sections}
+${a.rest.length ? renderBlocks(a.rest) + "\n\n" : ""}${sections}${more}
         </div>
       </article>
     </div>
@@ -523,7 +526,7 @@ function buildBlogs(root, templates) {
     if (!articles.length) continue;
     const out = join(root, UI[lang].dir, "blog");
     mkdirSync(out, { recursive: true });
-    for (const a of articles) writeFileSync(join(root, a.meta.url.slice(1)), renderArticle(templates[lang], a));
+    for (const a of articles) writeFileSync(join(root, a.meta.url.slice(1)), renderArticle(templates[lang], a, articles));
     writeFileSync(join(out, "index.html"), renderBlogIndex(templates[lang], lang, articles));
     all.push(...articles);
   }

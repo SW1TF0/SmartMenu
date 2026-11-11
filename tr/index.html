@@ -30,10 +30,10 @@
 <link rel="manifest" href="/site.webmanifest" />
 <link rel="preload" href="../fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="../fonts/inter-latin-ext.woff2" as="font" type="font/woff2" crossorigin />
-<link rel="stylesheet" href="../css/style.css?v=20261111c" />
-<link rel="modulepreload" href="../js/i18n.js?v=20261111c" />
-<link rel="modulepreload" href="../js/chrome.js?v=20261111c" />
-<link rel="modulepreload" href="../js/motion.js?v=20261111c" />
+<link rel="stylesheet" href="../css/style.css?v=20261111d" />
+<link rel="modulepreload" href="../js/i18n.js?v=20261111d" />
+<link rel="modulepreload" href="../js/chrome.js?v=20261111d" />
+<link rel="modulepreload" href="../js/motion.js?v=20261111d" />
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -315,7 +315,7 @@
         <h2 class="h-lg" data-i18n="prod.title">Kanıtlanmış donanım, doğru kurulum.</h2>
         <p class="lede" data-i18n="prod.lede">Güvendiğimiz markalardan kameralar, erişim kontrolü ve otomasyon — mekânınıza göre seçilir ve bizim tarafımızdan kurulur.</p>
       </div>
-      <ul class="product-grid">
+      <ul class="product-grid" tabindex="0">
         <li class="product reveal" data-for="business"><div class="product-plate"><img src="../img/products/outdoor-camera.webp" alt="" width="400" height="400" loading="lazy" decoding="async" /></div><span class="product-name" data-i18n="prod.outdoorcam">Dış mekân kamerası</span><span class="product-use" data-i18n="prod.outdoorcam.use">Girişler ve otoparklar</span></li>
         <li class="product reveal" data-for="business"><div class="product-plate"><img src="../img/products/solar-camera.webp" alt="" width="400" height="400" loading="lazy" decoding="async" /></div><span class="product-name" data-i18n="prod.solarcam">Güneş enerjili 4G kamera</span><span class="product-use" data-i18n="prod.solarcam.use">Elektriği olmayan alanlar</span></li>
         <li class="product reveal" data-for="business"><div class="product-plate"><img src="../img/products/access-keypad.webp" alt="" width="400" height="400" loading="lazy" decoding="async" /></div><span class="product-name" data-i18n="prod.keypad">Erişim tuş takımı</span><span class="product-use" data-i18n="prod.keypad.use">Personel kapıları</span></li>
@@ -376,7 +376,7 @@
       <div class="section-head reveal">
         <h2 class="h-lg" data-i18n="process.title">Bir mesajdan çalışan bir sisteme.</h2>
       </div>
-      <ol class="steps">
+      <ol class="steps" tabindex="0">
         <li class="step reveal"><h3 data-i18n="process.1.title">İhtiyacınızı anlatın</h3><p data-i18n="process.1.desc">Kısa bir telefon veya mesaj — fikriniz, bütçeniz, takviminiz.</p></li>
         <li class="step reveal"><h3 data-i18n="process.2.title">Net bir teklif alın</h3><p data-i18n="process.2.desc">24 saat içinde yazılı teklif; karmaşık terimler yok, bağlayıcılığı yok.</p></li>
         <li class="step reveal"><h3 data-i18n="process.3.title">Biz hazırlarız</h3><p data-i18n="process.3.desc">Düzenli bilgi alırsınız — önizleme bağlantısı, basılmış prototipler veya sahadan fotoğraflar.</p></li>
@@ -423,7 +423,7 @@
         <h2 class="h-lg" data-i18n="worktease.title">Neler yaptığımızdan örnekler.</h2>
         <div class="head-action"><a href="portfolio.html" class="link-chevron" data-i18n="worktease.cta">Tüm projeleri gör</a></div>
       </div>
-      <div class="grid grid-3">
+      <div class="grid grid-3" tabindex="0">
         <article class="card work reveal" data-for="business">
           <div class="work-screen"><span class="icon-badge" data-icon="menu"></span></div>
           <span class="pill accent" data-i18n="svc.menu">Dijital Akıllı Menüler</span>
@@ -473,7 +473,7 @@
         <h2 class="h-lg" data-i18n="partners.title">İyi insanlarla birlikte çalışıyoruz.</h2>
         <p class="lede" data-i18n="partners.lede">Birlikte çalıştığımız ve hizmet verdiğimiz Kırcaali'deki yerel işletmeler.</p>
       </div>
-      <ul class="partner-grid" id="partnerGrid"></ul>
+      <ul class="partner-grid" id="partnerGrid" tabindex="0"></ul>
     </div>
   </section>
 
@@ -515,10 +515,10 @@
 <footer id="site-footer" class="site-footer"></footer>
 
 <script type="module">
-  import { mountChrome } from "../js/chrome.js?v=20261111c";
-  import { registerDict, applyI18n, initLangSwitch } from "../js/i18n.js?v=20261111c";
-  import { initCookieBanner } from "../js/cookies.js?v=20261111c";
-  import { PARTNERS, renderPartners } from "../js/partners.js?v=20261111c";
+  import { mountChrome } from "../js/chrome.js?v=20261111d";
+  import { registerDict, applyI18n, initLangSwitch } from "../js/i18n.js?v=20261111d";
+  import { initCookieBanner } from "../js/cookies.js?v=20261111d";
+  import { PARTNERS, renderPartners } from "../js/partners.js?v=20261111d";
 
   registerDict({
     en: {
@@ -803,6 +803,6 @@
   initLangSwitch();
   initCookieBanner();
 </script>
-<script type="module" src="../js/home.js?v=20261111c"></script>
+<script type="module" src="../js/home.js?v=20261111d"></script>
 </body>
 </html>

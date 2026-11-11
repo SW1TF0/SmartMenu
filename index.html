@@ -29,10 +29,10 @@
 <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3" />
 <link rel="manifest" href="/site.webmanifest" />
 <link rel="preload" href="fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
-<link rel="stylesheet" href="css/style.css?v=20261111c" />
-<link rel="modulepreload" href="js/i18n.js?v=20261111c" />
-<link rel="modulepreload" href="js/chrome.js?v=20261111c" />
-<link rel="modulepreload" href="js/motion.js?v=20261111c" />
+<link rel="stylesheet" href="css/style.css?v=20261111d" />
+<link rel="modulepreload" href="js/i18n.js?v=20261111d" />
+<link rel="modulepreload" href="js/chrome.js?v=20261111d" />
+<link rel="modulepreload" href="js/motion.js?v=20261111d" />
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -204,7 +204,7 @@
         <h2 class="h-lg" data-i18n="prod.title">Proven hardware, installed properly.</h2>
         <p class="lede" data-i18n="prod.lede">Cameras, access control and automation from brands we trust — chosen for your premises and set up by us.</p>
       </div>
-      <ul class="product-grid">
+      <ul class="product-grid" tabindex="0">
         <li class="product reveal" data-for="business"><div class="product-plate"><img src="img/products/outdoor-camera.webp" alt="" width="400" height="400" loading="lazy" decoding="async" /></div><span class="product-name" data-i18n="prod.outdoorcam">Outdoor camera</span><span class="product-use" data-i18n="prod.outdoorcam.use">Entrances and car parks</span></li>
         <li class="product reveal" data-for="business"><div class="product-plate"><img src="img/products/solar-camera.webp" alt="" width="400" height="400" loading="lazy" decoding="async" /></div><span class="product-name" data-i18n="prod.solarcam">Solar 4G camera</span><span class="product-use" data-i18n="prod.solarcam.use">Sites without power</span></li>
         <li class="product reveal" data-for="business"><div class="product-plate"><img src="img/products/access-keypad.webp" alt="" width="400" height="400" loading="lazy" decoding="async" /></div><span class="product-name" data-i18n="prod.keypad">Access keypad</span><span class="product-use" data-i18n="prod.keypad.use">Staff-only doors</span></li>
@@ -265,7 +265,7 @@
       <div class="section-head reveal">
         <h2 class="h-lg" data-i18n="process.title">From a message to something installed.</h2>
       </div>
-      <ol class="steps">
+      <ol class="steps" tabindex="0">
         <li class="step reveal"><h3 data-i18n="process.1.title">Tell us what you need</h3><p data-i18n="process.1.desc">A quick call or message — what you're picturing, your budget, your timeline.</p></li>
         <li class="step reveal"><h3 data-i18n="process.2.title">Get a clear quote</h3><p data-i18n="process.2.desc">A written estimate within 24 hours, no jargon, no obligation.</p></li>
         <li class="step reveal"><h3 data-i18n="process.3.title">We build it</h3><p data-i18n="process.3.desc">You get progress updates — a preview link, printed prototypes, or on-site photos.</p></li>
@@ -312,7 +312,7 @@
         <h2 class="h-lg" data-i18n="worktease.title">A sample of what we build.</h2>
         <div class="head-action"><a href="portfolio.html" class="link-chevron" data-i18n="worktease.cta">View all work</a></div>
       </div>
-      <div class="grid grid-3">
+      <div class="grid grid-3" tabindex="0">
         <article class="card work reveal" data-for="business">
           <div class="work-screen"><span class="icon-badge" data-icon="menu"></span></div>
           <span class="pill accent" data-i18n="svc.menu">Digital Smart Menus</span>
@@ -362,7 +362,7 @@
         <h2 class="h-lg" data-i18n="partners.title">Working alongside good people.</h2>
         <p class="lede" data-i18n="partners.lede">Local businesses in Kardzhali we work with and build for.</p>
       </div>
-      <ul class="partner-grid" id="partnerGrid"></ul>
+      <ul class="partner-grid" id="partnerGrid" tabindex="0"></ul>
     </div>
   </section>
 
@@ -404,10 +404,10 @@
 <footer id="site-footer" class="site-footer"></footer>
 
 <script type="module">
-  import { mountChrome } from "./js/chrome.js?v=20261111c";
-  import { registerDict, applyI18n, initLangSwitch } from "./js/i18n.js?v=20261111c";
-  import { initCookieBanner } from "./js/cookies.js?v=20261111c";
-  import { PARTNERS, renderPartners } from "./js/partners.js?v=20261111c";
+  import { mountChrome } from "./js/chrome.js?v=20261111d";
+  import { registerDict, applyI18n, initLangSwitch } from "./js/i18n.js?v=20261111d";
+  import { initCookieBanner } from "./js/cookies.js?v=20261111d";
+  import { PARTNERS, renderPartners } from "./js/partners.js?v=20261111d";
 
   registerDict({
     en: {
@@ -692,6 +692,6 @@
   initLangSwitch();
   initCookieBanner();
 </script>
-<script type="module" src="js/home.js?v=20261111c"></script>
+<script type="module" src="js/home.js?v=20261111d"></script>
 </body>
 </html>

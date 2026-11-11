@@ -29,10 +29,10 @@
 <link rel="manifest" href="/site.webmanifest" />
 <link rel="preload" href="../fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="../fonts/inter-cyrillic.woff2" as="font" type="font/woff2" crossorigin />
-<link rel="stylesheet" href="../css/style.css?v=20261111e" />
-<link rel="modulepreload" href="../js/i18n.js?v=20261111e" />
-<link rel="modulepreload" href="../js/chrome.js?v=20261111e" />
-<link rel="modulepreload" href="../js/motion.js?v=20261111e" />
+<link rel="stylesheet" href="../css/style.css?v=20261111f" />
+<link rel="modulepreload" href="../js/i18n.js?v=20261111f" />
+<link rel="modulepreload" href="../js/chrome.js?v=20261111f" />
+<link rel="modulepreload" href="../js/motion.js?v=20261111f" />
 <script type="speculationrules">{"prefetch":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":["/login.html","/account.html","/admin.html"]}}]},"eagerness":"moderate"}]}</script>
 </head>
 <body>
@@ -131,6 +131,7 @@
           <button type="submit" class="btn btn-primary btn-block"><span data-i18n="contact.form.submit">Изпрати запитване</span></button>
           <p class="form-fine" data-i18n-html="contact.form.fine">Използваме данните ви само за отговор на това запитване. Вижте нашата <a href="privacy.html">политика за поверителност</a>.</p>
           <div id="quoteNote" class="form-note" role="status" aria-live="polite"></div>
+          <p class="form-fine" data-faq-link>Вижте и <a href="faq.html">често задаваните въпроси</a>.</p>
         </form>
       </div>
     </div>
@@ -140,10 +141,10 @@
 <footer id="site-footer" class="site-footer"></footer>
 
 <script type="module">
-  import { mountChrome } from "../js/chrome.js?v=20261111e";
-  import { registerDict, applyI18n, initLangSwitch } from "../js/i18n.js?v=20261111e";
-  import { initCookieBanner } from "../js/cookies.js?v=20261111e";
-  import { initReveal } from "../js/site.js?v=20261111e";
+  import { mountChrome } from "../js/chrome.js?v=20261111f";
+  import { registerDict, applyI18n, initLangSwitch } from "../js/i18n.js?v=20261111f";
+  import { initCookieBanner } from "../js/cookies.js?v=20261111f";
+  import { initReveal } from "../js/site.js?v=20261111f";
 
   registerDict({
     en: {
@@ -203,6 +204,6 @@
   initCookieBanner();
   initReveal();
 </script>
-<script type="module" src="../js/contact-page.js?v=20261111e"></script>
+<script type="module" src="../js/contact-page.js?v=20261111f"></script>
 </body>
 </html>

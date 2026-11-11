@@ -9,8 +9,8 @@
 // a Home / Business version have <html data-aud-page>; they also get the
 // switch at the top of the mobile menu.
 // ============================================================================
-import { t, escapeHtml, getAudience, setAudience } from "./i18n.js?v=20261111e";
-import { themeTransition, swapTransition } from "./motion.js?v=20261111e";
+import { t, escapeHtml, getAudience, setAudience } from "./i18n.js?v=20261111f";
+import { themeTransition, swapTransition } from "./motion.js?v=20261111f";
 
 const NAV_ITEMS = [
   { key: "index.html", label: "nav.home" },
@@ -215,6 +215,11 @@ const SVC_PAGES = {
 };
 const svcHref = (key) => (SVC_PAGES[document.documentElement.lang] || SVC_PAGES.en)[key];
 
+// The FAQ page exists only in Bulgarian so far (bg/faq.html): linked from Bulgarian pages only.
+function faqLink() {
+  return document.documentElement.lang === "bg" ? '\n          <li><a href="faq.html" data-i18n="footer.faq">Въпроси</a></li>' : "";
+}
+
 // Each language has its blog at <lang>/blog/ (EN at /blog/); relative, like the other footer links.
 function blogLink() {
   return '\n          <li><a href="blog/" data-i18n="footer.blog">Blog</a></li>';
@@ -250,7 +255,7 @@ function footerHTML() {
         <ul>
           <li><a href="about.html" data-i18n="footer.about">About us</a></li>
           <li><a href="portfolio.html" data-i18n="footer.portfolio">Our work</a></li>
-          <li><a href="contact.html" data-i18n="footer.contact">Contact</a></li>${blogLink()}
+          <li><a href="contact.html" data-i18n="footer.contact">Contact</a></li>${blogLink()}${faqLink()}
           <li><a href="/login.html" data-i18n="footer.login">Log in / Register</a></li>
         </ul>
       </div>
@@ -392,7 +397,7 @@ export function mountChrome() {
   // Firebase loads lazily so the header, footer and translations still render
   // when the SDK is slow, offline or blocked; the nav starts signed-out.
   renderAuth(null, false);
-  import("./auth.js?v=20261111e")
+  import("./auth.js?v=20261111f")
     .then(({ watchAuth, isAdmin, logout }) =>
       watchAuth((user) => {
         const admin = isAdmin(user);

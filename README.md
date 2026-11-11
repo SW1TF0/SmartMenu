@@ -119,6 +119,8 @@ The home page's JSON-LD has a `FAQPage` that quotes the English FAQ (`faq.N.q` /
 
 **Blog (EN / BG / TR).** `/blog/`, `/bg/blog/` and `/tr/blog/` list the articles in `content/<lang>/blog/*.md` (front matter: url, title, description, h1, date, breadcrumb, service = URL of the related service page in the same language; EN/TR articles also name the Bulgarian one in `bg:`, which ties the three versions together for hreflang and the language switch). The same tool builds each article with BlogPosting, FAQPage and BreadcrumbList JSON-LD and a "more from the blog" list, adds "Read more" to the related service page and to that language's `services.html`, and a blog link before the call to action on each home page. Blog pages sit one folder deeper, so they carry `<base href="/<lang>/">` and relative links resolve as on the language's other pages. A new article: add its `.md` (and its translations), run `node tools/build-langs.mjs`, add its URLs to `sitemap.xml`.
 
+**FAQ page (Bulgarian).** `/bg/faq.html` is built from `content/bg/faq.md` (front matter: url, title, description, h1, breadcrumb; an intro paragraph, `## ` groups of **question** + answer, a closing paragraph after `---`) with FAQPage + BreadcrumbList JSON-LD whose text matches the visible answers. The build links it under the form on `bg/contact.html` and before the call to action on `bg/services.html`; the footer shows "Въпроси" on Bulgarian pages.
+
 ## Speed
 
 - Pages are prefetched when a visitor hovers over or presses a link (Speculation Rules in each public page's `<head>`), so the next page opens almost instantly. Login, account and admin are left out.

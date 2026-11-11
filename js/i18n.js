@@ -3,7 +3,7 @@
 // audience switch.
 // Usage per page:
 //   <script type="module">
-//     import { registerDict, applyI18n, initLangSwitch } from "./js/i18n.js?v=20261111e";
+//     import { registerDict, applyI18n, initLangSwitch } from "./js/i18n.js?v=20261111f";
 //     registerDict({ en: {...}, bg: {...}, tr: {...} });
 //     applyI18n();
 //     initLangSwitch();
@@ -98,6 +98,7 @@ export const COMMON = {
     "footer.portfolio": "Our work",
     "footer.contact": "Contact",
     "footer.blog": "Blog",
+    "footer.faq": "FAQ",
     "footer.login": "Log in / Register",
     "footer.privacy": "Privacy & Cookies",
     "footer.terms": "Terms of Service",
@@ -168,6 +169,7 @@ export const COMMON = {
     "footer.portfolio": "Нашите проекти",
     "footer.contact": "Контакти",
     "footer.blog": "Блог",
+    "footer.faq": "Въпроси",
     "footer.login": "Вход / Регистрация",
     "footer.privacy": "Поверителност и бисквитки",
     "footer.terms": "Общи условия",
@@ -238,6 +240,7 @@ export const COMMON = {
     "footer.portfolio": "Projelerimiz",
     "footer.contact": "İletişim",
     "footer.blog": "Blog",
+    "footer.faq": "SSS",
     "footer.login": "Giriş / Kayıt",
     "footer.privacy": "Gizlilik ve Çerezler",
     "footer.terms": "Hizmet Şartları",

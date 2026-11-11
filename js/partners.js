@@ -13,7 +13,7 @@
 // Add `placeholder: true` to a stand-in entry to give it a dashed outline.
 // ============================================================================
 
-import { escapeHtml } from "./i18n.js?v=20261111b";
+import { escapeHtml } from "./i18n.js?v=20261111c";
 
 export const PARTNERS = [
   { name: "Great Wall Motors Kardzhali", type: "partners.type.auto", logo: "/img/partners/gwm.webp", url: "" },

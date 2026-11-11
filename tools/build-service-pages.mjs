@@ -30,17 +30,23 @@ const SERVICES = ["menu", "web", "cameras", "smarthome", "print3d", "pc"];
 const LANGS = ["en", "bg", "tr"];
 const X_DEFAULT = "bg";
 const PHONE = "+359 88 534 8666";
+// Link text for each service in the "other services" block (SEO audit M-1111-24).
+const SVC_NAMES = {
+  en: { menu: "QR menus for restaurants", web: "Website design", cameras: "CCTV & security cameras", smarthome: "Smart home automation", print3d: "3D printing", pc: "Computer & printer repair" },
+  bg: { menu: "QR меню за заведения", web: "Изработка на сайтове", cameras: "Видеонаблюдение и камери", smarthome: "Умен дом и автоматизация", print3d: "3D печат", pc: "Компютърен сервиз и принтери" },
+  tr: { menu: "Restoranlar için QR menü", web: "Web sitesi tasarımı", cameras: "Güvenlik kamerası sistemleri", smarthome: "Akıllı ev otomasyonu", print3d: "3D baskı", pc: "Bilgisayar ve yazıcı servisi" },
+};
 const UI = {
   en: { dir: "", faq: "FAQ", faqTitle: "Frequently asked questions", notes: "Internal links", region: "Kardzhali and the region",
-        quote: "Get a quote", call: "Call", ctaEyebrow: "Free quote within 24 hours", ctaTitle: "Tell us what you need.",
+        quote: "Get a quote", call: "Call", others: "Other services in Kardzhali", ctaEyebrow: "Free quote within 24 hours", ctaTitle: "Tell us what you need.",
         ctaLede: "We'll reply with a clear written quote within a day, with no obligation.", more: "Learn more", readMore: "Read more", city: "Kardzhali" },
   bg: { dir: "bg/", faq: "Често задавани въпроси", faqTitle: "Често задавани въпроси", notes: "Вътрешни линкове", region: "Кърджали и региона",
-        quote: "Поискай оферта", call: "Обади се", ctaEyebrow: "Безплатна оферта до 24 часа", ctaTitle: "Кажете ни какво ви трябва.",
+        quote: "Поискай оферта", call: "Обади се", others: "Други услуги в Кърджали", ctaEyebrow: "Безплатна оферта до 24 часа", ctaTitle: "Кажете ни какво ви трябва.",
         ctaLede: "Ще ви върнем ясна писмена оферта до един ден, без ангажимент.", more: "Научете повече", readMore: "Прочетете още", city: "Kardzhali",
-        blog: "Блог", blogLede: "Полезно за собственици на заведения, магазини и домове в Кърджали: как работят технологиите, които монтираме, и как да изберете.",
+        blog: "Блог", blogCta: "Блог: съвети за QR менюта, камери и умен дом", blogLede: "Полезно за собственици на заведения, магазини и домове в Кърджали: как работят технологиите, които монтираме, и как да изберете.",
         published: "Публикувано", months: ["януари", "февруари", "март", "април", "май", "юни", "юли", "август", "септември", "октомври", "ноември", "декември"] },
   tr: { dir: "tr/", faq: "Sık sorulan sorular", faqTitle: "Sık sorulan sorular", notes: "İç bağlantılar", region: "Kırcaali ve bölgesi",
-        quote: "Teklif al", call: "Arayın", ctaEyebrow: "24 saat içinde ücretsiz teklif", ctaTitle: "Neye ihtiyacınız olduğunu anlatın.",
+        quote: "Teklif al", call: "Arayın", others: "Kırcaali'deki diğer hizmetlerimiz", ctaEyebrow: "24 saat içinde ücretsiz teklif", ctaTitle: "Neye ihtiyacınız olduğunu anlatın.",
         ctaLede: "Bir gün içinde, hiçbir yükümlülük olmadan net bir yazılı teklif gönderiyoruz.", more: "Daha fazla bilgi", readMore: "Devamını okuyun", city: "Kardzhali" },
 };
 
@@ -216,7 +222,7 @@ function shell(template, { lang, url, title, description, ogTitle, alts, xDefaul
 
 const ldScript = (data) => `<script type="application/ld+json">\n${JSON.stringify(data, null, 2).replace(/</g, "\\u003c")}\n</script>\n`;
 
-function render(template, page, twins, related = []) {
+function render(template, page, twins, related = [], siblings = {}) {
   const { meta, lang } = page;
   const ui = UI[lang];
   const url = SITE + meta.url;
@@ -225,6 +231,9 @@ function render(template, page, twins, related = []) {
     lang, url, title: meta.title, description: meta.description, ogTitle: meta.h1,
     alts: LANGS.filter((l) => twins[l]).map((l) => [l, twins[l]]), xDefault: twins[X_DEFAULT] || meta.url, jsonld: jsonLd(page),
   });
+  const others = SERVICES.filter((k) => k !== meta.service && siblings[k])
+    .map((k) => `            <li><a href="${siblings[k]}">${esc(SVC_NAMES[lang][k])}</a></li>`).join("\n");
+  const othersBlock = others ? `\n\n          <h2>${esc(ui.others)}</h2>\n          <ul>\n${others}\n          </ul>` : "";
   const readMore = related.map((a) => `          <p><strong>${esc(ui.readMore)}:</strong> <a href="${a.meta.url}">${esc(a.meta.h1)}</a></p>`).join("\n");
 
   const quote = `contact.html?service=${meta.service}#quote`;
@@ -249,7 +258,7 @@ function render(template, page, twins, related = []) {
     <div class="container">
       <article class="card legal-card">
         <div class="legal">
-${page.rest.length ? renderBlocks(page.rest) + "\n\n" : ""}${sections}${readMore ? "\n\n" + readMore : ""}
+${page.rest.length ? renderBlocks(page.rest) + "\n\n" : ""}${sections}${readMore ? "\n\n" + readMore : ""}${othersBlock}
         </div>
       </article>
     </div>
@@ -288,16 +297,24 @@ ${faq}
 // "Learn more" next to each quote button on services.html, and the service
 // cards on index.html open the service page. Idempotent; also turns the copies
 // that bg/ and tr/ inherit from the English sources into their own language.
-function linkPages(root, lang, slugs) {
+function linkPages(root, lang, slugs, articles = [], pages = []) {
   const dir = join(root, UI[lang].dir);
   const servicesPath = join(dir, "services.html");
   let services = readFileSync(servicesPath, "utf8")
-    .replace(/\n {10}<a href="[^"]*" class="link-chevron" data-svc-page="\w+">[^<]*<\/a>/g, "")
-    .replace(/\n {10}<a href="[a-z0-9-]+\.html" class="link-chevron">Научете повече<\/a>/g, ""); // first BG-only version
+    .replace(/\n {10}<a href="[^"]*" class="link-chevron" data-svc-page="\w+"[^>]*>[^<]*<\/a>/g, "")
+    .replace(/\n {10}<a href="[a-z0-9-]+\.html" class="link-chevron">Научете повече<\/a>/g, "") // first BG-only version
+    .replace(/\n {10}<p data-blog-link[^>]*><a href="[^"]*" class="link-chevron">[^<]*<\/a><\/p>/g, "")
+    .replace(/\n {2}<section class="section" data-blog-link>[\s\S]*?<\/section>/g, "");
   for (const [svc, file] of Object.entries(slugs)) {
     const re = new RegExp(`(<a href="contact\\.html\\?service=${svc}#quote" class="btn btn-primary">[\\s\\S]*?</a>)`);
     if (!re.test(services)) throw new Error(`${UI[lang].dir}services.html: no quote button for ${svc}`);
-    services = services.replace(re, `$1\n          <a href="${file}" class="link-chevron" data-svc-page="${svc}">${esc(UI[lang].more)}</a>`);
+    const about = articles.filter((a) => pages.find((p) => p.lang === lang && p.meta.service === svc)?.meta.url === a.meta.service);
+    const extra = about.map((a) => `\n          <p data-blog-link style="margin:16px 0 0"><a href="${a.meta.url.slice(1 + UI[lang].dir.length)}" class="link-chevron">${esc(UI[lang].readMore)}: ${esc(a.meta.h1)}</a></p>`).join("");
+    services = services.replace(re, `$1\n          <a href="${file}" class="link-chevron" data-svc-page="${svc}" style="margin-left:18px">${esc(UI[lang].more)}</a>${extra}`);
+  }
+  if (articles.length) {
+    const block = `\n  <section class="section" data-blog-link>\n    <div class="container"><p class="lede" style="text-align:center"><a href="blog/" class="link-chevron">${esc(UI[lang].blogCta)}</a></p></div>\n  </section>`;
+    services = beforeCta(services, block, `${UI[lang].dir}services.html`);
   }
   writeFileSync(servicesPath, services);
 
@@ -308,7 +325,32 @@ function linkPages(root, lang, slugs) {
     if (!card.test(index)) throw new Error(`${UI[lang].dir}index.html: no service card for ${svc}`);
     index = index.replace(card, `<a href="${file}" data-svc-page="${svc}" class="card `);
   }
+  if (articles.length) {
+    index = index.replace(/\n {2}<section class="section" data-blog-link>[\s\S]*?<\/section>/g, "");
+    const block = `\n  <section class="section" data-blog-link>\n    <div class="container"><p class="lede" style="text-align:center"><a href="blog/" class="link-chevron">${esc(UI[lang].blogCta)}</a></p></div>\n  </section>`;
+    index = beforeCta(index, block, `${UI[lang].dir}index.html`);
+  }
   writeFileSync(indexPath, index);
+}
+
+// Inserts `block` before the section that holds the page's last call-to-action band (and its comment, if any).
+function beforeCta(html, block, name) {
+  const band = html.lastIndexOf('<div class="cta-band');
+  let at = band < 0 ? -1 : html.lastIndexOf("\n  <section", band);
+  if (at < 0) throw new Error(`${name}: no call-to-action section to put the blog link before`);
+  const comment = html.lastIndexOf("\n  <!--", at);
+  if (comment >= 0 && !html.slice(comment, at).replace(/\n  <!--[^]*?-->/, "").trim()) at = comment;
+  return html.slice(0, at) + block + html.slice(at);
+}
+
+// js/chrome.js links the footer to each service page; its table must match content/<lang>/*.md.
+function checkFooterTable(root, pages) {
+  const js = readFileSync(join(root, "js", "chrome.js"), "utf8");
+  for (const p of pages) {
+    const file = p.meta.url.slice(1 + UI[p.lang].dir.length);
+    const row = js.match(new RegExp(`\\b${p.lang}: \\{([^}]*)\\}`));
+    if (!row || !row[1].includes(`${p.meta.service}: "${file}"`)) throw new Error(`js/chrome.js SVC_PAGES.${p.lang}.${p.meta.service} must be "${file}"`);
+  }
 }
 
 // ------------------------------------------------------------------ blog --
@@ -507,16 +549,18 @@ export function buildServicePages(root = ROOT) {
   // added after all pages are written, so the order of languages never matters.
   const templates = Object.fromEntries(LANGS.map((l) => [l, readFileSync(join(root, UI[l].dir, "services.html"), "utf8")]));
   const articles = buildBlogs(root, templates);
+  const urlsOf = (lang) => Object.fromEntries(pages.filter((p) => p.lang === lang).map((p) => [p.meta.service, p.meta.url]));
   for (const p of pages) {
     const related = articles.filter((a) => a.meta.service === p.meta.url);
-    writeFileSync(join(root, p.meta.url.slice(1)), render(templates[p.lang], p, byService[p.meta.service], related));
+    writeFileSync(join(root, p.meta.url.slice(1)), render(templates[p.lang], p, byService[p.meta.service], related, urlsOf(p.lang)));
   }
+  checkFooterTable(root, pages);
   for (const a of articles) {
     if (!pages.some((p) => p.meta.url === a.meta.service)) throw new Error(`${a.file}: service ${a.meta.service} is not a service page`);
   }
   for (const lang of LANGS) {
     const slugs = Object.fromEntries(pages.filter((p) => p.lang === lang).map((p) => [p.meta.service, p.meta.url.slice(1 + UI[lang].dir.length)]));
-    if (Object.keys(slugs).length) linkPages(root, lang, slugs);
+    if (Object.keys(slugs).length) linkPages(root, lang, slugs, articles.filter((a) => a.lang === lang), pages);
   }
   const blogs = [...new Set(articles.map((a) => `/${UI[a.lang].dir}blog/`))];
   return [...pages.map((p) => p.meta.url), ...blogs, ...articles.map((a) => a.meta.url)];

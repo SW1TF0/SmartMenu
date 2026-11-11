@@ -19,7 +19,7 @@
 // the links added to them carry data-svc-page="<service>", so the BG/TR copies
 // get their own language's link instead.
 
-import { readFileSync, writeFileSync, readdirSync, existsSync } from "node:fs";
+import { readFileSync, writeFileSync, readdirSync, existsSync, mkdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -33,13 +33,15 @@ const PHONE = "+359 88 534 8666";
 const UI = {
   en: { dir: "", faq: "FAQ", faqTitle: "Frequently asked questions", notes: "Internal links", region: "Kardzhali and the region",
         quote: "Get a quote", call: "Call", ctaEyebrow: "Free quote within 24 hours", ctaTitle: "Tell us what you need.",
-        ctaLede: "We'll reply with a clear written quote within a day, with no obligation.", more: "Learn more", city: "Kardzhali" },
+        ctaLede: "We'll reply with a clear written quote within a day, with no obligation.", more: "Learn more", readMore: "Read more", city: "Kardzhali" },
   bg: { dir: "bg/", faq: "Често задавани въпроси", faqTitle: "Често задавани въпроси", notes: "Вътрешни линкове", region: "Кърджали и региона",
         quote: "Поискай оферта", call: "Обади се", ctaEyebrow: "Безплатна оферта до 24 часа", ctaTitle: "Кажете ни какво ви трябва.",
-        ctaLede: "Ще ви върнем ясна писмена оферта до един ден, без ангажимент.", more: "Научете повече", city: "Kardzhali" },
+        ctaLede: "Ще ви върнем ясна писмена оферта до един ден, без ангажимент.", more: "Научете повече", readMore: "Прочетете още", city: "Kardzhali",
+        blog: "Блог", blogLede: "Полезно за собственици на заведения, магазини и домове в Кърджали: как работят технологиите, които монтираме, и как да изберете.",
+        published: "Публикувано", months: ["януари", "февруари", "март", "април", "май", "юни", "юли", "август", "септември", "октомври", "ноември", "декември"] },
   tr: { dir: "tr/", faq: "Sık sorulan sorular", faqTitle: "Sık sorulan sorular", notes: "İç bağlantılar", region: "Kırcaali ve bölgesi",
         quote: "Teklif al", call: "Arayın", ctaEyebrow: "24 saat içinde ücretsiz teklif", ctaTitle: "Neye ihtiyacınız olduğunu anlatın.",
-        ctaLede: "Bir gün içinde, hiçbir yükümlülük olmadan net bir yazılı teklif gönderiyoruz.", more: "Daha fazla bilgi", city: "Kardzhali" },
+        ctaLede: "Bir gün içinde, hiçbir yükümlülük olmadan net bir yazılı teklif gönderiyoruz.", more: "Daha fazla bilgi", readMore: "Devamını okuyun", city: "Kardzhali" },
 };
 
 const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -57,14 +59,19 @@ function inline(text) {
 }
 const plain = (text) => text.replace(/\*\*(.+?)\*\*/g, "$1").replace(/\[([^\]]+)\]\([^)]+\)/g, "$1");
 
-function parse(md, file, lang) {
+function parse(md, file, lang, kind = "service") {
   const ui = UI[lang];
   const m = md.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
   if (!m) throw new Error(`${file}: no front matter`);
   const meta = Object.fromEntries(m[1].split("\n").map((l) => l.split(/:\s(.*)/s).slice(0, 2).map((x) => x.trim())));
-  for (const k of ["url", "title", "description", "h1", "breadcrumb", "service"]) if (!meta[k]) throw new Error(`${file}: front matter needs ${k}`);
-  if (!SERVICES.includes(meta.service)) throw new Error(`${file}: service must be one of ${SERVICES.join(", ")}`);
-  if (!new RegExp(`^/${ui.dir.replace("/", "\\/")}[a-z0-9-]+\\.html$`).test(meta.url)) throw new Error(`${file}: url must look like /${ui.dir}<slug>.html`);
+  const need = kind === "article" ? ["url", "title", "description", "h1", "breadcrumb", "date", "service"] : ["url", "title", "description", "h1", "breadcrumb", "service"];
+  for (const k of need) if (!meta[k]) throw new Error(`${file}: front matter needs ${k}`);
+  const dir = kind === "article" ? `${ui.dir}blog/` : ui.dir;
+  if (!new RegExp(`^/${dir.replace(/\//g, "\\/")}[a-z0-9-]+\\.html$`).test(meta.url)) throw new Error(`${file}: url must look like /${dir}<slug>.html`);
+  if (kind === "article") {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(meta.date)) throw new Error(`${file}: date must be YYYY-MM-DD`);
+    if (!/^\/[a-z0-9/-]+\.html$/.test(meta.service)) throw new Error(`${file}: service must be the URL of the service page`);
+  } else if (!SERVICES.includes(meta.service)) throw new Error(`${file}: service must be one of ${SERVICES.join(", ")}`);
   if (meta.breadcrumb.split("›").length !== 3) throw new Error(`${file}: breadcrumb must be "<home> › <services> › <service>"`);
 
   // Blocks, split by headings and blank lines.
@@ -80,9 +87,10 @@ function parse(md, file, lang) {
     let cur = null;
     for (const raw of lines) {
       const line = raw.trimEnd();
-      const kind = /^- /.test(line) ? "ul" : /^\d+\. /.test(line) ? "ol" : line ? "p" : null;
+      const kind = /^### /.test(line) ? "h3" : /^- /.test(line) ? "ul" : /^\d+\. /.test(line) ? "ol" : line ? "p" : null;
       if (!kind) { cur = null; continue; }
-      const text = line.replace(/^(- |\d+\. )/, "");
+      const text = line.replace(/^(### |- |\d+\. )/, "");
+      if (kind === "h3") { out.push((cur = { kind, items: [text] })); cur = null; continue; }
       if (cur && cur.kind === kind) cur.items.push(text);
       else out.push((cur = { kind, items: [text] }));
     }
@@ -117,6 +125,7 @@ function renderBlocks(blocks) {
   return blocks
     .map((b) => {
       if (b.kind === "p") return `          <p>${inline(b.items.join(" "))}</p>`;
+      if (b.kind === "h3") return `          <h3>${inline(b.items[0])}</h3>`;
       // Steps keep their numbers in the text: .legal styles every list item as a bullet.
       const items = b.items.map((t, i) => `            <li>${b.kind === "ol" ? `<strong>${i + 1}.</strong> ` : ""}${inline(t)}</li>`);
       return `          <ul>\n${items.join("\n")}\n          </ul>`;
@@ -158,12 +167,11 @@ function jsonLd(page) {
   return `<script type="application/ld+json">\n${JSON.stringify(data, null, 2).replace(/</g, "\\u003c")}\n</script>\n`;
 }
 
-function render(template, page, twins) {
-  const { meta, lang } = page;
-  const ui = UI[lang];
-  const url = SITE + meta.url;
-  const crumbs = meta.breadcrumb.split("›").map((s) => s.trim());
-  const up = ui.dir ? "../" : "";
+// Head, footer and scripts of a generated page, from a services.html template.
+// `base` ("/bg/") makes every relative link of the shared header, footer and
+// assets resolve as on the language's top level, for pages one folder deeper.
+function shell(template, { lang, url, title, description, ogTitle, alts, xDefault, jsonld, base = "", ogType = "website" }) {
+  const up = UI[lang].dir ? "../" : "";
   const head = template.slice(0, template.indexOf("<main"));
   const tail = template.slice(template.indexOf("</main>") + "</main>".length, template.indexOf('<script type="module">'));
   const sub = (html, re, value) => {
@@ -171,19 +179,53 @@ function render(template, page, twins) {
     return html.replace(re, (_, a, b) => `${a}${value}${b}`);
   };
   let h = head.replace(/(<html lang="[a-z]+") data-aud-page>/, "$1>");
-  h = sub(h, /(<title>)[^<]*(<\/title>)/, esc(meta.title));
-  h = sub(h, /(<meta name="description" content=")[^"]*(")/, esc(meta.description));
+  if (base) h = h.replace(/(<head>\n)/, `$1<base href="${base}" />\n`);
+  h = sub(h, /(<title>)[^<]*(<\/title>)/, esc(title));
+  h = sub(h, /(<meta name="description" content=")[^"]*(")/, esc(description));
   h = sub(h, /(<link rel="canonical" href=")[^"]*(")/, url);
   h = sub(h, /(<meta property="og:url" content=")[^"]*(")/, url);
-  h = sub(h, /(<meta property="og:title" content=")[^"]*(")/, esc(meta.h1));
-  h = sub(h, /(<meta property="og:description" content=")[^"]*(")/, esc(meta.description));
-  // hreflang: the versions of this service that exist; x-default is the Bulgarian one (or this page).
+  h = sub(h, /(<meta property="og:title" content=")[^"]*(")/, esc(ogTitle));
+  h = sub(h, /(<meta property="og:description" content=")[^"]*(")/, esc(description));
+  h = sub(h, /(<meta property="og:type" content=")[^"]*(")/, ogType);
+  h = h.replace(/(<header id="site-header" class="site-header") data-active="[^"]*"/, base ? "$1" : "$&");
+  // hreflang: only versions that exist; x-default is the Bulgarian one (or this page).
   h = h.replace(/<link rel="alternate" hreflang="[^"]+" href="[^"]*" \/>\n/g, "");
-  const alts = LANGS.filter((l) => twins[l]).map((l) => `<link rel="alternate" hreflang="${l}" href="${SITE + twins[l]}" />\n`).join("");
-  const xDefault = SITE + (twins[X_DEFAULT] || meta.url);
-  h = h.replace(/(<link rel="canonical"[^>]*>\n)/, `$1${alts}<link rel="alternate" hreflang="x-default" href="${xDefault}" />\n`);
-  if (LANGS.some((l) => !twins[l])) h = h.replace(/<meta property="og:locale:alternate" content="[^"]*" \/>\n/g, "");
-  h = h.replace("</head>", jsonLd(page) + "</head>");
+  const links = alts.map(([l, u]) => `<link rel="alternate" hreflang="${l}" href="${SITE + u}" />\n`).join("");
+  h = h.replace(/(<link rel="canonical"[^>]*>\n)/, `$1${links}<link rel="alternate" hreflang="x-default" href="${SITE + xDefault}" />\n`);
+  if (alts.length < LANGS.length) h = h.replace(/<meta property="og:locale:alternate" content="[^"]*" \/>\n/g, "");
+  h = h.replace("</head>", jsonld + "</head>");
+  const v = (template.match(/js\/i18n\.js\?v=([\w.-]+)"/) || [])[1];
+  if (!v) throw new Error("template: no asset version");
+  const script = `<script type="module">
+  import { mountChrome } from "./${up}js/chrome.js?v=${v}";
+  import { applyI18n, initLangSwitch } from "./${up}js/i18n.js?v=${v}";
+  import { initCookieBanner } from "./${up}js/cookies.js?v=${v}";
+  import { initReveal } from "./${up}js/site.js?v=${v}";
+
+  mountChrome();
+  applyI18n();
+  initLangSwitch();
+  initCookieBanner();
+  initReveal();
+</script>
+</body>
+</html>
+`;
+  return { head: h, tail, script };
+}
+
+const ldScript = (data) => `<script type="application/ld+json">\n${JSON.stringify(data, null, 2).replace(/</g, "\\u003c")}\n</script>\n`;
+
+function render(template, page, twins, related = []) {
+  const { meta, lang } = page;
+  const ui = UI[lang];
+  const url = SITE + meta.url;
+  const crumbs = meta.breadcrumb.split("›").map((s) => s.trim());
+  const { head: h, tail, script } = shell(template, {
+    lang, url, title: meta.title, description: meta.description, ogTitle: meta.h1,
+    alts: LANGS.filter((l) => twins[l]).map((l) => [l, twins[l]]), xDefault: twins[X_DEFAULT] || meta.url, jsonld: jsonLd(page),
+  });
+  const readMore = related.map((a) => `          <p><strong>${esc(ui.readMore)}:</strong> <a href="${a.meta.url}">${esc(a.meta.h1)}</a></p>`).join("\n");
 
   const quote = `contact.html?service=${meta.service}#quote`;
   const arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
@@ -207,7 +249,7 @@ function render(template, page, twins) {
     <div class="container">
       <article class="card legal-card">
         <div class="legal">
-${page.rest.length ? renderBlocks(page.rest) + "\n\n" : ""}${sections}
+${page.rest.length ? renderBlocks(page.rest) + "\n\n" : ""}${sections}${readMore ? "\n\n" + readMore : ""}
         </div>
       </article>
     </div>
@@ -240,23 +282,6 @@ ${faq}
     </div>
   </section>
 </main>`;
-  const v = (template.match(/js\/i18n\.js\?v=(\d+)/) || [])[1];
-  if (!v) throw new Error("template: no asset version");
-  const script = `<script type="module">
-  import { mountChrome } from "./${up}js/chrome.js?v=${v}";
-  import { applyI18n, initLangSwitch } from "./${up}js/i18n.js?v=${v}";
-  import { initCookieBanner } from "./${up}js/cookies.js?v=${v}";
-  import { initReveal } from "./${up}js/site.js?v=${v}";
-
-  mountChrome();
-  applyI18n();
-  initLangSwitch();
-  initCookieBanner();
-  initReveal();
-</script>
-</body>
-</html>
-`;
   return h + main + tail + script;
 }
 
@@ -286,6 +311,183 @@ function linkPages(root, lang, slugs) {
   writeFileSync(indexPath, index);
 }
 
+// ------------------------------------------------------------------ blog --
+// content/<lang>/blog/*.md -> /<lang>/blog/<slug>.html + /<lang>/blog/ (list).
+// Front matter: url, title, description, h1, date (YYYY-MM-DD), breadcrumb
+// ("<home> › <blog> › <short title>"), service (URL of the related service page).
+// Only languages with UI[lang].blog have a blog.
+
+function humanDate(iso, lang) {
+  const [y, m, d] = iso.split("-").map(Number);
+  return `${d} ${UI[lang].months[m - 1]} ${y}`;
+}
+
+function renderArticle(template, a) {
+  const { meta, lang } = a;
+  const ui = UI[lang];
+  const url = SITE + meta.url;
+  const crumbs = meta.breadcrumb.split("›").map((s) => s.trim());
+  if (crumbs.length !== 3) throw new Error(`${a.file}: breadcrumb must be "<home> › <blog> › <article>"`);
+  const home = `${SITE}/${ui.dir}`;
+  const jsonld = ldScript({
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BlogPosting",
+        "@id": `${url}#article`,
+        headline: meta.h1,
+        description: meta.description,
+        datePublished: meta.date,
+        dateModified: meta.modified || meta.date,
+        inLanguage: lang,
+        image: `${SITE}/og-image.png`,
+        author: { "@id": `${SITE}/#business` },
+        publisher: { "@id": `${SITE}/#business` },
+        mainEntityOfPage: url,
+        about: { "@id": `${SITE + meta.service}#service` },
+      },
+      {
+        "@type": "FAQPage",
+        "@id": `${url}#faq`,
+        inLanguage: lang,
+        mainEntity: a.faq.map(({ q, a: ans }) => ({ "@type": "Question", name: plain(q), acceptedAnswer: { "@type": "Answer", text: plain(ans) } })),
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [home, `${home}blog/`, url].map((item, i) => ({ "@type": "ListItem", position: i + 1, name: crumbs[i], item })),
+      },
+    ],
+  });
+  const { head, tail, script } = shell(template, {
+    lang, url, title: meta.title, description: meta.description, ogTitle: meta.h1,
+    alts: [[lang, meta.url]], xDefault: meta.url, jsonld, base: `/${ui.dir}`, ogType: "article",
+  });
+  const sections = a.body.map((s) => `          <h2>${esc(s.heading)}</h2>\n${renderBlocks(s.blocks)}`).join("\n\n");
+  const faq = a.faq.map(({ q, a: ans }) => `        <details name="faq"><summary>${inline(q)}</summary><p>${inline(ans)}</p></details>`).join("\n");
+  // <base href="/bg/"> is set: links are written relative to the language's top level.
+  const main = `<main id="main">
+  <section class="page-hero">
+    <div class="container">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">${esc(crumbs[0])}</a><span aria-hidden="true">/</span><a href="blog/">${esc(crumbs[1])}</a><span aria-hidden="true">/</span><span>${esc(crumbs[2])}</span></nav>
+      <p class="eyebrow"><time datetime="${meta.date}">${esc(ui.published)}: ${esc(humanDate(meta.date, lang))}</time></p>
+      <h1 class="h-lg">${esc(meta.h1)}</h1>
+      <p class="lede">${inline(a.lede)}</p>
+    </div>
+  </section>
+
+  <section class="svc">
+    <div class="container">
+      <article class="card legal-card">
+        <div class="legal">
+${a.rest.length ? renderBlocks(a.rest) + "\n\n" : ""}${sections}
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="faq">
+    <div class="container">
+      <div class="section-head">
+        <h2 class="h-lg">${esc(ui.faqTitle)}</h2>
+      </div>
+      <div class="faq">
+${faq}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-cta">
+    <div class="container">
+      <div class="cta-band invert">
+        <div>
+          <p class="eyebrow live">${esc(ui.ctaEyebrow)}</p>
+          <h2 class="h-lg">${esc(ui.ctaTitle)}</h2>
+          <p class="lede">${esc(ui.ctaLede)}</p>
+        </div>
+        <div class="hero-actions">
+          <a href="contact.html#quote" class="btn btn-primary"><span>${esc(ui.quote)}</span></a>
+          <a href="${tel}" class="btn btn-ghost"><span>${esc(ui.call)}: ${esc(PHONE)}</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>`;
+  return head + main + tail + script;
+}
+
+function renderBlogIndex(template, lang, articles) {
+  const ui = UI[lang];
+  const path = `/${ui.dir}blog/`;
+  const url = SITE + path;
+  const home = `${SITE}/${ui.dir}`;
+  const homeName = articles[0].meta.breadcrumb.split("›")[0].trim();
+  const jsonld = ldScript({
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Blog",
+        "@id": `${url}#blog`,
+        name: `${ui.blog} — SmartMenuKJ`,
+        description: ui.blogLede,
+        url,
+        inLanguage: lang,
+        publisher: { "@id": `${SITE}/#business` },
+        blogPost: articles.map((a) => ({ "@id": `${SITE + a.meta.url}#article` })),
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [[homeName, home], [ui.blog, url]].map(([name, item], i) => ({ "@type": "ListItem", position: i + 1, name, item })),
+      },
+    ],
+  });
+  const { head, tail, script } = shell(template, {
+    lang, url, title: `${ui.blog} — съвети за QR менюта, видеонаблюдение и умен дом | SmartMenuKJ`, description: ui.blogLede,
+    ogTitle: `${ui.blog} — SmartMenuKJ`, alts: [[lang, path]], xDefault: path, jsonld, base: `/${ui.dir}`,
+  });
+  const items = articles
+    .map((a) => `          <h2><a href="${a.meta.url}">${esc(a.meta.h1)}</a></h2>
+          <p><time datetime="${a.meta.date}">${esc(humanDate(a.meta.date, lang))}</time> · ${esc(a.meta.description)}</p>`)
+    .join("\n\n");
+  const main = `<main id="main">
+  <section class="page-hero">
+    <div class="container">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">${esc(homeName)}</a><span aria-hidden="true">/</span><span>${esc(ui.blog)}</span></nav>
+      <h1 class="h-lg">${esc(ui.blog)}</h1>
+      <p class="lede">${esc(ui.blogLede)}</p>
+    </div>
+  </section>
+
+  <section class="svc section-last">
+    <div class="container">
+      <article class="card legal-card">
+        <div class="legal">
+${items}
+        </div>
+      </article>
+    </div>
+  </section>
+</main>`;
+  return head + main + tail + script;
+}
+
+function buildBlogs(root, templates) {
+  const all = [];
+  for (const lang of LANGS.filter((l) => UI[l].blog)) {
+    const dir = join(root, "content", lang, "blog");
+    if (!existsSync(dir)) continue;
+    const articles = readdirSync(dir).filter((f) => f.endsWith(".md")).sort()
+      .map((f) => parse(readFileSync(join(dir, f), "utf8"), `content/${lang}/blog/${f}`, lang, "article"))
+      .sort((x, y) => y.meta.date.localeCompare(x.meta.date) || x.meta.url.localeCompare(y.meta.url));
+    if (!articles.length) continue;
+    const out = join(root, UI[lang].dir, "blog");
+    mkdirSync(out, { recursive: true });
+    for (const a of articles) writeFileSync(join(root, a.meta.url.slice(1)), renderArticle(templates[lang], a));
+    writeFileSync(join(out, "index.html"), renderBlogIndex(templates[lang], lang, articles));
+    all.push(...articles);
+  }
+  return all;
+}
+
 export function buildServicePages(root = ROOT) {
   const pages = [];
   for (const lang of LANGS) {
@@ -304,12 +506,20 @@ export function buildServicePages(root = ROOT) {
   // Templates are read before any page links are added, and the links are
   // added after all pages are written, so the order of languages never matters.
   const templates = Object.fromEntries(LANGS.map((l) => [l, readFileSync(join(root, UI[l].dir, "services.html"), "utf8")]));
-  for (const p of pages) writeFileSync(join(root, p.meta.url.slice(1)), render(templates[p.lang], p, byService[p.meta.service]));
+  const articles = buildBlogs(root, templates);
+  for (const p of pages) {
+    const related = articles.filter((a) => a.meta.service === p.meta.url);
+    writeFileSync(join(root, p.meta.url.slice(1)), render(templates[p.lang], p, byService[p.meta.service], related));
+  }
+  for (const a of articles) {
+    if (!pages.some((p) => p.meta.url === a.meta.service)) throw new Error(`${a.file}: service ${a.meta.service} is not a service page`);
+  }
   for (const lang of LANGS) {
     const slugs = Object.fromEntries(pages.filter((p) => p.lang === lang).map((p) => [p.meta.service, p.meta.url.slice(1 + UI[lang].dir.length)]));
     if (Object.keys(slugs).length) linkPages(root, lang, slugs);
   }
-  return pages.map((p) => p.meta.url);
+  const blogs = [...new Set(articles.map((a) => `/${UI[a.lang].dir}blog/`))];
+  return [...pages.map((p) => p.meta.url), ...blogs, ...articles.map((a) => a.meta.url)];
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {

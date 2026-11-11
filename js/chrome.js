@@ -9,8 +9,8 @@
 // a Home / Business version have <html data-aud-page>; they also get the
 // switch at the top of the mobile menu.
 // ============================================================================
-import { t, escapeHtml, getAudience, setAudience } from "./i18n.js?v=20261111";
-import { themeTransition, swapTransition } from "./motion.js?v=20261111";
+import { t, escapeHtml, getAudience, setAudience } from "./i18n.js?v=20261111b";
+import { themeTransition, swapTransition } from "./motion.js?v=20261111b";
 
 const NAV_ITEMS = [
   { key: "index.html", label: "nav.home" },
@@ -206,6 +206,11 @@ function authNavHTML(user, admin) {
   </div>`;
 }
 
+// The blog exists only in Bulgarian so far (bg/blog/): linked from Bulgarian pages only.
+function blogLink() {
+  return document.documentElement.lang === "bg" ? '\n          <li><a href="blog/" data-i18n="footer.blog">Блог</a></li>' : "";
+}
+
 function footerHTML() {
   const year = new Date().getFullYear();
   return `
@@ -236,7 +241,7 @@ function footerHTML() {
         <ul>
           <li><a href="about.html" data-i18n="footer.about">About us</a></li>
           <li><a href="portfolio.html" data-i18n="footer.portfolio">Our work</a></li>
-          <li><a href="contact.html" data-i18n="footer.contact">Contact</a></li>
+          <li><a href="contact.html" data-i18n="footer.contact">Contact</a></li>${blogLink()}
           <li><a href="/login.html" data-i18n="footer.login">Log in / Register</a></li>
         </ul>
       </div>
@@ -377,7 +382,7 @@ export function mountChrome() {
   // Firebase loads lazily so the header, footer and translations still render
   // when the SDK is slow, offline or blocked; the nav starts signed-out.
   renderAuth(null, false);
-  import("./auth.js?v=20261111")
+  import("./auth.js?v=20261111b")
     .then(({ watchAuth, isAdmin, logout }) =>
       watchAuth((user) => {
         const admin = isAdmin(user);

@@ -9,8 +9,8 @@
 // a Home / Business version have <html data-aud-page>; they also get the
 // switch at the top of the mobile menu.
 // ============================================================================
-import { t, escapeHtml, getAudience, setAudience } from "./i18n.js?v=20261111b";
-import { themeTransition, swapTransition } from "./motion.js?v=20261111b";
+import { t, escapeHtml, getAudience, setAudience } from "./i18n.js?v=20261111c";
+import { themeTransition, swapTransition } from "./motion.js?v=20261111c";
 
 const NAV_ITEMS = [
   { key: "index.html", label: "nav.home" },
@@ -206,6 +206,15 @@ function authNavHTML(user, admin) {
   </div>`;
 }
 
+// Each service's own page in the page's language (tools/build-service-pages.mjs
+// checks this table against content/<lang>/*.md, so a renamed page fails the build).
+const SVC_PAGES = {
+  en: { web: "web-design-kardzhali.html", print3d: "3d-printing-kardzhali.html", smarthome: "smart-home-kardzhali.html", cameras: "cctv-kardzhali.html", menu: "qr-menu-kardzhali.html", pc: "computer-repair-kardzhali.html" },
+  bg: { web: "izrabotka-na-saitove-kardzhali.html", print3d: "3d-pechat-kardzhali.html", smarthome: "umen-dom-kardzhali.html", cameras: "videonablyudenie-kardzhali.html", menu: "qr-menu-kardzhali.html", pc: "kompyutaren-servis-kardzhali.html" },
+  tr: { web: "web-sitesi-kircaali.html", print3d: "3d-baski-kircaali.html", smarthome: "akilli-ev-kircaali.html", cameras: "guvenlik-kamerasi-kircaali.html", menu: "qr-menu-kircaali.html", pc: "bilgisayar-servisi-kircaali.html" },
+};
+const svcHref = (key) => (SVC_PAGES[document.documentElement.lang] || SVC_PAGES.en)[key];
+
 // The blog exists only in Bulgarian so far (bg/blog/): linked from Bulgarian pages only.
 function blogLink() {
   return document.documentElement.lang === "bg" ? '\n          <li><a href="blog/" data-i18n="footer.blog">Блог</a></li>' : "";
@@ -228,12 +237,12 @@ function footerHTML() {
       <div>
         <h4 data-i18n="footer.services">Services</h4>
         <ul>
-          <li><a href="services.html#web" data-i18n="svc.web">Web Development</a></li>
-          <li><a href="services.html#print3d" data-i18n="svc.print3d">3D Printing</a></li>
-          <li><a href="services.html#smarthome" data-i18n="svc.smarthome">Smart Home & Business</a></li>
-          <li><a href="services.html#cameras" data-i18n="svc.cameras">Camera & Security Systems</a></li>
-          <li><a href="services.html#menu" data-i18n="svc.menu">Digital Smart Menus</a></li>
-          <li><a href="services.html#pc" data-i18n="svc.pc">PC & Printer Service</a></li>
+          <li><a href="${svcHref("web")}" data-i18n="svc.web">Web Development</a></li>
+          <li><a href="${svcHref("print3d")}" data-i18n="svc.print3d">3D Printing</a></li>
+          <li><a href="${svcHref("smarthome")}" data-i18n="svc.smarthome">Smart Home & Business</a></li>
+          <li><a href="${svcHref("cameras")}" data-i18n="svc.cameras">Camera & Security Systems</a></li>
+          <li><a href="${svcHref("menu")}" data-i18n="svc.menu">Digital Smart Menus</a></li>
+          <li><a href="${svcHref("pc")}" data-i18n="svc.pc">PC & Printer Service</a></li>
         </ul>
       </div>
       <div>
@@ -382,7 +391,7 @@ export function mountChrome() {
   // Firebase loads lazily so the header, footer and translations still render
   // when the SDK is slow, offline or blocked; the nav starts signed-out.
   renderAuth(null, false);
-  import("./auth.js?v=20261111b")
+  import("./auth.js?v=20261111c")
     .then(({ watchAuth, isAdmin, logout }) =>
       watchAuth((user) => {
         const admin = isAdmin(user);

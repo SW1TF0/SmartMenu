@@ -111,7 +111,7 @@ Every public page also exists at `/bg/<page>` and `/tr/<page>` with the translat
 
 The site opens in Bulgarian: a first-time visitor landing on an English URL (including `smartmenukj.com/`) is sent to the `/bg/` twin, or to `/tr/` if their browser is Turkish — by the inline `<head>` script, before the English page's CSS and JS load. The Bulgarian and Turkish pages also preload the Cyrillic / Latin Extended font subset. English is shown only when picked; the EN/BG/TR switch in the header saves the choice (`smkj_lang`). Crawlers are not redirected, so the English pages stay indexed, and `x-default` in hreflang/sitemap points to the Bulgarian pages.
 
-A new public page needs: an entry in `BG_PAGES` and `TR_PAGES`, the four `hreflang` links in its `<head>` (copy from any page), and its three URLs in `sitemap.xml`.
+A new public page needs: an entry in `BG_PAGES` and `TR_PAGES`, the four `hreflang` links in its `<head>` (copy from any page), and its three URLs in `sitemap.xml`. When a page's content changes, set `<lastmod>` of its three URLs in `sitemap.xml` to that date. Pages that must stay out of Google (login, account, admin, 404) use `<meta name="robots" content="noindex">` and are left out of the sitemap; do not block them in `robots.txt`, or Google cannot see the noindex.
 
 ## Speed
 

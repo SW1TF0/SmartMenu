@@ -24,6 +24,7 @@ import { readFileSync, writeFileSync, mkdirSync, rmSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { ASSET_REF, sourceFiles } from "./stamp-version.mjs";
+import { buildServicePages } from "./build-service-pages.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SITE = "https://www.smartmenukj.com";
@@ -361,6 +362,9 @@ for (const [lang, { pages }] of Object.entries(LANGS)) {
     writeFileSync(join(out, file), html);
   }
 }
+
+// Bulgarian-only service pages: rebuilt here because bg/ was just cleared.
+for (const url of buildServicePages(ROOT)) console.log(`Built ${url.slice(1)}`);
 
 if (missing.size) {
   console.error(`Missing translations (left in English):\n  ${[...missing].join("\n  ")}`);

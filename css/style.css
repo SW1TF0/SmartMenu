@@ -886,6 +886,7 @@ a.card:hover .card-link svg { transform: translateX(3px); }
 .form-card { padding: 32px; }
 .form-card h2 { font-size: clamp(28px, 3vw, 36px); margin-bottom: 22px; }
 .form-fine { margin: 14px 0 0; font-size: 13px; line-height: 1.5; color: var(--ink-3); }
+.faq-more a { color: var(--link); }
 .form-fine a { color: var(--link); text-decoration: underline; text-underline-offset: 2px; }
 .form-fine a:hover { text-decoration: underline; }
 .section-last { padding-bottom: clamp(72px, 10vw, 128px); }

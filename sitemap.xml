@@ -600,4 +600,12 @@
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
+  <url>
+    <loc>https://www.smartmenukj.com/bg/faq.html</loc>
+    <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/faq.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/faq.html" />
+    <lastmod>2026-11-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
 </urlset>

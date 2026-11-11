@@ -47,7 +47,7 @@ const UI = {
   bg: { dir: "bg/", faq: "Често задавани въпроси", faqTitle: "Често задавани въпроси", notes: "Вътрешни линкове", region: "Кърджали и региона",
         quote: "Поискай оферта", call: "Обади се", others: "Други услуги в Кърджали", ctaEyebrow: "Безплатна оферта до 24 часа", ctaTitle: "Кажете ни какво ви трябва.",
         ctaLede: "Ще ви върнем ясна писмена оферта до един ден, без ангажимент.", more: "Научете повече", readMore: "Прочетете още", city: "Kardzhali",
-        blog: "Блог", moreBlog: "Още от блога", blogCta: "Блог: съвети за QR менюта, камери и умен дом",
+        blog: "Блог", moreBlog: "Още от блога", faqSee: "Вижте и", faqLink: "често задаваните въпроси", faqCta: "Често задавани въпроси за всички услуги", blogCta: "Блог: съвети за QR менюта, камери и умен дом",
         blogTitle: "Блог — съвети за QR менюта, видеонаблюдение и умен дом | SmartMenuKJ", blogLede: "Полезно за собственици на заведения, магазини и домове в Кърджали: как работят технологиите, които монтираме, и как да изберете.",
         published: "Публикувано", months: ["януари", "февруари", "март", "април", "май", "юни", "юли", "август", "септември", "октомври", "ноември", "декември"] },
   tr: { dir: "tr/", faq: ["Sık sorulan sorular", "Sıkça sorulan sorular"], faqTitle: "Sık sorulan sorular", notes: "İç bağlantılar", region: "Kırcaali ve bölgesi",
@@ -565,12 +565,129 @@ function buildBlogs(root, templates) {
   return all;
 }
 
+// ------------------------------------------------------------------- faq --
+// content/<lang>/faq.md -> /<lang>/faq.html: one page with every question, grouped by service.
+// Front matter: url, title, description, h1, breadcrumb ("<home> › <page>"). Text: an intro
+// paragraph, "## " groups of **question** + answer lines (other lines in a group are shown
+// under its questions), and after a "---" line a closing paragraph.
+function parseFaqPage(md, file, lang) {
+  const m = md.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+  if (!m) throw new Error(`${file}: no front matter`);
+  const meta = Object.fromEntries(m[1].split("\n").map((l) => l.split(/:\s(.*)/s).slice(0, 2).map((x) => x.trim())));
+  for (const k of ["url", "title", "description", "h1", "breadcrumb"]) if (!meta[k]) throw new Error(`${file}: front matter needs ${k}`);
+  const [main, outro = ""] = m[2].split(/\n---\n/);
+  const parts = main.split(/\n## /);
+  const lede = parts[0].split("\n").filter((l) => l.trim() && !/^# /.test(l)).join(" ");
+  const groups = parts.slice(1).map((chunk) => {
+    const [heading, ...lines] = chunk.split("\n");
+    const qa = [], notes = [];
+    for (const l of lines.map((x) => x.trim()).filter(Boolean)) {
+      const q = l.match(/^\*\*(.+)\*\*$/);
+      if (q) qa.push({ q: q[1], a: [] });
+      else if (qa.length && !l.startsWith("👉") && !notes.length) qa[qa.length - 1].a.push(l);
+      else notes.push(l);
+    }
+    for (const x of qa) if (!x.a.length) throw new Error(`${file}: no answer for "${x.q}"`);
+    return { heading: heading.trim(), qa: qa.map((x) => ({ q: x.q, a: x.a.join(" ") })), notes };
+  });
+  if (!groups.length) throw new Error(`${file}: no "## " groups`);
+  return { lang, file, meta, lede, groups, outro: outro.split("\n").filter((l) => l.trim()).join(" ") };
+}
+
+function renderFaqPage(template, page) {
+  const { meta, lang } = page;
+  const ui = UI[lang];
+  const url = SITE + meta.url;
+  const crumbs = meta.breadcrumb.split("›").map((s) => s.trim());
+  const all = page.groups.flatMap((g) => g.qa);
+  const jsonld = ldScript({
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "FAQPage",
+        "@id": `${url}#faq`,
+        inLanguage: lang,
+        mainEntity: all.map(({ q, a }) => ({ "@type": "Question", name: plain(q), acceptedAnswer: { "@type": "Answer", text: plain(a) } })),
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [[crumbs[0], `${SITE}/${ui.dir}`], [crumbs[1], url]].map(([name, item], i) => ({ "@type": "ListItem", position: i + 1, name, item })),
+      },
+    ],
+  });
+  const { head, tail, script } = shell(template, {
+    lang, url, title: meta.title, description: meta.description, ogTitle: meta.h1,
+    alts: [[lang, meta.url]], xDefault: meta.url, jsonld,
+  });
+  const groups = page.groups.map((g) => `      <h2 class="h-md" style="margin:56px 0 18px">${esc(g.heading)}</h2>
+      <div class="faq">
+${g.qa.map(({ q, a }) => `        <details name="faq"><summary>${inline(q)}</summary><p>${inline(a)}</p></details>`).join("\n")}
+      </div>
+${g.notes.map((n) => `      <p class="faq-more" style="margin:14px 0 0">${inline(n.replace(/^👉\s*/, ""))}</p>`).join("\n")}`).join("\n");
+  const main = `<main id="main">
+  <section class="page-hero">
+    <div class="container">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">${esc(crumbs[0])}</a><span aria-hidden="true">/</span><span>${esc(crumbs[1])}</span></nav>
+      <h1 class="h-lg">${esc(meta.h1)}</h1>
+      <p class="lede">${inline(page.lede)}</p>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="faq">
+    <div class="container" style="max-width:880px">
+${groups}
+    </div>
+  </section>
+
+  <section class="section section-cta">
+    <div class="container">
+      <div class="cta-band invert">
+        <div>
+          <p class="eyebrow live">${esc(ui.ctaEyebrow)}</p>
+          <h2 class="h-lg">${esc(ui.ctaTitle)}</h2>
+          <p class="lede">${inline(page.outro.replace(/\*\*/g, ""))}</p>
+        </div>
+        <div class="hero-actions">
+          <a href="contact.html#quote" class="btn btn-primary"><span>${esc(ui.quote)}</span></a>
+          <a href="${tel}" class="btn btn-ghost"><span>${esc(ui.call)}: ${esc(PHONE)}</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>`;
+  // Not a services page: no active item in the header menu.
+  return head.replace(/(<header id="site-header" class="site-header") data-active="[^"]*"/, "$1") + main + tail + script;
+}
+
+// The FAQ page, linked from the language's contact page (under the form) and services page (before the call to action).
+function buildFaqPages(root, templates) {
+  const built = [];
+  for (const lang of LANGS) {
+    const file = join(root, "content", lang, "faq.md");
+    if (!existsSync(file)) continue;
+    const page = parseFaqPage(readFileSync(file, "utf8"), `content/${lang}/faq.md`, lang);
+    writeFileSync(join(root, page.meta.url.slice(1)), renderFaqPage(templates[lang], page));
+    const href = page.meta.url.slice(1 + UI[lang].dir.length);
+    const contactPath = join(root, UI[lang].dir, "contact.html");
+    let contact = readFileSync(contactPath, "utf8").replace(/\n {10}<p class="form-fine" data-faq-link>.*<\/p>/g, "");
+    if (!contact.includes("\n        </form>")) throw new Error(`${UI[lang].dir}contact.html: no </form>`);
+    contact = contact.replace("\n        </form>", `\n          <p class="form-fine" data-faq-link>${esc(UI[lang].faqSee)} <a href="${href}">${esc(UI[lang].faqLink)}</a>.</p>\n        </form>`);
+    writeFileSync(contactPath, contact);
+    const servicesPath = join(root, UI[lang].dir, "services.html");
+    let services = readFileSync(servicesPath, "utf8").replace(/\n {2}<section class="section" data-faq-link>[\s\S]*?<\/section>/g, "");
+    services = beforeCta(services, `\n  <section class="section" data-faq-link>\n    <div class="container"><p class="lede" style="text-align:center"><a href="${href}" class="link-chevron">${esc(UI[lang].faqCta)}</a></p></div>\n  </section>`, `${UI[lang].dir}services.html`);
+    writeFileSync(servicesPath, services);
+    built.push(page.meta.url);
+  }
+  return built;
+}
+
 export function buildServicePages(root = ROOT) {
   const pages = [];
   for (const lang of LANGS) {
     const dir = join(root, "content", lang);
     if (!existsSync(dir)) continue;
-    for (const f of readdirSync(dir).filter((x) => x.endsWith(".md")).sort()) {
+    for (const f of readdirSync(dir).filter((x) => x.endsWith(".md") && x !== "faq.md").sort()) {
       pages.push(parse(readFileSync(join(dir, f), "utf8"), `content/${lang}/${f}`, lang));
     }
   }
@@ -590,6 +707,7 @@ export function buildServicePages(root = ROOT) {
     writeFileSync(join(root, p.meta.url.slice(1)), render(templates[p.lang], p, byService[p.meta.service], related, urlsOf(p.lang)));
   }
   checkFooterTable(root, pages);
+  const faqs = buildFaqPages(root, templates);
   for (const a of articles) {
     if (!pages.some((p) => p.meta.url === a.meta.service)) throw new Error(`${a.file}: service ${a.meta.service} is not a service page`);
   }
@@ -598,7 +716,7 @@ export function buildServicePages(root = ROOT) {
     if (Object.keys(slugs).length) linkPages(root, lang, slugs, articles.filter((a) => a.lang === lang), pages);
   }
   const blogs = [...new Set(articles.map((a) => `/${UI[a.lang].dir}blog/`))];
-  return [...pages.map((p) => p.meta.url), ...blogs, ...articles.map((a) => a.meta.url)];
+  return [...pages.map((p) => p.meta.url), ...blogs, ...articles.map((a) => a.meta.url), ...faqs];
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {

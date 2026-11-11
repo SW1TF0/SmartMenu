@@ -27,6 +27,9 @@ jobs:
       - name: Build Bulgarian and Turkish pages
         run: node tools/build-langs.mjs
 
+      - name: Minify CSS (the repo keeps the readable source)
+        run: node tools/minify-css.mjs
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
 

@@ -3,7 +3,7 @@
 // audience switch.
 // Usage per page:
 //   <script type="module">
-//     import { registerDict, applyI18n, initLangSwitch } from "./js/i18n.js?v=20261104";
+//     import { registerDict, applyI18n, initLangSwitch } from "./js/i18n.js?v=20261111";
 //     registerDict({ en: {...}, bg: {...}, tr: {...} });
 //     applyI18n();
 //     initLangSwitch();

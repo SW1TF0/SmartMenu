@@ -122,6 +122,8 @@ The home page's JSON-LD has a `FAQPage` that quotes the English FAQ (`faq.N.q` /
 - Pages are prefetched when a visitor hovers over or presses a link (Speculation Rules in each public page's `<head>`), so the next page opens almost instantly. Login, account and admin are left out.
 - The shared modules (`i18n.js`, `chrome.js`, `motion.js`) are preloaded from the `<head>` instead of being discovered at the end of the page.
 - Product photos are small WebP files loaded lazily.
+- Partner logos are WebP too, at most 256 px on the long side (they show at about 100 px).
+- The deploy minifies `css/*.css` (`tools/minify-css.mjs`: comments and whitespace only, strings and `url()` untouched) — about 20% less CSS over the wire. The repo keeps the readable source; never run it on your working copy.
 
 ## Deploying
 

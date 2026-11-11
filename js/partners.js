@@ -6,20 +6,21 @@
 //   type   — an i18n key for the small label under the name; add new keys to
 //            the "partners.type.*" entries in index.html (EN + BG + TR)
 //   logo   — optional path to a logo in img/partners/. It sits on a white
-//            plate in both themes, so a white-background JPG/PNG is fine.
+//            plate in both themes. Use WebP, at most 256 px on the long side
+//            (a white background is fine).
 //            Without a logo, the partner's initials are shown.
 //   url    — optional link to the partner's site (opens in a new tab)
 // Add `placeholder: true` to a stand-in entry to give it a dashed outline.
 // ============================================================================
 
-import { escapeHtml } from "./i18n.js?v=20261104";
+import { escapeHtml } from "./i18n.js?v=20261111";
 
 export const PARTNERS = [
-  { name: "Great Wall Motors Kardzhali", type: "partners.type.auto", logo: "/img/partners/gwm.png", url: "" },
-  { name: "GlobalNet", type: "partners.type.isp", logo: "/img/partners/globalnet.png", url: "" },
-  { name: "Remela Service", type: "partners.type.service", logo: "/img/partners/remela.png", url: "" },
-  { name: "Clara Decor", type: "partners.type.boutique", logo: "/img/partners/clara-decor.jpg", url: "" },
-  { name: "Читалище „Христо Смирненски“ – Джебел", type: "partners.type.culture", logo: "/img/partners/chitalishte-dzhebel.png", url: "" },
+  { name: "Great Wall Motors Kardzhali", type: "partners.type.auto", logo: "/img/partners/gwm.webp", url: "" },
+  { name: "GlobalNet", type: "partners.type.isp", logo: "/img/partners/globalnet.webp", url: "" },
+  { name: "Remela Service", type: "partners.type.service", logo: "/img/partners/remela.webp", url: "" },
+  { name: "Clara Decor", type: "partners.type.boutique", logo: "/img/partners/clara-decor.webp", url: "" },
+  { name: "Читалище „Христо Смирненски“ – Джебел", type: "partners.type.culture", logo: "/img/partners/chitalishte-dzhebel.webp", url: "" },
 ];
 
 function initials(name) {

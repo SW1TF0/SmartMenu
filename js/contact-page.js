@@ -1,8 +1,8 @@
 // ============================================================================
 // contact.html — quote/contact form wiring.
 // ============================================================================
-import { getLang, t } from "./i18n.js?v=20261104";
-import { toast } from "./site.js?v=20261104";
+import { getLang, t } from "./i18n.js?v=20261111";
+import { toast } from "./site.js?v=20261111";
 
 const form = document.getElementById("quoteForm");
 const note = document.getElementById("quoteNote");
@@ -70,7 +70,7 @@ document.querySelectorAll("[data-copy]").forEach((btn) =>
 
 // Firebase is loaded only for sending, so the rest of the page (drafts,
 // copy buttons) keeps working even if it is slow or blocked.
-import("./contact.js?v=20261104").then(({ wireContactForm }) => wireContactForm(form, {
+import("./contact.js?v=20261111").then(({ wireContactForm }) => wireContactForm(form, {
   onSuccess: () => {
     clearDraft();
     note.textContent = {

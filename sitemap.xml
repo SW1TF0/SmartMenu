@@ -422,4 +422,28 @@
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
+  <url>
+    <loc>https://www.smartmenukj.com/bg/blog/sait-za-zavedenie-kakvo-tryabva-da-ima.html</loc>
+    <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/blog/sait-za-zavedenie-kakvo-tryabva-da-ima.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/blog/sait-za-zavedenie-kakvo-tryabva-da-ima.html" />
+    <lastmod>2026-11-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.smartmenukj.com/bg/blog/3d-pechat-kakvo-moje-da-se-napravi.html</loc>
+    <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/blog/3d-pechat-kakvo-moje-da-se-napravi.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/blog/3d-pechat-kakvo-moje-da-se-napravi.html" />
+    <lastmod>2026-11-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.smartmenukj.com/bg/blog/baven-kompyutar-7-prichini.html</loc>
+    <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/blog/baven-kompyutar-7-prichini.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/blog/baven-kompyutar-7-prichini.html" />
+    <lastmod>2026-11-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
 </urlset>

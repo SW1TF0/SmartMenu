@@ -28,10 +28,10 @@
 <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3" />
 <link rel="manifest" href="/site.webmanifest" />
 <link rel="preload" href="fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
-<link rel="stylesheet" href="css/style.css?v=20261112e" />
-<link rel="modulepreload" href="js/i18n.js?v=20261112e" />
-<link rel="modulepreload" href="js/chrome.js?v=20261112e" />
-<link rel="modulepreload" href="js/motion.js?v=20261112e" />
+<link rel="stylesheet" href="css/style.css?v=20261112f" />
+<link rel="modulepreload" href="js/i18n.js?v=20261112f" />
+<link rel="modulepreload" href="js/chrome.js?v=20261112f" />
+<link rel="modulepreload" href="js/motion.js?v=20261112f" />
 <script type="speculationrules">{"prefetch":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":["/login.html","/account.html","/admin.html"]}}]},"eagerness":"moderate"}]}</script>
 </head>
 <body>
@@ -71,7 +71,10 @@
       <div class="grid grid-3" id="projGrid" data-reorder>
         <!-- Real projects (newest first): photo from img/portfolio/ (tools/portfolio_images.py), service, city, short text. -->
         <article class="card work reveal" data-cat="pc" data-order-personal="0">
-          <div class="proj-photo"><img src="img/portfolio/care-home.webp" alt="The new network switch in the care home" data-i18n-alt="folio.r2.alt" width="1200" height="800" loading="lazy" decoding="async" /></div>
+          <div class="proj-photo proj-ba">
+            <figure><img src="img/portfolio/care-home-before.webp" alt="Before: the old network switch wrapped in paper among the cables" data-i18n-alt="folio.r2.altBefore" width="600" height="800" loading="lazy" decoding="async" /><figcaption data-i18n="folio.before">Before</figcaption></figure>
+            <figure><img src="img/portfolio/care-home-after.webp" alt="After: the new network switch in its place" data-i18n-alt="folio.r2.altAfter" width="600" height="800" loading="lazy" decoding="async" /><figcaption data-i18n="folio.after">After</figcaption></figure>
+          </div>
           <div class="proj-meta"><span class="pill accent" data-i18n="svc.pc">PC &amp; Printer Service</span><span class="proj-city" data-i18n="folio.city.kj">Kardzhali</span></div>
           <h3 data-i18n="folio.r2.title">Network and computers for a care home</h3>
           <p data-i18n="folio.r2.desc">We replaced the switch, fixed the network settings and renewed the computer, monitor, printer, mice and keyboards of a care home in Kardzhali.</p>
@@ -140,21 +143,24 @@
 <footer id="site-footer" class="site-footer"></footer>
 
 <script type="module">
-  import { mountChrome } from "./js/chrome.js?v=20261112e";
-  import { registerDict, applyI18n, initLangSwitch } from "./js/i18n.js?v=20261112e";
-  import { initCookieBanner } from "./js/cookies.js?v=20261112e";
-  import { initReveal } from "./js/site.js?v=20261112e";
-  import { mountIcons } from "./js/icons.js?v=20261112e";
+  import { mountChrome } from "./js/chrome.js?v=20261112f";
+  import { registerDict, applyI18n, initLangSwitch } from "./js/i18n.js?v=20261112f";
+  import { initCookieBanner } from "./js/cookies.js?v=20261112f";
+  import { initReveal } from "./js/site.js?v=20261112f";
+  import { mountIcons } from "./js/icons.js?v=20261112f";
 
   registerDict({
     en: {
+      "folio.before": "Before",
+      "folio.after": "After",
+      "folio.r2.altBefore": "Before: the old network switch wrapped in paper among the cables",
+      "folio.r2.altAfter": "After: the new network switch in its place",
       "folio.city.kj": "Kardzhali",
       "folio.r1.title": "Two custom-built PCs",
       "folio.r1.desc": "We put together two computers — from the box of parts to a working machine.",
       "folio.r1.alt": "One of the two assembled computers",
       "folio.r2.title": "Network and computers for a care home",
       "folio.r2.desc": "We replaced the switch, fixed the network settings and renewed the computer, monitor, printer, mice and keyboards of a care home in Kardzhali.",
-      "folio.r2.alt": "The new network switch in the care home",
       "folio.eyebrow": "Our work", "folio.title": "The kind of projects we build.",
       "folio.lede": "A snapshot across all six services. Full case studies and client names available on request.",
       "folio.filter.all": "All", "folio.filter.label": "Filter projects by service",
@@ -168,13 +174,16 @@
       "folio.cta.title": "Want your project on this list?",
     },
     bg: {
+      "folio.before": "Преди",
+      "folio.after": "След",
+      "folio.r2.altBefore": "Преди: старият мрежов суич, увит в хартия сред кабелите",
+      "folio.r2.altAfter": "След: новият мрежов суич на мястото му",
       "folio.city.kj": "Кърджали",
       "folio.r1.title": "Два сглобени компютъра",
       "folio.r1.desc": "Сглобихме два компютъра — от кутията с части до готова машина.",
       "folio.r1.alt": "Единият от двата сглобени компютъра",
       "folio.r2.title": "Мрежа и техника за старчески дом",
       "folio.r2.desc": "Сменихме суича, оправихме настройките на мрежата и подновихме компютъра, монитора, принтера, мишките и клавиатурите на старческия дом в Кърджали.",
-      "folio.r2.alt": "Новият мрежов суич в старческия дом",
       "folio.eyebrow": "Нашите проекти", "folio.title": "Какви проекти изграждаме.",
       "folio.lede": "Примери от всичките шест услуги. Пълни казуси и имена на клиенти — при поискване.",
       "folio.filter.all": "Всички", "folio.filter.label": "Филтрирай проектите по услуга",
@@ -188,13 +197,16 @@
       "folio.cta.title": "Искате вашият проект да е в списъка?",
     },
     tr: {
+      "folio.before": "Önce",
+      "folio.after": "Sonra",
+      "folio.r2.altBefore": "Önce: kabloların arasında kâğıda sarılı eski ağ switch'i",
+      "folio.r2.altAfter": "Sonra: yerine takılan yeni ağ switch'i",
       "folio.city.kj": "Kırcaali",
       "folio.r1.title": "Toplanmış iki bilgisayar",
       "folio.r1.desc": "İki bilgisayar topladık — parça kutusundan çalışan makineye.",
       "folio.r1.alt": "Toplanan iki bilgisayardan biri",
       "folio.r2.title": "Bir huzurevi için ağ ve bilgisayarlar",
       "folio.r2.desc": "Kırcaali'deki bir huzurevinin switch'ini değiştirdik, ağ ayarlarını düzelttik; bilgisayarını, monitörünü, yazıcısını, farelerini ve klavyelerini yeniledik.",
-      "folio.r2.alt": "Huzurevindeki yeni ağ switch'i",
       "folio.eyebrow": "Projelerimiz",
       "folio.title": "Yaptığımız projelerden örnekler.",
       "folio.lede": "Altı hizmetin tamamından bir kesit. Ayrıntılı vaka çalışmaları ve müşteri isimleri talep üzerine paylaşılır.",

@@ -3,9 +3,9 @@
 // the services shown to the current audience, in their order) and the
 // animated stat counters.
 // ============================================================================
-import { initReveal, prefersReducedMotion } from "./site.js?v=20261112e";
-import { createIconStage, mountIcons } from "./icons.js?v=20261112e";
-import { getAudience, t } from "./i18n.js?v=20261112e";
+import { initReveal, prefersReducedMotion } from "./site.js?v=20261112f";
+import { createIconStage, mountIcons } from "./icons.js?v=20261112f";
+import { getAudience, t } from "./i18n.js?v=20261112f";
 
 initReveal();
 mountIcons();

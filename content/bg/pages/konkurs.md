@@ -14,9 +14,9 @@ footer: Конкурс
 
 🎁 Подаряваме QR меню на едно заведение в област Кърджали — 3 месеца безплатно!
 
-=> [Участвай в Instagram](https://www.instagram.com/smartmenukj/)
-=> [Участвай в TikTok](https://www.tiktok.com/@smartmenukj)
-=> [Участвай в YouTube](https://www.youtube.com/@smartmenukj)
+=> [Участвай в Instagram](https://www.instagram.com/reel/DfpfTsxHIg3/)
+=> [Участвай в TikTok](https://www.tiktok.com/@smartmenukj/video/7707323238724013345)
+=> [Участвай в YouTube](https://www.youtube.com/watch?v=iDunLnZi42o)
 
 ## Как да участваш
 

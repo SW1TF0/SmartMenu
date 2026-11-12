@@ -2,7 +2,7 @@
 // Shared authentication helpers — used by login.html, account.html, admin.html
 // and the site header (nav auth state) via chrome.js.
 // ============================================================================
-import { auth, db, googleProvider, ADMIN_EMAILS } from "./firebase-config.js?v=20261111f";
+import { auth, db, googleProvider, ADMIN_EMAILS } from "./firebase-config.js?v=20261112";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,

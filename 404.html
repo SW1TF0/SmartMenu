@@ -6,6 +6,7 @@
 <base href="/" />
 <title>Page not found — SmartMenuKJ</title>
 <meta name="robots" content="noindex" />
+<meta name="description" content="This page does not exist. Links to the services, blog and contact page of SmartMenuKJ, Kardzhali." />
 <meta name="theme-color" content="#ffffff" />
 <link rel="icon" href="/favicon.ico?v=3" sizes="48x48" />
 <link rel="icon" href="/favicon.svg?v=3" type="image/svg+xml" />
@@ -65,25 +66,35 @@
   const pathLang = (location.pathname.match(/^\/(bg|tr)\//) || [])[1];
   if (pathLang && pathLang !== getLang()) setLang(pathLang);
 
-  // Links to the pages that exist in the visitor's language (base href="/", so paths are from the site root).
+  // Links to the pages in the visitor's language (relative to <base>, the language's folder).
   function renderLinks() {
     const lang = getLang();
-    const dir = lang === "en" ? "" : `${lang}/`;
     const links = [
-      ...Object.entries(SVC_PAGES[lang] || SVC_PAGES.en).map(([key, file]) => [dir + file, t(`svc.${key}`)]),
-      [`${dir}services.html`, t("404.all")],
-      [`${dir}blog/`, t("footer.blog")],
-      ...(lang === "bg" ? [["bg/faq.html", t("footer.faq")]] : []),
+      ...Object.entries(SVC_PAGES[lang] || SVC_PAGES.en).map(([key, file]) => [file, t(`svc.${key}`)]),
+      ["services.html", t("404.all")],
+      ["blog/", t("footer.blog")],
+      ...(lang === "bg" ? [["faq.html", t("footer.faq")]] : []),
     ];
     document.getElementById("errLinks").innerHTML = links.map(([href, label]) => `<a class="pill" href="${href}">${escapeHtml(label)}</a>`).join("");
   }
 
-  // The footer's language-only links (FAQ, contest) read <html lang>, which this page sets from the visitor's language.
-  document.documentElement.lang = getLang();
+  // The header and footer use links relative to the language's folder (as on /bg/… pages), and some
+  // footer links read <html lang>: point <base> at that folder and set lang before mounting them.
+  {
+    const lang = getLang();
+    document.documentElement.lang = lang;
+    document.querySelector("base").setAttribute("href", lang === "en" ? "/" : `/${lang}/`);
+  }
   mountChrome();
   applyI18n();
   renderLinks();
-  document.addEventListener("smkj:lang", renderLinks);
+  // Picking another language: the same missing address in that language's folder, so header, footer and links all follow.
+  const mounted = getLang();
+  document.addEventListener("smkj:lang", (e) => {
+    const lang = e.detail && e.detail.lang;
+    if (!lang || lang === mounted) return;
+    location.href = (lang === "en" ? "/" : `/${lang}/`) + location.pathname.replace(/^\/(bg|tr)\//, "/").slice(1) + location.search;
+  });
   initLangSwitch();
 </script>
 </body>

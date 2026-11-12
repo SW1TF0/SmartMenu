@@ -31,12 +31,12 @@ const LANGS = ["en", "bg", "tr"];
 const X_DEFAULT = "bg";
 const PHONE = "+359 88 534 8666";
 // Link text for each service in the "other services" block (SEO audit M-1111-24).
-const SVC_NAMES = {
+export const SVC_NAMES = {
   en: { menu: "QR menus for restaurants", web: "Website design", cameras: "CCTV & security cameras", smarthome: "Smart home automation", print3d: "3D printing", pc: "Computer & printer repair" },
   bg: { menu: "QR меню за заведения", web: "Изработка на сайтове", cameras: "Видеонаблюдение и камери", smarthome: "Умен дом и автоматизация", print3d: "3D печат", pc: "Компютърен сервиз и принтери" },
   tr: { menu: "Restoranlar için QR menü", web: "Web sitesi tasarımı", cameras: "Güvenlik kamerası sistemleri", smarthome: "Akıllı ev otomasyonu", print3d: "3D baskı", pc: "Bilgisayar ve yazıcı servisi" },
 };
-const UI = {
+export const UI = {
   en: { dir: "", faq: "FAQ", faqTitle: "Frequently asked questions", notes: "Internal links", region: "Kardzhali and the region",
         quote: "Get a quote", call: "Call", others: "Other services in Kardzhali", ctaEyebrow: "Free quote within 24 hours", ctaTitle: "Tell us what you need.",
         ctaLede: "We'll reply with a clear written quote within a day, with no obligation.", more: "Learn more", readMore: "Read more", city: "Kardzhali",
@@ -199,7 +199,7 @@ function jsonLd(page) {
 // Head, footer and scripts of a generated page, from a services.html template.
 // `base` ("/bg/") makes every relative link of the shared header, footer and
 // assets resolve as on the language's top level, for pages one folder deeper.
-function shell(template, { lang, url, title, description, ogTitle, alts, xDefault, jsonld, base = "", ogType = "website" }) {
+function shell(template, { lang, url, title, description, ogTitle, alts, xDefault, jsonld, base = "", ogType = "website", image = null }) {
   const up = UI[lang].dir ? "../" : "";
   const head = template.slice(0, template.indexOf("<main"));
   const tail = template.slice(template.indexOf("</main>") + "</main>".length, template.indexOf('<script type="module">'));
@@ -216,6 +216,11 @@ function shell(template, { lang, url, title, description, ogTitle, alts, xDefaul
   h = sub(h, /(<meta property="og:title" content=")[^"]*(")/, esc(ogTitle));
   h = sub(h, /(<meta property="og:description" content=")[^"]*(")/, esc(description));
   h = sub(h, /(<meta property="og:type" content=")[^"]*(")/, ogType);
+  // A page's own share picture (tools/make-og-images.mjs): og:image with its size and text, and a large Twitter/X card.
+  if (image) {
+    h = sub(h, /(<meta property="og:image" content=")[^"]*(")/, image.url);
+    h = h.replace(/(<meta property="og:image" content="[^"]*" \/>\n)/, `$1<meta property="og:image:width" content="1200" />\n<meta property="og:image:height" content="630" />\n<meta property="og:image:alt" content="${esc(image.alt)}" />\n<meta name="twitter:card" content="summary_large_image" />\n<meta name="twitter:image" content="${image.url}" />\n`);
+  }
   h = h.replace(/(<header id="site-header" class="site-header") data-active="[^"]*"/, base ? "$1" : "$&");
   // hreflang: only versions that exist; x-default is the Bulgarian one (or this page).
   h = h.replace(/<link rel="alternate" hreflang="[^"]+" href="[^"]*" \/>\n/g, "");
@@ -243,6 +248,13 @@ function shell(template, { lang, url, title, description, ogTitle, alts, xDefaul
   return { head: h, tail, script };
 }
 
+// img/og/<lang>-<service>.jpg, made by tools/make-og-images.mjs; the build fails if one is missing.
+function ogImage(lang, service) {
+  const file = `img/og/${lang}-${service}.jpg`;
+  if (!existsSync(join(ROOT, file))) throw new Error(`${file} is missing: run node tools/make-og-images.mjs`);
+  return { url: `${SITE}/${file}`, alt: `SmartMenuKJ: ${SVC_NAMES[lang][service]} · ${UI[lang].region}` };
+}
+
 const ldScript = (data) => `<script type="application/ld+json">\n${JSON.stringify(data, null, 2).replace(/</g, "\\u003c")}\n</script>\n`;
 
 function render(template, page, twins, related = [], siblings = {}) {
@@ -253,6 +265,7 @@ function render(template, page, twins, related = [], siblings = {}) {
   const { head: h, tail, script } = shell(template, {
     lang, url, title: meta.title, description: meta.description, ogTitle: meta.h1,
     alts: LANGS.filter((l) => twins[l]).map((l) => [l, twins[l]]), xDefault: twins[X_DEFAULT] || meta.url, jsonld: jsonLd(page),
+    image: ogImage(lang, meta.service),
   });
   const others = SERVICES.filter((k) => k !== meta.service && siblings[k])
     .map((k) => `            <li><a href="${siblings[k]}">${esc(SVC_NAMES[lang][k])}</a></li>`).join("\n");

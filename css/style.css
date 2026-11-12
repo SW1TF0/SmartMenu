@@ -912,6 +912,9 @@ a.card:hover .card-link svg { transform: translateX(3px); }
 .legal ul { margin: 0 0 16px; }
 .legal li { position: relative; padding-left: 22px; margin-bottom: 10px; }
 .legal li::before { content: ""; position: absolute; left: 4px; top: 0.66em; width: 6px; height: 6px; border-radius: 50%; background: var(--ink-3); }
+/* Numbered steps carry their number in the text: no bullet beside it. */
+.legal ul.legal-steps li { padding-left: 0; }
+.legal ul.legal-steps li::before { content: none; }
 .legal a { color: var(--link); }
 .legal p a, .legal li a { text-decoration: underline; text-underline-offset: 2px; text-decoration-thickness: 1px; }
 .legal a:hover { text-decoration: underline; }

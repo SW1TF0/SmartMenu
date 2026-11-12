@@ -611,6 +611,16 @@
   <url>
     <loc>https://www.smartmenukj.com/bg/konkurs.html</loc>
     <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/konkurs.html" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/konkurs.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/konkurs.html" />
+    <lastmod>2026-11-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.smartmenukj.com/tr/konkurs.html</loc>
+    <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/konkurs.html" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://www.smartmenukj.com/tr/konkurs.html" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/konkurs.html" />
     <lastmod>2026-11-12</lastmod>
     <changefreq>weekly</changefreq>

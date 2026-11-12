@@ -74,15 +74,15 @@ function inline(text) {
 }
 const plain = (text) => text.replace(/\*\*(.+?)\*\*/g, "$1").replace(/\[([^\]]+)\]\([^)]+\)/g, "$1");
 
-// Markdown lines -> blocks: "### " h3, "- " list, "1. " steps, paragraphs (split by blank lines).
+// Markdown lines -> blocks: "### " h3, "- " list, "1. " steps, "=> [label](https://…)" buttons, paragraphs (split by blank lines).
 function mdBlocks(lines) {
   const out = [];
   let cur = null;
   for (const raw of lines) {
     const line = raw.trimEnd();
-    const kind = /^### /.test(line) ? "h3" : /^- /.test(line) ? "ul" : /^\d+\. /.test(line) ? "ol" : line ? "p" : null;
+    const kind = /^### /.test(line) ? "h3" : /^- /.test(line) ? "ul" : /^\d+\. /.test(line) ? "ol" : /^=> /.test(line) ? "btn" : line ? "p" : null;
     if (!kind) { cur = null; continue; }
-    const text = line.replace(/^(### |- |\d+\. )/, "");
+    const text = line.replace(/^(### |- |\d+\. |=> )/, "");
     if (kind === "h3") { out.push((cur = { kind, items: [text] })); cur = null; continue; }
     if (cur && cur.kind === kind) cur.items.push(text);
     else out.push((cur = { kind, items: [text] }));
@@ -138,14 +138,26 @@ function parse(md, file, lang, kind = "service") {
   return { lang, file, meta, lede: intro[0].items.join(" "), rest: intro.slice(1), body, faq };
 }
 
+// A row of buttons from "=> [label](url)" lines: the first one primary; links to other sites open in a new tab.
+function renderButtons(b, indent = "          ") {
+  const links = b.items.map((t) => {
+    const m = t.match(/^\[([^\]]+)\]\(((?:https:\/\/|\/)[^)\s]+)\)$/);
+    if (!m) throw new Error(`a "=> " line must be exactly [label](https://… or /…): ${t}`);
+    const ext = m[2].startsWith("https://") && !m[2].startsWith(SITE);
+    return `<a href="${esc(m[2])}" class="btn ${b.items.indexOf(t) === 0 ? "btn-primary" : "btn-ghost"}"${ext ? ' target="_blank" rel="noopener"' : ""}><span>${esc(m[1])}</span></a>`;
+  });
+  return `${indent}<div class="hero-actions">\n${links.map((l) => `${indent}  ${l}`).join("\n")}\n${indent}</div>`;
+}
+
 function renderBlocks(blocks) {
   return blocks
     .map((b) => {
+      if (b.kind === "btn") return renderButtons(b);
       if (b.kind === "p") return `          <p>${inline(b.items.join(" "))}</p>`;
       if (b.kind === "h3") return `          <h3>${inline(b.items[0])}</h3>`;
       // Steps keep their numbers in the text: .legal styles every list item as a bullet.
       const items = b.items.map((t, i) => `            <li>${b.kind === "ol" ? `<strong>${i + 1}.</strong> ` : ""}${inline(t)}</li>`);
-      return `          <ul>\n${items.join("\n")}\n          </ul>`;
+      return `          <ul${b.kind === "ol" ? ' class="legal-steps"' : ""}>\n${items.join("\n")}\n          </ul>`;
     })
     .join("\n");
 }
@@ -686,8 +698,8 @@ function buildFaqPages(root, templates) {
 
 // ----------------------------------------------------------------- pages --
 // content/<lang>/pages/*.md -> one plain page each (e.g. /bg/konkurs.html, the contest rules).
-// Front matter: url, title, description, h1, breadcrumb ("<home> › <page>"); optional
-// `until` (YYYY-MM-DD) with `banner` (a link at the top of the language's home page) and
+// Front matter: url, title, description, h1, breadcrumb ("<home> › <page>"); optional `key`
+// (the same in every language version: hreflang), `until` (YYYY-MM-DD) with `banner` (a link at the top of the language's home page) and
 // `footer` (a footer link, listed in js/chrome.js PROMO_PAGES): js/chrome.js hides both
 // from `until` on, the page itself stays. Text: an intro paragraph, then "## " sections.
 function parseSimplePage(md, file, lang) {
@@ -710,7 +722,7 @@ function parseSimplePage(md, file, lang) {
   return { lang, file, meta, lede: intro[0].items.join(" "), rest: intro.slice(1), body: sections.slice(1).map((x) => ({ heading: x.heading, blocks: mdBlocks(x.lines) })) };
 }
 
-function renderSimplePage(template, page) {
+function renderSimplePage(template, page, twins = { [page.lang]: page.meta.url }) {
   const { meta, lang } = page;
   const ui = UI[lang];
   const url = SITE + meta.url;
@@ -721,15 +733,18 @@ function renderSimplePage(template, page) {
     itemListElement: [[crumbs[0], `${SITE}/${ui.dir}`], [crumbs[1], url]].map(([name, item], i) => ({ "@type": "ListItem", position: i + 1, name, item })),
   });
   const { head, tail, script } = shell(template, {
-    lang, url, title: meta.title, description: meta.description, ogTitle: meta.h1, alts: [[lang, meta.url]], xDefault: meta.url, jsonld,
+    lang, url, title: meta.title, description: meta.description, ogTitle: meta.h1,
+    alts: LANGS.filter((l) => twins[l]).map((l) => [l, twins[l]]), xDefault: twins[X_DEFAULT] || meta.url, jsonld,
   });
+  const heroButtons = page.rest.filter((b) => b.kind === "btn").map((b) => "\n" + renderButtons(b, "      ")).join("");
+  const rest = page.rest.filter((b) => b.kind !== "btn");
   const sections = page.body.map((s) => `          <h2>${esc(s.heading)}</h2>\n${renderBlocks(s.blocks)}`).join("\n\n");
   const main = `<main id="main">
   <section class="page-hero">
     <div class="container">
       <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">${esc(crumbs[0])}</a><span aria-hidden="true">/</span><span>${esc(crumbs[1])}</span></nav>
       <h1 class="h-lg">${esc(meta.h1)}</h1>
-      <p class="lede">${inline(page.lede)}</p>
+      <p class="lede">${inline(page.lede)}</p>${heroButtons}
     </div>
   </section>
 
@@ -737,7 +752,7 @@ function renderSimplePage(template, page) {
     <div class="container">
       <article class="card legal-card">
         <div class="legal">
-${page.rest.length ? renderBlocks(page.rest) + "\n\n" : ""}${sections}
+${rest.length ? renderBlocks(rest) + "\n\n" : ""}${sections}
         </div>
       </article>
     </div>
@@ -764,12 +779,25 @@ ${page.rest.length ? renderBlocks(page.rest) + "\n\n" : ""}${sections}
 function buildSimplePages(root, templates) {
   const built = [];
   const chrome = readFileSync(join(root, "js", "chrome.js"), "utf8");
-  for (const lang of LANGS) {
+  const byLang = Object.fromEntries(LANGS.map((lang) => {
     const dir = join(root, "content", lang, "pages");
-    const pages = existsSync(dir) ? readdirSync(dir).filter((x) => x.endsWith(".md")).sort()
-      .map((f) => parseSimplePage(readFileSync(join(dir, f), "utf8"), `content/${lang}/pages/${f}`, lang)) : [];
+    return [lang, existsSync(dir) ? readdirSync(dir).filter((x) => x.endsWith(".md")).sort()
+      .map((f) => parseSimplePage(readFileSync(join(dir, f), "utf8"), `content/${lang}/pages/${f}`, lang)) : []];
+  }));
+  // Language versions of one page share a `key` in the front matter (hreflang + the language switch).
+  const twinsOf = (page) => {
+    if (!page.meta.key) return { [page.lang]: page.meta.url };
+    const t = {};
+    for (const l of LANGS) for (const p of byLang[l]) if (p.meta.key === page.meta.key) {
+      if (t[l]) throw new Error(`${p.file}: two ${l} pages with key ${p.meta.key}`);
+      t[l] = p.meta.url;
+    }
+    return t;
+  };
+  for (const lang of LANGS) {
+    const pages = byLang[lang];
     for (const page of pages) {
-      writeFileSync(join(root, page.meta.url.slice(1)), renderSimplePage(templates[lang], page));
+      writeFileSync(join(root, page.meta.url.slice(1)), renderSimplePage(templates[lang], page, twinsOf(page)));
       built.push(page.meta.url);
     }
     // Home page banners: removed and added again, so rebuilding never doubles them.

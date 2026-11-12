@@ -14,9 +14,9 @@ footer: Yarışma
 
 🎁 Kırcaali ilinde bir mekâna QR menü hediye ediyoruz — 3 ay ücretsiz!
 
-=> [Instagram'da katıl](https://www.instagram.com/smartmenukj/)
-=> [TikTok'ta katıl](https://www.tiktok.com/@smartmenukj)
-=> [YouTube'da katıl](https://www.youtube.com/@smartmenukj)
+=> [Instagram'da katıl](https://www.instagram.com/reel/DfpfTsxHIg3/)
+=> [TikTok'ta katıl](https://www.tiktok.com/@smartmenukj/video/7707323238724013345)
+=> [YouTube'da katıl](https://www.youtube.com/watch?v=iDunLnZi42o)
 
 ## Nasıl katılırsınız
 

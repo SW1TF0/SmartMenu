@@ -19,10 +19,10 @@
 // (leadNotes/{leadId}: { text, remindAt "YYYY-MM-DD" | null }), readable
 // by admins only — lead docs are also readable by the customer who sent them.
 // ============================================================================
-import { db } from "./firebase-config.js?v=20261112e";
-import { watchAuth, isAdmin } from "./auth.js?v=20261112e";
-import { escapeHtml, registerDict, applyI18n, t, getLang } from "./i18n.js?v=20261112e";
-import { ADMIN_DICT } from "./admin-i18n.js?v=20261112e";
+import { db } from "./firebase-config.js?v=20261112f";
+import { watchAuth, isAdmin } from "./auth.js?v=20261112f";
+import { escapeHtml, registerDict, applyI18n, t, getLang } from "./i18n.js?v=20261112f";
+import { ADMIN_DICT } from "./admin-i18n.js?v=20261112f";
 import {
   collection,
   getDocs,

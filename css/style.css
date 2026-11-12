@@ -626,7 +626,14 @@ a.card:hover .card-link svg { transform: translateX(3px); }
 .work .proj-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 10px; }
 .work .proj-meta .pill { margin-bottom: 0; }
 .work .proj-city { font: 500 13px/1.1 var(--font-sans); color: var(--ink-3); }
-.work .proj-city::before { content: "· "; }
+.work .proj-city::before { content: "📍"; margin-right: 4px; }
+/* Before / after: two 3:4 photos side by side, each with its label. */
+.proj-ba { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; }
+.proj-ba figure { position: relative; margin: 0; overflow: hidden; }
+.proj-ba figcaption {
+  position: absolute; left: 10px; bottom: 10px; padding: 5px 11px; border-radius: 999px;
+  background: rgba(0, 0, 0, 0.62); color: #fff; font: 600 12px/1 var(--font-sans); letter-spacing: 0.02em;
+}
 
 /* Scroll reveal — only hidden when JS is running (html.js), so content can
    never get stuck invisible without scripts. */

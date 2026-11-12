@@ -9,8 +9,8 @@
 // a Home / Business version have <html data-aud-page>; they also get the
 // switch at the top of the mobile menu.
 // ============================================================================
-import { t, escapeHtml, getAudience, setAudience } from "./i18n.js?v=20261111f";
-import { themeTransition, swapTransition } from "./motion.js?v=20261111f";
+import { t, escapeHtml, getAudience, setAudience } from "./i18n.js?v=20261112";
+import { themeTransition, swapTransition } from "./motion.js?v=20261112";
 
 const NAV_ITEMS = [
   { key: "index.html", label: "nav.home" },
@@ -220,6 +220,23 @@ function faqLink() {
   return document.documentElement.lang === "bg" ? '\n          <li><a href="faq.html" data-i18n="footer.faq">Въпроси</a></li>' : "";
 }
 
+// Time-limited pages (content/<lang>/pages/*.md with `footer`): a footer link until the day `until`,
+// when it and the page's home banner ([data-until], see hideExpired) disappear.
+const PROMO_PAGES = {
+  bg: [{ href: "konkurs.html", label: "Конкурс", until: "2026-11-20" }],
+};
+function today() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+function promoLinks() {
+  return (PROMO_PAGES[document.documentElement.lang] || []).filter((p) => today() < p.until)
+    .map((p) => `\n          <li><a href="${p.href}">${p.label}</a></li>`).join("");
+}
+function hideExpired() {
+  for (const el of document.querySelectorAll("[data-until]")) if (today() >= el.getAttribute("data-until")) el.remove();
+}
+
 // Each language has its blog at <lang>/blog/ (EN at /blog/); relative, like the other footer links.
 function blogLink() {
   return '\n          <li><a href="blog/" data-i18n="footer.blog">Blog</a></li>';
@@ -255,7 +272,7 @@ function footerHTML() {
         <ul>
           <li><a href="about.html" data-i18n="footer.about">About us</a></li>
           <li><a href="portfolio.html" data-i18n="footer.portfolio">Our work</a></li>
-          <li><a href="contact.html" data-i18n="footer.contact">Contact</a></li>${blogLink()}${faqLink()}
+          <li><a href="contact.html" data-i18n="footer.contact">Contact</a></li>${blogLink()}${faqLink()}${promoLinks()}
           <li><a href="/login.html" data-i18n="footer.login">Log in / Register</a></li>
         </ul>
       </div>
@@ -344,6 +361,7 @@ export function mountChrome() {
     footer.classList.add("site-footer");
     footer.innerHTML = footerHTML();
   }
+  hideExpired();
 
   if (header && !header.hasAttribute("data-hide-mobile-cta") && !document.querySelector(".mobile-cta-bar")) {
     const bar = document.createElement("aside");  // a landmark, so screen readers can find it
@@ -397,7 +415,7 @@ export function mountChrome() {
   // Firebase loads lazily so the header, footer and translations still render
   // when the SDK is slow, offline or blocked; the nav starts signed-out.
   renderAuth(null, false);
-  import("./auth.js?v=20261111f")
+  import("./auth.js?v=20261112")
     .then(({ watchAuth, isAdmin, logout }) =>
       watchAuth((user) => {
         const admin = isAdmin(user);

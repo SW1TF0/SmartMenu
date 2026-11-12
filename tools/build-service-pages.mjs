@@ -74,6 +74,22 @@ function inline(text) {
 }
 const plain = (text) => text.replace(/\*\*(.+?)\*\*/g, "$1").replace(/\[([^\]]+)\]\([^)]+\)/g, "$1");
 
+// Markdown lines -> blocks: "### " h3, "- " list, "1. " steps, paragraphs (split by blank lines).
+function mdBlocks(lines) {
+  const out = [];
+  let cur = null;
+  for (const raw of lines) {
+    const line = raw.trimEnd();
+    const kind = /^### /.test(line) ? "h3" : /^- /.test(line) ? "ul" : /^\d+\. /.test(line) ? "ol" : line ? "p" : null;
+    if (!kind) { cur = null; continue; }
+    const text = line.replace(/^(### |- |\d+\. )/, "");
+    if (kind === "h3") { out.push((cur = { kind, items: [text] })); cur = null; continue; }
+    if (cur && cur.kind === kind) cur.items.push(text);
+    else out.push((cur = { kind, items: [text] }));
+  }
+  return out;
+}
+
 function parse(md, file, lang, kind = "service") {
   const ui = UI[lang];
   const m = md.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
@@ -97,21 +113,7 @@ function parse(md, file, lang, kind = "service") {
     if (h) sections.push({ heading: h[1].trim(), lines: [] });
     else sections[sections.length - 1].lines.push(line);
   }
-  const blocks = (lines) => {
-    const out = [];
-    let cur = null;
-    for (const raw of lines) {
-      const line = raw.trimEnd();
-      const kind = /^### /.test(line) ? "h3" : /^- /.test(line) ? "ul" : /^\d+\. /.test(line) ? "ol" : line ? "p" : null;
-      if (!kind) { cur = null; continue; }
-      const text = line.replace(/^(### |- |\d+\. )/, "");
-      if (kind === "h3") { out.push((cur = { kind, items: [text] })); cur = null; continue; }
-      if (cur && cur.kind === kind) cur.items.push(text);
-      else out.push((cur = { kind, items: [text] }));
-    }
-    return out;
-  };
-  const intro = blocks(sections[0].lines);
+  const intro = mdBlocks(sections[0].lines);
   if (!intro.length || intro[0].kind !== "p") throw new Error(`${file}: the text must start with an intro paragraph`);
   const body = [];
   let faq = [];
@@ -130,7 +132,7 @@ function parse(md, file, lang, kind = "service") {
       });
       continue;
     }
-    body.push({ heading: s.heading, blocks: blocks(s.lines) });
+    body.push({ heading: s.heading, blocks: mdBlocks(s.lines) });
   }
   if (faq.length < 2) throw new Error(`${file}: the FAQ ("## ${[].concat(ui.faq)[0]}") needs at least 2 questions`);
   return { lang, file, meta, lede: intro[0].items.join(" "), rest: intro.slice(1), body, faq };
@@ -682,6 +684,112 @@ function buildFaqPages(root, templates) {
   return built;
 }
 
+// ----------------------------------------------------------------- pages --
+// content/<lang>/pages/*.md -> one plain page each (e.g. /bg/konkurs.html, the contest rules).
+// Front matter: url, title, description, h1, breadcrumb ("<home> › <page>"); optional
+// `until` (YYYY-MM-DD) with `banner` (a link at the top of the language's home page) and
+// `footer` (a footer link, listed in js/chrome.js PROMO_PAGES): js/chrome.js hides both
+// from `until` on, the page itself stays. Text: an intro paragraph, then "## " sections.
+function parseSimplePage(md, file, lang) {
+  const m = md.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+  if (!m) throw new Error(`${file}: no front matter`);
+  const meta = Object.fromEntries(m[1].split("\n").map((l) => l.split(/:\s(.*)/s).slice(0, 2).map((x) => x.trim())));
+  for (const k of ["url", "title", "description", "h1", "breadcrumb"]) if (!meta[k]) throw new Error(`${file}: front matter needs ${k}`);
+  if (!new RegExp(`^/${UI[lang].dir.replace(/\//g, "\\/")}[a-z0-9-]+\\.html$`).test(meta.url)) throw new Error(`${file}: url must look like /${UI[lang].dir}<slug>.html`);
+  if (meta.breadcrumb.split("›").length !== 2) throw new Error(`${file}: breadcrumb must be "<home> › <page>"`);
+  if ((meta.banner || meta.footer) && !/^\d{4}-\d{2}-\d{2}$/.test(meta.until || "")) throw new Error(`${file}: banner/footer need until: YYYY-MM-DD`);
+  const sections = [{ heading: null, lines: [] }];
+  for (const line of m[2].split("\n")) {
+    if (/^# /.test(line)) continue;
+    const h = line.match(/^## (.+)/);
+    if (h) sections.push({ heading: h[1].trim(), lines: [] });
+    else sections[sections.length - 1].lines.push(line);
+  }
+  const intro = mdBlocks(sections[0].lines);
+  if (!intro.length || intro[0].kind !== "p") throw new Error(`${file}: the text must start with an intro paragraph`);
+  return { lang, file, meta, lede: intro[0].items.join(" "), rest: intro.slice(1), body: sections.slice(1).map((x) => ({ heading: x.heading, blocks: mdBlocks(x.lines) })) };
+}
+
+function renderSimplePage(template, page) {
+  const { meta, lang } = page;
+  const ui = UI[lang];
+  const url = SITE + meta.url;
+  const crumbs = meta.breadcrumb.split("›").map((s) => s.trim());
+  const jsonld = ldScript({
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [[crumbs[0], `${SITE}/${ui.dir}`], [crumbs[1], url]].map(([name, item], i) => ({ "@type": "ListItem", position: i + 1, name, item })),
+  });
+  const { head, tail, script } = shell(template, {
+    lang, url, title: meta.title, description: meta.description, ogTitle: meta.h1, alts: [[lang, meta.url]], xDefault: meta.url, jsonld,
+  });
+  const sections = page.body.map((s) => `          <h2>${esc(s.heading)}</h2>\n${renderBlocks(s.blocks)}`).join("\n\n");
+  const main = `<main id="main">
+  <section class="page-hero">
+    <div class="container">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">${esc(crumbs[0])}</a><span aria-hidden="true">/</span><span>${esc(crumbs[1])}</span></nav>
+      <h1 class="h-lg">${esc(meta.h1)}</h1>
+      <p class="lede">${inline(page.lede)}</p>
+    </div>
+  </section>
+
+  <section class="svc">
+    <div class="container">
+      <article class="card legal-card">
+        <div class="legal">
+${page.rest.length ? renderBlocks(page.rest) + "\n\n" : ""}${sections}
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="section section-cta">
+    <div class="container">
+      <div class="cta-band invert">
+        <div>
+          <p class="eyebrow live">${esc(ui.ctaEyebrow)}</p>
+          <h2 class="h-lg">${esc(ui.ctaTitle)}</h2>
+        </div>
+        <div class="hero-actions">
+          <a href="contact.html#quote" class="btn btn-primary"><span>${esc(ui.quote)}</span></a>
+          <a href="${tel}" class="btn btn-ghost"><span>${esc(ui.call)}: ${esc(PHONE)}</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>`;
+  return head.replace(/(<header id="site-header" class="site-header") data-active="[^"]*"/, "$1") + main + tail + script;
+}
+
+function buildSimplePages(root, templates) {
+  const built = [];
+  const chrome = readFileSync(join(root, "js", "chrome.js"), "utf8");
+  for (const lang of LANGS) {
+    const dir = join(root, "content", lang, "pages");
+    const pages = existsSync(dir) ? readdirSync(dir).filter((x) => x.endsWith(".md")).sort()
+      .map((f) => parseSimplePage(readFileSync(join(dir, f), "utf8"), `content/${lang}/pages/${f}`, lang)) : [];
+    for (const page of pages) {
+      writeFileSync(join(root, page.meta.url.slice(1)), renderSimplePage(templates[lang], page));
+      built.push(page.meta.url);
+    }
+    // Home page banners: removed and added again, so rebuilding never doubles them.
+    const homePath = join(root, UI[lang].dir, "index.html");
+    let home = readFileSync(homePath, "utf8").replace(/\n {8}<p class="promo-banner"[^\n]*<\/p>/g, "");
+    const banners = pages.filter((p) => p.meta.banner).map((p) => `\n        <p class="promo-banner" data-until="${p.meta.until}"><a href="${p.meta.url.slice(1 + UI[lang].dir.length)}">${esc(p.meta.banner)}</a></p>`).join("");
+    if (banners) {
+      const anchor = '\n        <p class="eyebrow" data-i18n="hero.eyebrow">';
+      if (!home.includes(anchor)) throw new Error(`${UI[lang].dir}index.html: no hero eyebrow for the banner`);
+      home = home.replace(anchor, banners + anchor);
+    }
+    writeFileSync(homePath, home);
+    for (const p of pages.filter((x) => x.meta.footer)) {
+      const href = p.meta.url.slice(1 + UI[lang].dir.length);
+      if (!chrome.includes(`href: "${href}"`)) throw new Error(`${p.file}: footer link ${href} is missing from js/chrome.js PROMO_PAGES`);
+    }
+  }
+  return built;
+}
+
 export function buildServicePages(root = ROOT) {
   const pages = [];
   for (const lang of LANGS) {
@@ -708,6 +816,7 @@ export function buildServicePages(root = ROOT) {
   }
   checkFooterTable(root, pages);
   const faqs = buildFaqPages(root, templates);
+  const simple = buildSimplePages(root, templates);
   for (const a of articles) {
     if (!pages.some((p) => p.meta.url === a.meta.service)) throw new Error(`${a.file}: service ${a.meta.service} is not a service page`);
   }
@@ -716,7 +825,7 @@ export function buildServicePages(root = ROOT) {
     if (Object.keys(slugs).length) linkPages(root, lang, slugs, articles.filter((a) => a.lang === lang), pages);
   }
   const blogs = [...new Set(articles.map((a) => `/${UI[a.lang].dir}blog/`))];
-  return [...pages.map((p) => p.meta.url), ...blogs, ...articles.map((a) => a.meta.url), ...faqs];
+  return [...pages.map((p) => p.meta.url), ...blogs, ...articles.map((a) => a.meta.url), ...faqs, ...simple];
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {

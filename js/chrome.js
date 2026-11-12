@@ -9,8 +9,8 @@
 // a Home / Business version have <html data-aud-page>; they also get the
 // switch at the top of the mobile menu.
 // ============================================================================
-import { t, escapeHtml, getAudience, setAudience } from "./i18n.js?v=20261112c";
-import { themeTransition, swapTransition } from "./motion.js?v=20261112c";
+import { t, escapeHtml, getAudience, setAudience } from "./i18n.js?v=20261112d";
+import { themeTransition, swapTransition } from "./motion.js?v=20261112d";
 
 const NAV_ITEMS = [
   { key: "index.html", label: "nav.home" },
@@ -224,6 +224,7 @@ function faqLink() {
 // when it and the page's home banner ([data-until], see hideExpired) disappear.
 const PROMO_PAGES = {
   bg: [{ href: "konkurs.html", label: "Конкурс", until: "2026-11-20" }],
+  tr: [{ href: "konkurs.html", label: "Yarışma", until: "2026-11-20" }],
 };
 function today() {
   const d = new Date();
@@ -415,7 +416,7 @@ export function mountChrome() {
   // Firebase loads lazily so the header, footer and translations still render
   // when the SDK is slow, offline or blocked; the nav starts signed-out.
   renderAuth(null, false);
-  import("./auth.js?v=20261112c")
+  import("./auth.js?v=20261112d")
     .then(({ watchAuth, isAdmin, logout }) =>
       watchAuth((user) => {
         const admin = isAdmin(user);

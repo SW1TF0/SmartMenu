@@ -203,7 +203,7 @@ function closeTagEnd(html, name, from) {
 }
 
 // Replaces the text of every data-i18n / data-i18n-html element and the
-// placeholder / aria-label of data-i18n-ph / data-i18n-aria elements.
+// placeholder / aria-label / alt of data-i18n-ph / data-i18n-aria / data-i18n-alt elements.
 function translateBody(html, strings, file, missing) {
   const lookup = (key) => {
     if (!(key in strings)) missing.add(`${file}: ${key}`);
@@ -211,10 +211,10 @@ function translateBody(html, strings, file, missing) {
   };
 
   // Attributes first — they never change element boundaries.
-  html = html.replace(/<[a-z][^>]*\sdata-i18n-(ph|aria)="([^"]+)"[^>]*>/gi, (tag, kind, key) => {
+  html = html.replace(/<[a-z][^>]*\sdata-i18n-(ph|aria|alt)="([^"]+)"[^>]*>/gi, (tag, kind, key) => {
     const value = lookup(key);
     if (value == null) return tag;
-    const attr = kind === "ph" ? "placeholder" : "aria-label";
+    const attr = { ph: "placeholder", aria: "aria-label", alt: "alt" }[kind];
     const re = new RegExp(`\\s${attr}="[^"]*"`);
     return re.test(tag) ? tag.replace(re, ` ${attr}="${escAttr(value)}"`) : tag.replace(/\s*\/?>$/, (end) => ` ${attr}="${escAttr(value)}"${end}`);
   });

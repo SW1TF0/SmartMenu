@@ -10,7 +10,7 @@
 //   </script>
 // Elements: data-i18n="key" (textContent), data-i18n-html="key" (innerHTML —
 // only for site-authored strings that contain links/markup), data-i18n-ph="key"
-// (placeholder), data-i18n-aria="key" (aria-label).
+// (placeholder), data-i18n-aria="key" (aria-label), data-i18n-alt="key" (alt of an image).
 //
 // Audiences — the site shows a "For home" (personal) or "For business"
 // version; business is the default and is what the static HTML contains:
@@ -387,6 +387,7 @@ export function applyI18n(root = document) {
   });
   each("data-i18n-ph", (el, v) => el.setAttribute("placeholder", v));
   each("data-i18n-aria", (el, v) => el.setAttribute("aria-label", v));
+  each("data-i18n-alt", (el, v) => el.setAttribute("alt", v));
   const moved = reorder(root);
 
   document.querySelectorAll("[data-lang-btn]").forEach((btn) => {

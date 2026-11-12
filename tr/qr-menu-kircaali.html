@@ -14,7 +14,12 @@
 <script>(function(d,w){var h=d.documentElement,n=w.navigator||{};h.classList.add("js");function g(k){try{return w.localStorage.getItem(k)}catch(e){return null}}function s(k,v){try{w.localStorage.setItem(k,v)}catch(e){}}var t=g("smkj_theme");if(t==="dark"||t==="light")h.setAttribute("data-theme",t);var A={},L=d.querySelectorAll('link[rel="alternate"][hreflang]');for(var i=0;i<L.length;i++)A[L[i].getAttribute("hreflang")]=L[i].href;if(A.bg&&!/bot|crawl|spider|slurp|lighthouse/i.test(n.userAgent||"")){var p=h.getAttribute("lang");if(p!=="bg"&&p!=="tr")p="en";var l=g("smkj_lang");if(l!=="en"&&l!=="bg"&&l!=="tr")l=null;var o=l||(p==="en"?((n.language||"").toLowerCase().indexOf("tr")===0?"tr":"bg"):p);if(o!==p&&A[o]){var u=new URL(A[o],location.href);location.replace(u.pathname+location.search+location.hash);return}}var a=null;try{a=new URLSearchParams(location.search).get("for")}catch(e){}if(a==="personal"||a==="business")s("smkj_audience",a);else a=g("smkj_audience");if(a!=="personal")a="business";h.setAttribute("data-audience",a);if(a==="personal"&&h.hasAttribute("data-aud-page")){h.classList.add("aud-pending");setTimeout(function(){h.classList.remove("aud-pending")},1500)}})(document,window);</script>
 <meta property="og:title" content="Kırcaali'de restoran ve kafeler için QR menü" />
 <meta property="og:description" content="Kırcaali'de restoran ve kafeler için dijital QR menü: fiyatları saniyeler içinde değiştirin, yeniden baskı yok, çok dilli. 24 saatte ücretsiz teklif." />
-<meta property="og:image" content="https://www.smartmenukj.com/og-image.png" />
+<meta property="og:image" content="https://www.smartmenukj.com/img/og/tr-menu.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="SmartMenuKJ: Restoranlar için QR menü · Kırcaali ve bölgesi" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://www.smartmenukj.com/img/og/tr-menu.jpg" />
 <meta property="og:url" content="https://www.smartmenukj.com/tr/qr-menu-kircaali.html" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="SmartMenuKJ" />

@@ -619,6 +619,14 @@ a.card:hover .card-link svg { transform: translateX(3px); }
 }
 .work-screen .icon-badge, .proj-thumb .icon-badge { position: relative; width: 30%; height: auto; aspect-ratio: 1; box-shadow: 0 20px 40px -18px rgba(0, 0, 0, 0.35); }
 .work .pill { align-self: flex-start; margin-bottom: 10px; }
+/* Real projects (portfolio.html, img/portfolio/): a photo instead of the icon tile, and the city beside the service. */
+.proj-photo { aspect-ratio: 3 / 2; margin-bottom: 22px; border-radius: 20px; overflow: hidden; background: var(--widget); }
+.proj-photo img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.6s var(--ease-out); }
+@media (hover: hover) { .work:hover .proj-photo img { transform: scale(1.03); } }
+.work .proj-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 10px; }
+.work .proj-meta .pill { margin-bottom: 0; }
+.work .proj-city { font: 500 13px/1.1 var(--font-sans); color: var(--ink-3); }
+.work .proj-city::before { content: "· "; }
 
 /* Scroll reveal — only hidden when JS is running (html.js), so content can
    never get stuck invisible without scripts. */

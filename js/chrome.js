@@ -9,8 +9,8 @@
 // a Home / Business version have <html data-aud-page>; they also get the
 // switch at the top of the mobile menu.
 // ============================================================================
-import { t, escapeHtml, getAudience, setAudience } from "./i18n.js?v=20261112b";
-import { themeTransition, swapTransition } from "./motion.js?v=20261112b";
+import { t, escapeHtml, getAudience, setAudience } from "./i18n.js?v=20261112c";
+import { themeTransition, swapTransition } from "./motion.js?v=20261112c";
 
 const NAV_ITEMS = [
   { key: "index.html", label: "nav.home" },
@@ -208,7 +208,7 @@ function authNavHTML(user, admin) {
 
 // Each service's own page in the page's language (tools/build-service-pages.mjs
 // checks this table against content/<lang>/*.md, so a renamed page fails the build).
-const SVC_PAGES = {
+export const SVC_PAGES = {
   en: { web: "web-design-kardzhali.html", print3d: "3d-printing-kardzhali.html", smarthome: "smart-home-kardzhali.html", cameras: "cctv-kardzhali.html", menu: "qr-menu-kardzhali.html", pc: "computer-repair-kardzhali.html" },
   bg: { web: "izrabotka-na-saitove-kardzhali.html", print3d: "3d-pechat-kardzhali.html", smarthome: "umen-dom-kardzhali.html", cameras: "videonablyudenie-kardzhali.html", menu: "qr-menu-kardzhali.html", pc: "kompyutaren-servis-kardzhali.html" },
   tr: { web: "web-sitesi-kircaali.html", print3d: "3d-baski-kircaali.html", smarthome: "akilli-ev-kircaali.html", cameras: "guvenlik-kamerasi-kircaali.html", menu: "qr-menu-kircaali.html", pc: "bilgisayar-servisi-kircaali.html" },
@@ -415,7 +415,7 @@ export function mountChrome() {
   // Firebase loads lazily so the header, footer and translations still render
   // when the SDK is slow, offline or blocked; the nav starts signed-out.
   renderAuth(null, false);
-  import("./auth.js?v=20261112b")
+  import("./auth.js?v=20261112c")
     .then(({ watchAuth, isAdmin, logout }) =>
       watchAuth((user) => {
         const admin = isAdmin(user);

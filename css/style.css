@@ -627,6 +627,7 @@ a.card:hover .card-link svg { transform: translateX(3px); }
 .work .proj-meta .pill { margin-bottom: 0; }
 .work .proj-city { font: 500 13px/1.1 var(--font-sans); color: var(--ink-3); }
 .work .proj-city::before { content: "📍"; margin-right: 4px; }
+.work .proj-more { margin-top: 12px; }
 /* Before / after: two 3:4 photos side by side, each with its label. */
 .proj-ba { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; }
 .proj-ba figure { position: relative; margin: 0; overflow: hidden; }

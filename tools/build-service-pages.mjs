@@ -134,7 +134,8 @@ function parse(md, file, lang, kind = "service") {
     }
     body.push({ heading: s.heading, blocks: mdBlocks(s.lines) });
   }
-  if (faq.length < 2) throw new Error(`${file}: the FAQ ("## ${[].concat(ui.faq)[0]}") needs at least 2 questions`);
+  // Service pages need a FAQ; an article may have none (e.g. a case study), but if it has one, at least 2 questions.
+  if ((kind !== "article" || faq.length) && faq.length < 2) throw new Error(`${file}: the FAQ ("## ${[].concat(ui.faq)[0]}") needs at least 2 questions`);
   return { lang, file, meta, lede: intro[0].items.join(" "), rest: intro.slice(1), body, faq };
 }
 
@@ -424,12 +425,12 @@ function renderArticle(template, a, all = [], twins = {}) {
         mainEntityOfPage: url,
         about: { "@id": `${SITE + meta.service}#service` },
       },
-      {
+      ...(a.faq.length ? [{
         "@type": "FAQPage",
         "@id": `${url}#faq`,
         inLanguage: lang,
         mainEntity: a.faq.map(({ q, a: ans }) => ({ "@type": "Question", name: plain(q), acceptedAnswer: { "@type": "Answer", text: plain(ans) } })),
-      },
+      }] : []),
       {
         "@type": "BreadcrumbList",
         itemListElement: [home, `${home}blog/`, url].map((item, i) => ({ "@type": "ListItem", position: i + 1, name: crumbs[i], item })),
@@ -466,7 +467,7 @@ ${a.rest.length ? renderBlocks(a.rest) + "\n\n" : ""}${sections}${more}
     </div>
   </section>
 
-  <section class="section section-alt" id="faq">
+${faq ? `  <section class="section section-alt" id="faq">
     <div class="container">
       <div class="section-head">
         <h2 class="h-lg">${esc(ui.faqTitle)}</h2>
@@ -477,7 +478,7 @@ ${faq}
     </div>
   </section>
 
-  <section class="section section-cta">
+` : ""}  <section class="section section-cta">
     <div class="container">
       <div class="cta-band invert">
         <div>

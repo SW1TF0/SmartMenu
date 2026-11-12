@@ -29,10 +29,10 @@
 <link rel="manifest" href="/site.webmanifest" />
 <link rel="preload" href="../fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="../fonts/inter-cyrillic.woff2" as="font" type="font/woff2" crossorigin />
-<link rel="stylesheet" href="../css/style.css?v=20261112f" />
-<link rel="modulepreload" href="../js/i18n.js?v=20261112f" />
-<link rel="modulepreload" href="../js/chrome.js?v=20261112f" />
-<link rel="modulepreload" href="../js/motion.js?v=20261112f" />
+<link rel="stylesheet" href="../css/style.css?v=20261112g" />
+<link rel="modulepreload" href="../js/i18n.js?v=20261112g" />
+<link rel="modulepreload" href="../js/chrome.js?v=20261112g" />
+<link rel="modulepreload" href="../js/motion.js?v=20261112g" />
 <script type="speculationrules">{"prefetch":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":["/login.html","/account.html","/admin.html"]}}]},"eagerness":"moderate"}]}</script>
 </head>
 <body>
@@ -79,6 +79,7 @@
           <div class="proj-meta"><span class="pill accent" data-i18n="svc.pc">Сервиз на PC и принтери</span><span class="proj-city" data-i18n="folio.city.kj">Кърджали</span></div>
           <h3 data-i18n="folio.r2.title">Мрежа и техника за старчески дом</h3>
           <p data-i18n="folio.r2.desc">Сменихме суича, оправихме настройките на мрежата и подновихме компютъра, монитора, принтера, мишките и клавиатурите на старческия дом в Кърджали.</p>
+          <p class="proj-more" data-i18n-html="folio.r2.more"><a href="/bg/blog/kazus-mrezha-starcheski-dom-kardzhali.html" class="link-chevron">Прочетете целия казус</a></p>
         </article>
         <article class="card work reveal" data-cat="pc" data-order-personal="0">
           <div class="proj-photo"><img src="../img/portfolio/pc-build.webp" alt="Единият от двата сглобени компютъра" data-i18n-alt="folio.r1.alt" width="960" height="640" loading="lazy" decoding="async" /></div>
@@ -144,14 +145,15 @@
 <footer id="site-footer" class="site-footer"></footer>
 
 <script type="module">
-  import { mountChrome } from "../js/chrome.js?v=20261112f";
-  import { registerDict, applyI18n, initLangSwitch } from "../js/i18n.js?v=20261112f";
-  import { initCookieBanner } from "../js/cookies.js?v=20261112f";
-  import { initReveal } from "../js/site.js?v=20261112f";
-  import { mountIcons } from "../js/icons.js?v=20261112f";
+  import { mountChrome } from "../js/chrome.js?v=20261112g";
+  import { registerDict, applyI18n, initLangSwitch } from "../js/i18n.js?v=20261112g";
+  import { initCookieBanner } from "../js/cookies.js?v=20261112g";
+  import { initReveal } from "../js/site.js?v=20261112g";
+  import { mountIcons } from "../js/icons.js?v=20261112g";
 
   registerDict({
     en: {
+      "folio.r2.more": "<a href=\"/bg/blog/kazus-mrezha-starcheski-dom-kardzhali.html\" class=\"link-chevron\">Read the full case (in Bulgarian)</a>",
       "folio.before": "Before",
       "folio.after": "After",
       "folio.r2.altBefore": "Before: the old network switch wrapped in paper among the cables",
@@ -175,6 +177,7 @@
       "folio.cta.title": "Want your project on this list?",
     },
     bg: {
+      "folio.r2.more": "<a href=\"/bg/blog/kazus-mrezha-starcheski-dom-kardzhali.html\" class=\"link-chevron\">Прочетете целия казус</a>",
       "folio.before": "Преди",
       "folio.after": "След",
       "folio.r2.altBefore": "Преди: старият мрежов суич, увит в хартия сред кабелите",
@@ -198,6 +201,7 @@
       "folio.cta.title": "Искате вашият проект да е в списъка?",
     },
     tr: {
+      "folio.r2.more": "<a href=\"/bg/blog/kazus-mrezha-starcheski-dom-kardzhali.html\" class=\"link-chevron\">Vakanın tamamı (Bulgarca)</a>",
       "folio.before": "Önce",
       "folio.after": "Sonra",
       "folio.r2.altBefore": "Önce: kabloların arasında kâğıda sarılı eski ağ switch'i",

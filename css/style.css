@@ -284,7 +284,8 @@ main.is-swapping { opacity: 0; transition-duration: 0.15s; }
 .dot-red { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--ink-3); flex: none; }
 
 .link-chevron { color: var(--link); font-weight: 400; }
-.link-chevron::after { content: " \203A"; }
+.link-chevron::after { content: "\203A"; display: inline-block; margin-left: 0.25em; transition: transform 0.25s var(--ease); }
+@media (hover: hover) { .link-chevron:hover::after { transform: translateX(3px); } }
 .link-chevron:hover { text-decoration: underline; text-underline-offset: 3px; }
 
 /* ------------------------------------------------------------ buttons -- */
@@ -599,9 +600,10 @@ a.card:active { transform: scale(0.985); transition-duration: 0.15s; }
   padding: 7px 14px; border-radius: 999px;
   font: 500 13px/1.1 var(--font-sans); letter-spacing: -0.005em;
   color: var(--ink); background: var(--widget-2); border: 1px solid transparent;
-  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
 }
 a.pill:hover { background: var(--ink); color: var(--paper); }
+a.pill:active { transform: scale(0.96); }
 .pill.accent { background: transparent; padding: 0; color: var(--ink-3); font-weight: 600; font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; }
 .card-link { display: inline-flex; align-items: center; gap: 6px; margin-top: 18px; font: 400 17px/1 var(--font-sans); color: var(--link); }
 .card-link svg { width: 15px; height: 15px; transition: transform 0.2s var(--ease); }
@@ -760,9 +762,10 @@ a.card:hover .card-link svg { transform: translateX(3px); }
   width: 34px; height: 34px; border-radius: 50%;
   display: inline-flex; align-items: center; justify-content: center;
   background: var(--widget-2); color: var(--ink-2);
-  transition: color 0.2s ease, background-color 0.2s ease;
+  transition: color 0.2s ease, background-color 0.2s ease, transform 0.15s ease;
 }
 .social-row a:hover { color: var(--paper); background: var(--ink); text-decoration: none; }
+.social-row a:active { transform: scale(0.92); }
 .social-row svg { width: 15px; height: 15px; }
 .linklike { background: none; border: 0; padding: 0; cursor: pointer; font-size: 12.5px; color: var(--ink-2); text-align: left; }
 .linklike:hover { color: var(--ink); text-decoration: underline; }
@@ -1186,6 +1189,10 @@ a.card:active { transform: translateY(-1px) scale(0.99); }
    (browsers that support cross-document view transitions). */
 @media (prefers-reduced-motion: no-preference) {
   @view-transition { navigation: auto; }
+  /* The old page fades out quickly and the new one rises in (the theme and Home/Business
+     switches have their own, more specific rules above). */
+  ::view-transition-old(root) { animation: vt-out 0.16s ease-in both; }
+  ::view-transition-new(root) { animation: vt-in 0.42s var(--ease-out) 0.08s both; }
 }
 
 /* Inner pages: their header text rises in on load, like the home hero. */

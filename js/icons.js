@@ -6,7 +6,7 @@
 // createIconStage() shows one large icon at a time and cross-fades between
 // them.
 // ============================================================================
-import { mountMockups } from "./mockups.js?v=20261112f";
+import { mountMockups } from "./mockups.js?v=20261112g";
 
 export const ICONS = {
   web: {

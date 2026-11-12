@@ -1,4 +1,5 @@
-"""Photos of real projects for portfolio.html -> img/portfolio/<name>.webp (1200 px wide, quality 80).
+"""Photos of real projects for portfolio.html -> img/portfolio/<name>.webp: cropped to 3:2 around the middle
+(like the card), at most 1200 px wide, quality 80.
 
     python3 tools/portfolio_images.py <photo.jpg> <name> [<photo.jpg> <name> ...]
 
@@ -15,8 +16,10 @@ def convert(src, name):
     if not name.replace('-', '').isalnum() or name != name.lower():
         raise SystemExit(f'name must be lowercase letters, digits and dashes: {name}')
     img = ImageOps.exif_transpose(Image.open(src)).convert('RGB')
+    w = min(img.width, round(img.height * 3 / 2))
+    img = ImageOps.fit(img, (w, round(w * 2 / 3)), Image.LANCZOS)  # the 3:2 frame of the card, from the middle
     if img.width > 1200:
-        img = img.resize((1200, round(img.height * 1200 / img.width)), Image.LANCZOS)
+        img = img.resize((1200, 800), Image.LANCZOS)
     os.makedirs(OUT, exist_ok=True)
     dest = os.path.join(OUT, f'{name}.webp')
     img.save(dest, 'WEBP', quality=80, method=6)  # no exif= argument: nothing of the original metadata is written

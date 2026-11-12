@@ -9,8 +9,8 @@
 // a Home / Business version have <html data-aud-page>; they also get the
 // switch at the top of the mobile menu.
 // ============================================================================
-import { t, escapeHtml, getAudience, setAudience } from "./i18n.js?v=20261112d";
-import { themeTransition, swapTransition } from "./motion.js?v=20261112d";
+import { t, escapeHtml, getAudience, setAudience } from "./i18n.js?v=20261112e";
+import { themeTransition, swapTransition } from "./motion.js?v=20261112e";
 
 const NAV_ITEMS = [
   { key: "index.html", label: "nav.home" },
@@ -416,7 +416,7 @@ export function mountChrome() {
   // Firebase loads lazily so the header, footer and translations still render
   // when the SDK is slow, offline or blocked; the nav starts signed-out.
   renderAuth(null, false);
-  import("./auth.js?v=20261112d")
+  import("./auth.js?v=20261112e")
     .then(({ watchAuth, isAdmin, logout }) =>
       watchAuth((user) => {
         const admin = isAdmin(user);

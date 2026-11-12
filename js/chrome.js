@@ -208,7 +208,7 @@ function authNavHTML(user, admin) {
 
 // Each service's own page in the page's language (tools/build-service-pages.mjs
 // checks this table against content/<lang>/*.md, so a renamed page fails the build).
-const SVC_PAGES = {
+export const SVC_PAGES = {
   en: { web: "web-design-kardzhali.html", print3d: "3d-printing-kardzhali.html", smarthome: "smart-home-kardzhali.html", cameras: "cctv-kardzhali.html", menu: "qr-menu-kardzhali.html", pc: "computer-repair-kardzhali.html" },
   bg: { web: "izrabotka-na-saitove-kardzhali.html", print3d: "3d-pechat-kardzhali.html", smarthome: "umen-dom-kardzhali.html", cameras: "videonablyudenie-kardzhali.html", menu: "qr-menu-kardzhali.html", pc: "kompyutaren-servis-kardzhali.html" },
   tr: { web: "web-sitesi-kircaali.html", print3d: "3d-baski-kircaali.html", smarthome: "akilli-ev-kircaali.html", cameras: "guvenlik-kamerasi-kircaali.html", menu: "qr-menu-kircaali.html", pc: "bilgisayar-servisi-kircaali.html" },

@@ -6,6 +6,7 @@
 <base href="/" />
 <title>Page not found — SmartMenuKJ</title>
 <meta name="robots" content="noindex" />
+<meta name="description" content="This page does not exist. Links to the services, blog and contact page of SmartMenuKJ, Kardzhali." />
 <meta name="theme-color" content="#ffffff" />
 <link rel="icon" href="/favicon.ico?v=3" sizes="48x48" />
 <link rel="icon" href="/favicon.svg?v=3" type="image/svg+xml" />
@@ -36,6 +37,10 @@
         <a href="index.html" class="btn btn-primary" data-i18n="404.home">Back to home</a>
         <a href="contact.html" class="btn btn-ghost" data-i18n="footer.contact">Contact</a>
       </div>
+      <nav class="error-links" aria-labelledby="errLinksTitle">
+        <p class="eyebrow" id="errLinksTitle" data-i18n="404.maybe">Maybe you were looking for</p>
+        <div class="chip-row" id="errLinks"></div>
+      </nav>
     </div>
   </section>
 </main>
@@ -43,20 +48,53 @@
 <footer id="site-footer" class="site-footer"></footer>
 
 <script type="module">
-  import { mountChrome } from "./js/chrome.js?v=20261112";
-  import { registerDict, applyI18n, initLangSwitch } from "./js/i18n.js?v=20261112";
+  import { mountChrome, SVC_PAGES } from "./js/chrome.js?v=20261112";
+  import { registerDict, applyI18n, initLangSwitch, getLang, setLang, t, escapeHtml } from "./js/i18n.js?v=20261112";
   registerDict({
-    en: { "404.eyebrow": "Error 404", "404.title": "This page took a wrong turn.", "404.desc": "The page you're looking for doesn't exist or has moved.", "404.home": "Back to home" },
-    bg: { "404.eyebrow": "Грешка 404", "404.title": "Тази страница зави в грешна посока.", "404.desc": "Страницата, която търсите, не съществува или е преместена.", "404.home": "Обратно към началото" },
+    en: { "404.eyebrow": "Error 404", "404.title": "This page took a wrong turn.", "404.desc": "The page you're looking for doesn't exist or has moved.", "404.home": "Back to home", "404.maybe": "Maybe you were looking for", "404.all": "All services" },
+    bg: { "404.eyebrow": "Грешка 404", "404.title": "Тази страница зави в грешна посока.", "404.desc": "Страницата, която търсите, не съществува или е преместена.", "404.home": "Обратно към началото", "404.maybe": "Може би търсите", "404.all": "Всички услуги" },
     tr: {
       "404.eyebrow": "Hata 404",
       "404.title": "Bu sayfa yolunu kaybetti.",
       "404.desc": "Aradığınız sayfa mevcut değil veya taşınmış.",
       "404.home": "Ana sayfaya dön",
+      "404.maybe": "Belki bunu arıyordunuz",
+      "404.all": "Tüm hizmetler",
     },
   });
+  // GitHub Pages serves this one page for every missing address: /bg/… and /tr/… get their language.
+  const pathLang = (location.pathname.match(/^\/(bg|tr)\//) || [])[1];
+  if (pathLang && pathLang !== getLang()) setLang(pathLang);
+
+  // Links to the pages in the visitor's language (relative to <base>, the language's folder).
+  function renderLinks() {
+    const lang = getLang();
+    const links = [
+      ...Object.entries(SVC_PAGES[lang] || SVC_PAGES.en).map(([key, file]) => [file, t(`svc.${key}`)]),
+      ["services.html", t("404.all")],
+      ["blog/", t("footer.blog")],
+      ...(lang === "bg" ? [["faq.html", t("footer.faq")]] : []),
+    ];
+    document.getElementById("errLinks").innerHTML = links.map(([href, label]) => `<a class="pill" href="${href}">${escapeHtml(label)}</a>`).join("");
+  }
+
+  // The header and footer use links relative to the language's folder (as on /bg/… pages), and some
+  // footer links read <html lang>: point <base> at that folder and set lang before mounting them.
+  {
+    const lang = getLang();
+    document.documentElement.lang = lang;
+    document.querySelector("base").setAttribute("href", lang === "en" ? "/" : `/${lang}/`);
+  }
   mountChrome();
   applyI18n();
+  renderLinks();
+  // Picking another language: the same missing address in that language's folder, so header, footer and links all follow.
+  const mounted = getLang();
+  document.addEventListener("smkj:lang", (e) => {
+    const lang = e.detail && e.detail.lang;
+    if (!lang || lang === mounted) return;
+    location.href = (lang === "en" ? "/" : `/${lang}/`) + location.pathname.replace(/^\/(bg|tr)\//, "/").slice(1) + location.search;
+  });
   initLangSwitch();
 </script>
 </body>

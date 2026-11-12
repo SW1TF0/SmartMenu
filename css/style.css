@@ -953,6 +953,8 @@ td select { padding: 7px 10px; border-radius: 10px; border: 1px solid var(--line
 /* ------------------------------------------------------------- 404 -- */
 .error-page { min-height: calc(100vh - var(--header-h)); display: flex; align-items: center; text-align: center; }
 .error-page .lede { margin-left: auto; margin-right: auto; }
+.error-links { margin-top: 56px; }
+.error-links .chip-row { margin-top: 14px; }
 .error-code {
   font: 700 clamp(120px, 26vw, 300px)/0.9 var(--font-sans); letter-spacing: -0.06em; margin: 0 0 24px;
   color: var(--ink);

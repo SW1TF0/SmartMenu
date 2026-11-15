@@ -266,6 +266,19 @@ function setHead(html, meta, lang) {
 // answers come from the page dictionary. The English JSON-LD must quote the
 // English FAQ strings exactly, so Google never sees answers that differ from
 // the page.
+// SVC_PAGES from js/chrome.js (a browser module, so read as text rather than imported).
+const SVC_PAGES = (() => {
+  const src = readFileSync(join(ROOT, "js/chrome.js"), "utf8");
+  const block = src.match(/export const SVC_PAGES = \{([\s\S]*?)\n\};/);
+  if (!block) throw new Error("js/chrome.js: SVC_PAGES not found");
+  const out = {};
+  for (const [, lang, body] of block[1].matchAll(/^\s*(\w+): \{([^}]*)\}/gm)) {
+    out[lang] = Object.fromEntries([...body.matchAll(/(\w+): "([^"]+)"/g)].map((m) => [m[1], m[2]]));
+  }
+  for (const lang of ["en", "bg", "tr"]) if (!out[lang] || Object.keys(out[lang]).length !== 6) throw new Error(`js/chrome.js: SVC_PAGES.${lang} unreadable`);
+  return out;
+})();
+
 function localizeJsonLd(html, lang, dict, file) {
   const en = dict.en || {};
   const tr = dict[lang] || {};
@@ -281,7 +294,10 @@ function localizeJsonLd(html, lang, dict, file) {
     if (!node || typeof node !== "object") return;
     if ("inLanguage" in node) node.inLanguage = lang;
     if (node["@type"] === "Service" && typeof node.url === "string" && node.url.startsWith(SITE + "/")) {
-      node.url = `${SITE}/${lang}/${node.url.slice(SITE.length + 1)}`;
+      // A service's own page has a different file name in each language (SVC_PAGES in js/chrome.js).
+      const path = node.url.slice(SITE.length + 1);
+      const key = Object.keys(SVC_PAGES.en).find((k) => SVC_PAGES.en[k] === path);
+      node.url = `${SITE}/${lang}/${key ? SVC_PAGES[lang][key] : path}`;
     }
     if (node["@type"] === "FAQPage") {
       const asked = new Set(node.mainEntity.map((q) => keyOf.get(q.name)));

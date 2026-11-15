@@ -7,6 +7,8 @@ breadcrumb: Начало › Конкурс
 key: konkurs
 until: 2026-11-20
 banner: 🎁 Конкурс до 19.11: QR меню 3 месеца безплатно за заведение в Кърджали
+banner_link: https://www.instagram.com/reel/DfpfTsxHIg3/
+banner_rules: Правила
 footer: Конкурс
 ---
 

@@ -18,7 +18,7 @@
 <meta property="og:url" content="https://www.smartmenukj.com/links.html" />
 <script>(function(d){try{var t=localStorage.getItem("smkj_theme");if(t==="dark"||t==="light")d.documentElement.setAttribute("data-theme",t)}catch(e){}})(document);</script>
 <link rel="preload" href="fonts/inter-cyrillic.woff2" as="font" type="font/woff2" crossorigin />
-<link rel="stylesheet" href="css/style.css?v=20261112i" />
+<link rel="stylesheet" href="css/style.css?v=20261115" />
 <style>
   body { background: var(--paper-2); }
   .links { max-width: 520px; margin: 0 auto; padding: 40px 16px 56px; text-align: center; }
@@ -76,6 +76,7 @@
   // are passed on to the links, so the next page still knows where the visitor came from.
   (function () {
     var d = new Date(), today = d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+    try { today = new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Sofia", year: "numeric", month: "2-digit", day: "2-digit" }).format(d); } catch (e) {}
     document.querySelectorAll("[data-until]").forEach(function (el) { if (today >= el.getAttribute("data-until")) el.remove(); });
     var q = new URLSearchParams(location.search), utm = new URLSearchParams();
     q.forEach(function (v, k) { if (/^utm_[a-z]+$/.test(k)) utm.set(k, v); });

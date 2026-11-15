@@ -9,8 +9,8 @@
 // a Home / Business version have <html data-aud-page>; they also get the
 // switch at the top of the mobile menu.
 // ============================================================================
-import { t, escapeHtml, getAudience, setAudience } from "./i18n.js?v=20261112i";
-import { themeTransition, swapTransition } from "./motion.js?v=20261112i";
+import { t, escapeHtml, getAudience, setAudience } from "./i18n.js?v=20261115";
+import { themeTransition, swapTransition } from "./motion.js?v=20261115";
 
 const NAV_ITEMS = [
   { key: "index.html", label: "nav.home" },
@@ -226,9 +226,14 @@ const PROMO_PAGES = {
   bg: [{ href: "konkurs.html", label: "Конкурс", until: "2026-11-20" }],
   tr: [{ href: "konkurs.html", label: "Yarışma", until: "2026-11-20" }],
 };
+// Today's date in Bulgaria (YYYY-MM-DD), whatever the visitor's time zone: "until 19.11, 23:59" means Sofia time.
 function today() {
-  const d = new Date();
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  try {
+    return new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Sofia", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
+  } catch (e) {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  }
 }
 function promoLinks() {
   return (PROMO_PAGES[document.documentElement.lang] || []).filter((p) => today() < p.until)
@@ -255,6 +260,12 @@ function footerHTML() {
           <a href="https://www.instagram.com/smartmenukj/" target="_blank" rel="noopener" aria-label="Instagram">${iconSvg("ig")}</a>
           <a href="https://www.linkedin.com/in/krasimir-uzun-316a053bb/" target="_blank" rel="noopener" aria-label="LinkedIn">${iconSvg("li")}</a>
           <a href="tel:+359885348666" aria-label="+359 88 534 8666">${iconSvg("phone")}</a>
+        </div>
+        <p class="follow-title" data-i18n="footer.follow">Follow Plochko 👇</p>
+        <div class="follow-row">
+          <a href="https://www.instagram.com/smartmenukj/?utm_source=site&utm_medium=footer" target="_blank" rel="noopener">Instagram</a>
+          <a href="https://www.tiktok.com/@smartmenukj?utm_source=site&utm_medium=footer" target="_blank" rel="noopener">TikTok</a>
+          <a href="https://www.youtube.com/@smartmenukj?utm_source=site&utm_medium=footer" target="_blank" rel="noopener">YouTube</a>
         </div>
       </div>
       <div>
@@ -416,7 +427,7 @@ export function mountChrome() {
   // Firebase loads lazily so the header, footer and translations still render
   // when the SDK is slow, offline or blocked; the nav starts signed-out.
   renderAuth(null, false);
-  import("./auth.js?v=20261112i")
+  import("./auth.js?v=20261115")
     .then(({ watchAuth, isAdmin, logout }) =>
       watchAuth((user) => {
         const admin = isAdmin(user);

@@ -37,20 +37,20 @@ export const SVC_NAMES = {
   tr: { menu: "Restoranlar için QR menü", web: "Web sitesi tasarımı", cameras: "Güvenlik kamerası sistemleri", smarthome: "Akıllı ev otomasyonu", print3d: "3D baskı", pc: "Bilgisayar ve yazıcı servisi" },
 };
 export const UI = {
-  en: { dir: "", faq: "FAQ", faqTitle: "Frequently asked questions", notes: "Internal links", region: "Kardzhali and the region",
+  en: { follow: "Follow Plochko 👇", dir: "", faq: "FAQ", faqTitle: "Frequently asked questions", notes: "Internal links", region: "Kardzhali and the region",
         quote: "Get a quote", call: "Call", others: "Other services in Kardzhali", ctaEyebrow: "Free quote within 24 hours", ctaTitle: "Tell us what you need.",
         ctaLede: "We'll reply with a clear written quote within a day, with no obligation.", more: "Learn more", readMore: "Read more", city: "Kardzhali",
         blog: "Blog", moreBlog: "More from the blog", blogCta: "Blog: tips on QR menus, cameras and smart homes",
         blogTitle: "Blog — tips on QR menus, CCTV and smart homes | SmartMenuKJ",
         blogLede: "Practical notes for owners of restaurants, shops and homes in Kardzhali: how the technology we install works and how to choose.",
         published: "Published", months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"] },
-  bg: { dir: "bg/", faq: "Често задавани въпроси", faqTitle: "Често задавани въпроси", notes: "Вътрешни линкове", region: "Кърджали и региона",
+  bg: { follow: "Последвай Плочко 👇", dir: "bg/", faq: "Често задавани въпроси", faqTitle: "Често задавани въпроси", notes: "Вътрешни линкове", region: "Кърджали и региона",
         quote: "Поискай оферта", call: "Обади се", others: "Други услуги в Кърджали", ctaEyebrow: "Безплатна оферта до 24 часа", ctaTitle: "Кажете ни какво ви трябва.",
         ctaLede: "Ще ви върнем ясна писмена оферта до един ден, без ангажимент.", more: "Научете повече", readMore: "Прочетете още", city: "Kardzhali",
         blog: "Блог", moreBlog: "Още от блога", faqSee: "Вижте и", faqLink: "често задаваните въпроси", faqCta: "Често задавани въпроси за всички услуги", blogCta: "Блог: съвети за QR менюта, камери и умен дом",
         blogTitle: "Блог — съвети за QR менюта, видеонаблюдение и умен дом | SmartMenuKJ", blogLede: "Полезно за собственици на заведения, магазини и домове в Кърджали: как работят технологиите, които монтираме, и как да изберете.",
         published: "Публикувано", months: ["януари", "февруари", "март", "април", "май", "юни", "юли", "август", "септември", "октомври", "ноември", "декември"] },
-  tr: { dir: "tr/", faq: ["Sık sorulan sorular", "Sıkça sorulan sorular"], faqTitle: "Sık sorulan sorular", notes: "İç bağlantılar", region: "Kırcaali ve bölgesi",
+  tr: { follow: "Plochko'yu takip et 👇", dir: "tr/", faq: ["Sık sorulan sorular", "Sıkça sorulan sorular"], faqTitle: "Sık sorulan sorular", notes: "İç bağlantılar", region: "Kırcaali ve bölgesi",
         quote: "Teklif al", call: "Arayın", others: "Kırcaali'deki diğer hizmetlerimiz", ctaEyebrow: "24 saat içinde ücretsiz teklif", ctaTitle: "Neye ihtiyacınız olduğunu anlatın.",
         ctaLede: "Bir gün içinde, hiçbir yükümlülük olmadan net bir yazılı teklif gönderiyoruz.", more: "Daha fazla bilgi", readMore: "Devamını okuyun", city: "Kardzhali",
         blog: "Blog", moreBlog: "Blogdan daha fazlası", blogCta: "Blog: QR menü, kamera ve akıllı ev ipuçları",
@@ -445,6 +445,10 @@ function renderArticle(template, a, all = [], twins = {}) {
   // Every article links to the others, so each one has links from the whole blog (SEO audit, M-1111-32).
   const others = all.filter((x) => x !== a).map((x) => `            <li><a href="${x.meta.url}">${esc(x.meta.h1)}</a></li>`).join("\n");
   const more = others ? `\n\n          <h2>${esc(ui.moreBlog)}</h2>\n          <ul>\n${others}\n          </ul>` : "";
+  // The mascot's profiles at the end of every article (utm_source=site, utm_medium=article).
+  const followLinks = [["Instagram", "https://www.instagram.com/smartmenukj/"], ["TikTok", "https://www.tiktok.com/@smartmenukj"], ["YouTube", "https://www.youtube.com/@smartmenukj"]]
+    .map(([n, u]) => `<a href="${u}?utm_source=site&amp;utm_medium=article" target="_blank" rel="noopener">${n}</a>`).join("");
+  const follow = `\n\n          <div class="follow-box"><p class="follow-title">${esc(ui.follow)}</p><div class="follow-row">${followLinks}</div></div>`;
   const faq = a.faq.map(({ q, a: ans }) => `        <details name="faq"><summary>${inline(q)}</summary><p>${inline(ans)}</p></details>`).join("\n");
   // <base href="/bg/"> is set: links are written relative to the language's top level.
   const main = `<main id="main">
@@ -461,7 +465,7 @@ function renderArticle(template, a, all = [], twins = {}) {
     <div class="container">
       <article class="card legal-card">
         <div class="legal">
-${a.rest.length ? renderBlocks(a.rest) + "\n\n" : ""}${sections}${more}
+${a.rest.length ? renderBlocks(a.rest) + "\n\n" : ""}${sections}${follow}${more}
         </div>
       </article>
     </div>
@@ -714,7 +718,8 @@ function buildFaqPages(root, templates) {
 // content/<lang>/pages/*.md -> one plain page each (e.g. /bg/konkurs.html, the contest rules).
 // Front matter: url, title, description, h1, breadcrumb ("<home> › <page>"); optional `key`
 // (the same in every language version: hreflang), `until` (YYYY-MM-DD) with `banner` (a link at the top of the language's home page) and
-// `footer` (a footer link, listed in js/chrome.js PROMO_PAGES): js/chrome.js hides both
+// `footer` (a footer link, listed in js/chrome.js PROMO_PAGES), `banner_link` (where the banner goes instead of the page,
+// e.g. the contest post) with `banner_rules` (a small link to the page): js/chrome.js hides the banners
 // from `until` on, the page itself stays. Text: an intro paragraph, then "## " sections.
 function parseSimplePage(md, file, lang) {
   const m = md.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
@@ -817,13 +822,35 @@ function buildSimplePages(root, templates) {
     // Home page banners: removed and added again, so rebuilding never doubles them.
     const homePath = join(root, UI[lang].dir, "index.html");
     let home = readFileSync(homePath, "utf8").replace(/\n {8}<p class="promo-banner"[^\n]*<\/p>/g, "");
-    const banners = pages.filter((p) => p.meta.banner).map((p) => `\n        <p class="promo-banner" data-until="${p.meta.until}"><a href="${p.meta.url.slice(1 + UI[lang].dir.length)}">${esc(p.meta.banner)}</a></p>`).join("");
+    const bannerHtml = (p, indent) => {
+      const page = p.meta.url.slice(1 + UI[lang].dir.length);
+      // `banner_link` (e.g. the contest post) opens in a new tab; the page itself stays reachable as `banner_rules`.
+      const main = p.meta.banner_link ? `<a href="${esc(p.meta.banner_link)}" target="_blank" rel="noopener">${esc(p.meta.banner)}</a>` : `<a href="${page}">${esc(p.meta.banner)}</a>`;
+      const rules = p.meta.banner_link && p.meta.banner_rules ? ` <a class="promo-rules" href="${page}">${esc(p.meta.banner_rules)}</a>` : "";
+      return `\n${indent}<p class="promo-banner" data-until="${p.meta.until}">${main}${rules}</p>`;
+    };
+    const banners = pages.filter((p) => p.meta.banner).map((p) => bannerHtml(p, "        ")).join("");
     if (banners) {
       const anchor = '\n        <p class="eyebrow" data-i18n="hero.eyebrow">';
       if (!home.includes(anchor)) throw new Error(`${UI[lang].dir}index.html: no hero eyebrow for the banner`);
       home = home.replace(anchor, banners + anchor);
     }
     writeFileSync(homePath, home);
+    // The same banners on the language's blog (list and articles), above the H1 (blog pages have <base href="/<lang>/">).
+    const blogDir = join(root, UI[lang].dir, "blog");
+    if (existsSync(blogDir)) {
+      const blogBanners = pages.filter((p) => p.meta.banner).map((p) => bannerHtml(p, "      ")).join("");
+      for (const f of readdirSync(blogDir).filter((x) => x.endsWith(".html"))) {
+        const path = join(blogDir, f);
+        let html = readFileSync(path, "utf8").replace(/\n {6}<p class="promo-banner"[^\n]*<\/p>/g, "");
+        if (blogBanners) {
+          const i = html.indexOf('\n      <h1 class="h-lg">');
+          if (i < 0) throw new Error(`${UI[lang].dir}blog/${f}: no H1 for the banner`);
+          html = html.slice(0, i) + blogBanners + html.slice(i);
+        }
+        writeFileSync(path, html);
+      }
+    }
     for (const p of pages.filter((x) => x.meta.footer)) {
       const href = p.meta.url.slice(1 + UI[lang].dir.length);
       if (!chrome.includes(`href: "${href}"`)) throw new Error(`${p.file}: footer link ${href} is missing from js/chrome.js PROMO_PAGES`);

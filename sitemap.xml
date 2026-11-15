@@ -634,4 +634,28 @@
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
+  <url>
+    <loc>https://www.smartmenukj.com/bg/blog/videonablyudenie-hotel-kashta-za-gosti.html</loc>
+    <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/blog/videonablyudenie-hotel-kashta-za-gosti.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/blog/videonablyudenie-hotel-kashta-za-gosti.html" />
+    <lastmod>2026-11-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.smartmenukj.com/bg/blog/qr-menu-na-dva-ezika-turisti.html</loc>
+    <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/blog/qr-menu-na-dva-ezika-turisti.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/blog/qr-menu-na-dva-ezika-turisti.html" />
+    <lastmod>2026-11-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.smartmenukj.com/bg/blog/kompyutar-za-ofis-kakvo-da-smenim-parvo.html</loc>
+    <xhtml:link rel="alternate" hreflang="bg" href="https://www.smartmenukj.com/bg/blog/kompyutar-za-ofis-kakvo-da-smenim-parvo.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.smartmenukj.com/bg/blog/kompyutar-za-ofis-kakvo-da-smenim-parvo.html" />
+    <lastmod>2026-11-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
 </urlset>

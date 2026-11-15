@@ -7,6 +7,8 @@ breadcrumb: Ana sayfa › Yarışma
 key: konkurs
 until: 2026-11-20
 banner: 🎁 19.11'e kadar yarışma: bir mekâna 3 ay ücretsiz QR menü
+banner_link: https://www.instagram.com/reel/DfpfTsxHIg3/
+banner_rules: Kurallar
 footer: Yarışma
 ---
 
